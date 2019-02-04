@@ -4,3 +4,6 @@
 /keyrings/live/secring.gpg
 *.pyc
 /justspaces/local_settings.py
+/configs/local_settings.py.travis
+/configs/local_settings.py.staging
+/configs/local_settings.py.production
