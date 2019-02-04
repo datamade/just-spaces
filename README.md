@@ -4,6 +4,8 @@
 ## Requirements
 - Python 3.x
 
+## Running the app locally
+
 1. Clone this repository and `cd` into your local copy.
 
     ```bash
