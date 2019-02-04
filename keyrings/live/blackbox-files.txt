@@ -1,4 +1,3 @@
 configs/local_settings.py.production
 configs/local_settings.py.staging
 configs/local_settings.py.travis
-justspaces/local_settings.py
