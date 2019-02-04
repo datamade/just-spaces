@@ -1,1 +1,2 @@
+configs/local_settings.py.travis
 justspaces/local_settings.py
