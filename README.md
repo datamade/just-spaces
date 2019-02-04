@@ -1,5 +1,5 @@
 # Just Spaces
-🏕 Repository for the Just Spaces project
+🏕 A tool from DataMade and University City District to promote better and more just public spaces
 
 ## Requirements
 - Python 3.x
