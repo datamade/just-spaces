@@ -29,6 +29,12 @@
     cp just-spaces/local_settings.example.py just-spaces/local_settings.py
     ```
 
+5. Create the database:
+
+    ```bash
+    createdb just-spaces
+    ```
+
 5. Run migrations:
 
     ```bash
@@ -41,7 +47,7 @@
      python manage.py createsuperuser
     ```
 
-Django should prompt you to provide a username, email, and password.
+    Django should prompt you to provide a username, email, and password.
 
 7. Run the app locally!
 
@@ -49,4 +55,4 @@ Django should prompt you to provide a username, email, and password.
     python manage.py runserver
     ```
 
-Navigate to http://localhost:8000/.
+    Navigate to http://localhost:8000/.
