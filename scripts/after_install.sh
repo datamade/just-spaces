@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Make sure the deployment group specific variables are available to this
 # script.
-source /home/datamade/justspacesapp/configs/$DEPLOYMENT_GROUP_NAME-config.conf
+source /home/datamade/just-spaces/configs/$DEPLOYMENT_GROUP_NAME-config.conf
 
 # Set some useful variables
 DEPLOYMENT_NAME="$APP_NAME-$DEPLOYMENT_ID"
@@ -12,7 +12,7 @@ VENV_DIR="/home/datamade/.virtualenvs/$DEPLOYMENT_NAME"
 
 # Move the contents of the folder that CodeDeploy used to "Install" the app to
 # the deployment specific folder
-mv /home/datamade/justspacesapp $PROJECT_DIR
+mv /home/datamade/just-spaces $PROJECT_DIR
 
 # Create a deployment specific virtual environment
 python3 -m venv $VENV_DIR
@@ -33,7 +33,7 @@ sudo -H -u datamade $VENV_DIR/bin/pip install --upgrade setuptools
 sudo -H -u datamade $VENV_DIR/bin/pip install -r $PROJECT_DIR/requirements.txt --upgrade
 
 # Move project configuration files into the appropriate locations within the project.
-mv $PROJECT_DIR/configs/local_settings.$DEPLOYMENT_GROUP_NAME.py $PROJECT_DIR/just-spaces/local_settings.py
+mv $PROJECT_DIR/configs/local_settings.$DEPLOYMENT_GROUP_NAME.py $PROJECT_DIR/justspaces/local_settings.py
 
 # OPTIONAL If you're using PostgreSQL, check to see if the database that you
 # need is present and, if not, create it setting the datamade user as it's
@@ -75,4 +75,4 @@ $VENV_DIR/bin/python $PROJECT_DIR/scripts/render_configs.py $DEPLOYMENT_ID $DEPL
 
 # Write out the deployment ID to a Python module that can get imported by the
 # app and returned by the /pong/ route (see above).
-echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/just-spaces/deployment.py
+echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/justspaces/deployment.py
