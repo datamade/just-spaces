@@ -41,7 +41,7 @@ mv $PROJECT_DIR/configs/local_settings.$DEPLOYMENT_GROUP_NAME.py $PROJECT_DIR/ju
 psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'just-spaces'" | grep -q 1 || createdb -U postgres -O datamade just-spaces
 
 # OPTIONAL Create any extensions within your database that your project needs.
-psql -U postgres -d example_database -c "CREATE EXTENSION IF NOT EXISTS postgis"
+psql -U postgres -d just-spaces -c "CREATE EXTENSION IF NOT EXISTS postgis"
 
 # OPTIONAL Run migrations and other management commands that should be run with
 # every deployment
