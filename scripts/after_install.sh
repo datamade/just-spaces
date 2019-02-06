@@ -38,7 +38,7 @@ mv $PROJECT_DIR/configs/local_settings.$DEPLOYMENT_GROUP_NAME.py $PROJECT_DIR/ju
 # OPTIONAL If you're using PostgreSQL, check to see if the database that you
 # need is present and, if not, create it setting the datamade user as it's
 # owner.
-psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'example_database'" | grep -q 1 || createdb -U postgres -O datamade example_database
+psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'just-spaces'" | grep -q 1 || createdb -U postgres -O datamade just-spaces
 
 # OPTIONAL Create any extensions within your database that your project needs.
 psql -U postgres -d example_database -c "CREATE EXTENSION IF NOT EXISTS postgis"
@@ -50,8 +50,8 @@ $VENV_DIR/bin/python $PROJECT_DIR/manage.py createcachetable
 $VENV_DIR/bin/python $PROJECT_DIR/manage.py collectstatic --no-input
 
 # Echo a simple nginx configuration into the correct place, and tell
-# certbot to request a cert if one does not already exist. 
-# Wondering about the DOMAIN variable? It becomes available by source-ing 
+# certbot to request a cert if one does not already exist.
+# Wondering about the DOMAIN variable? It becomes available by source-ing
 # the config file (see above).
 if [ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ]; then
     echo "server {
