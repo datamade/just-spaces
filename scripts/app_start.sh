@@ -37,7 +37,7 @@ while true; do
         echo "Application matching deployment $DEPLOYMENT_ID has failed to start"
         exit 99
     else
-        echo "Waiting for socket $APP_NAME-$DEPLOYMENT_ID.sock to be created"
+        echo "Waiting for socket $APP_NAME-$DEPLOYMENT_ID.sock to be created $running_app"
         sleep 1
     fi
     loop_counter=$(expr $loop_counter + 1)
