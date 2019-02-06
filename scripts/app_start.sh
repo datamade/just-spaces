@@ -22,7 +22,7 @@ while true; do
 
         # Pipe an HTTP request into the netcat tool (nc) and grep the response
         # for the deployment ID. If it's not there, wait for a second.
-        running_app=`printf "GET /pong/ HTTP/1.1 \r\nHost: localhost \r\n\r\n" | nc -U /tmp/$APP_NAME-$DEPLOYMENT_ID.sock | grep "$DEPLOYMENT_ID"`
+        running_app=`printf "GET /pong/ HTTP/1.1 \r\nHost: localhost \r\n\r\n" | nc -U /tmp/$APP_NAME-${DEPLOYMENT_ID}.sock | grep "$DEPLOYMENT_ID"`
         if [[ $running_app == $DEPLOYMENT_ID ]] ; then
             echo "App matching $DEPLOYMENT_ID started"
             break
@@ -53,15 +53,15 @@ echo "Reloading nginx"
 nginx -t
 service nginx reload || service nginx start
 
-# It's safe to terminate the older version of the site 
-# by sending the TERM signal to old gunicorn processes. 
-# This code block iterates over deployments for a particular deployment group, 
+# It's safe to terminate the older version of the site
+# by sending the TERM signal to old gunicorn processes.
+# This code block iterates over deployments for a particular deployment group,
 # checks each status (is it "RUNNING"?), and terminates the old, running deployment.
 old_deployments=`ls /opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID | grep -Po "d-[A-Z0-9]{9}"`
 for deployment in $old_deployments; do
     if [[ ! $deployment == $DEPLOYMENT_ID ]]; then
         echo "Signalling application processes from $deployment"
-        
+
         STATUS=`supervisorctl status $APP_NAME-$deployment:*`
         if [[ $STATUS == *"RUNNING"* ]]; then
             supervisorctl signal TERM $APP_NAME-$deployment:*
