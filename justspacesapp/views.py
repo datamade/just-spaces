@@ -4,9 +4,9 @@ class CreateNewSurvey(TemplateView):
     template_name = "create_new_survey.html"
 
 # Create pong route
-from django.http import HttpResponse
-
 def pong(request):
+    from django.http import HttpResponse
+
     try:
         from .deployment import DEPLOYMENT_ID
     except ImportError:
