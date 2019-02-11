@@ -20,6 +20,6 @@ from justspacesapp.views import pong
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^pong/$', pong),
+    url(r'^pong/$', pong,),
     url(r'', include('justspacesapp.urls')),
 ]
