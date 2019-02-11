@@ -9,7 +9,7 @@ hooks:
     runas: root
  ApplicationStart:
   - location: scripts/app_start.sh
-    runas: datamade
+    runas: root
  AfterInstall:
   - location: scripts/after_install.sh
     runas: root
