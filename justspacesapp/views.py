@@ -9,7 +9,7 @@ def pong(request):
 
     try:
         from .deployment import DEPLOYMENT_ID
-    except ImportError:
-        return HttpResponse('Bad deployment', status=401)
+    except ImportError as e:
+        return HttpResponse('Bad deployment {}'.format(e), status=401)
 
     return HttpResponse(DEPLOYMENT_ID)
