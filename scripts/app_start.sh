@@ -22,6 +22,7 @@ while true; do
 
         # Pipe an HTTP request into the netcat tool (nc) and grep the response
         # for the deployment ID. If it's not there, wait for a second.
+        printf "GET /pong/ HTTP/1.1 \r\nHost: localhost \r\n\r\n" | nc -U /tmp/just-spaces-d-YBW5ZG57Y.sock | grep "d-YBW5ZG57Y"  
         running_app=`printf "GET /pong/ HTTP/1.1 \r\nHost: localhost \r\n\r\n" | nc -U /tmp/$APP_NAME-${DEPLOYMENT_ID}.sock | grep "$DEPLOYMENT_ID"`
         if [[ $running_app == $DEPLOYMENT_ID ]] ; then
             echo "App matching $DEPLOYMENT_ID started"
