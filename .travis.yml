@@ -14,8 +14,6 @@ addons:
     packages:
     - postgresql-9.6-postgis-2.3
 before_script:
-- psql -c 'create database "just-spaces";' -U postgres
-- psql -U postgres -d travis -c "create extension postgis"
 - mv justspaces/local_settings.example.py justspaces/local_settings.py
 script:
 - python manage.py migrate
