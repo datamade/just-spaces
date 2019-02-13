@@ -1,0 +1,36 @@
+branches:
+  only:
+  - master
+  - "/^v0.*$/"
+language: python
+python:
+- '3.6'
+install:
+- pip install --upgrade pip
+- pip install -r requirements.txt
+addons:
+  postgresql: '9.6'
+  apt:
+    packages:
+    - postgresql-9.6-postgis-2.3
+before_script:
+- psql -c 'create database "just-spaces";' -U postgres	
+- psql -U postgres -d travis -c "create extension postgis"
+- mv justspaces/local_settings.example.py justspaces/local_settings.py
+script:
+- python manage.py migrate
+notifications:
+  webhooks:
+  - https://semabot.datamade.us/travis/
+deploy:
+  provider: codedeploy
+  access_key_id: AKIAIFMOFUTU62TE7GSA
+  secret_access_key:
+    secure: qSv5TYH1HDvOtEG1a21KFa1scn1fYYVEO87JEhbj1/mF4BHavY9HRdCtTZlDoSilpITAddB+tMooyNuuferk+zK4+jk4zW7GucRHpA1ElGX5IdeadDko9yj8sDk4dCCGpnlNV/In2I4IblPs4PotB/eEVjE0riv94WfCFCIa1RTTwPk07yhZRQgkj1Lm2DYBQxq6s6d9tHC+9GFktkFD76761nyW7K2+T3clZy++ItE1/4ms3r71eKNupN5HBV2eXHMQO7jMWXXoeE7Y4jus5HtqlnoqOqOQNAf24qU0ZlCYfxC4+SgKVV2oHBcuo/dH43UQu4k3/VU6n7UohcLixerHq00olvikGurc0y2ch+sR+kw+iRUz5tqQWGmny2p86NCZQPTyXLI8CRVpOkpidPVk3boYQSjGB5QDMzSg8y8gW3mJ4GTh6bbagQIZeXWOsBpjBb6rg+IgdxK+7HUJsypL5KdyY3fKXjuirfcAnhWmWZt51o41M7eBJ9udPWlWt0Qe7mVrYWT98UdmAg83SNRHOtXyjY/MxHC7DiwphX0rjvKjwrvgovJvQUOmpRCcXgys4tKZDreiTHYCQkXoFvYF3QQUQ8JjBlw9zyGlkhpOCCZRq2V0SH9d0hUv4Y2HsUcpcZaykxwTuFSlWb0nxQLCM2spMugqyVEYCLxL+jg=
+  bucket: ''
+  key: ''
+  bundle_type: ''
+  application: just-spaces
+  deployment_group: staging
+  on:
+    branch: master
