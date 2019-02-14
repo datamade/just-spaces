@@ -14,8 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-from justspacesapp.views import CreateNewSurvey
+from justspacesapp.views import CreateAgency, CreateLocation, CreateStudy, \
+                                CreateSurvey
 
 urlpatterns = [
-    url(r'^$', CreateNewSurvey.as_view(), name='create-new-survey'),
+    url(r'^$', CreateSurvey.as_view(), name='home'),
+    url(r'create-agency$', CreateAgency.as_view(), name='create-agency'),
+    url(r'create-location$', CreateLocation.as_view(), name='create-location'),
+    url(r'create-study$', CreateStudy.as_view(), name='create-study'),
+    url(r'create-survey$', CreateSurvey.as_view(), name='create-survey'),
 ]

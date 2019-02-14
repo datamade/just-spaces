@@ -70,6 +70,9 @@ INSTALLED_APPS = [
     'fobi.contrib.plugins.form_elements.fields.time',
     'fobi.contrib.plugins.form_elements.fields.url',
 
+    # custom pldp element
+    # 'fobi.contrib.plugins.form_elements.fields.pldp',
+
     # fobi default form element plug-ins
     'easy_thumbnails',  # Required by `content_image` plugin
     'fobi.contrib.plugins.form_elements.content.content_image',
