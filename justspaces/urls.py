@@ -22,4 +22,11 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^pong/$', pong,),
     url(r'', include('justspacesapp.urls')),
+    # DB Store plugin URLs
+    url(r'^fobi/plugins/form-handlers/db-store/',
+        include('fobi.contrib.plugins.form_handlers.db_store.urls')),
+    # View URLs
+    url(r'^fobi/', include('fobi.urls.view')),
+    # Edit URLs
+    url(r'^fobi/', include('fobi.urls.edit')),
 ]

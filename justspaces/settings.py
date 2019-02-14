@@ -29,7 +29,57 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'justspacesapp'
+    'justspacesapp',
+
+    # django-pldp
+    'countries_plus',
+    'languages_plus',
+    'pldp',
+
+    # fobi core
+    'fobi',
+
+    # fobi theme
+    'fobi.contrib.themes.bootstrap3',
+
+    # fobi default form field plug-ins
+    'fobi.contrib.plugins.form_elements.fields.boolean',
+    'fobi.contrib.plugins.form_elements.fields.checkbox_select_multiple',
+    'fobi.contrib.plugins.form_elements.fields.date',
+    'fobi.contrib.plugins.form_elements.fields.date_drop_down',
+    'fobi.contrib.plugins.form_elements.fields.datetime',
+    'fobi.contrib.plugins.form_elements.fields.decimal',
+    'fobi.contrib.plugins.form_elements.fields.email',
+    'fobi.contrib.plugins.form_elements.fields.file',
+    'fobi.contrib.plugins.form_elements.fields.float',
+    'fobi.contrib.plugins.form_elements.fields.hidden',
+    'fobi.contrib.plugins.form_elements.fields.input',
+    'fobi.contrib.plugins.form_elements.fields.integer',
+    'fobi.contrib.plugins.form_elements.fields.ip_address',
+    'fobi.contrib.plugins.form_elements.fields.null_boolean',
+    'fobi.contrib.plugins.form_elements.fields.password',
+    'fobi.contrib.plugins.form_elements.fields.radio',
+    'fobi.contrib.plugins.form_elements.fields.regex',
+    'fobi.contrib.plugins.form_elements.fields.select',
+    'fobi.contrib.plugins.form_elements.fields.select_model_object',
+    'fobi.contrib.plugins.form_elements.fields.select_multiple',
+    'fobi.contrib.plugins.form_elements.fields.select_multiple_model_objects',
+    'fobi.contrib.plugins.form_elements.fields.slug',
+    'fobi.contrib.plugins.form_elements.fields.text',
+    'fobi.contrib.plugins.form_elements.fields.textarea',
+    'fobi.contrib.plugins.form_elements.fields.time',
+    'fobi.contrib.plugins.form_elements.fields.url',
+
+    # fobi default form element plug-ins
+    'easy_thumbnails',  # Required by `content_image` plugin
+    'fobi.contrib.plugins.form_elements.content.content_image',
+    'fobi.contrib.plugins.form_elements.content.content_text',
+    # 'fobi.contrib.plugins.form_elements.content.content_video'
+
+    # fobi form handlers
+    'fobi.contrib.plugins.form_handlers.db_store',
+    'fobi.contrib.plugins.form_handlers.http_repost',
+    'fobi.contrib.plugins.form_handlers.mail',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +105,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'fobi.context_processors.theme',
             ],
         },
     },
@@ -101,3 +152,5 @@ USE_TZ = True
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 STATIC_URL = '/static/'
+
+FOBI_DEFAULT_THEME = 'bootstrap3'

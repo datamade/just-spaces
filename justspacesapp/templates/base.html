@@ -1,0 +1,28 @@
+{% load staticfiles %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <link rel="icon" href="{% static 'images/favicon.jpg' %}"> -->
+
+    <!-- JS -->
+
+    <!-- CSS -->
+    <title>Just Spaces</title>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-dark fixed-top footer navbar-expand-md">
+    </nav>
+
+    <div class="container">
+      <div class="row justify-content-center">
+          {% block content %}
+          {% endblock %}
+      </div>
+    </div>
+  </body>
+</html>
