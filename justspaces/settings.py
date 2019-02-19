@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'fobi',
 
     # fobi theme
-    'fobi.contrib.themes.bootstrap3',
+    'fobi.contrib.themes.foundation5',
+    'override_simple_theme',
+    'crispy_forms',
 
     # fobi default form field plug-ins
     'fobi.contrib.plugins.form_elements.fields.boolean',
@@ -74,15 +76,15 @@ INSTALLED_APPS = [
     # 'fobi.contrib.plugins.form_elements.fields.pldp',
 
     # fobi default form element plug-ins
-    'easy_thumbnails',  # Required by `content_image` plugin
-    'fobi.contrib.plugins.form_elements.content.content_image',
-    'fobi.contrib.plugins.form_elements.content.content_text',
+    # 'easy_thumbnails',  # Required by `content_image` plugin
+    # 'fobi.contrib.plugins.form_elements.content.content_image',
+    # 'fobi.contrib.plugins.form_elements.content.content_text',
     # 'fobi.contrib.plugins.form_elements.content.content_video'
 
     # fobi form handlers
-    'fobi.contrib.plugins.form_handlers.db_store',
-    'fobi.contrib.plugins.form_handlers.http_repost',
-    'fobi.contrib.plugins.form_handlers.mail',
+    # 'fobi.contrib.plugins.form_handlers.db_store',
+    # 'fobi.contrib.plugins.form_handlers.http_repost',
+    # 'fobi.contrib.plugins.form_handlers.mail',
 ]
 
 MIDDLEWARE = [
@@ -156,4 +158,4 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 STATIC_URL = '/static/'
 
-FOBI_DEFAULT_THEME = 'bootstrap3'
+FOBI_DEFAULT_THEME = 'foundation5'

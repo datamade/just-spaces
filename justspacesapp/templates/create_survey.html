@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% load i18n %}
+
+{% block page-title %}{% trans "Create form entry" %}{% endblock page-title %}
+
+{% block navbar-menu-content %}
+{% endblock navbar-menu-content %}
+
 {% block content %}
-  <h2>New Survey</h2>
-  <form method="POST" class="post-form">{% csrf_token %}
-     {{ form.as_p }}
-     <button type="submit" class="save btn btn-default">Save</button>
-  </form>
-  <a href="/fobi/forms/create/">Create a new survey from scratch</href>
-{% endblock %}
+    {% include fobi_theme.create_form_entry_ajax_template %}
+{% endblock content %}
+
+{% block sidebar-wrapper %}
+{% endblock sidebar-wrapper %}

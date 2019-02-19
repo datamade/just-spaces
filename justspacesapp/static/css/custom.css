@@ -45,6 +45,10 @@ a:focus {
     margin: 40px 0;
 }
 
+.list-unstyled {
+  padding-left: 30px;
+}
+
 i,
 span {
     display: inline-block;
@@ -124,13 +128,13 @@ span {
 }
 
 #sidebar ul.components {
-    padding: 20px 0;
+    padding: 0px;
 }
 
 #sidebar ul li a {
-    padding: 10px;
-    font-size: 1.1em;
-    display: block;
+  padding: 5px 30px;
+  font-size: .9em;
+  display: block;
 }
 
 #sidebar ul li a:hover {
@@ -191,7 +195,7 @@ a.article:hover {
 
 #sidebar-blurb {
   font-size: .8em;
-  padding: 35px;
+  padding: 5px 35px;
 }
 
 /* ---------------------------------------------------
