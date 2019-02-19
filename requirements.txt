@@ -3,5 +3,5 @@ pytest==4.2.0
 psycopg2==2.7.7
 gunicorn==19.9.0
 
--e git+https://github.com/datamade/django-pldp.git#egg=django-pldp
--e git+https://github.com/datamade/django-fobi.git#egg=django-fobi
+https://api.github.com/repos/datamade/django-pldp/zipball/master
+https://api.github.com/repos/datamade/django-fobi/zipball/master
