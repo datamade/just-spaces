@@ -19,7 +19,7 @@ from justspacesapp.views import CreateAgency, CreateLocation, CreateStudy, \
 from fobi.views import create_form_entry
 
 urlpatterns = [
-    url(r'^$', CreateStudy.as_view(), name='home'),
+    url(r'^$', view=create_form_entry, name='home'),
     url(r'create-agency$', CreateAgency.as_view(), name='create-agency'),
     url(r'create-location$', CreateLocation.as_view(), name='create-location'),
     url(r'create-study$', CreateStudy.as_view(), name='create-study'),
