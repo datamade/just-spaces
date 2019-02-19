@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 from .local_settings import *
+import gettext
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'fobi',
 
     # fobi theme
-    'fobi.contrib.themes.foundation5',
+    'fobi.contrib.themes.bootstrap3',
     'override_simple_theme',
     'crispy_forms',
 
@@ -158,4 +159,5 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 STATIC_URL = '/static/'
 
-FOBI_DEFAULT_THEME = 'foundation5'
+FOBI_DEFAULT_THEME = 'bootstrap3'
+FOBI_THEME_FOOTER_TEXT = gettext.gettext('')

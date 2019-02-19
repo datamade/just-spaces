@@ -6,6 +6,7 @@
 
 body {
     background: #fafafa;
+    padding-top: 0px;
 }
 
 p {
@@ -125,6 +126,10 @@ span {
 #sidebar .sidebar-header strong {
     display: none;
     font-size: 1.8em;
+}
+
+#sidebar ul {
+  margin-left: 0;
 }
 
 #sidebar ul.components {

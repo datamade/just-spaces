@@ -1,4 +1,4 @@
-{% extends "foundation5/base.html" %}
+{% extends "bootstrap3/base.html" %}
 
 {# Just Spaces theme master base template #}
 
@@ -24,7 +24,7 @@ crossorigin="anonymous"></script>
 
     {% include "sidebar.html" %}
     {{ block.super }}
-    
+
     {% block messages-wrapper %}
           {% include fobi_theme.messages_snippet_template_name %}
       {% endblock messages-wrapper %}
