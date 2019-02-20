@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
     # fobi theme
     'fobi.contrib.themes.bootstrap3',
-    'override_simple_theme',
+    'fobi_custom.override_bootstrap3_theme',
     'crispy_forms',
 
     # fobi default form field plug-ins
