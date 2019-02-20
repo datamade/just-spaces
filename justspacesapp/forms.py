@@ -5,7 +5,7 @@ from pldp.models import Agency, Location, Study, Survey
 class CreateAgencyForm(forms.ModelForm):
     class Meta:
         model = Agency
-        fields = ('__all__')
+        fields = '__all__'
 
 class CreateLocationForm(forms.ModelForm):
     class Meta:
@@ -20,4 +20,4 @@ class CreateStudyForm(forms.ModelForm):
 class CreateSurveyForm(forms.ModelForm):
     class Meta:
         model = Survey
-        fields = ('__all__')
+        fields = '__all__'

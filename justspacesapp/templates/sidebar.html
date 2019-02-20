@@ -1,7 +1,7 @@
 <!--  Sidebar code adapted from https://bootstrapious.com/p/bootstrap-sidebar-->
 <div class="wrapper">
     <!-- Sidebar  -->
-    <nav id="sidebar">
+    <nav class="sidebar">
         <div class="sidebar-header" id="sidebarCollapse" class="btn btn-info">
             <h3>Just Spaces</h3>
             <strong>JS</strong>
@@ -60,7 +60,7 @@
             </li>
         </ul>
 
-        <ul id="sidebar-blurb">
+        <ul class="sidebar-blurb">
             <div><em>Just Spaces</em> is a tool from DataMade and University City District to promote better and more just public spaces</div>
         </ul>
     </nav>
@@ -68,8 +68,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-                $('sidebar-blurb').toggleClass('hidden');
+                $('.sidebar').toggleClass('active');
+                $('.sidebar-blurb').toggleClass('hidden');
             });
         });
     </script>
