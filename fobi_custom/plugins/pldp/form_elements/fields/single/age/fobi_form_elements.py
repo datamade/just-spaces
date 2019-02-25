@@ -5,7 +5,8 @@ from django import forms
 from fobi.base import FormFieldPlugin, form_element_plugin_registry
 
 from .forms import PLDPAgeSingleForm
-from pldp.forms import *
+from pldp.forms import AGE_BASIC_CHOICES, AGE_DETAILED_CHOICES, \
+                       AGE_COMPLEX_CHOICES
 
 
 class PLDPAgeSinglePlugin(FormFieldPlugin):
@@ -21,8 +22,6 @@ class PLDPAgeSinglePlugin(FormFieldPlugin):
 
         choice_level = 'AGE_{}_CHOICES'.format(self.data.detail_level.upper())
         choices = getattr(sys.modules[__name__], choice_level)
-
-        print(choices)
 
         field_kwargs = {
             'required': self.data.required,

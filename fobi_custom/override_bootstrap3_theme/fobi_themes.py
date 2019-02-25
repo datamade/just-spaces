@@ -11,6 +11,7 @@ class JustSpacesTheme(Foundation5Theme):
     html_classes = ['my-simple-theme']
     base_template = 'override_bootstrap3_theme/base.html'
 
+
 # It's important to set the `force` argument to True, in
 # order to override the original theme. Force can be applied
 # only once.

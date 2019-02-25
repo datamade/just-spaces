@@ -5,7 +5,7 @@ from django import forms
 from fobi.base import FormFieldPlugin, form_element_plugin_registry
 
 from .forms import PLDPGenderSingleForm
-from pldp.forms import *
+from pldp.forms import GENDER_BASIC_CHOICES
 
 
 class PLDPGenderSinglePlugin(FormFieldPlugin):
@@ -19,7 +19,9 @@ class PLDPGenderSinglePlugin(FormFieldPlugin):
     def get_form_field_instances(self, request=None, form_entry=None,
                                  form_element_entries=None, **kwargs):
 
-        choice_level = 'GENDER_{}_CHOICES'.format(self.data.detail_level.upper())
+        choice_level = 'GENDER_{}_CHOICES'.format(
+                                                self.data.detail_level.upper()
+                                                  )
         choices = getattr(sys.modules[__name__], choice_level)
 
         field_kwargs = {
