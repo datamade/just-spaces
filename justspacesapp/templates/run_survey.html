@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-body">
+
+    <h2 class="card-title">Run Survey</h2>
+    <br />
+
+    <table class="table table-hover table-striped card-text">
+    <thead>
+      <tr>
+        <th scope="col">Survey Name</th>
+        <th scope="col">Created</th>
+        <th scope="col">Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for survey in surveys %}
+        <tr>
+          <td><b><a href="/fobi/view/{{survey.slug}}">{{survey.name}}</a></b></td>
+          <td>{{survey.created}}</td>
+          <td>{{survey.updated}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}

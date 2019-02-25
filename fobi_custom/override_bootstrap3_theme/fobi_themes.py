@@ -1,11 +1,11 @@
 from fobi.base import theme_registry
 
-from fobi.contrib.themes.bootstrap3.fobi_themes import Bootstrap3Theme
+from fobi.contrib.themes.foundation5.fobi_themes import Foundation5Theme
 
 __all__ = ('JustSpacesTheme',)
 
 
-class JustSpacesTheme(Bootstrap3Theme):
+class JustSpacesTheme(Foundation5Theme):
     """Overriding the Bootstrap3 theme for Just Spaces."""
 
     html_classes = ['my-simple-theme']

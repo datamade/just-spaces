@@ -1,12 +1,14 @@
 :root {
-  --sidebar-background: #fafafa;
-  --sidebar-text: black;
-  --sidebar-text-hover:  black;
+  --sidebar-background: #397258;
+  --sidebar-text: #fafafa;
+  --sidebar-text-hover:  #203f31;
+  --link-color: #e94e0c;
 }
 
 body {
     background: #fafafa;
     padding-top: 0px;
+    min-height: 100%;
 }
 
 p {
@@ -19,7 +21,7 @@ p {
 a,
 a:hover,
 a:focus {
-    color: inherit;
+    color: var(--link-color);
     text-decoration: none;
     transition: all 0.3s;
 }
@@ -46,10 +48,6 @@ a:focus {
     margin: 40px 0;
 }
 
-.list-unstyled {
-  padding-left: 30px;
-}
-
 i,
 span {
     display: inline-block;
@@ -62,6 +60,7 @@ span {
 .wrapper {
     display: flex;
     align-items: stretch;
+    min-height: 100%;
 }
 
 .sidebar {
@@ -71,6 +70,10 @@ span {
     color: var(--sidebar-text);
     transition: all 0.3s;
     border-right: 1px solid black
+}
+
+.sidebar h3 {
+    color: var(--sidebar-text);
 }
 
 .sidebar.active {
@@ -89,6 +92,7 @@ span {
 
 .sidebar ul li a {
     text-align: left;
+    color: var(--sidebar-text);
 }
 
 .sidebar.active ul li a {
@@ -100,7 +104,7 @@ span {
 .sidebar.active ul li a i {
     margin-right: 0;
     display: block;
-    font-size: 1.8em;
+    font-size: 1.2em;
     margin-bottom: 5px;
 }
 
@@ -196,7 +200,7 @@ a.article:hover {
 
 .content {
     width: 100%;
-    padding: 20px;
+    padding: 40px;
     min-height: 100vh;
     transition: all 0.3s;
 }

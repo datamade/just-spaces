@@ -3,7 +3,7 @@
     <!-- Sidebar  -->
     <nav class="sidebar">
         <div class="sidebar-header" id="sidebarCollapse" class="btn btn-info">
-            <h3>Just Spaces</h3>
+            <h3><b>Just Spaces</b></h3>
             <strong>JS</strong>
         </div>
 
@@ -26,10 +26,18 @@
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a href="/edit-survey">
+                    <i class="fas fa-sm fa-briefcase"></i>
+                    Edit survey
+                </a>
+            </li>
+            <li>
+                <a href="/run-survey">
                     <i class="fas fa-sm fa-briefcase"></i>
                     Run survey
                 </a>
+            </li>
+            <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <i class="fas fa-copy"></i>
                     View collected data
@@ -69,7 +77,7 @@
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('.sidebar').toggleClass('active');
-                $('.sidebar-blurb').toggleClass('hidden');
+                $('.sidebar-blurb').toggleClass('d-none');
             });
         });
     </script>
