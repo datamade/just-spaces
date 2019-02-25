@@ -6,8 +6,6 @@
 }
 
 body {
-    background: #fafafa;
-    padding-top: 0px;
     min-height: 100%;
 }
 
@@ -24,6 +22,10 @@ a:focus {
     color: var(--link-color);
     text-decoration: none;
     transition: all 0.3s;
+}
+
+hr {
+  width: 100%;
 }
 
 .navbar {
@@ -203,6 +205,23 @@ a.article:hover {
     padding: 40px;
     min-height: 100vh;
     transition: all 0.3s;
+    background: #fafafa;
+}
+
+.alert-box.success {
+  display: none !important;
+}
+
+.form-element {
+  padding: 10px 0px;
+}
+
+.form-element-label {
+  font-weight: 500;
+}
+
+.form-element-input {
+  padding-top: 10px;
 }
 
 /* ---------------------------------------------------

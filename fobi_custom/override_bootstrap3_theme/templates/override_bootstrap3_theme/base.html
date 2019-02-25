@@ -23,8 +23,11 @@ crossorigin="anonymous"></script>
 {% block main-content-wrapper %}
 
     {% include "sidebar.html" %}
+
+    <div class="content">
     {{ block.super }}
+    </div>
 
 {% endblock main-content-wrapper %}
 
-{% endblock %}
+{% endblock main-wrapper %}

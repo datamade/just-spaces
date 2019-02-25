@@ -22,8 +22,6 @@ class PLDPGenderSinglePlugin(FormFieldPlugin):
         choice_level = 'GENDER_{}_CHOICES'.format(self.data.detail_level.upper())
         choices = getattr(sys.modules[__name__], choice_level)
 
-        print(choices)
-
         field_kwargs = {
             'required': self.data.required,
             'label': self.data.label,

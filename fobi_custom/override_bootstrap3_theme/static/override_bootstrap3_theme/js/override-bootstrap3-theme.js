@@ -1,3 +1,0 @@
-/*
- * Theme specific JavaScript.
- */
