@@ -8,6 +8,8 @@ from fobi_custom.plugins.pldp.form_elements.fields.age_multiple.widgets \
 
 from fobi_custom.plugins.pldp.form_elements.fields.gender_single.widgets \
      import BasePLDPGenderSinglePluginWidget
+from fobi_custom.plugins.pldp.form_elements.fields.gender_multiple.widgets \
+          import BasePLDPGenderMultiplePluginWidget
 
 
 class PLDPAgeSinglePluginWidget(BasePLDPAgeSinglePluginWidget):
@@ -28,6 +30,13 @@ class PLDPGenderSinglePluginWidget(BasePLDPGenderSinglePluginWidget):
     theme_uid = UID  # Theme for which the widget is loaded
 
 
+class PLDPGenderMultiplePluginWidget(BasePLDPGenderMultiplePluginWidget):
+    """PLDPGenderMultiplePluginWidget."""
+
+    theme_uid = UID  # Theme for which the widget is loaded
+
+
 form_element_plugin_widget_registry.register(PLDPAgeSinglePluginWidget)
 form_element_plugin_widget_registry.register(PLDPAgeMultiplePluginWidget)
 form_element_plugin_widget_registry.register(PLDPGenderSinglePluginWidget)
+form_element_plugin_widget_registry.register(PLDPGenderMultiplePluginWidget)
