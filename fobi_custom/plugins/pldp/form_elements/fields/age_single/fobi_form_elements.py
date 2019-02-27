@@ -13,7 +13,7 @@ class PLDPAgeSinglePlugin(FormFieldPlugin):
     """PLDPAgeSinglePlugin."""
 
     uid = "pldp_age_single"
-    name = "Age (single)"
+    name = "Age, single"
     form = PLDPAgeSingleForm
     group = "Public Life Data Protocol"  # Group to which the plugin belongs to
 

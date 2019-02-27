@@ -218,6 +218,11 @@ a.article:hover {
 
 .form-element-label {
   font-weight: 500;
+  text-align: right;
+}
+
+.form-element-input {
+  margin-top: -5px;
 }
 
 /* ---------------------------------------------------

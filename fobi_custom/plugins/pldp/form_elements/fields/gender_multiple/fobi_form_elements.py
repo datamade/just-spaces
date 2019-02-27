@@ -12,7 +12,7 @@ class PLDPGenderMultiplePlugin(FormFieldPlugin):
     """PLDPGenderMultiplePlugin."""
 
     uid = "pldp_gender_multiple"
-    name = "Gender (multiple)"
+    name = "Gender, multiple"
     form = PLDPGenderMultipleForm
     group = "Public Life Data Protocol"  # Group to which the plugin belongs to
 

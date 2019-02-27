@@ -11,7 +11,7 @@ class PLDPAgeMultiplePlugin(FormFieldPlugin):
     """PLDPAgeMultiplePlugin."""
 
     uid = "pldp_age_multiple"
-    name = "Age (multiple)"
+    name = "Age, multiple"
     form = PLDPAgeMultipleForm
     group = "Public Life Data Protocol"  # Group to which the plugin belongs to
 

@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'fobi.contrib.themes.foundation5',
     'fobi_custom.override_bootstrap3_theme',
 
+    # fobi content form elements
+    'fobi.contrib.plugins.form_elements.content.content_text',
+
     # fobi default form field plug-ins
     'fobi.contrib.plugins.form_elements.fields.boolean',
     'fobi.contrib.plugins.form_elements.fields.checkbox_select_multiple',

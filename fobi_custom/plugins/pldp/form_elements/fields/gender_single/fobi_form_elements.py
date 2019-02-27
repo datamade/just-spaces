@@ -12,7 +12,7 @@ class PLDPGenderSinglePlugin(FormFieldPlugin):
     """PLDPGenderSinglePlugin."""
 
     uid = "pldp_gender_single"
-    name = "Gender (single)"
+    name = "Gender, single"
     form = PLDPGenderSingleForm
     group = "Public Life Data Protocol"  # Group to which the plugin belongs to
 
