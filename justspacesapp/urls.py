@@ -15,25 +15,25 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.utils.translation import ugettext_lazy as _
-from justspacesapp.views import CreateAgency, CreateLocation, CreateStudy, \
-                                EditSurvey, RunSurvey
+from justspacesapp.views import AgencyCreate, LocationCreate, StudyCreate, \
+                                SurveyListEdit, SurveyListView
 import fobi.views
 
 urlpatterns = [
     url(r'^$',
-        RunSurvey.as_view(),
+        SurveyListView.as_view(),
         name='home'),
 
     url(r'agencies/create$',
-        CreateAgency.as_view(),
+        AgencyCreate.as_view(),
         name='agencies-create'),
 
     url(r'locations/create$',
-        CreateLocation.as_view(),
+        LocationCreate.as_view(),
         name='locations-create'),
 
     url(r'studies/create$',
-        CreateStudy.as_view(),
+        StudyCreate.as_view(),
         name='studies-create'),
 
     # Create new survey
@@ -85,19 +85,19 @@ urlpatterns = [
 
     # Survey list edit
     url(r'surveys/edit$',
-        EditSurvey.as_view(),
+        SurveyListEdit.as_view(),
         name='survey-list-edit'),
 
     # Survey list view
     url(r'surveys/view$',
-        RunSurvey.as_view(),
+        SurveyListView.as_view(),
         name='survey-list-view'),
 
     # Survey detail
     url(_(r'^surveys/view/(?P<form_entry_slug>[\w_\-]+)/$'),
         view=fobi.views.view_form_entry,
         name='fobi.view_form_entry'),
-        
+
     # Submitted survey generic
     url(_(r'^surveys/view/submitted/$'),
         view=fobi.views.form_entry_submitted,

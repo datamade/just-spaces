@@ -5,46 +5,34 @@ from pldp.models import Agency, Location, Study
 from fobi.models import FormEntry
 
 
-class CreateAgency(CreateView):
+class AgencyCreate(CreateView):
     model = Agency
-    template_name = "create_agency.html"
+    template_name = "agency_create.html"
     fields = '__all__'
     success_url = '/'
 
 
-class CreateLocation(CreateView):
+class LocationCreate(CreateView):
     model = Location
-    template_name = "create_location.html"
+    template_name = "location_create.html"
     fields = '__all__'
     success_url = '/'
 
 
-class CreateStudy(CreateView):
+class StudyCreate(CreateView):
     model = Study
-    template_name = "create_study.html"
+    template_name = "study_create.html"
     fields = '__all__'
     success_url = '/'
 
-# class CreateSurvey(TemplateView):
-#     # to create a sample area:
-#     # INSERT INTO pldp_studyarea (name, area)
-#       VALUES ('Example area', ST_SetSRID(ST_MakePoint(1,2),4326));
-#
-#     template_name = "create-survey/create_survey.html"
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['form'] = CreateSurveyForm()
-#         return context
 
-
-class EditSurvey(ListView):
+class SurveyListEdit(ListView):
     model = FormEntry
-    template_name = "edit_survey.html"
+    template_name = "survey_list_edit.html"
     context_object_name = 'surveys'
 
 
-class RunSurvey(ListView):
+class SurveyListView(ListView):
     model = FormEntry
-    template_name = "view_survey.html"
+    template_name = "survey_list_view.html"
     context_object_name = 'surveys'
