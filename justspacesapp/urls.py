@@ -39,34 +39,34 @@ urlpatterns = [
         name='fobi.create_form_entry'),
 
     # Create survey element
-    url(_(r'^surveys/elements/create/(?P<form_entry_id>\d+)/'
+    url(_(r'^elements/create/(?P<form_entry_id>\d+)/'
           r'(?P<form_element_plugin_uid>[\w_\-]+)/$'),
         view=fobi.views.add_form_element_entry,
         name='fobi.add_form_element_entry'),
 
     # Edit survey element
-    url(_(r'^surveys/elements/edit/(?P<form_element_entry_id>\d+)/$'),
+    url(_(r'^elements/edit/(?P<form_element_entry_id>\d+)/$'),
         view=fobi.views.edit_form_element_entry,
         name='fobi.edit_form_element_entry'),
 
     # Delete survey element
-    url(_(r'^surveys/elements/delete/(?P<form_element_entry_id>\d+)/$'),
+    url(_(r'^elements/delete/(?P<form_element_entry_id>\d+)/$'),
         view=fobi.views.delete_form_element_entry,
         name='fobi.delete_form_element_entry'),
 
     # Create survey handler
-    url(_(r'^surveys/handlers/create/(?P<form_entry_id>\d+)/'
+    url(_(r'^handlers/create/(?P<form_entry_id>\d+)/'
           r'(?P<form_handler_plugin_uid>[\w_\-]+)/$'),
         view=fobi.views.add_form_handler_entry,
         name='fobi.add_form_handler_entry'),
 
     # Edit survey handler
-    url(_(r'^surveys/handlers/edit/(?P<form_handler_entry_id>\d+)/$'),
+    url(_(r'^handlers/edit/(?P<form_handler_entry_id>\d+)/$'),
         view=fobi.views.edit_form_handler_entry,
         name='fobi.edit_form_handler_entry'),
 
     # Delete survey handler
-    url(_(r'^surveys/handlers/delete/(?P<form_handler_entry_id>\d+)/$'),
+    url(_(r'^handlers/delete/(?P<form_handler_entry_id>\d+)/$'),
         view=fobi.views.delete_form_handler_entry,
         name='fobi.delete_form_handler_entry'),
 
