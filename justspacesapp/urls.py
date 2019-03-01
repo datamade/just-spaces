@@ -107,4 +107,24 @@ urlpatterns = [
     url(_(r'^surveys/view/(?P<form_entry_slug>[\w_\-]+)/submitted/$'),
         view=fobi.views.form_entry_submitted,
         name='fobi.form_entry_submitted'),
+
+    # Export survey
+    url(_(r'^surveys/export/(?P<form_entry_id>\d+)/$'),
+        view=fobi.views.export_form_entry,
+        name='fobi.export_form_entry'),
+
+    # Import survey
+    url(_(r'^surveys/import/$'),
+        view=fobi.views.import_form_entry,
+        name='fobi.import_form_entry'),
+
+    # Survey importers
+    url(_(r'^surveys/importer/(?P<form_importer_plugin_uid>[\w_\-]+)/$'),
+        view=fobi.views.form_importer,
+        name='fobi.form_importer'),
+
+    # Delete form element entry
+    url(_(r'^surveys/elements/delete/(?P<form_element_entry_id>\d+)/$'),
+        view=fobi.views.delete_form_element_entry,
+        name='fobi.delete_form_element_entry'),
 ]
