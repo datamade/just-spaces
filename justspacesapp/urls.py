@@ -16,12 +16,18 @@ Including another URLconf
 from django.conf.urls import url
 from django.utils.translation import ugettext_lazy as _
 from justspacesapp.views import AgencyCreate, LocationCreate, StudyCreate, \
-                                SurveyListEdit, SurveyListView
+                                SurveyList
 import fobi.views
+
+    '''
+    Many of the following views are taken from django-fobi, and follow their
+    naming url patterns. As this app grows in complexity, we may want to
+    refigure it to a more strictful RESTful approach.
+    '''
 
 urlpatterns = [
     url(r'^$',
-        SurveyListView.as_view(),
+        SurveyList.as_view(),
         name='home'),
 
     url(r'agencies/create$',
@@ -35,6 +41,11 @@ urlpatterns = [
     url(r'studies/create$',
         StudyCreate.as_view(),
         name='studies-create'),
+
+    # Survey list
+    url(r'surveys$',
+        SurveyList.as_view(),
+        name='survey-list'),
 
     # Create new survey
     url(r'surveys/create$',
@@ -82,16 +93,6 @@ urlpatterns = [
     url(_(r'^surveys/delete/(?P<form_entry_id>\d+)/$'),
         view=fobi.views.delete_form_entry,
         name='fobi.delete_form_entry'),
-
-    # Survey list edit
-    url(r'surveys/edit$',
-        SurveyListEdit.as_view(),
-        name='survey-list-edit'),
-
-    # Survey list view
-    url(r'surveys/view$',
-        SurveyListView.as_view(),
-        name='survey-list-view'),
 
     # Survey detail
     url(_(r'^surveys/view/(?P<form_entry_slug>[\w_\-]+)/$'),

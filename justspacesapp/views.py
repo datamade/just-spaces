@@ -26,13 +26,7 @@ class StudyCreate(CreateView):
     success_url = '/'
 
 
-class SurveyListEdit(ListView):
+class SurveyList(ListView):
     model = FormEntry
-    template_name = "survey_list_edit.html"
-    context_object_name = 'surveys'
-
-
-class SurveyListView(ListView):
-    model = FormEntry
-    template_name = "survey_list_view.html"
+    template_name = "survey_list.html"
     context_object_name = 'surveys'
