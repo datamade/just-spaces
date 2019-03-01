@@ -20,7 +20,7 @@
     <tbody>
       {% for survey in surveys %}
         <tr>
-          <td><b><a href="/fobi/forms/edit/{{survey.id}}">{{survey.name}}</a></b></td>
+          <td><b><a href="{% url 'fobi.edit_form_entry' survey.id %}">{{survey.name}}</a></b></td>
           <td>{{survey.created}}</td>
           <td>{{survey.updated}}</td>
         </tr>

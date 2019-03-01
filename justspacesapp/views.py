@@ -46,5 +46,5 @@ class EditSurvey(ListView):
 
 class RunSurvey(ListView):
     model = FormEntry
-    template_name = "run_survey.html"
+    template_name = "view_survey.html"
     context_object_name = 'surveys'

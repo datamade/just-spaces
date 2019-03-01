@@ -21,18 +21,18 @@
                         <a href="#">Create from template</a>
                     </li>
                     <li>
-                        <a href="/fobi/forms/create/">Create from scratch</a>
+                        <a href="{% url 'fobi.create_form_entry' %}">Create from scratch</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="/edit-survey">
+                <a href="{% url 'survey-list-edit' %}">
                     <i class="fas fa-sm fa-briefcase"></i>
                     Edit survey
                 </a>
             </li>
             <li>
-                <a href="/run-survey">
+                <a href="{% url 'survey-list-view' %}">
                     <i class="fas fa-sm fa-briefcase"></i>
                     Run survey
                 </a>
