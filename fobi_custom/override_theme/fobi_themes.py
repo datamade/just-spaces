@@ -6,10 +6,10 @@ __all__ = ('JustSpacesTheme',)
 
 
 class JustSpacesTheme(Foundation5Theme):
-    """Overriding the Bootstrap3 theme for Just Spaces."""
+    """Overriding the Foundation5 theme for Just Spaces."""
 
     html_classes = ['my-simple-theme']
-    base_template = 'override_bootstrap3_theme/base.html'
+    base_template = 'override_theme/base.html'
 
 
 # It's important to set the `force` argument to True, in

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
     # fobi theme
     'fobi.contrib.themes.foundation5',
-    'fobi_custom.override_bootstrap3_theme',
+    'fobi_custom.override_theme',
 
     # fobi content form elements
     'fobi.contrib.plugins.form_elements.content.content_text',
