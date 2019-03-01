@@ -81,7 +81,7 @@ urlpatterns = [
     # Delete survey
     url(_(r'^surveys/delete/(?P<form_entry_id>\d+)/$'),
         view=fobi.views.delete_form_entry,
-        name='delete_form_entry'),
+        name='fobi.delete_form_entry'),
 
     # Survey list edit
     url(r'surveys/edit$',
