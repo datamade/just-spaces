@@ -1,8 +1,13 @@
-from django.views.generic import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic import ListView, TemplateView
+from django.views.generic.edit import CreateView, FormView
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
 
 from pldp.models import Agency, Location, Study
 from fobi.models import FormEntry
+
+from .models import JustSpacesUser
+from .admin import JustSpacesUserCreationForm
 
 
 class AgencyCreate(CreateView):
@@ -30,3 +35,23 @@ class SurveyList(ListView):
     model = FormEntry
     template_name = "survey_list.html"
     context_object_name = 'surveys'
+
+class Signup(FormView):
+    template_name = "registration/signup.html"
+    form_class = JustSpacesUserCreationForm
+    success_url = '/'
+
+    def post(self, request):
+        superuser = JustSpacesUser(is_superuser=True)
+        form = self.form_class(request.POST, instance=superuser)
+        print("Here is the form:")
+        print(form)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('home')
+
+        return render(request, self.template_name, {'form': form})

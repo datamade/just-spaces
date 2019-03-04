@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 from .views import pong
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
     url(r'^pong/$', pong,),
+    url(r'^admin/', admin.site.urls),
     url(r'', include('justspacesapp.urls')),
     # DB Store plugin URLs
     url(r'^fobi/plugins/form-handlers/db-store/',
