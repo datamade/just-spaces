@@ -6,8 +6,8 @@
             <h3><b>Just Spaces</b></h3>
             <strong>JS</strong>
         </div>
-
         <ul class="list-unstyled components">
+            {% if user.is_authenticated %}
             <li class="active">
                 <a href="#createSurveySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <i class="fas fa-sm fa-home"></i>
@@ -54,6 +54,7 @@
                     </li>
                 </ul>
             </li>
+            {% endif %}
             <li>
                 <a href="#">
                     <i class="fas fa-question"></i>
@@ -67,8 +68,14 @@
                 </a>
             </li>
         </ul>
-
         <ul class="sidebar-blurb">
+            {% if user.is_authenticated %}
+            <div>Hello <b>{{ user.get_username }}</b>! <a href="{% url 'logout' %}">Logout</a></div>
+            {% else %}
+            <div><a href="{% url 'login' %}">Login</a></div>
+            <div><a href="{% url 'signup' %}">Create new account</a></div>
+            {% endif %}
+            <br />
             <div><em>Just Spaces</em> is a tool from DataMade and University City District to promote better and more just public spaces</div>
         </ul>
     </nav>

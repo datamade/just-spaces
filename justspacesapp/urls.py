@@ -5,32 +5,42 @@ naming url patterns. As this app grows in complexity, we may want to
 refigure it to a more strictful RESTful approach.
 
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.decorators import login_required, permission_required
 from justspacesapp.views import AgencyCreate, LocationCreate, StudyCreate, \
-                                SurveyList
+                                SurveyList, Signup
 import fobi.views
 
 urlpatterns = [
+    # placeholder view for a public-facing landing page
     url(r'^$',
-        SurveyList.as_view(),
+        login_required(SurveyList.as_view()),
         name='home'),
 
+    url(r'^accounts/',
+        include('django.contrib.auth.urls')),
+
+    url(r'^accounts/signup$',
+        Signup.as_view(),
+        name='signup'),
+
+
     url(r'agencies/create$',
-        AgencyCreate.as_view(),
+        login_required(AgencyCreate.as_view()),
         name='agencies-create'),
 
     url(r'locations/create$',
-        LocationCreate.as_view(),
+        login_required(LocationCreate.as_view()),
         name='locations-create'),
 
     url(r'studies/create$',
-        StudyCreate.as_view(),
+        login_required(StudyCreate.as_view()),
         name='studies-create'),
 
     # Survey list
     url(r'surveys$',
-        SurveyList.as_view(),
+        login_required(SurveyList.as_view()),
         name='survey-list'),
 
     # Create new survey
