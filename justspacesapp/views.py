@@ -44,8 +44,6 @@ class Signup(FormView):
     def post(self, request):
         superuser = JustSpacesUser(is_superuser=True)
         form = self.form_class(request.POST, instance=superuser)
-        print("Here is the form:")
-        print(form)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
