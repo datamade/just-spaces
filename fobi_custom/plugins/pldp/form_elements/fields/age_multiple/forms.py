@@ -4,14 +4,12 @@ from fobi.base import BasePluginForm
 from pldp.forms import AGE_BASIC_CHOICES, AGE_DETAILED_CHOICES, \
                        AGE_COMPLEX_CHOICES
 
-import uuid
-
 class PLDPAgeMultipleForm(forms.Form, BasePluginForm):
     """PLDPAgeMultipleForm."""
 
     plugin_data_fields = [
         ("label", "How many people do you see between the ages of 0-14?"),
-        ("name", uuid.uuid4()),
+        ("name", "name"),
         ("age range", ""),
         ("required", False),
     ]
@@ -26,7 +24,9 @@ class PLDPAgeMultipleForm(forms.Form, BasePluginForm):
                             number of people of a specific age range. Change \
                             the question to match your selection from the \
                             dropdown below.")
+
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
+
     age = forms.ChoiceField(choices=structured_choices,
                             help_text="Select the age range you'd like to "
                             "take a count for in this survey question. "
@@ -58,4 +58,5 @@ class PLDPAgeMultipleForm(forms.Form, BasePluginForm):
                             "55-64<br />"
                             "65-74<br />"
                             "75+<br /><br />")
+                            
     required = forms.BooleanField(label="Required", required=False)
