@@ -13,6 +13,7 @@ from justspacesapp.views import AgencyCreate, LocationCreate, StudyCreate, \
 import fobi.views
 
 urlpatterns = [
+    # placeholder view for a public-facing landing page
     url(r'^$',
         login_required(SurveyList.as_view()),
         name='home'),
