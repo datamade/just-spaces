@@ -3,22 +3,23 @@ from django import forms
 from fobi.base import BasePluginForm
 from pldp.forms import AGE_TYPE_CHOICES
 
-import uuid
-
 
 class PLDPAgeSingleForm(forms.Form, BasePluginForm):
     """PLDPAgeSingleForm."""
 
     plugin_data_fields = [
         ("label", ""),
-        ("name", uuid.uuid4()),
+        ("name", "name"),
         ("required", False),
         ("detail_level", "basic")
     ]
 
     label = forms.CharField(label="Label", required=True)
+
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
+
     required = forms.BooleanField(label="Required", required=False)
+
     detail_level = forms.ChoiceField(choices=AGE_TYPE_CHOICES,
                                      help_text="The Public Life Data Protocol "
                                      "suggests collecting age data at one "
