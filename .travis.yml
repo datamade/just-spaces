@@ -21,7 +21,10 @@ script:
 - python manage.py migrate
 notifications:
   webhooks:
-  - https://semabot.datamade.us/travis/
+    urls:
+      - https://semabot.datamade.us/travis/
+    on_success: change
+    on_cancel: never
 deploy:
   provider: codedeploy
   access_key_id: AKIAJNYGDLOJKHOUWCAA
