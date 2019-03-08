@@ -30,4 +30,5 @@ deploy:
   application: just-spaces
   deployment_group: staging
   on:
+    repo: datamade/just-spaces
     branch: master
