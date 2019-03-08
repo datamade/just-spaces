@@ -20,8 +20,10 @@ class PLDPGenderMultiplePlugin(FormFieldPlugin):
                                  form_element_entries=None, **kwargs):
 
         field_kwargs = {
-            'required': self.data.required,
             'label': self.data.label,
+            'gender': self.data.gender,
+            'help_text': self.data.help_text,
+            'required': self.data.required,
             'widget': forms.widgets.NumberInput(attrs={}),
         }
 

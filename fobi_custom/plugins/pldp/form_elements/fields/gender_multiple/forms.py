@@ -1,7 +1,12 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
-from fobi.base import BasePluginForm
+from fobi.base import BaseFormFieldPluginForm, get_theme
+
+from fobi.base import BasePluginForm, get_theme
 from pldp.forms import GENDER_BASIC_CHOICES
+
+theme = get_theme(request=None, as_instance=True)
 
 
 class PLDPGenderMultipleForm(forms.Form, BasePluginForm):
@@ -11,6 +16,7 @@ class PLDPGenderMultipleForm(forms.Form, BasePluginForm):
         ("label", "How many people do you see of the specified gender?"),
         ("name", "name"),
         ("gender", ""),
+        ("help_text", ""),
         ("required", False),
     ]
 
@@ -32,5 +38,13 @@ class PLDPGenderMultipleForm(forms.Form, BasePluginForm):
                             "Male<br />"
                             "Female<br />"
                             "Unknown<br />")
-                            
+
+    help_text = forms.CharField(
+        label=_("Help text"),
+        required=False,
+        widget=forms.widgets.Textarea(
+            attrs={'class': theme.form_element_html_class}
+        )
+    )
+
     required = forms.BooleanField(label="Required", required=False)
