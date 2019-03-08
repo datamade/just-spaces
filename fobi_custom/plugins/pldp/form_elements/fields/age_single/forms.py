@@ -1,24 +1,26 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
-from fobi.base import BasePluginForm
+from fobi.base import BaseFormFieldPluginForm, get_theme
 from pldp.forms import AGE_TYPE_CHOICES
 
+theme = get_theme(request=None, as_instance=True)
 
-class PLDPAgeSingleForm(forms.Form, BasePluginForm):
+
+class PLDPAgeSingleForm(forms.Form, BaseFormFieldPluginForm):
     """PLDPAgeSingleForm."""
 
     plugin_data_fields = [
         ("label", ""),
         ("name", "name"),
+        ("detail_level", "basic"),
+        ("help_text", ""),
         ("required", False),
-        ("detail_level", "basic")
     ]
 
     label = forms.CharField(label="Label", required=True)
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
-
-    required = forms.BooleanField(label="Required", required=False)
 
     detail_level = forms.ChoiceField(choices=AGE_TYPE_CHOICES,
                                      help_text="The Public Life Data Protocol "
@@ -49,3 +51,12 @@ class PLDPAgeSingleForm(forms.Form, BasePluginForm):
                                      "55-64<br />"
                                      "65-74<br />"
                                      "75+<br /><br />")
+    help_text = forms.CharField(
+        label=_("Help text"),
+        required=False,
+        widget=forms.widgets.Textarea(
+            attrs={'class': theme.form_element_html_class}
+        )
+    )
+
+    required = forms.BooleanField(label="Required", required=False)
