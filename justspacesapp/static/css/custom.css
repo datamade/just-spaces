@@ -1,8 +1,8 @@
 :root {
-  --sidebar-background: #397258;
-  --sidebar-text: #fafafa;
-  --sidebar-text-hover:  #203f31;
-  --link-color: #e94e0c;
+  --dark-green-color: #91cbb0;
+  --off-white-color: #fafafa;
+  --darker-green-color:  #203f31;
+  --orange-color: #e94e0c;
 }
 
 body {
@@ -19,7 +19,11 @@ p {
 a,
 a:hover,
 a:focus {
-    color: var(--link-color);
+    color: var(--orange-color);
+    font-weight: 900;
+    background: var(--off-white-color);
+    border-radius: 5px;
+    padding: 3px 7px;
     text-decoration: none;
     transition: all 0.3s;
 }
@@ -68,14 +72,13 @@ span {
 .sidebar {
     min-width: 250px;
     max-width: 250px;
-    background: var(--sidebar-background);
-    color: var(--sidebar-text);
+    background: var(--dark-green-color);
+    color: var(--darker-green-color);
     transition: all 0.3s;
-    border-right: 1px solid black
 }
 
 .sidebar h3 {
-    color: var(--sidebar-text);
+    color: var(--darker-green-color);
 }
 
 .sidebar.active {
@@ -90,11 +93,6 @@ span {
 
 .sidebar.active .sidebar-header strong {
     display: block;
-}
-
-.sidebar ul li a {
-    text-align: left;
-    color: var(--sidebar-text);
 }
 
 .sidebar.active ul li a {
@@ -125,7 +123,7 @@ span {
 
 .sidebar .sidebar-header {
     padding: 20px;
-    background: var(--sidebar-background);
+    background: var(--dark-green-color);
 }
 
 .sidebar .sidebar-header strong {
@@ -145,11 +143,16 @@ span {
   padding: 5px 30px;
   font-size: .9em;
   display: block;
+  text-align: left;
+  color: var(--darker-green-color);
+  background: none;
+  font-weight: 600;
+  border-radius: 0px;
 }
 
 .sidebar ul li a:hover {
-    color: var(--sidebar-background);
-    background: var(--sidebar-text-hover);
+    color: var(--dark-green-color);
+    background: var(--darker-green-color);
 }
 
 .sidebar ul li a i {
@@ -158,8 +161,8 @@ span {
 
 .sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    color: var(--sidebar-text);
-    background: var(--sidebar-background);
+    color: var(--off-white-color);
+    background: var(--dark-green-color);
 }
 
 a[data-toggle="collapse"] {
@@ -177,23 +180,24 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: var(--sidebar-background);
+    background: var(--dark-green-color);
 }
 
 a.download {
     background: #fff;
-    color: var(--sidebar-background);
+    color: var(--dark-green-color);
 }
 
 a.article,
 a.article:hover {
-    background: var(--sidebar-background); !important;
+    background: var(--dark-green-color); !important;
     color: #fff !important;
 }
 
 .sidebar-blurb {
   font-size: .8em;
   padding: 5px 35px;
+  color: var(--darker-green-color);
 }
 
 /* ---------------------------------------------------
