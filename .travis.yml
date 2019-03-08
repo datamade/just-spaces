@@ -31,4 +31,4 @@ deploy:
   deployment_group: staging
   on:
     repo: datamade/just-spaces
-    branch: mvp-surveys
+    branch: master
