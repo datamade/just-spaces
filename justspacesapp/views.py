@@ -42,7 +42,7 @@ class Signup(FormView):
     success_url = '/'
 
     def post(self, request):
-        superuser = JustSpacesUser(is_superuser=True)
+        superuser = JustSpacesUser(is_superuser=True, is_staff=True)
         form = self.form_class(request.POST, instance=superuser)
         if form.is_valid():
             form.save()
