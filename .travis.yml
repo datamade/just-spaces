@@ -30,4 +30,4 @@ deploy:
   application: just-spaces
   deployment_group: staging
   on:
-    repo: master
+    branch: master
