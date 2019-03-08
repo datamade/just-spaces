@@ -21,7 +21,6 @@ class PLDPGenderMultiplePlugin(FormFieldPlugin):
 
         field_kwargs = {
             'label': self.data.label,
-            'gender': self.data.gender,
             'help_text': self.data.help_text,
             'required': self.data.required,
             'widget': forms.widgets.NumberInput(attrs={}),

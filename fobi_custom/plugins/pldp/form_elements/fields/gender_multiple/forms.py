@@ -2,14 +2,12 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from fobi.base import BaseFormFieldPluginForm, get_theme
-
-from fobi.base import BasePluginForm, get_theme
 from pldp.forms import GENDER_BASIC_CHOICES
 
 theme = get_theme(request=None, as_instance=True)
 
 
-class PLDPGenderMultipleForm(forms.Form, BasePluginForm):
+class PLDPGenderMultipleForm(forms.Form, BaseFormFieldPluginForm):
     """PLDPGenderMultipleForm."""
 
     plugin_data_fields = [
