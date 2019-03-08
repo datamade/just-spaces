@@ -1,16 +1,20 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
-from fobi.base import BasePluginForm
+from fobi.base import BaseFormFieldPluginForm, get_theme
 from pldp.forms import AGE_BASIC_CHOICES, AGE_DETAILED_CHOICES, \
                        AGE_COMPLEX_CHOICES
 
-class PLDPAgeMultipleForm(forms.Form, BasePluginForm):
+theme = get_theme(request=None, as_instance=True)
+
+class PLDPAgeMultipleForm(forms.Form, BaseFormFieldPluginForm):
     """PLDPAgeMultipleForm."""
 
     plugin_data_fields = [
         ("label", "How many people do you see between the ages of 0-14?"),
         ("name", "name"),
-        ("age range", ""),
+        ("age", ""),
+        ("help_text", ""),
         ("required", False),
     ]
 
@@ -58,5 +62,13 @@ class PLDPAgeMultipleForm(forms.Form, BasePluginForm):
                             "55-64<br />"
                             "65-74<br />"
                             "75+<br /><br />")
-                            
+
+    help_text = forms.CharField(
+        label=_("Help text"),
+        required=False,
+        widget=forms.widgets.Textarea(
+            attrs={'class': theme.form_element_html_class}
+        )
+    )
+
     required = forms.BooleanField(label="Required", required=False)

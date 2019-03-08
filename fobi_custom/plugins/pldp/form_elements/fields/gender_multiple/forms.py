@@ -11,7 +11,7 @@ class PLDPGenderMultipleForm(forms.Form, BaseFormFieldPluginForm):
     """PLDPGenderMultipleForm."""
 
     plugin_data_fields = [
-        ("label", "How many people do you see of the specified gender?"),
+        ("label", "How many people do you see of the following gender? Men"),
         ("name", "name"),
         ("gender", ""),
         ("help_text", ""),
