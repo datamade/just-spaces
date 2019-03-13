@@ -36,6 +36,7 @@ class SurveyList(ListView):
     template_name = "survey_list.html"
     context_object_name = 'surveys'
 
+
 class Signup(FormView):
     template_name = "registration/signup.html"
     form_class = JustSpacesUserCreationForm

@@ -12,6 +12,10 @@ from justspacesapp.views import AgencyCreate, LocationCreate, StudyCreate, \
                                 SurveyList, Signup
 import fobi.views
 
+from fobi.contrib.plugins.form_handlers.db_store.views import \
+                                       view_saved_form_data_entries, \
+                                       export_saved_form_data_entries
+
 urlpatterns = [
     # placeholder view for a public-facing landing page
     url(r'^$',
@@ -26,25 +30,25 @@ urlpatterns = [
         name='signup'),
 
 
-    url(r'agencies/create$',
+    url(r'agencies/create/$',
         login_required(AgencyCreate.as_view()),
         name='agencies-create'),
 
-    url(r'locations/create$',
+    url(r'locations/create/$',
         login_required(LocationCreate.as_view()),
         name='locations-create'),
 
-    url(r'studies/create$',
+    url(r'studies/create/$',
         login_required(StudyCreate.as_view()),
         name='studies-create'),
 
     # Survey list
-    url(r'surveys$',
+    url(r'surveys/$',
         login_required(SurveyList.as_view()),
         name='survey-list'),
 
     # Create new survey
-    url(r'surveys/create$',
+    url(r'surveys/create/$',
         view=fobi.views.create_form_entry,
         name='fobi.create_form_entry'),
 
@@ -124,4 +128,30 @@ urlpatterns = [
     url(_(r'^surveys/elements/delete/(?P<form_element_entry_id>\d+)/$'),
         view=fobi.views.delete_form_element_entry,
         name='fobi.delete_form_element_entry'),
+
+    # ****** Data handler views ******
+
+    # Specific form entries listing
+    url(r'^submitted/(?P<form_entry_id>\d+)/$',
+        view=view_saved_form_data_entries,
+        name='fobi.contrib.plugins.form_handlers.db_store.'
+             'view_saved_form_data_entries'),
+
+    # Form entries listing
+    url(r'^submitted/$',
+        view=view_saved_form_data_entries,
+        name='fobi.contrib.plugins.form_handlers.db_store.'
+             'view_saved_form_data_entries'),
+
+    # Specific form entries export
+    url(r'^submitted/(?P<form_entry_id>\d+)/export/$',
+        view=export_saved_form_data_entries,
+        name='fobi.contrib.plugins.form_handlers.db_store.'
+             'export_saved_form_data_entries'),
+
+    # Form entries export
+    url(r'^submitted/export/$',
+        view=export_saved_form_data_entries,
+        name='fobi.contrib.plugins.form_handlers.db_store.'
+             'export_saved_form_data_entries'),
 ]

@@ -59,12 +59,13 @@ INSTALLED_APPS = [
     'fobi.contrib.plugins.form_elements.fields.text',
     'fobi.contrib.plugins.form_elements.fields.textarea',
     'fobi.contrib.plugins.form_elements.fields.time',
+    'fobi.contrib.plugins.form_elements.fields.select_model_object',
 
     # custom PLDP form elements
-    'fobi_custom.plugins.pldp.form_elements.fields.age_multiple',
-    'fobi_custom.plugins.pldp.form_elements.fields.age_single',
-    'fobi_custom.plugins.pldp.form_elements.fields.gender_single',
-    'fobi_custom.plugins.pldp.form_elements.fields.gender_multiple',
+    'fobi_custom.plugins.pldp.form_elements.fields.age',
+    'fobi_custom.plugins.pldp.form_elements.fields.gender',
+    'fobi_custom.plugins.pldp.form_elements.fields.study',
+    # 'fobi_custom.plugins.pldp.form_elements.fields.select_model_object',
 
     # fobi form handlers
     'fobi.contrib.plugins.form_handlers.db_store',
