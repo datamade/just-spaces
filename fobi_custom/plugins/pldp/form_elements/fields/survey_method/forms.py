@@ -2,18 +2,18 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from fobi.base import BaseFormFieldPluginForm, get_theme
-from pldp.models import Study
+from pldp.forms import SURVEY_METHOD_CHOICES
 
 
 theme = get_theme(request=None, as_instance=True)
 
-class PLDPStudyForm(forms.Form, BaseFormFieldPluginForm):
-    """PLDPStudyForm."""
+class PLDPSurveyMethodForm(forms.Form, BaseFormFieldPluginForm):
+    """PLDPSurveyMethodForm."""
 
     plugin_data_fields = [
-        ("label", "To which study does this survey belong?"),
+        ("label", "Which method will be used for this survey?"),
         ("name", "name"),
-        ("study", ""),
+        ("survey_method", ""),
         ("help_text", ""),
         ("required", False),
     ]
@@ -24,9 +24,9 @@ class PLDPStudyForm(forms.Form, BaseFormFieldPluginForm):
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
 
-    study = forms.ChoiceField(choices=[],
-                              help_text="Select the study to which this "
-                              "survey belongs. This will be the default, "
+    survey_method = forms.ChoiceField(choices=SURVEY_METHOD_CHOICES,
+                              help_text="Select the method that will be used "
+                              "for this survey. This will be the default, "
                               "but users will be able to change this "
                               "selection when running the survey.",
                               widget=forms.widgets.Select(
@@ -42,7 +42,3 @@ class PLDPStudyForm(forms.Form, BaseFormFieldPluginForm):
     )
 
     required = forms.BooleanField(label="Required", required=False)
-
-    def __init__(self, *args, **kwargs):
-        super(PLDPStudyForm, self).__init__(*args, **kwargs)
-        self.fields['study'].choices = Study.objects.all().values_list('id', 'title')

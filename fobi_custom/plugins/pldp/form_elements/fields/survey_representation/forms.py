@@ -2,18 +2,18 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from fobi.base import BaseFormFieldPluginForm, get_theme
-from pldp.models import Study
+from pldp.forms import SURVEY_REPRESENTATION_CHOICES
 
 
 theme = get_theme(request=None, as_instance=True)
 
-class PLDPStudyForm(forms.Form, BaseFormFieldPluginForm):
-    """PLDPStudyForm."""
+class PLDPSurveyRepresentationForm(forms.Form, BaseFormFieldPluginForm):
+    """PLDPSurveyRepresentationForm."""
 
     plugin_data_fields = [
-        ("label", "To which study does this survey belong?"),
+        ("label", "Is the representation of this survey absolute or relative?"),
         ("name", "name"),
-        ("study", ""),
+        ("survey_representation", ""),
         ("help_text", ""),
         ("required", False),
     ]
@@ -24,11 +24,14 @@ class PLDPStudyForm(forms.Form, BaseFormFieldPluginForm):
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
 
-    study = forms.ChoiceField(choices=[],
-                              help_text="Select the study to which this "
-                              "survey belongs. This will be the default, "
-                              "but users will be able to change this "
-                              "selection when running the survey.",
+    survey_representation = forms.ChoiceField(choices=SURVEY_REPRESENTATION_CHOICES,
+                              help_text="Indicate whether the data collected "
+                              "is a total of the people present within the "
+                              "survey count time (absolute) or a representative "
+                              "sample (relative). "
+                              "This will be the default, but users will be "
+                              "able to change this selection when running "
+                              "the survey.",
                               widget=forms.widgets.Select(
                                 attrs={'class': theme.form_element_html_class}
                               ))
@@ -42,7 +45,3 @@ class PLDPStudyForm(forms.Form, BaseFormFieldPluginForm):
     )
 
     required = forms.BooleanField(label="Required", required=False)
-
-    def __init__(self, *args, **kwargs):
-        super(PLDPStudyForm, self).__init__(*args, **kwargs)
-        self.fields['study'].choices = Study.objects.all().values_list('id', 'title')
