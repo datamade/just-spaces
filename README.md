@@ -3,6 +3,7 @@
 
 ## Requirements
 - Python 3.x
+- Docker
 
 ## Running the app locally
 
@@ -19,10 +20,10 @@
     mkvirtualenv -p python3 just-spaces
     ```
 
-3. Install the requirements.
+3. Install the Django requirements.
 
     ```bash
-    pip install -r requirements.txt
+    pip install -r requirements.txt -r dev-requirements.txt
     ```
 
 4. Copy the example local settings file to the correct location:
@@ -31,19 +32,25 @@
     cp just-spaces/local_settings.example.py just-spaces/local_settings.py
     ```
 
-5. Create the database:
+5. Install NPM dependencies for the frontend:
+
+    ```bash
+    docker-compose build
+    ```
+
+6. Create the database:
 
     ```bash
     createdb just-spaces
     ```
 
-5. Run migrations:
+7. Run migrations:
 
     ```bash
     python manage.py migrate
     ```
 
-6. Make a superuser for so that you can access the admin interface:
+8. Make a superuser for so that you can access the admin interface:
 
     ```bash
      python manage.py createsuperuser
@@ -51,9 +58,13 @@
 
     Django should prompt you to provide a username, email, and password.
 
-7. Run the app locally!
+9. Run the app locally!
 
     ```bash
+    # In one shell, bundle and watch JavaScript assets
+    docker-compose run --rm frontend
+
+    # In another shell, run the dev server
     python manage.py runserver
     ```
 
