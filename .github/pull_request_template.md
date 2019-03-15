@@ -2,10 +2,6 @@
 
 Brief description of what this PR does, and why it is needed.
 
-### Checklist
-
-- [ ] PR has a descriptive enough title to be useful in changelogs
-
 ### Demo
 
 Optional. Screenshots, `curl` examples, etc.
