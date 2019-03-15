@@ -22,7 +22,7 @@ before_script:
 - mv justspaces/local_settings.example.py justspaces/local_settings.py
 script:
 - python manage.py migrate
-- python manage.py test
+- pytest 
 - docker-compose run --rm frontend lint
 - docker-compose run --rm frontend test
 notifications:
