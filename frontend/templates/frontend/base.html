@@ -1,0 +1,21 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Just Spaces</title>
+  </head>
+
+  <body>
+      <div class="content">
+            {% block content %}
+            {% endblock %}
+      </div>
+  </body>
+</html>
+
+{% block js %}
+{% endblock %}
