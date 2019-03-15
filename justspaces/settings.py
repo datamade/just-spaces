@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 INSTALLED_APPS = [
     'frontend',
-    'justspacesapp',
+    'surveys',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -134,7 +134,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = "justspacesapp.JustSpacesUser"
+AUTH_USER_MODEL = "surveys.JustSpacesUser"
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
