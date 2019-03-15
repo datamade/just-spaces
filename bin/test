@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+if [[ -n "${DEDUPE_DEBUG}" ]]; then
+    set -x
+fi
+
+function usage() {
+    echo -n \
+        "Usage: $(basename "$0")
+
+Run tests.
+"
+}
+
+if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
+    if [ "${1:-}" = "--help" ]; then
+        usage
+    else
+        # Make sure Postgres is available for connections before running migrations.
+        docker-compose up -d database
+
+        ./bin/init_db
+
+        # Run Django tests.
+        docker-compose run --rm django pytest "$@"
+
+        # Run frontend tests.
+        docker-compose run --rm frontend test
+
+        # Run frontend linters.
+        docker-compose run --rm frontend lint
+    fi
+fi

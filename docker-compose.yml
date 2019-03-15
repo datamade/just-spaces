@@ -8,5 +8,27 @@ services:
     working_dir: /usr/local/src
     entrypoint: yarn
     command: start
+  django:
+    build: .
+    volumes:
+      - ./:/usr/local/src
+      - node_modules:/usr/local/src/frontend/node_modules
+    working_dir: /usr/local/src
+    depends_on:
+      - database
+    entrypoint: python
+    command:
+      - manage.py
+      - runserver
+      - 0.0.0.0:8000
+    ports:
+      - 8000:8000
+
+  database:
+    image: quay.io/azavea/postgis:2.4-postgres10.3-slim
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=just-spaces
 volumes:
   node_modules:

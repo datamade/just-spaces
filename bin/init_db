@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+if [[ -n "${JS_DEBUG}" ]]; then
+    set -x
+fi
+
+function usage() {
+    echo -n \
+        "Usage: $(basename "$0")
+
+Polls the database until it is healthy.
+"
+}
+
+if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
+    if [ "${1:-}" = "--help" ]; then
+        usage
+    else
+        max=15
+        counter=1
+        while true; do
+            echo "Checking if database is up yet (try ${counter})..."
+
+            # Check if the db is ready (don't exit if this command fails)
+            set +e
+            docker-compose exec -T \
+                database gosu postgres \
+                pg_isready -U postgres > /dev/null 2>&1
+
+            status_check=$?
+            if [ $status_check == 0 ]; then
+                echo "Connected to database successfully"
+                break
+            fi
+            set -e
+
+            if [[ ${counter} == "${max}" ]]; then
+                echo "Could not connect to database after ${max} tries"
+                exit 1
+            fi
+
+            sleep 1
+            (( counter++ ))
+        done
+    fi
+fi
