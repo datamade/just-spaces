@@ -1,0 +1,10 @@
+{
+  "name": "justspaces",
+  "version": "0.0.0",
+  "description": "Frontend assets for the Just Spaces app.",
+  "main": "static/frontend/index.js",
+  "repository": "https://github.com/datamade/just-spaces",
+  "author": "DataMade",
+  "license": "MIT",
+  "private": false
+}

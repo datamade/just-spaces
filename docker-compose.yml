@@ -1,0 +1,15 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/usr/local/src
+      - node_modules:/usr/local/src/node_modules
+    working_dir: /usr/local/src
+    entrypoint: parcel
+    command:
+      - watch
+      - src/js/index.js
+      - --out-dir=static/frontend/js
+volumes:
+  node_modules:
