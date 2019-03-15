@@ -6,5 +6,15 @@
   "repository": "https://github.com/datamade/just-spaces",
   "author": "DataMade",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "devDependencies": {
+    "jasmine": "^3.3.1",
+    "jshint": "^2.10.2",
+    "parcel-bundler": "^1.12.2"
+  },
+  "scripts": {
+    "start": "parcel watch src/js/index.js --out-dir static/frontend/js --no-hmr",
+    "test": "parcel build tests/frontend/*.js --out-dir tests/compiled --no-source-maps && jasmine tests/compiled/*.js",
+    "lint": "jshint src/js/*.js tests/frontend/*.js"
+  }
 }
