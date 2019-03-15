@@ -13,8 +13,9 @@
     "parcel-bundler": "^1.12.2"
   },
   "scripts": {
-    "start": "parcel watch src/js/index.js --out-dir static/frontend/js --no-hmr",
+    "start": "parcel watch src/js/index.js --out-dir static/frontend/js --public-url /static/frontend/js --no-hmr",
     "test": "parcel build tests/frontend/*.js --out-dir tests/compiled --no-source-maps && jasmine tests/compiled/*.js",
-    "lint": "jshint src/js/*.js tests/frontend/*.js"
+    "lint": "jshint src/js/*.js tests/frontend/*.js",
+    "build": "parcel build src/js/index.js --out-dir static/frontend/js --public-url /static/frontend/js"
   }
 }
