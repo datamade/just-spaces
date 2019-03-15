@@ -62,7 +62,7 @@
 
     ```bash
     # In one shell, bundle and watch JavaScript assets
-    docker-compose run --rm frontend
+    docker-compose up
 
     # In another shell, run the dev server
     python manage.py runserver
