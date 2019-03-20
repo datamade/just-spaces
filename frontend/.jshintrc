@@ -1,5 +1,5 @@
 {
-  // Set syntax to ES5 (e.g., complain about use of ES6 features)
+  // Set syntax to ES9
   "esversion": 9,
 
   // Put curly braces around conditional blocks & loops
