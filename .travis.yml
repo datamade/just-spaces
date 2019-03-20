@@ -5,9 +5,12 @@ branches:
 language: python
 python:
 - '3.6'
+services:
+- 'docker'
 install:
 - pip install --upgrade pip
 - pip install -r requirements.txt
+- docker-compose build
 addons:
   postgresql: '9.6'
   apt:
@@ -19,6 +22,9 @@ before_script:
 - mv justspaces/local_settings.example.py justspaces/local_settings.py
 script:
 - python manage.py migrate
+- pytest 
+- docker-compose run --rm frontend lint
+- docker-compose run --rm frontend test
 notifications:
   webhooks:
     urls:
