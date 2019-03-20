@@ -32,7 +32,12 @@
     cp just-spaces/local_settings.example.py just-spaces/local_settings.py
     ```
 
-5. Install NPM dependencies for the frontend:
+5. We use the [Parcel bundler](https://parceljs.org/) via Node.js to compile frontend
+   JavaScript to syntax that is cross-browser compatible. In order to avoid requiring
+   a local Node.js installation, the JavaScript dev environment is containerized
+   with Docker and Docker Compose. Use the `build` command to build the frontend
+   dev environment container, a build process that will install NPM dependencies
+   for the frontend:
 
     ```bash
     docker-compose build
