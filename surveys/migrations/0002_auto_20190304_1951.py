@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('justspacesapp', '0001_initial'),
+        ('surveys', '0001_initial'),
     ]
 
     operations = [
