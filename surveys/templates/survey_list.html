@@ -17,6 +17,7 @@
         <th scope="col">Updated</th>
         <th scope="col">Edit</th>
         <th scope="col">Run</th>
+        <th scope="col">Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -27,6 +28,7 @@
           <td>{{survey.updated}}</td>
           <td><a href="{% url 'fobi.edit_form_entry' survey.id %}"><i class="fas fa-pencil-alt icon edit"></i></a></td>
           <td><a href="{% url 'fobi.view_form_entry' survey.slug %}"><i class="fas fa-clipboard-list icon run"></i></a></td>
+          <td><a href="{% url 'fobi.delete_form_entry' survey.id %}"><i class="fas fa-times icon delete"></i></a></td>
         </tr>
       {% endfor %}
     </tbody>

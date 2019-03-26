@@ -7,8 +7,8 @@ from pldp.forms import GENDER_BASIC_CHOICES
 theme = get_theme(request=None, as_instance=True)
 
 
-class PLDPGenderMultipleForm(forms.Form, BaseFormFieldPluginForm):
-    """PLDPGenderMultipleForm."""
+class PLDPGenderForm(forms.Form, BaseFormFieldPluginForm):
+    """PLDPGenderForm."""
 
     plugin_data_fields = [
         ("label", "How many people do you see of the following gender? Men"),

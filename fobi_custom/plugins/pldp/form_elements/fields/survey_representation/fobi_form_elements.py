@@ -3,34 +3,32 @@ import sys
 from django import forms
 
 from fobi.base import FormFieldPlugin, form_element_plugin_registry
+from pldp.models import Study
+from pldp.forms import SURVEY_REPRESENTATION_CHOICES
 
-from .forms import PLDPAgeSingleForm
-from pldp.forms import AGE_BASIC_CHOICES, AGE_DETAILED_CHOICES, \
-                       AGE_COMPLEX_CHOICES
+from .forms import PLDPSurveyRepresentationForm
 
 
-class PLDPAgeSinglePlugin(FormFieldPlugin):
-    """PLDPAgeSinglePlugin."""
+class PLDPSurveyRepresentationPlugin(FormFieldPlugin):
+    """PLDPSurveyRepresentationPlugin."""
 
-    uid = "pldp_age_single"
-    name = "Age, single"
-    form = PLDPAgeSingleForm
+    uid = "pldp_survey_representation"
+    name = "Survey Representation"
+    form = PLDPSurveyRepresentationForm
     group = "Public Life Data Protocol"  # Group to which the plugin belongs to
 
     def get_form_field_instances(self, request=None, form_entry=None,
                                  form_element_entries=None, **kwargs):
 
-        choice_level = 'AGE_{}_CHOICES'.format(self.data.detail_level.upper())
-        choices = getattr(sys.modules[__name__], choice_level)
-
         field_kwargs = {
             'required': self.data.required,
             'label': self.data.label,
             'widget': forms.widgets.Select(attrs={}),
-            'choices': choices,
+            'choices': SURVEY_REPRESENTATION_CHOICES,
+            'initial': self.data.survey_representation,
         }
 
         return [(self.data.name, forms.ChoiceField, field_kwargs)]
 
 
-form_element_plugin_registry.register(PLDPAgeSinglePlugin)
+form_element_plugin_registry.register(PLDPSurveyRepresentationPlugin)

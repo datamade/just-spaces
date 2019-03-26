@@ -7,8 +7,8 @@ from pldp.forms import AGE_BASIC_CHOICES, AGE_DETAILED_CHOICES, \
 
 theme = get_theme(request=None, as_instance=True)
 
-class PLDPAgeMultipleForm(forms.Form, BaseFormFieldPluginForm):
-    """PLDPAgeMultipleForm."""
+class PLDPAgeForm(forms.Form, BaseFormFieldPluginForm):
+    """PLDPAgeForm."""
 
     plugin_data_fields = [
         ("label", "How many people do you see between the ages of 0-14?"),

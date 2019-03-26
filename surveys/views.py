@@ -8,6 +8,7 @@ from fobi.models import FormEntry
 
 from .models import JustSpacesUser
 from .admin import JustSpacesUserCreationForm
+from .forms import CreateStudyForm
 
 
 class AgencyCreate(CreateView):
@@ -25,16 +26,16 @@ class LocationCreate(CreateView):
 
 
 class StudyCreate(CreateView):
+    form_class = CreateStudyForm
     model = Study
     template_name = "study_create.html"
-    fields = '__all__'
     success_url = '/'
-
 
 class SurveyList(ListView):
     model = FormEntry
     template_name = "survey_list.html"
     context_object_name = 'surveys'
+
 
 class Signup(FormView):
     template_name = "registration/signup.html"

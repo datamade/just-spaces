@@ -18,7 +18,10 @@ class CreateStudyForm(forms.ModelForm):
     class Meta:
         model = Study
         fields = '__all__'
-
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type':'date'}),
+            'end_date': forms.DateInput(attrs={'type':'date'})
+        }
 
 class CreateSurveyForm(forms.ModelForm):
     class Meta:
