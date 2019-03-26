@@ -5,9 +5,12 @@ branches:
 language: python
 python:
 - '3.6'
+services:
+- 'docker'
 install:
 - pip install --upgrade pip
 - pip install -r requirements.txt
+- docker-compose build
 addons:
   postgresql: '9.6'
   apt:
@@ -19,14 +22,20 @@ before_script:
 - mv justspaces/local_settings.example.py justspaces/local_settings.py
 script:
 - python manage.py migrate
+- pytest 
+- docker-compose run --rm frontend lint
+- docker-compose run --rm frontend test
 notifications:
   webhooks:
-  - https://semabot.datamade.us/travis/
+    urls:
+      - https://semabot.datamade.us/travis/
+    on_success: change
+    on_cancel: never
 deploy:
   provider: codedeploy
-  access_key_id: AKIAIFMOFUTU62TE7GSA
+  access_key_id: AKIAJNYGDLOJKHOUWCAA
   secret_access_key:
-    secure: qSv5TYH1HDvOtEG1a21KFa1scn1fYYVEO87JEhbj1/mF4BHavY9HRdCtTZlDoSilpITAddB+tMooyNuuferk+zK4+jk4zW7GucRHpA1ElGX5IdeadDko9yj8sDk4dCCGpnlNV/In2I4IblPs4PotB/eEVjE0riv94WfCFCIa1RTTwPk07yhZRQgkj1Lm2DYBQxq6s6d9tHC+9GFktkFD76761nyW7K2+T3clZy++ItE1/4ms3r71eKNupN5HBV2eXHMQO7jMWXXoeE7Y4jus5HtqlnoqOqOQNAf24qU0ZlCYfxC4+SgKVV2oHBcuo/dH43UQu4k3/VU6n7UohcLixerHq00olvikGurc0y2ch+sR+kw+iRUz5tqQWGmny2p86NCZQPTyXLI8CRVpOkpidPVk3boYQSjGB5QDMzSg8y8gW3mJ4GTh6bbagQIZeXWOsBpjBb6rg+IgdxK+7HUJsypL5KdyY3fKXjuirfcAnhWmWZt51o41M7eBJ9udPWlWt0Qe7mVrYWT98UdmAg83SNRHOtXyjY/MxHC7DiwphX0rjvKjwrvgovJvQUOmpRCcXgys4tKZDreiTHYCQkXoFvYF3QQUQ8JjBlw9zyGlkhpOCCZRq2V0SH9d0hUv4Y2HsUcpcZaykxwTuFSlWb0nxQLCM2spMugqyVEYCLxL+jg=
+    secure: sRKWoVSKeDFABEHSKBVEZHZ7h+tW8rbKcNKbnIiwGFG6+2tg5iMI//XPZ1ttFkEkTl9eEOcs6ZJ4meFq6f7Ky9mNFNQLIFGswpCihkkly3d0ry5jgBF2JLYpRsaKS+RB0o7i2NhRVfcGATSa02katTZsHxzV6bL+WVwMIBHdgOmsANR2A36FEDOYY09ee0vKdXKIaFvQg6FM/eb1QHrtbQ72D9y6eTaHtLrowzF41sdIfA2yx3aL7ZxHytfeSkr93nY6zycT6Y5B/Q72wRT91rHcGhA03A0IJdPJMBIDDU6bITg1MfyJTmonXIrSZQrDQjYSVcy2Eaj/UecOqHFHdGbMddTIq9ILWBewXWDqD0Yv2JeeXw5QmT6npIek/brxpe9H1SPeHgINXWu0sKEdmXbjGnH5Wm82TxIzNzDd5TzuoF5OEN+DW+QbFZYZ+wHYhPcG8hQ6TZylIH97kN+5KCFKAIZ4QSFFqc9TgbrnAIr4Na46PlmyUEioeN3hy4AUp/e25iHQvI+eYqX9SahQM/grjKT3EotdyyRLHn56lF9MptTLuHroIFMRMjrmBs3TMClb2E0oNQHZ8x7e/oOjLxfthGOAPqvBpGJ+dbRiTUFZQ7SouquaX4mVw/NGNqTg3ZTVPXwObEj4/ur4alCXaVzF+eCvDjLOqOEQdxulG3s=
   application: just-spaces
   deployment_group: staging
   on:

@@ -1,0 +1,93 @@
+<!--  Sidebar code adapted from https://bootstrapious.com/p/bootstrap-sidebar-->
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav class="sidebar">
+        <div class="sidebar-header" id="sidebarCollapse" class="btn btn-info">
+            <h3><b>Just Spaces</b></h3>
+            <strong>JS</strong>
+        </div>
+        <ul class="list-unstyled components">
+            {% if user.is_authenticated %}
+            <li>
+                <a href="#createSurveySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-sm fa-home"></i>
+                    New Survey
+                </a>
+                <ul class="collapse list-unstyled" id="createSurveySubmenu">
+                    <li>
+                        <a href="#">Create from existing survey</a>
+                    </li>
+                    <li>
+                        <a href="#">Create from template</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'fobi.create_form_entry' %}">Create from scratch</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="{% url 'survey-list' %}">
+                    <i class="fas fa-pencil-alt icon edit"></i>
+                    Edit survey
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'survey-list' %}">
+                    <i class="fas fa-clipboard-list icon run"></i>
+                    Run survey
+                </a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-copy"></i>
+                    View collected data
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="#">Page 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 2</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 3</a>
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+            <li>
+                <a href="#">
+                    <i class="fas fa-question"></i>
+                    FAQ
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-paper-plane"></i>
+                    Contact
+                </a>
+            </li>
+        </ul>
+        <ul class="sidebar-blurb">
+            {% if user.is_authenticated %}
+            <div>Hello <b>{{ user.get_username }}</b>!</div>
+            <br />
+            <div><a href="{% url 'logout' %}">Logout</a></div>
+            {% else %}
+            <div><a href="{% url 'login' %}">Login</a></div>
+            <br />
+            <div><a href="{% url 'signup' %}">Create new account</a></div>
+            {% endif %}
+            <br />
+            <div><em>Just Spaces</em> is a tool from DataMade and University City District to promote better and more just public spaces</div>
+        </ul>
+    </nav>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('.sidebar').toggleClass('active');
+                $('.sidebar-blurb').toggleClass('d-none');
+            });
+        });
+    </script>

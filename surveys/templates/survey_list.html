@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-body">
+
+    <h2 class="card-title">Run Survey</h2>
+    <br />
+
+    <table class="table table-hover table-striped card-text">
+    <thead>
+      <tr>
+        <th scope="col">Survey Name</th>
+        <th scope="col">Created</th>
+        <th scope="col">Updated</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Run</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for survey in surveys %}
+        <tr>
+          <td><b>{{survey.name}}</b></td>
+          <td>{{survey.created}}</td>
+          <td>{{survey.updated}}</td>
+          <td><a href="{% url 'fobi.edit_form_entry' survey.id %}"><i class="fas fa-pencil-alt icon edit"></i></a></td>
+          <td><a href="{% url 'fobi.view_form_entry' survey.slug %}"><i class="fas fa-clipboard-list icon run"></i></a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}

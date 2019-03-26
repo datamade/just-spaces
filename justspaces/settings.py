@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from .local_settings import *
+from .local_settings import SECRET_KEY, DEBUG, ALLOWED_HOSTS, DATABASES
+import gettext
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,13 +24,51 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Application definition
 
 INSTALLED_APPS = [
+    'frontend',
+    'surveys',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'justspacesapp'
+    'crispy_forms',
+
+    # django-pldp
+    'countries_plus',
+    'languages_plus',
+    'pldp',
+
+    # fobi core
+    'fobi',
+
+    # fobi theme
+    'fobi.contrib.themes.foundation5',
+    'fobi_custom.override_theme',
+
+    # fobi content form elements
+    'fobi.contrib.plugins.form_elements.content.content_text',
+
+    # fobi default form field plug-ins
+    'fobi.contrib.plugins.form_elements.fields.boolean',
+    'fobi.contrib.plugins.form_elements.fields.checkbox_select_multiple',
+    'fobi.contrib.plugins.form_elements.fields.date',
+    'fobi.contrib.plugins.form_elements.fields.float',
+    'fobi.contrib.plugins.form_elements.fields.radio',
+    'fobi.contrib.plugins.form_elements.fields.select',
+    'fobi.contrib.plugins.form_elements.fields.text',
+    'fobi.contrib.plugins.form_elements.fields.textarea',
+    'fobi.contrib.plugins.form_elements.fields.time',
+
+    # custom PLDP form elements
+    'fobi_custom.plugins.pldp.form_elements.fields.age_multiple',
+    'fobi_custom.plugins.pldp.form_elements.fields.age_single',
+    'fobi_custom.plugins.pldp.form_elements.fields.gender_single',
+    'fobi_custom.plugins.pldp.form_elements.fields.gender_multiple',
+
+    # fobi form handlers
+    'fobi.contrib.plugins.form_handlers.db_store',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +94,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'fobi.context_processors.theme',
             ],
         },
     },
@@ -67,22 +107,22 @@ WSGI_APPLICATION = 'justspaces.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -94,10 +134,14 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
+AUTH_USER_MODEL = "surveys.JustSpacesUser"
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+LOGIN_REDIRECT_URL = 'survey-list'
+
+FOBI_DEFAULT_THEME = 'foundation5'
+FOBI_THEME_FOOTER_TEXT = gettext.gettext('')
+FOBI_RESTRICT_PLUGIN_ACCESS = False

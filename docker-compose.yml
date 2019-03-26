@@ -1,0 +1,16 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/usr/local/src
+      - node_modules:/usr/local/src/node_modules
+    working_dir: /usr/local/src
+    entrypoint: yarn
+    # 'start' is a custom Node.js script defined in frontend/package.json.
+    command: start
+volumes:
+  # Making node_modules a named volume prevents the ./frontend volume mount from
+  # clobbering the node_modules directory in the container. Since the volume only
+  # has to be named, it doesn't require any configuration directives.
+  node_modules:
