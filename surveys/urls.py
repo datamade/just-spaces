@@ -8,7 +8,7 @@ refigure it to a more strictful RESTful approach.
 from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required, permission_required
-from justspacesapp.views import AgencyCreate, LocationCreate, StudyCreate, \
+from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
                                 SurveyList, Signup
 import fobi.views
 
