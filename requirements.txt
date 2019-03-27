@@ -5,6 +5,6 @@ gunicorn==19.9.0
 flake8==3.7.7
 
 -e git+https://github.com/datamade/django-pldp.git#egg=django-pldp
--e git+https://github.com/datamade/django-fobi.git@just-spaces-edits#egg=django-fobi
+-e git+https://github.com/datamade/django-fobi.git#egg=django-fobi
 
 django-crispy-forms==1.7.2
