@@ -47,16 +47,6 @@ class CollectDataPlugin(FormHandlerPlugin):
             total=total
         )
 
-        # print(form.data)
-        #
-        # for key, value in form.cleaned_data.items():
-        #
-        #     new_survey_component = SurveyComponent(
-        #         row=new_survey_row,
-        #         name=key,
-        #         saved_data=value
-        #     )
-
         form_entry = FormEntry.objects.get(id=form_id)
         form_elements = FormElementEntry.objects.filter(form_entry=form_entry)
 
