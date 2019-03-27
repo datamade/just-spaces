@@ -1,9 +1,12 @@
 import json
-from fobi.base import FormHandlerPlugin, form_handler_plugin_registry
+import datetime
+from django.utils.timezone import get_current_timezone
 from django.utils.translation import ugettext_lazy as _
-from .forms import CollectDataForm
 
-from pldp.models import Study, Location, Survey, SurveyRow #, SurveyComponent
+from fobi.base import FormHandlerPlugin, form_handler_plugin_registry
+from fobi.models import FormEntry, FormElementEntry
+
+from pldp.models import Study, Location, Survey, SurveyRow, SurveyComponent
 
 class CollectDataPlugin(FormHandlerPlugin):
     """Just Spaces data handler plugin."""
@@ -11,26 +14,72 @@ class CollectDataPlugin(FormHandlerPlugin):
     uid = "collect_data"
     name = _("Collect data")
 
-    def run(self, form_entry, request, form):
+    def run(self, form_entry, request, form, form_element_entries=None):
         """To be executed by handler."""
 
+        form_id = form_entry.id
+
+        # These are placeholders. Location and Study are required fields on all
+        # surveys, and we need to decide if they'll be form elements or
+        # part of the form entry itself. See https://github.com/datamade/just-spaces/issues/63
+        # Similarly, total should be a required field in observational surveys, and
+        # default to 1 for intercept surveys.
         location = Location.objects.first()
         study = Study.objects.first()
+
         total = 5
 
-        new_survey = Survey(study=study,
-                            location=location)
-        new_survey.save()
+        # Here we are using PLDP's survey end time value to record time
+        # of submission
+        time_stop = datetime.datetime.now(tz=get_current_timezone())
 
-        new_survey_row = SurveyRow(
+        new_survey = Survey.objects.create(
+            study=study,
+            form_id=form_id,
+            location=location,
+            time_stop=time_stop
+        )
+
+        print("Survey submitted " + str(time_stop))
+
+        new_survey_row = SurveyRow.objects.create(
             survey=new_survey,
             total=total
         )
-        new_survey_row.save()
 
-        # for survey_component in all_cleaned_data:
-        #     new_survey_component = SurveyComponent()
-        #     new_survey_component.save()
+        # print(form.data)
+        #
+        # for key, value in form.cleaned_data.items():
+        #
+        #     new_survey_component = SurveyComponent(
+        #         row=new_survey_row,
+        #         name=key,
+        #         saved_data=value
+        #     )
+
+        form_entry = FormEntry.objects.get(id=form_id)
+        form_elements = FormElementEntry.objects.filter(form_entry=form_entry)
+
+        for element in form_elements:
+
+            plugin_data = element.plugin_data
+            json_plugin_data = json.loads(plugin_data)
+
+            name = json_plugin_data['name']
+            label = json_plugin_data['label']
+            type = element.plugin_uid
+            position = element.position
+            saved_data = form.cleaned_data[name]
+
+            new_survey_component = SurveyComponent.objects.create(
+                row=new_survey_row,
+                name=name,
+                label=label,
+                type=type,
+                position=position,
+                saved_data=saved_data
+            )
+
 
 def plugin_data_repr(self):
     """Human readable representation of plugin data.
