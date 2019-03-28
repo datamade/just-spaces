@@ -1,5 +1,7 @@
 Django==2.1.5
 pytest==4.2.0
+pytest-django==3.4.8
+pytest-mock==1.10.2
 psycopg2==2.7.7
 gunicorn==19.9.0
 flake8==3.7.7
