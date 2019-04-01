@@ -3,6 +3,8 @@ pytest==4.2.0
 psycopg2==2.7.7
 gunicorn==19.9.0
 flake8==3.7.7
+pytest-django==3.4.8
+pytest-mock==1.10.2
 
 -e git+https://github.com/datamade/django-pldp.git#egg=django-pldp
 -e git+https://github.com/datamade/django-fobi.git#egg=django-fobi
