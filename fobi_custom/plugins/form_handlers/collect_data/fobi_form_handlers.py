@@ -40,8 +40,6 @@ class CollectDataPlugin(FormHandlerPlugin):
             time_stop=time_stop
         )
 
-        print("Survey submitted " + str(time_stop))
-
         new_survey_row = SurveyRow.objects.create(
             survey=new_survey,
             total=total
