@@ -17,7 +17,6 @@ def sample_user(db):
     sample_user = JustSpacesUser.objects.create(
         username='sampleuser'
     )
-    sample_user.save()
 
     return sample_user
 
@@ -31,20 +30,20 @@ def sample_agency(db):
         type='educational institute',
         language_id='en',
     )
-    sample_agency.save()
 
     return sample_agency
 
 
-# @pytest.fixture
-# @pytest.mark.django_db
-# def sample_study_area(db):
-#     sample_study_area = StudyArea.objects.create(
-#
-#     )
-#     sample_study_area.save()
-#
-#     return sample_study_area
+@pytest.fixture
+@pytest.mark.django_db
+def sample_study_area(db):
+    sample_study_area = StudyArea.objects.create(
+        name='Sample Study Area',
+        area='POLYGON((-101.744384 39.32155, -101.552124 39.330048, -101.403808 39.330048, -101.332397 39.364032, -101.744384 39.32155))',
+    )
+    sample_study_area.save()
+
+    return sample_study_area
 
 
 @pytest.fixture
@@ -55,7 +54,6 @@ def sample_study(db, sample_agency):
         manager_name='Sample Study Manager',
         agency=Agency.objects.get(name='Sample Agency')
     )
-    sample_study.save()
 
     return sample_study
 
@@ -68,7 +66,6 @@ def sample_location(db, sample_agency):
         agency=Agency.objects.get(name='Sample Agency'),
         country_id='US',
     )
-    sample_location.save()
 
     return sample_location
 
@@ -82,7 +79,6 @@ def sample_form_entry(db, sample_user):
     }
 
     sample_form_entry = FormEntry.objects.create(**sample_form_entry_info)
-    sample_form_entry.save()
 
     return sample_form_entry
 
@@ -101,6 +97,5 @@ def sample_form_element(db, sample_form_entry):
     sample_form_element = FormElementEntry.objects.create(
         **sample_form_element_info
     )
-    sample_form_element.save()
 
     return sample_form_element
