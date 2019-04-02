@@ -1,0 +1,28 @@
+age_and_sex:
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B01001.json
+  variables:
+    - name: total_female
+      verbose_name: Total Female
+      code: B01001_026E
+    - name: total_male
+      verbose_name: Total Male
+      code: B01001_002E
+
+household_income:
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B19081.json
+  variables:
+    - name: lowest_quintile
+      verbose_name: Lowest Quintile
+      code: B19081_001E
+    - name: second_quintile
+      verbose_name: Second Quintile
+      code: B19081_002E
+    - name: third_quintile
+      verbose_name: Third Quintile
+      code: B19081_003E
+    - name: fourth_quintile
+      verbose_name: Fourth Quintile
+      code: B19081_004E
+    - name: highest_quintile
+      verbose_name: Highest Quintile
+      code: B19081_005E

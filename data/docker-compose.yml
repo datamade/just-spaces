@@ -1,0 +1,10 @@
+version: '3'
+services:
+  make:
+    build: .
+    volumes:
+      - ./:/usr/local/src
+    working_dir: /usr/local/src
+    entrypoint: make
+    command: all
+    env_file: .env
