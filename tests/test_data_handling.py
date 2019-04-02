@@ -1,32 +1,28 @@
 import pytest
 import requests
 
-from django.core.management import call_command
-
 from fobi_custom.plugins.form_handlers.collect_data.fobi_form_handlers import CollectDataPlugin
 from fobi.dynamic import assemble_form_class
+from fobi.models import FormEntry
 
-from pldp.models import Survey
+from pldp.models import Survey, SurveyRow, SurveyComponent
 
-# pass in form_entry fixture from conftest.py and mocker fixture
-def test_handler(form_entry, mocker):
-
-    # load languages and countries from the pldp
-    call_command('initialize_pldp')
-
-    # load sample pldp models: Sample Study, Sample Agency, Sample Location, etc
-    call_command('loaddata', 'pldp_sample.json')
-
-    # https://github.com/barseghyanartur/django-fobi/blob/070ee3239cc4df3f5e841ee8649d8c26a10f007e/src/fobi/dynamic.py#L126
-    form = assemble_form_class(form_entry=form_entry)
+@pytest.mark.django_db
+def test_data_handler(sample_form_entry, sample_location, sample_study, sample_form_element, mocker):
     request = mocker.MagicMock(spec=requests.Response)
+    form = assemble_form_class(form_entry=sample_form_entry)
+
+    # form.cleaned_data['c75e27cf-4d8f-49dc-bb15-da8137dac247'] = 5
 
     # A valid CollectDataPlugin requires a DynamicForm, a FormEntry, and a post request
     plugin = CollectDataPlugin()
     plugin.run(form=form,
-               form_entry=form_entry,
+               form_entry=sample_form_entry,
                request=request)
 
-    surveys = Survey.objects.all()
+    # Check that a survey has been created with a linked row and component
+    survey = Survey.objects.first()
+    row = SurveyRow.objects.filter(survey=survey)
+    component = SurveyComponent.objects.filter(row=row[0])
 
-    assert len(surveys) == 1
+    assert (len(row), len(component)) == (1, 1)
