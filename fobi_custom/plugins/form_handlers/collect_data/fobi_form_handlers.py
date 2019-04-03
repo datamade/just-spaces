@@ -61,7 +61,7 @@ class CollectDataPlugin(FormHandlerPlugin):
 
             saved_data = form.cleaned_data[name]
 
-            x = SurveyComponent.objects.create(
+            SurveyComponent.objects.create(
                 row=new_survey_row,
                 name=name,
                 label=label,
@@ -69,8 +69,6 @@ class CollectDataPlugin(FormHandlerPlugin):
                 position=position,
                 saved_data=saved_data
             )
-
-            print(x)
 
 
 def plugin_data_repr(self):
