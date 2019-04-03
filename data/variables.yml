@@ -179,13 +179,13 @@ employment_status:
       code: B23025_007E
     - name: employed
       verbose_name: Employed
-      code: B23025_004EA
+      code: B23025_004E
     - name: unemployed
       verbose_name: Unemployed
-      code: B23025_005EA
+      code: B23025_005E
     - name: in_armed_forces
       verbose_name: In Armed Forces
-      code: B23025_006EA
+      code: B23025_006E
 
 income_inequality:
   verbose_name: Gini Index of Income Inequality
@@ -374,3 +374,225 @@ total_population:
     - name: total_population
       verbose_name: Total Population
       code: B01003_001E
+
+hours_worked_per_week:
+  verbose_name: Usual Hours Worked Per Week
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B23022.json
+  variables:
+    - name: male_35_plus
+      verbose_name: Male usually worked 35 or more hours per week
+      code: B23022_004E
+    - name: male_15_to_34
+      verbose_name: Male usually worked 15 to 34 hours per week
+      code: B23022_011E
+    - name: male_1_to_14
+      verbose_name: Male usually worked 1 to 14 hours per week
+      code: B23022_018E
+    - name: male_did_not_work
+      verbose_name: Male did not work in the past 12 months
+      code: B23022_025E
+    - name: female_35_plus
+      verbose_name: Female usually worked 35 or more hours per week
+      code: B23022_028E
+    - name: female_15_to_34
+      verbose_name: Female usually worked 15 to 34 hours per week
+      code: B23022_035E
+    - name: female_1_to_14
+      verbose_name: Female usually worked 1 to 14 hours per week
+      code: B23022_042E
+    - name: female_did_not_work
+      verbose_name: Female did not work in the past 12 months
+      code: B23022_049E
+
+race:
+  verbose_name: Race
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B02001.json
+  variables:
+    - name: white
+      verbose_name: White alone
+      code: B02001_002E
+    - name: black
+      verbose_name: Black or African American alone
+      code: B02001_003E
+    - name: american_indian
+      verbose_name: American Indian and Alaska Native alone
+      code: B02001_004E
+    - name: asian
+      verbose_name: Asian alone
+      code: B02001_005E
+    - name: pacific_islander
+      verbose_name: Native Hawaiian and Other Pacific Islander alone
+      code: B02001_006E
+    - name: other
+      verbose_name: Some other race alone
+      code: B02001_007E
+    - name: two_or_more
+      verbose_name: Two or more races
+      code: B02001_008E
+
+hispanic_or_latino_origin:
+  verbose_name: Hispanic or Latino Origin
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B03003.json
+  variables:
+    - name: not_hispanic_or_latino
+      verbose_name: Not Hispanic or Latino
+      code: B03003_002E
+    - name: hispanic_or_latino
+      verbose_name: Hispanic or Latino
+      code: B03003_003E
+
+household_tenure:
+  verbose_name: Household Tenure
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B25038.json
+  variables:
+    - name: owner_total
+      verbose_name: Owner occupied (total)
+      code: B25038_002E
+    - name: owner_2015_plus
+      verbose_name: Owner moved in 2015 or later
+      code: B25038_003E
+    - name: owner_2010_to_2014
+      verbose_name: Owner moved in 2010 to 2014
+      code: B25038_004E
+    - name: owner_2000_to_2009
+      verbose_name: Owner moved in 2000 to 2009
+      code: B25038_005E
+    - name: owner_1990_to_1999
+      verbose_name: Owner moved in 1990 to 1999
+      code: B25038_006E
+    - name: owner_1980_to_1989
+      verbose_name: Owner moved in 1980 to 1989
+      code: B25038_007E
+    - name: owner_1979_or_earlier
+      verbose_name: Owner moved in 1979 or earlier
+      code: B25038_008E
+    - name: renter_total
+      verbose_name: Renter occupied (total)
+      code: B25038_009E
+    - name: renter_2015_plus
+      verbose_name: Renter moved in 2015 or later
+      code: B25038_010E
+    - name: renter_2010_to_2014
+      verbose_name: Renter moved in 2010 to 2014
+      code: B25038_011E
+    - name: renter_2000_to_2009
+      verbose_name: Renter moved in 2000 to 2009
+      code: B25038_012E
+    - name: renter_1990_to_1999
+      verbose_name: Renter moved in 1990 to 1999
+      code: B25038_013E
+    - name: renter_1980_to_1989
+      verbose_name: Renter moved in 1980 to 1989
+      code: B25038_014E
+    - name: renter_1979_or_earlier
+      verbose_name: Renter moved in 1979 or earlier
+      code: B25038_015E
+
+vacancy_status:
+  verbose_name: Vacancy Status
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B25004.json
+  variables:
+    - name: for_rent
+      verbose_name: For rent
+      code: B25004_002E
+    - name: rented_unoccupied
+      verbose_name: Rented, not occupied
+      code: B25004_003E
+    - name: for_sale
+      verbose_name: For sale only
+      code: B25004_004E
+    - name: sold_unoccupied
+      verbose_name: Sold, not occupied
+      code: B25004_005E
+    - name: seasonal
+      verbose_name: For seasonal, recreational, or occasional use
+      code: B25004_006E
+    - name: migrant_workers
+      verbose_name: For migrant workers
+      code: B25004_007E
+    - name: other_vacant
+      verbose_name: Other vacant
+      code: B25004_008E
+
+disability:
+  verbose_name: Sex By Age By Disability Status
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B18101.json
+  variables:
+    - name: male_total
+      verbose_name: Male (total)
+      code: B18101_002E
+    - name: male_disabled_under_5
+      verbose_name: Male disabled under 5 years
+      code: B18101_004E
+    - name: male_nondisabled_under_5
+      verbose_name: Male nondisabled under 5 years
+      code: B18101_005E
+    - name: male_disabled_5_to_17
+      verbose_name: Male disabled 5 to 17 years
+      code: B18101_007E
+    - name: male_nondisabled_5_to_17
+      verbose_name: Male nondisabled 5 to 17 years
+      code: B18101_008E
+    - name: male_disabled_18_to_34
+      verbose_name: Male disabled 18 to 34 years
+      code: B18101_010E
+    - name: male_nondisabled_18_to_34
+      verbose_name: Male nondisabled 18 to 34 years
+      code: B18101_011E
+    - name: male_disabled_35_to_64
+      verbose_name: Male disabled 35 to 64 years
+      code: B18101_013E
+    - name: male_nondisabled_35_to_64
+      verbose_name: Male nondisabled 35 to 64 years
+      code: B18101_014E
+    - name: male_disabled_65_to_74
+      verbose_name: Male disabled 65 to 74 years
+      code: B18101_016E
+    - name: male_nondisabled_65_to_74
+      verbose_name: Male nondisabled 65 to 74 years
+      code: B18101_017E
+    - name: male_disabled_75_plus
+      verbose_name: Male disabled 75 years and over
+      code: B18101_019E
+    - name: male_nondisabled_75_plus
+      verbose_name: Male nondisabled 75 years and over
+      code: B18101_020E
+    - name: female_total
+      verbose_name: Female (total)
+      code: B18101_021E
+    - name: female_disabled_under_5
+      verbose_name: Female disabled under 5 years
+      code: B18101_023E
+    - name: female_nondisabled_under_5
+      verbose_name: Female nondisabled under 5 years
+      code: B18101_024E
+    - name: female_disabled_5_to_17
+      verbose_name: Female disabled 5 to 17 years
+      code: B18101_026E
+    - name: female_nondisabled_5_to_17
+      verbose_name: Female nondisabled 5 to 17 years
+      code: B18101_027E
+    - name: female_disabled_18_to_34
+      verbose_name: Female disabled 18 to 34 years
+      code: B18101_029E
+    - name: female_nondisabled_18_to_34
+      verbose_name: Female nondisabled 18 to 34 years
+      code: B18101_030E
+    - name: female_disabled_35_to_64
+      verbose_name: Female disabled 35 to 64 years
+      code: B18101_032E
+    - name: female_nondisabled_35_to_64
+      verbose_name: Female nondisabled 35 to 64 years
+      code: B18101_033E
+    - name: female_disabled_65_to_74
+      verbose_name: Female disabled 65 to 74 years
+      code: B18101_035E
+    - name: female_nondisabled_65_to_74
+      verbose_name: Female nondisabled 65 to 74 years
+      code: B18101_036E
+    - name: female_disabled_75_plus
+      verbose_name: Female disabled 75 years and over
+      code: B18101_038E
+    - name: female_nondisabled_75_plus
+      verbose_name: Female nondisabled 75 years and over
+      code: B18101_039E
