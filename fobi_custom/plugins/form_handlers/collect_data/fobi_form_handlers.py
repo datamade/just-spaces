@@ -8,6 +8,7 @@ from fobi.models import FormEntry, FormElementEntry
 
 from pldp.models import Study, Location, Survey, SurveyRow, SurveyComponent
 
+
 class CollectDataPlugin(FormHandlerPlugin):
     """Just Spaces data handler plugin."""
 
@@ -69,7 +70,7 @@ class CollectDataPlugin(FormHandlerPlugin):
             except AttributeError:
                 saved_data = ''
 
-            new_survey_component = SurveyComponent.objects.create(
+            SurveyComponent.objects.create(
                 row=new_survey_row,
                 name=name,
                 label=label,
@@ -85,5 +86,6 @@ def plugin_data_repr(self):
     :return string:
     """
     return self.data.__dict__
+
 
 form_handler_plugin_registry.register(CollectDataPlugin)
