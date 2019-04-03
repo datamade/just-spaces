@@ -11,11 +11,16 @@ from pldp.models import Survey, SurveyRow, SurveyComponent
 @pytest.mark.django_db
 def test_data_handler(form_entry, location, study, form_element, mocker):
     component_data = json.loads(form_element.plugin_data)
+    saved_data = 5
 
     request = mocker.MagicMock(spec=requests.Response)
-    form = assemble_form_class(form_entry=form_entry)
+    form_class = assemble_form_class(form_entry=form_entry)
 
-    # form.cleaned_data['c75e27cf-4d8f-49dc-bb15-da8137dac247'] = 5
+    # Instantiate an instance of the `assemble_form_class`.
+    form_class = assemble_form_class(form_entry=form_entry)
+    form = form_class(data={component_data['name']: saved_data})
+
+    assert form.is_valid()
 
     # A valid CollectDataPlugin requires a DynamicForm, a FormEntry, and a post request
     plugin = CollectDataPlugin()
@@ -55,4 +60,5 @@ def test_data_handler(form_entry, location, study, form_element, mocker):
     assert component.label == component_data['label']
     assert component.type == form_element.plugin_uid
     assert component.position == form_element.position
+    assert float(component.saved_data) == saved_data
     assert component.row == row
