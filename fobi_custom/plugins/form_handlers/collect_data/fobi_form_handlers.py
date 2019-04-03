@@ -59,12 +59,9 @@ class CollectDataPlugin(FormHandlerPlugin):
             type = element.plugin_uid
             position = element.position
 
-            try:
-                saved_data = form.cleaned_data[name]
-            except AttributeError:
-                saved_data = ''
+            saved_data = form.cleaned_data[name]
 
-            SurveyComponent.objects.create(
+            x = SurveyComponent.objects.create(
                 row=new_survey_row,
                 name=name,
                 label=label,
@@ -72,6 +69,8 @@ class CollectDataPlugin(FormHandlerPlugin):
                 position=position,
                 saved_data=saved_data
             )
+
+            print(x)
 
 
 def plugin_data_repr(self):
