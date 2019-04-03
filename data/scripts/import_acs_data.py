@@ -19,7 +19,8 @@ class ACSWriter(object):
     def __init__(self, output, variables):
         """
         - output: A file-like object to write the CSV to
-        - variables: A dict of ACS variables parsed from a .yml config file
+        - variables: A dict of ACS variables parsed from a .config file
+                     (see variables.yml for an example)
         """
         self.codes_to_names = {var['code']: var['name'] for var in variables}
         fieldnames = ['fips'] + [var['name'] for var in variables]
@@ -66,7 +67,7 @@ if __name__ == '__main__':
     try:
         year = sys.argv[2]
     except IndexError:
-        raise NameError('import_aces_data.py requires a year argument')
+        raise NameError('import_acs_data.py requires a year argument')
 
     year = int(year)
 

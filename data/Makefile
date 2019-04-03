@@ -1,6 +1,6 @@
 YEAR := 2017
 
-.PHONY: all clean rawacsdir
+.PHONY: all clean
 all: raw/acs/age_and_sex.csv \
 	 raw/acs/household_income.csv \
 	 raw/acs/employment_status.csv \
@@ -19,8 +19,5 @@ all: raw/acs/age_and_sex.csv \
 clean:
 	rm -Rf raw/acs/*
 
-rawacsdir:
-	mkdir -p raw/acs
-
-raw/acs/%.csv: rawacsdir
+raw/acs/%.csv:
 	python3 scripts/import_acs_data.py "$*" "${YEAR}" > "$@"

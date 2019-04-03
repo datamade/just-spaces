@@ -1,3 +1,2 @@
 census==0.8.13
-census_area==0.3.2
 PyYAML==3.13
