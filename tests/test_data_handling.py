@@ -22,7 +22,11 @@ def test_data_handler(form_entry, location, study, form_element, mocker):
 
     # Check that a survey has been created with a linked row and component
     survey = Survey.objects.first()
-    row = SurveyRow.objects.filter(survey=survey)
-    component = SurveyComponent.objects.filter(row=row[0])
+    rows = SurveyRow.objects.filter(survey=survey)
 
-    assert (len(row), len(component)) == (1, 1)
+    # Grab the row object itself out of the filtered row queryset, in order to
+    # find its linked components
+    row = rows[0]
+    components = SurveyComponent.objects.filter(row=row)
+
+    assert (len(rows), len(components)) == (1, 1)
