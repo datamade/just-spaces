@@ -18,12 +18,6 @@ class CollectDataPlugin(FormHandlerPlugin):
     def run(self, form_entry, request, form, form_element_entries=None):
         """To be executed by handler."""
 
-        # print("testing handler...")
-        print(form)
-        # print(form.cleaned_data)
-        # print(form)
-        # print(dir(request))
-
         form_id = form_entry.id
 
         # These are placeholders. Location and Study are required fields on all
