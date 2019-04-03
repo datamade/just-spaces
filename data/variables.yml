@@ -1,14 +1,154 @@
 age_and_sex:
+  verbose_name: Age and Sex
   # See: https://api.census.gov/data/2016/acs/acs5/groups/B01001.json
   variables:
-    - name: total_female
-      verbose_name: Total Female
-      code: B01001_026E
-    - name: total_male
-      verbose_name: Total Male
+    - name: male_total
+      verbose_name: Male (total)
       code: B01001_002E
+    - name: male_under_5
+      verbose_name: Male Under 5 years
+      code: B01001_003E
+    - name: male_5_to_9
+      verbose_name: Male 5 to 9 years
+      code: B01001_004E
+    - name: male_10_to_14
+      verbose_name: Male 10 to 14 years
+      code: B01001_005E
+    - name: male_15_to_17
+      verbose_name: Male 15 to 17 years
+      code: B01001_006E
+    - name: male_18_to_19
+      verbose_name: Male 18 and 19 years
+      code: B01001_007E
+    - name: male_20
+      verbose_name: Male 20 years
+      code: B01001_008E
+    - name: male_21
+      verbose_name: Male 21 years
+      code: B01001_009E
+    - name: male_22_to_24
+      verbose_name: Male 22 to 24 years
+      code: B01001_010E
+    - name: male_25_to_29
+      verbose_name: Male 25 to 29 years
+      code: B01001_011E
+    - name: male_30_to_34
+      verbose_name: Male 30 to 34 years
+      code: B01001_012E
+    - name: male_35_to_39
+      verbose_name: Male 35 to 39 years
+      code: B01001_013E
+    - name: male_40_to_44
+      verbose_name: Male 40 to 44 years
+      code: B01001_014E
+    - name: male_45_to_49
+      verbose_name: Male 45 to 49 years
+      code: B01001_015E
+    - name: male_50_to_54
+      verbose_name: Male 50 to 54 years
+      code: B01001_016E
+    - name: male_55_to_59
+      verbose_name: Male 55 to 59 years
+      code: B01001_017E
+    - name: male_60_to_61
+      verbose_name: Male 60 and 61 years
+      code: B01001_018E
+    - name: male_62_to_64
+      verbose_name: Male 62 to 64 years
+      code: B01001_019E
+    - name: male_65_to_66
+      verbose_name: Male 65 and 66 years
+      code: B01001_020E
+    - name: male_67_to_69
+      verbose_name: Male 67 to 69 years
+      code: B01001_021E
+    - name: male_70_to_74
+      verbose_name: Male 70 to 74 years
+      code: B01001_022E
+    - name: male_75_to_79
+      verbose_name: Male 75 to 79 years
+      code: B01001_023E
+    - name: male_80_to_84
+      verbose_name: Male 80 to 84 years
+      code: B01001_024E
+    - name: male_85_plus
+      verbose_name: Male 85 years and over
+      code: B01001_025E
+    - name: female_total
+      verbose_name: Female (total)
+      code: B01001_026E
+    - name: female_under_5
+      verbose_name: Female Under 5 years
+      code: B01001_027E
+    - name: female_5_to_9
+      verbose_name: Female 5 to 9 years
+      code: B01001_028E
+    - name: female_10_to_14
+      verbose_name: Female 10 to 14 years
+      code: B01001_029E
+    - name: female_15_to_17
+      verbose_name: Female 15 to 17 years
+      code: B01001_030E
+    - name: female_18_to_19
+      verbose_name: Female 18 and 19 years
+      code: B01001_031E
+    - name: female_20
+      verbose_name: Female 20 years
+      code: B01001_032E
+    - name: female_21
+      verbose_name: Female 21 years
+      code: B01001_033E
+    - name: female_22_to_24
+      verbose_name: Female 22 to 24 years
+      code: B01001_034E
+    - name: female_25_to_29
+      verbose_name: Female 25 to 29 years
+      code: B01001_035E
+    - name: female_30_to_34
+      verbose_name: Female 30 to 34 years
+      code: B01001_036E
+    - name: female_35_to_39
+      verbose_name: Female 35 to 39 years
+      code: B01001_037E
+    - name: female_40_to_44
+      verbose_name: Female 40 to 44 years
+      code: B01001_038E
+    - name: female_45_to_49
+      verbose_name: Female 45 to 49 years
+      code: B01001_039E
+    - name: female_50_to_54
+      verbose_name: Female 50 to 54 years
+      code: B01001_040E
+    - name: female_55_to_59
+      verbose_name: Female 55 to 59 years
+      code: B01001_041E
+    - name: female_60_to_61
+      verbose_name: Female 60 and 61 years
+      code: B01001_042E
+    - name: female_62_to_64
+      verbose_name: Female 62 to 64 years
+      code: B01001_043E
+    - name: female_65_to_66
+      verbose_name: Female 65 and 66 years
+      code: B01001_044E
+    - name: female_67_to_69
+      verbose_name: Female 67 to 69 years
+      code: B01001_045E
+    - name: female_70_to_74
+      verbose_name: Female 70 to 74 years
+      code: B01001_046E
+    - name: female_75_to_79
+      verbose_name: Female 75 to 79 years
+      code: B01001_047E
+    - name: female_80_to_84
+      verbose_name: Female 80 to 84 years
+      code: B01001_048E
+    - name: female_85_plus
+      verbose_name: Female 85 years and over
+      code: B01001_049E
 
 household_income:
+  verbose_name: Mean Household Income of Quintiles
   # See: https://api.census.gov/data/2016/acs/acs5/groups/B19081.json
   variables:
     - name: lowest_quintile
@@ -26,3 +166,211 @@ household_income:
     - name: highest_quintile
       verbose_name: Highest Quintile
       code: B19081_005E
+
+employment_status:
+  verbose_name: Employment Status
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B23025.json
+  variables:
+    - name: in_labor_force
+      verbose_name: In labor force
+      code: B23025_002E
+    - name: not_in_labor_force
+      verbose_name: Not in labor force
+      code: B23025_007E
+    - name: employed
+      verbose_name: Employed
+      code: B23025_004EA
+    - name: unemployed
+      verbose_name: Unemployed
+      code: B23025_005EA
+    - name: in_armed_forces
+      verbose_name: In Armed Forces
+      code: B23025_006EA
+
+income_inequality:
+  verbose_name: Gini Index of Income Inequality
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B19083.json
+  variables:
+    - name: gini_index
+      verbose_name: Gini Index
+      code: B19083_001E
+
+educational_attainment:
+  verbose_name: Educational Attainment
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B15003.json
+  variables:
+    - name: no_schooling
+      verbose_name: No schooling completed
+      code: B15003_002E
+    - name: nursery
+      verbose_name: Nursery school
+      code: B15003_003E
+    - name: kindergarten
+      verbose_name: Kindergarten
+      code: B15003_004E
+    - name: first_grade
+      verbose_name: 1st grade
+      code: B15003_005E
+    - name: second_grade
+      verbose_name: 2nd grade
+      code: B15003_006E
+    - name: third_grade
+      verbose_name: 3rd grade
+      code: B15003_007E
+    - name: fourth_grade
+      verbose_name: 4th grade
+      code: B15003_008E
+    - name: fifth_grade
+      verbose_name: 5th grade
+      code: B15003_009E
+    - name: sixth_grade
+      verbose_name: 6th grade
+      code: B15003_010E
+    - name: seventh_grade
+      verbose_name: 7th grade
+      code: B15003_011E
+    - name: eigth_grade
+      verbose_name: 8th grade
+      code: B15003_012E
+    - name: ninth_grade
+      verbose_name: 9th grade
+      code: B15003_013E
+    - name: tenth_grade
+      verbose_name: 10th grade
+      code: B15003_014E
+    - name: eleventh_grade
+      verbose_name: 11th grade
+      code: B15003_015E
+    - name: twelfth_grade
+      verbose_name: 12th grade, no diploma
+      code: B15003_016E
+    - name: high_school_diploma
+      verbose_name: Regular high school diploma
+      code: B15003_017E
+    - name: ged
+      verbose_name: GED or alternative credential
+      code: B15003_018E
+    - name: less_than_1_year_college
+      verbose_name: Some college, less than 1 year
+      code: B15003_019E
+    - name: one_or_more_years_college
+      verbose_name: Some college, 1 or more years, no degree
+      code: B15003_020E
+    - name: associates
+      verbose_name: Associate's degree
+      code: B15003_021E
+    - name: bachelors
+      verbose_name: Bachelor's degree
+      code: B15003_022E
+    - name: masters
+      verbose_name: Master's degree
+      code: B15003_023E
+    - name: professional
+      verbose_name: Professional school degree
+      code: B15003_024E
+      code: B15003_024E
+    - name: doctorate
+      verbose_name: Doctorate degree
+      code: B15003_025E
+
+means_of_transit:
+  verbose_name: Means of Transportation to Work
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B08301.json
+  variables:
+    - name: car_truck_van
+      verbose_name: Car, truck, or van
+      code: B08301_002E
+    - name: public_transit_total
+      verbose_name: Public transportation (total)
+      code: B08301_010E
+    - name: bus
+      verbose_name: Bus
+      code: B08301_011E
+    - name: trolley
+      verbose_name: Trolley
+      code: B08301_012E
+    - name: subway
+      verbose_name: Subway
+      code: B08301_013E
+    - name: railroad
+      verbose_name: Railroad
+      code: B08301_014E
+    - name: ferryboat
+      verbose_name: Ferryboat
+      code: B08301_015E
+    - name: taxicab
+      verbose_name: Taxicab
+      code: B08301_016E
+    - name: motorcycle
+      verbose_name: Motorcycle
+      code: B08301_017E
+    - name: bicycle
+      verbose_name: Bicycle
+      code: B08301_018E
+    - name: walked
+      verbose_name: Walked
+      code: B08301_019E
+    - name: other_means
+      verbose_name: Other means
+      code: B08301_020E
+    - name: worked_at_home
+      verbose_name: Worked at home
+      code: B08301_021E
+
+household_type:
+  verbose_name: Household Type
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B11016.json
+  variables:
+    - name: family_total
+      verbose_name: Family household (total)
+      code: B11016_002E
+    - name: family_2_person
+      verbose_name: 2-person family household
+      code: B11016_003E
+    - name: family_3_person
+      verbose_name: 3-person family household
+      code: B11016_004E
+    - name: family_4_person
+      verbose_name: 4-person family household
+      code: B11016_005E
+    - name: family_5_person
+      verbose_name: 5-person family household
+      code: B11016_006E
+    - name: family_6_person
+      verbose_name: 6-person family household
+      code: B11016_007E
+    - name: family_7_plus_person
+      verbose_name: 7-person family household
+      code: B11016_008E
+    - name: nonfamily_total
+      verbose_name: Nonfamily household (total)
+      code: B11016_009E
+    - name: nonfamily_1_person
+      verbose_name: 1-person nonfamily household
+      code: B11016_010E
+    - name: nonfamily_2_person
+      verbose_name: 2-person nonfamily household
+      code: B11016_011E
+    - name: nonfamily_3_person
+      verbose_name: 3-person nonfamily household
+      code: B11016_012E
+    - name: nonfamily_4_person
+      verbose_name: 4-person nonfamily household
+      code: B11016_013E
+    - name: nonfamily_5_person
+      verbose_name: 5-person nonfamily household
+      code: B11016_014E
+    - name: nonfamily_6_person
+      verbose_name: 6-person nonfamily household
+      code: B11016_015E
+    - name: nonfamily_7_plus_person
+      verbose_name: 7-person nonfamily household
+      code: B11016_016E
+
+total_population:
+  verbose_name: Total Population
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B01003.json
+  variables:
+    - name: total_population
+      verbose_name: Total Population
+      code: B01003_001E
