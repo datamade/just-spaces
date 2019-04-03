@@ -1,25 +1,25 @@
 from fobi.base import form_element_plugin_widget_registry
 from fobi.contrib.themes.bootstrap3 import UID
 
-from fobi_custom.plugins.pldp.form_elements.fields.age.widgets \
+from fobi_custom.plugins.form_elements.fields.age.widgets \
      import BasePLDPAgePluginWidget
 
-from fobi_custom.plugins.pldp.form_elements.fields.gender.widgets \
+from fobi_custom.plugins.form_elements.fields.gender.widgets \
           import BasePLDPGenderPluginWidget
 
-from fobi_custom.plugins.pldp.form_elements.fields.study.widgets \
+from fobi_custom.plugins.form_elements.fields.study.widgets \
           import BasePLDPStudyPluginWidget
-# 
-# from fobi_custom.plugins.pldp.form_elements.fields.time_start.widgets \
+#
+# from fobi_custom.plugins.form_elements.fields.time_start.widgets \
 #           import BasePLDPTimeStartPluginWidget
 #
-# from fobi_custom.plugins.pldp.form_elements.fields.time_stop.widgets \
+# from fobi_custom.plugins.form_elements.fields.time_stop.widgets \
 #           import BasePLDPTimeStopPluginWidget
 
-from fobi_custom.plugins.pldp.form_elements.fields.survey_representation.widgets \
+from fobi_custom.plugins.form_elements.fields.survey_representation.widgets \
           import BasePLDPSurveyRepresentationPluginWidget
 
-from fobi_custom.plugins.pldp.form_elements.fields.survey_method.widgets \
+from fobi_custom.plugins.form_elements.fields.survey_method.widgets \
           import BasePLDPSurveyMethodPluginWidget
 
 

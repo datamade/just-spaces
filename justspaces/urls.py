@@ -24,7 +24,4 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^frontend/', include('frontend.urls')),
     url(r'', include('surveys.urls')),
-    # DB Store plugin URLs
-    url(r'^fobi/plugins/form-handlers/db-store/',
-        include('fobi.contrib.plugins.form_handlers.db_store.urls')),
 ]
