@@ -8,7 +8,7 @@ from census import Census
 # Relevant FIPS codes for geographic queries
 US_FIPS = '1'
 PA_FIPS = '42'
-PHILLY_FIPS = '101'
+PHL_COUNTY_FIPS = '101'
 
 
 class ACSWriter(object):
@@ -90,22 +90,23 @@ if __name__ == '__main__':
     for row in pa_res:
         writer.write_acs_row(PA_FIPS, row)
 
-    # County-level data
-    philly_res = c.acs5.state_county(codes, PA_FIPS, PHILLY_FIPS)
+    # Philadelphia City and County are coterminous, so we can use
+    # county-level data to represent the city
+    philly_res = c.acs5.state_county(codes, PA_FIPS, PHL_COUNTY_FIPS)
     assert len(philly_res) > 0
     for row in philly_res:
-        writer.write_acs_row(PA_FIPS + PHILLY_FIPS, row)
+        writer.write_acs_row(PA_FIPS + PHL_COUNTY_FIPS, row)
 
     # Tract-level data
-    tract_res = c.acs5.state_county_tract(codes, PA_FIPS, PHILLY_FIPS, '*')
+    tract_res = c.acs5.state_county_tract(codes, PA_FIPS, PHL_COUNTY_FIPS, '*')
     assert len(tract_res) > 0
     for row in tract_res:
-        fips = PA_FIPS + PHILLY_FIPS + row['tract']
+        fips = PA_FIPS + PHL_COUNTY_FIPS + row['tract']
         writer.write_acs_row(fips, row)
 
     # Blockgroup-level data
-    block_res = c.acs5.state_county_blockgroup(codes, PA_FIPS, PHILLY_FIPS, '*')
+    block_res = c.acs5.state_county_blockgroup(codes, PA_FIPS, PHL_COUNTY_FIPS, '*')
     assert len(block_res) > 0
     for row in block_res:
-        fips = PA_FIPS + PHILLY_FIPS + row['tract'] + row['block group']
+        fips = PA_FIPS + PHL_COUNTY_FIPS + row['tract'] + row['block group']
         writer.write_acs_row(fips, row)
