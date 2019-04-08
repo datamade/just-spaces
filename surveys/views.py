@@ -42,10 +42,13 @@ class CollectedDataList(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveydata'] = Survey.objects.all()
 
-        for survey in context['surveydata']:
+        survey_data = Survey.objects.all().order_by('form_id', '-time_stop').distinct('form_id')
+
+        for survey in survey_data:
             survey.form_title = FormEntry.objects.get(id=survey.form_id)
+
+        context['survey_data'] = survey_data
 
         return context
 

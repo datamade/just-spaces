@@ -13,16 +13,14 @@
     <thead>
       <tr>
         <th scope="col">Survey Title</th>
-        <th scope="col">Submitted</th>
-        <th scope="col">Data ID</th>
+        <th scope="col">Last Submitted</th>
       </tr>
     </thead>
     <tbody>
-      {% for survey in surveydata %}
+      {% for survey in survey_data %}
         <tr>
           <td>{{survey.form_title}}</td>
           <td>{{survey.time_stop}}</td>
-          <td>{{survey.id}}</td>
         </tr>
       {% endfor %}
     </tbody>
