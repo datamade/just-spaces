@@ -6,6 +6,7 @@
 /justspaces/local_settings.py
 /configs/local_settings.production.py
 /configs/local_settings.staging.py
+/configs/.env
 
 # JavaScript bundling
 .cache

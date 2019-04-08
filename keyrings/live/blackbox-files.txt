@@ -1,2 +1,3 @@
+configs/.env
 configs/local_settings.production.py
 configs/local_settings.staging.py
