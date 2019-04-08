@@ -1,6 +1,7 @@
 import pytest
 import requests
 import json
+from django.urls import reverse
 
 from fobi_custom.plugins.form_handlers.collect_data.fobi_form_handlers import CollectDataPlugin
 from fobi.dynamic import assemble_form_class
@@ -56,3 +57,16 @@ def test_data_handler(form_entry, location, study, form_element, mocker):
     assert component.position == form_element.position
     assert float(component.saved_data) == saved_data
     assert component.row == row
+
+
+@pytest.mark.django_db
+def test_survey_submitted_list(user, survey, client, form_entry):
+    client.force_login(user)
+    url = reverse('surveys-submitted-list')
+    response = client.get(url)
+
+    surveys_submitted = response.context['surveys_submitted']
+
+    assert response.status_code == 200
+    assert len(surveys_submitted) == 1
+    assert str(surveys_submitted.first().form_title) == 'Sample Form Entry'

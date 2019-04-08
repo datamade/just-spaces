@@ -26,33 +26,22 @@
                 </ul>
             </li>
             <li>
-                <a href="{% url 'survey-list' %}">
+                <a href="{% url 'surveys-list' %}">
                     <i class="fas fa-pencil-alt icon edit"></i>
                     Edit survey
                 </a>
             </li>
             <li>
-                <a href="{% url 'survey-list' %}">
+                <a href="{% url 'surveys-list' %}">
                     <i class="fas fa-clipboard-list icon run"></i>
                     Run survey
                 </a>
             </li>
             <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <a href="{% url 'surveys-submitted-list' %}">
                     <i class="fas fa-copy"></i>
                     View collected data
                 </a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Page 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 3</a>
-                    </li>
-                </ul>
             </li>
             {% endif %}
             <li>

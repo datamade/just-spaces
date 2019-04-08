@@ -7,14 +7,10 @@ refigure it to a more strictful RESTful approach.
 """
 from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
-                                SurveyList, Signup
+                                SurveyList, Signup, SurveySubmittedList
 import fobi.views
-
-from fobi.contrib.plugins.form_handlers.db_store.views import \
-                                       view_saved_form_data_entries, \
-                                       export_saved_form_data_entries
 
 urlpatterns = [
     # placeholder view for a public-facing landing page
@@ -45,7 +41,7 @@ urlpatterns = [
     # Survey list
     url(r'surveys/$',
         login_required(SurveyList.as_view()),
-        name='survey-list'),
+        name='surveys-list'),
 
     # Create new survey
     url(r'surveys/create/$',
@@ -129,29 +125,8 @@ urlpatterns = [
         view=fobi.views.delete_form_element_entry,
         name='fobi.delete_form_element_entry'),
 
-    # ****** Data handler views ******
-
-    # Specific form entries listing
-    url(r'^submitted/(?P<form_entry_id>\d+)/$',
-        view=view_saved_form_data_entries,
-        name='fobi.contrib.plugins.form_handlers.db_store.'
-             'view_saved_form_data_entries'),
-
-    # Form entries listing
-    url(r'^submitted/$',
-        view=view_saved_form_data_entries,
-        name='fobi.contrib.plugins.form_handlers.db_store.'
-             'view_saved_form_data_entries'),
-
-    # Specific form entries export
-    url(r'^submitted/(?P<form_entry_id>\d+)/export/$',
-        view=export_saved_form_data_entries,
-        name='fobi.contrib.plugins.form_handlers.db_store.'
-             'export_saved_form_data_entries'),
-
-    # Form entries export
-    url(r'^submitted/export/$',
-        view=export_saved_form_data_entries,
-        name='fobi.contrib.plugins.form_handlers.db_store.'
-             'export_saved_form_data_entries'),
+    # Submitted surveys list
+    url(r'^surveys/submitted$',
+        view=SurveySubmittedList.as_view(),
+        name='surveys-submitted-list'),
 ]
