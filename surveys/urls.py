@@ -9,7 +9,7 @@ from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required, permission_required
 from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
-                                SurveyList, Signup
+                                SurveyList, Signup, CollectedDataList
 import fobi.views
 
 from fobi.contrib.plugins.form_handlers.db_store.views import \
@@ -129,29 +129,8 @@ urlpatterns = [
         view=fobi.views.delete_form_element_entry,
         name='fobi.delete_form_element_entry'),
 
-    # ****** Data handler views ******
-
-    # Specific form entries listing
-    url(r'^submitted/(?P<form_entry_id>\d+)/$',
-        view=view_saved_form_data_entries,
-        name='fobi.contrib.plugins.form_handlers.db_store.'
-             'view_saved_form_data_entries'),
-
-    # Form entries listing
-    url(r'^submitted/$',
-        view=view_saved_form_data_entries,
-        name='fobi.contrib.plugins.form_handlers.db_store.'
-             'view_saved_form_data_entries'),
-
-    # Specific form entries export
-    url(r'^submitted/(?P<form_entry_id>\d+)/export/$',
-        view=export_saved_form_data_entries,
-        name='fobi.contrib.plugins.form_handlers.db_store.'
-             'export_saved_form_data_entries'),
-
-    # Form entries export
-    url(r'^submitted/export/$',
-        view=export_saved_form_data_entries,
-        name='fobi.contrib.plugins.form_handlers.db_store.'
-             'export_saved_form_data_entries'),
+    # Submitted data list
+    url(r'^collected-data/$',
+        view=CollectedDataList.as_view(),
+        name='collected-data-list'),
 ]

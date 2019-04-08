@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-body">
+
+    <h2 class="card-title">Collected Data</h2>
+    <br />
+
+    <table class="table table-hover table-striped card-text">
+    <thead>
+      <tr>
+        <th scope="col">Survey Title</th>
+        <th scope="col">Submitted</th>
+        <th scope="col">Data ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for survey in surveydata %}
+        <tr>
+          <td>{{survey.form_title}}</td>
+          <td>{{survey.time_stop}}</td>
+          <td>{{survey.id}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}

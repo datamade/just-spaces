@@ -1,9 +1,8 @@
-from django.views.generic import ListView, TemplateView
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
 
-from pldp.models import Agency, Location, Study
+from pldp.models import Agency, Location, Study, Survey
 from fobi.models import FormEntry
 
 from .models import JustSpacesUser
@@ -31,10 +30,24 @@ class StudyCreate(CreateView):
     template_name = "study_create.html"
     success_url = '/'
 
+
 class SurveyList(ListView):
     model = FormEntry
     template_name = "survey_list.html"
     context_object_name = 'surveys'
+
+
+class CollectedDataList(TemplateView):
+    template_name = "collected_data_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['surveydata'] = Survey.objects.all()
+
+        for survey in context['surveydata']:
+            survey.form_title = FormEntry.objects.get(id=survey.form_id)
+
+        return context
 
 
 class Signup(FormView):
