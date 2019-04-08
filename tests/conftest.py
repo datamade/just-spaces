@@ -1,9 +1,11 @@
 import pytest
+from datetime import datetime
 from django.core.management import call_command
 
 from fobi.models import FormEntry, FormElementEntry
 from surveys.models import JustSpacesUser
-from pldp.models import Location, Agency, Study, StudyArea
+from pldp.models import Location, Agency, Study, StudyArea, Survey, \
+                        SurveyRow, SurveyComponent
 
 
 @pytest.fixture(scope='session')
@@ -75,6 +77,7 @@ def location(db, agency):
 @pytest.mark.django_db
 def form_entry(db, user):
     form_entry_info = {
+        'id': 1,
         'user': user,
         'name': 'Sample Form Entry',
     }
@@ -102,3 +105,43 @@ def form_element(db, form_entry):
     )
 
     return form_element
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def survey(db, location, study):
+    survey = Survey.objects.create(
+        time_stop=datetime.now(tz=None),
+        location=location,
+        study=study,
+        form_id=1,
+    )
+
+    return survey
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def survey_row(db, survey):
+    survey_row = SurveyRow.objects.create(
+        total=5,
+        survey=survey,
+    )
+
+    return survey_row
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def survey_component(db, row):
+    survey_component = SurveyComponent.objects.create(
+        detail_level='basic',
+        name='8e5a7a02-0e39-4a21-b8f9-710728bf7a70',
+        label='Test label',
+        type='float',
+        position=1,
+        saved_date=10,
+        row=row,
+    )
+
+    return survey_component
