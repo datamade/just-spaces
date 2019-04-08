@@ -9,7 +9,7 @@ from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required, permission_required
 from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
-                                SurveyList, Signup, CollectedDataList
+                                SurveyList, Signup, SurveySubmittedList
 import fobi.views
 
 from fobi.contrib.plugins.form_handlers.db_store.views import \
@@ -45,7 +45,7 @@ urlpatterns = [
     # Survey list
     url(r'surveys/$',
         login_required(SurveyList.as_view()),
-        name='survey-list'),
+        name='surveys-list'),
 
     # Create new survey
     url(r'surveys/create/$',
@@ -67,22 +67,6 @@ urlpatterns = [
     url(_(r'^elements/delete/(?P<form_element_entry_id>\d+)/$'),
         view=fobi.views.delete_form_element_entry,
         name='fobi.delete_form_element_entry'),
-
-    # Create survey handler
-    url(_(r'^handlers/create/(?P<form_entry_id>\d+)/'
-          r'(?P<form_handler_plugin_uid>[\w_\-]+)/$'),
-        view=fobi.views.add_form_handler_entry,
-        name='fobi.add_form_handler_entry'),
-
-    # Edit survey handler
-    url(_(r'^handlers/edit/(?P<form_handler_entry_id>\d+)/$'),
-        view=fobi.views.edit_form_handler_entry,
-        name='fobi.edit_form_handler_entry'),
-
-    # Delete survey handler
-    url(_(r'^handlers/delete/(?P<form_handler_entry_id>\d+)/$'),
-        view=fobi.views.delete_form_handler_entry,
-        name='fobi.delete_form_handler_entry'),
 
     # Edit survey
     url(_(r'^surveys/edit/(?P<form_entry_id>\d+)/$'),
@@ -129,8 +113,8 @@ urlpatterns = [
         view=fobi.views.delete_form_element_entry,
         name='fobi.delete_form_element_entry'),
 
-    # Submitted data list
-    url(r'^collected-data/$',
-        view=CollectedDataList.as_view(),
-        name='collected-data-list'),
+    # Submitted surveys list
+    url(r'^surveys/submitted$',
+        view=SurveySubmittedList.as_view(),
+        name='surveys-submitted-list'),
 ]

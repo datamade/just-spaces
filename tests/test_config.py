@@ -140,7 +140,7 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = 'survey-list'
+LOGIN_REDIRECT_URL = 'surveys-list'
 
 FOBI_DEFAULT_THEME = 'foundation5'
 FOBI_THEME_FOOTER_TEXT = gettext.gettext('')

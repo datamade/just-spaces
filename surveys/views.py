@@ -37,18 +37,18 @@ class SurveyList(ListView):
     context_object_name = 'surveys'
 
 
-class CollectedDataList(TemplateView):
-    template_name = "collected_data_list.html"
+class SurveySubmittedList(TemplateView):
+    template_name = "survey_submitted_list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        survey_data = Survey.objects.all().order_by('form_id', '-time_stop').distinct('form_id')
+        surveys_submitted = Survey.objects.all().order_by('form_id', '-time_stop').distinct('form_id')
 
-        for survey in survey_data:
+        for survey in surveys_submitted:
             survey.form_title = FormEntry.objects.get(id=survey.form_id)
 
-        context['survey_data'] = survey_data
+        context['surveys_submitted'] = surveys_submitted
 
         return context
 
