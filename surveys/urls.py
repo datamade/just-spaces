@@ -7,14 +7,10 @@ refigure it to a more strictful RESTful approach.
 """
 from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
                                 SurveyList, Signup, SurveySubmittedList
 import fobi.views
-
-from fobi.contrib.plugins.form_handlers.db_store.views import \
-                                       view_saved_form_data_entries, \
-                                       export_saved_form_data_entries
 
 urlpatterns = [
     # placeholder view for a public-facing landing page
@@ -67,6 +63,22 @@ urlpatterns = [
     url(_(r'^elements/delete/(?P<form_element_entry_id>\d+)/$'),
         view=fobi.views.delete_form_element_entry,
         name='fobi.delete_form_element_entry'),
+
+    # Create survey handler
+    url(_(r'^handlers/create/(?P<form_entry_id>\d+)/'
+          r'(?P<form_handler_plugin_uid>[\w_\-]+)/$'),
+        view=fobi.views.add_form_handler_entry,
+        name='fobi.add_form_handler_entry'),
+
+    # Edit survey handler
+    url(_(r'^handlers/edit/(?P<form_handler_entry_id>\d+)/$'),
+        view=fobi.views.edit_form_handler_entry,
+        name='fobi.edit_form_handler_entry'),
+
+    # Delete survey handler
+    url(_(r'^handlers/delete/(?P<form_handler_entry_id>\d+)/$'),
+        view=fobi.views.delete_form_handler_entry,
+        name='fobi.delete_form_handler_entry'),
 
     # Edit survey
     url(_(r'^surveys/edit/(?P<form_entry_id>\d+)/$'),
