@@ -62,11 +62,6 @@ class SurveySubmittedDetail(TemplateView):
         context['form_entry'] = FormEntry.objects.get(id=context['form_entry_id'])
         context['surveys_submitted'] = Survey.objects.filter(form_id=context['form_entry_id'])
 
-        for survey in context['surveys_submitted']:
-            row = SurveyRow.objects.get(survey=survey)
-            survey.row_total = row.total
-            survey.components = SurveyComponent.objects.filter(row=row).order_by('position')
-
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)
 
