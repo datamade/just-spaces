@@ -54,21 +54,27 @@ class CollectDataPlugin(FormHandlerPlugin):
             plugin_data = element.plugin_data
             json_plugin_data = json.loads(plugin_data)
 
-            name = json_plugin_data['name']
-            label = json_plugin_data['label']
-            type = element.plugin_uid
-            position = element.position
+            try:
+                name = json_plugin_data['name']
 
-            saved_data = form.cleaned_data[name]
+                label = json_plugin_data['label']
+                type = element.plugin_uid
+                position = element.position
 
-            SurveyComponent.objects.create(
-                row=new_survey_row,
-                name=name,
-                label=label,
-                type=type,
-                position=position,
-                saved_data=saved_data
-            )
+                saved_data = form.cleaned_data[name]
+
+                SurveyComponent.objects.create(
+                    row=new_survey_row,
+                    name=name,
+                    label=label,
+                    type=type,
+                    position=position,
+                    saved_data=saved_data
+                )
+
+            # Help text elements have no name and should not be saved
+            except KeyError:
+                pass
 
 
 def plugin_data_repr(self):
