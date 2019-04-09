@@ -95,7 +95,7 @@ def form_element(db, form_entry):
             "max_value": null, "name": "c75e27cf-4d8f-49dc-bb15-da8137dac247", \
             "required": false, "min_value": null, "initial": null}',
         'plugin_uid': 'float',
-        'position': 1,
+        'position': 2,
         'form_entry': form_entry,
 
     }
@@ -105,6 +105,24 @@ def form_element(db, form_entry):
     )
 
     return form_element
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def form_element_help_text(db, form_entry):
+    form_element_help_text_info = {
+        'plugin_data': '{"text": "This survey will take 3-4 minutes."}',
+        'plugin_uid': 'content_text',
+        'position': 1,
+        'form_entry': form_entry,
+
+    }
+
+    form_element_help_text = FormElementEntry.objects.create(
+        **form_element_help_text_info
+    )
+
+    return form_element_help_text
 
 
 @pytest.fixture
