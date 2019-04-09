@@ -9,12 +9,14 @@
     <h2 class="card-title">{{ form_entry.name }}</h2>
     <br />
 
-    <table class="table table-hover table-striped card-text">
+    <table class="table table-hover table-striped card-text display nowrap" id="survey-submitted-detail">
     <thead>
       <tr>
         <th scope="col">Time Submitted</th>
         <th scope="col">Row Total</th>
-        <th scope="col">Components</th>
+        {% for question in questions %}
+          <th scope="col">{{question}}</th>
+        {% endfor %}
       </tr>
     </thead>
     <tbody>
@@ -22,7 +24,9 @@
         <tr>
           <td>{{survey.time_stop}}</td>
           <td>{{survey.row_total}}</td>
-          <td>{{survey.components}}</td>
+          {% for component in survey.components %}
+            <td>{{component.saved_data}}</td>
+          {% endfor %}
         </tr>
       {% endfor %}
     </tbody>
@@ -30,5 +34,13 @@
 
   </div>
 </div>
+
+<script>
+$(document).ready(function () {
+  $('#survey-submitted-detail').DataTable({
+    "scrollX": true
+  });
+} );
+</script>
 
 {% endblock %}
