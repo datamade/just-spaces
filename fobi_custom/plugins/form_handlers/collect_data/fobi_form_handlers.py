@@ -56,7 +56,7 @@ class CollectDataPlugin(FormHandlerPlugin):
 
             # Check if an element is help text. If it is, skip it
             if 'text' in json_plugin_data.keys():
-                pass
+                continue
 
             else:
                 name = json_plugin_data['name']
@@ -66,8 +66,6 @@ class CollectDataPlugin(FormHandlerPlugin):
                 position = element.position
 
                 saved_data = form.cleaned_data[name]
-
-                print(saved_data)
 
                 SurveyComponent.objects.create(
                     row=new_survey_row,
