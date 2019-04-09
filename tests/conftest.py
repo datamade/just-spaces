@@ -151,15 +151,15 @@ def survey_row(db, survey):
 
 @pytest.fixture
 @pytest.mark.django_db
-def survey_component(db, row):
+def survey_component(db, survey_row):
     survey_component = SurveyComponent.objects.create(
         detail_level='basic',
         name='8e5a7a02-0e39-4a21-b8f9-710728bf7a70',
         label='Test label',
         type='float',
         position=1,
-        saved_date=10,
-        row=row,
+        saved_data=10,
+        row=survey_row,
     )
 
     return survey_component
