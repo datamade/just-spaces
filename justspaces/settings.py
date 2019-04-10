@@ -24,6 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
     'frontend',
     'surveys',
 
@@ -137,7 +138,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = "surveys.JustSpacesUser"
+AUTH_USER_MODEL = "users.JustSpacesUser"
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

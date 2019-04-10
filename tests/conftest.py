@@ -3,7 +3,7 @@ from datetime import datetime
 from django.core.management import call_command
 
 from fobi.models import FormEntry, FormElementEntry
-from surveys.models import JustSpacesUser
+from users.models import JustSpacesUser
 from pldp.models import Location, Agency, Study, StudyArea, Survey, \
                         SurveyRow, SurveyComponent
 
@@ -12,16 +12,6 @@ from pldp.models import Location, Agency, Study, StudyArea, Survey, \
 def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         call_command('initialize_pldp')
-
-
-@pytest.fixture
-@pytest.mark.django_db
-def user(db):
-    user = JustSpacesUser.objects.create(
-        username='sampleuser'
-    )
-
-    return user
 
 
 @pytest.fixture
@@ -35,6 +25,17 @@ def agency(db):
     )
 
     return agency
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def user(db, agency):
+    user = JustSpacesUser.objects.create(
+        username='sampleuser',
+        agency=agency,
+    )
+
+    return user
 
 
 @pytest.fixture
