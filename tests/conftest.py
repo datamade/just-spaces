@@ -16,16 +16,6 @@ def django_db_setup(django_db_setup, django_db_blocker):
 
 @pytest.fixture
 @pytest.mark.django_db
-def user(db):
-    user = JustSpacesUser.objects.create(
-        username='sampleuser'
-    )
-
-    return user
-
-
-@pytest.fixture
-@pytest.mark.django_db
 def agency(db):
     agency = Agency.objects.create(
         name='Sample Agency',
@@ -35,6 +25,17 @@ def agency(db):
     )
 
     return agency
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def user(db, agency):
+    user = JustSpacesUser.objects.create(
+        username='sampleuser',
+        agency=agency,
+    )
+
+    return user
 
 
 @pytest.fixture
