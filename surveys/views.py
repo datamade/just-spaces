@@ -2,7 +2,8 @@ from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 
-from pldp.models import Agency, Location, Study, Survey
+from pldp.models import Agency, Location, Study, Survey, SurveyRow, \
+                        SurveyComponent
 from fobi.models import FormEntry
 
 from .models import JustSpacesUser
@@ -43,12 +44,26 @@ class SurveySubmittedList(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        surveys_submitted = Survey.objects.all().order_by('form_id', '-time_stop').distinct('form_id')
+        surveys = Survey.objects.all()
+        context['surveys_submitted'] = surveys.order_by('form_id', '-time_stop').distinct('form_id')
 
-        for survey in surveys_submitted:
+        for survey in context['surveys_submitted']:
             survey.form_title = FormEntry.objects.get(id=survey.form_id)
 
-        context['surveys_submitted'] = surveys_submitted
+        return context
+
+
+class SurveySubmittedDetail(TemplateView):
+    template_name = "survey_submitted_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['form_entry'] = FormEntry.objects.get(id=context['form_entry_id'])
+        context['surveys_submitted'] = Survey.objects.filter(form_id=context['form_entry_id'])
+
+        first_survey = context['surveys_submitted'][0]
+        context['questions'] = first_survey.components.values_list('label', flat=True)
 
         return context
 

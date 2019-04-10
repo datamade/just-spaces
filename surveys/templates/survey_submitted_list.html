@@ -19,7 +19,9 @@
     <tbody>
       {% for survey in surveys_submitted %}
         <tr>
-          <td>{{survey.form_title}}</td>
+          <td><a href="{% url 'surveys-submitted-detail' survey.form_id %}">
+              {{survey.form_title}}
+            </a></td>
           <td>{{survey.time_stop}}</td>
         </tr>
       {% endfor %}
