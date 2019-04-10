@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('fobi', '0018_auto_20190410_1829'),
+        ('fobi', '0016_auto_20190326_2010'),
         ('pldp', '0006_auto_20190402_1547'),
         ('surveys', '0003_auto_20190410_1829'),
     ]
