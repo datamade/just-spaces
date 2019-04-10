@@ -21,10 +21,11 @@ DATABASES = {
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 INSTALLED_APPS = [
+    'users',
     'frontend',
     'surveys',
 
-     'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -32,22 +33,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
 
-     # django-pldp
+    # django-pldp
     'countries_plus',
     'languages_plus',
     'pldp',
 
-     # fobi core
+    # fobi core
     'fobi',
 
-     # fobi theme
+    # fobi theme
     'fobi.contrib.themes.foundation5',
     'fobi_custom.override_theme',
 
-     # fobi content form elements
+    # fobi content form elements
     'fobi.contrib.plugins.form_elements.content.content_text',
 
-     # fobi default form field plug-ins
+    # fobi default form field plug-ins
     'fobi.contrib.plugins.form_elements.fields.boolean',
     'fobi.contrib.plugins.form_elements.fields.checkbox_select_multiple',
     'fobi.contrib.plugins.form_elements.fields.date',
@@ -58,7 +59,7 @@ INSTALLED_APPS = [
     'fobi.contrib.plugins.form_elements.fields.textarea',
     'fobi.contrib.plugins.form_elements.fields.time',
 
-     # custom PLDP form elements
+    # custom PLDP form elements
     'fobi_custom.plugins.form_elements.fields.age',
     'fobi_custom.plugins.form_elements.fields.gender',
     'fobi_custom.plugins.form_elements.fields.study',
@@ -67,7 +68,7 @@ INSTALLED_APPS = [
     'fobi_custom.plugins.form_elements.fields.survey_representation',
     'fobi_custom.plugins.form_elements.fields.survey_method',
 
-     # fobi form handlers
+    # fobi form handlers
     'fobi_custom.plugins.form_handlers.collect_data',
 ]
 
@@ -134,7 +135,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = "surveys.JustSpacesUser"
+AUTH_USER_MODEL = "users.JustSpacesUser"
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

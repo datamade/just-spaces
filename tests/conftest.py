@@ -3,7 +3,7 @@ from datetime import datetime
 from django.core.management import call_command
 
 from fobi.models import FormEntry, FormElementEntry
-from surveys.models import JustSpacesUser
+from users.models import JustSpacesUser
 from pldp.models import Location, Agency, Study, StudyArea, Survey, \
                         SurveyRow, SurveyComponent
 
