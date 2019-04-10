@@ -6,8 +6,8 @@ from pldp.models import Agency, Location, Study, Survey, SurveyRow, \
                         SurveyComponent
 from fobi.models import FormEntry
 
-from .models import JustSpacesUser
-from .admin import JustSpacesUserCreationForm
+from users.models import JustSpacesUser
+from users.admin import JustSpacesUserCreationForm
 from .forms import CreateStudyForm
 
 
