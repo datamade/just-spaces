@@ -1,5 +1,6 @@
 from django import forms
 from pldp.models import Agency, Location, Study, Survey
+from .models import SurveyFormEntry
 
 
 class CreateAgencyForm(forms.ModelForm):
@@ -14,16 +15,17 @@ class CreateLocationForm(forms.ModelForm):
         fields = '__all__'
 
 
-class CreateStudyForm(forms.ModelForm):
+class StudyCreateForm(forms.ModelForm):
     class Meta:
         model = Study
         fields = '__all__'
         widgets = {
-            'start_date': forms.DateInput(attrs={'type':'date'}),
-            'end_date': forms.DateInput(attrs={'type':'date'})
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'})
         }
 
-class CreateSurveyForm(forms.ModelForm):
+
+class SurveyCreateForm(forms.ModelForm):
     class Meta:
-        model = Survey
-        fields = '__all__'
+        model = SurveyFormEntry
+        fields = ['user', 'name', 'study', 'location', 'type']

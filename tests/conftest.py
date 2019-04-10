@@ -4,6 +4,7 @@ from django.core.management import call_command
 
 from fobi.models import FormEntry, FormElementEntry
 from users.models import JustSpacesUser
+from surveys.models import SurveyFormEntry
 from pldp.models import Location, Agency, Study, StudyArea, Survey, \
                         SurveyRow, SurveyComponent
 
@@ -73,7 +74,6 @@ def location(db, agency):
 
     return location
 
-
 @pytest.fixture
 @pytest.mark.django_db
 def form_entry(db, user):
@@ -86,6 +86,21 @@ def form_entry(db, user):
     form_entry = FormEntry.objects.create(**form_entry_info)
 
     return form_entry
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def survey_form_entry(db, form_entry, location, study):
+    survey_form_entry_info = {
+        'formentry_ptr_id': form_entry,
+        'published': False,
+        'location': location,
+        'study': study,
+    }
+
+    survey_form_entry = SurveyFormEntry.objects.create(**survey_form_entry_info)
+
+    return survey_form_entry
 
 
 @pytest.fixture
