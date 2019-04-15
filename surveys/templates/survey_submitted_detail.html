@@ -38,7 +38,11 @@
 <script>
 $(document).ready(function () {
   $('#survey-submitted-detail').DataTable({
-    // "scrollX": true,
+    "sScrollX": "100%",
+    "sScrollXInner": "110%",
+    "fixedColumns":   {
+      "leftColumns": 1
+    }
   });
 } );
 </script>
