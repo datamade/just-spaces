@@ -19,9 +19,15 @@
     <tbody>
       {% for survey in surveys_submitted %}
         <tr>
-          <td><a href="{% url 'surveys-submitted-detail' survey.form_id %}">
-              {{survey.form_title}}
-            </a></td>
+          <td>
+            {% if survey.form_title != '[Deleted Survey]' %}
+              <a href="{% url 'surveys-submitted-detail' survey.form_id %}">
+                {{survey.form_title}}
+              </a>
+            {% else %}
+                {{survey.form_title}}
+            {% endif %}
+          </td>
           <td>{{survey.time_stop}}</td>
         </tr>
       {% endfor %}

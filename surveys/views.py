@@ -69,8 +69,11 @@ class SurveySubmittedList(TemplateView):
         context['surveys_submitted'] = surveys.order_by('form_id', '-time_stop').distinct('form_id')
 
         for survey in context['surveys_submitted']:
-            survey_form_entry = SurveyFormEntry.objects.get(formentry_ptr=survey.form_id)
-            survey.form_title = survey_form_entry.name
+            try:
+                survey_form_entry = SurveyFormEntry.objects.get(formentry_ptr=survey.form_id)
+                survey.form_title = survey_form_entry.name
+            except SurveyFormEntry.DoesNotExist:
+                survey.form_title = "[Deleted Survey]"
 
         return context
 
