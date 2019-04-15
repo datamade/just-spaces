@@ -9,7 +9,7 @@ from pldp.models import Survey, SurveyRow, SurveyComponent
 
 
 @pytest.mark.django_db
-def test_data_handler(form_entry, location, study, form_element,
+def test_data_handler(survey_form_entry, location, study, form_element,
                       form_element_help_text, mocker):
     """Tests the custom Fobi data handler by instantiating a sample
     survey, surveyrow, and surveycomponent with saved data"""
@@ -18,16 +18,16 @@ def test_data_handler(form_entry, location, study, form_element,
     saved_data = 5
 
     request = mocker.MagicMock(spec=requests.Response)
-    form_class = assemble_form_class(form_entry=form_entry)
+    form_class = assemble_form_class(form_entry=survey_form_entry)
 
-    form_class = assemble_form_class(form_entry=form_entry)
+    form_class = assemble_form_class(form_entry=survey_form_entry)
     form = form_class(data={component_data['name']: saved_data})
 
     assert form.is_valid()
 
     plugin = CollectDataPlugin()
     plugin.run(form=form,
-               form_entry=form_entry,
+               form_entry=survey_form_entry,
                request=request)
 
     survey = Survey.objects.first()

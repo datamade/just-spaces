@@ -2,7 +2,7 @@ import pytest
 from datetime import datetime
 from django.core.management import call_command
 
-from fobi.models import FormEntry, FormElementEntry
+from fobi.models import FormElementEntry
 from users.models import JustSpacesUser
 from surveys.models import SurveyFormEntry
 from pldp.models import Location, Agency, Study, StudyArea, Survey, \
@@ -74,28 +74,18 @@ def location(db, agency):
 
     return location
 
+
 @pytest.fixture
 @pytest.mark.django_db
-def form_entry(db, user):
-    form_entry_info = {
+def survey_form_entry(db, user, location, study):
+    survey_form_entry_info = {
         'id': 1,
         'user': user,
         'name': 'Sample Form Entry',
-    }
-
-    form_entry = FormEntry.objects.create(**form_entry_info)
-
-    return form_entry
-
-
-@pytest.fixture
-@pytest.mark.django_db
-def survey_form_entry(db, form_entry, location, study):
-    survey_form_entry_info = {
-        'formentry_ptr_id': form_entry,
-        'published': False,
+        'published': True,
         'location': location,
         'study': study,
+        'type': 'observational',
     }
 
     survey_form_entry = SurveyFormEntry.objects.create(**survey_form_entry_info)
@@ -105,14 +95,14 @@ def survey_form_entry(db, form_entry, location, study):
 
 @pytest.fixture
 @pytest.mark.django_db
-def form_element(db, form_entry):
+def form_element(db, survey_form_entry):
     form_element_info = {
         'plugin_data': '{"label": "Sample Float Field", "help_text": " ", \
             "max_value": null, "name": "c75e27cf-4d8f-49dc-bb15-da8137dac247", \
             "required": false, "min_value": null, "initial": null}',
         'plugin_uid': 'float',
         'position': 2,
-        'form_entry': form_entry,
+        'form_entry': survey_form_entry,
 
     }
 
@@ -125,12 +115,12 @@ def form_element(db, form_entry):
 
 @pytest.fixture
 @pytest.mark.django_db
-def form_element_help_text(db, form_entry):
+def form_element_help_text(db, survey_form_entry):
     form_element_help_text_info = {
         'plugin_data': '{"text": "This survey will take 3-4 minutes."}',
         'plugin_uid': 'content_text',
         'position': 1,
-        'form_entry': form_entry,
+        'form_entry': survey_form_entry,
 
     }
 
