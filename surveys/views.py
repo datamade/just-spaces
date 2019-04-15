@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, View
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -51,6 +51,23 @@ class SurveyCreate(CreateView):
                                )
 
         return HttpResponseRedirect(self.get_success_url())
+
+
+class SurveyPublish(TemplateView):
+    template_name = "survey_publish.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['survey'] = SurveyFormEntry.objects.get(id=context['form_entry_id'])
+
+        return context
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['survey'].published = True
+        context['survey'].save()
+
+        return redirect('survey-list')
 
 
 class SurveyList(ListView):

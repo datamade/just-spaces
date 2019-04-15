@@ -9,8 +9,8 @@ from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
-                                SurveyCreate, SurveyList, Signup, \
-                                SurveySubmittedList, SurveySubmittedDetail
+                                SurveyCreate, SurveyPublish, SurveyList, \
+                                Signup, SurveySubmittedList, SurveySubmittedDetail
 import fobi.views
 
 urlpatterns = [
@@ -90,6 +90,11 @@ urlpatterns = [
     url(_(r'^surveys/delete/(?P<form_entry_id>\d+)/$'),
         view=fobi.views.delete_form_entry,
         name='fobi.delete_form_entry'),
+
+    # Publish survey
+    url(_(r'^surveys/publish/(?P<form_entry_id>\d+)/$'),
+        view=SurveyPublish.as_view(),
+        name='surveys-publish'),
 
     # Survey detail
     url(_(r'^surveys/view/(?P<form_entry_slug>[\w_\-]+)/$'),

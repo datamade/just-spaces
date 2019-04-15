@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <h2>Publish survey</h2>
+  <form method="POST" class="post-form">{% csrf_token %}
+     <div>Are you sure you want to publish <b>{{survey.name}}</b>?</div>
+     <div>Surveys must be published before they can be run, but cannot be edited
+       once they've been published.</div>
+     <button type="submit" class="save btn btn-default">Publish</button>
+  </form>
+{% endblock %}
