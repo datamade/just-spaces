@@ -82,7 +82,7 @@ def survey_form_entry(db, user, location, study):
         'id': 1,
         'user': user,
         'name': 'Sample Form Entry',
-        'published': True,
+        'published': False,
         'location': location,
         'study': study,
         'type': 'observational',

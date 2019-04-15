@@ -67,7 +67,7 @@ class SurveyPublish(TemplateView):
         context['survey'].published = True
         context['survey'].save()
 
-        return redirect('survey-list')
+        return redirect('surveys-list')
 
 
 class SurveyList(ListView):
