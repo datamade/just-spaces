@@ -23,9 +23,12 @@ class CollectDataPlugin(FormHandlerPlugin):
         location = Location.objects.get(id=form_entry.surveyformentry.location.id)
         study = Study.objects.get(id=form_entry.surveyformentry.study.id)
 
-        # This is a placeholder. Total should be a required field in
-        # observational surveys, and default to 1 for intercept surveys.
-        total = 5
+        try:
+            total_element = FormElementEntry.objects.get(form_entry_id=form_id, plugin_uid='total')
+            total_element_info = get_element_info(self, total_element, form)
+            total = total_element_info['saved_data']
+        except FormElementEntry.DoesNotExist:
+            total = 1
 
         # Here we are using PLDP's survey end time value to record time
         # of submission
@@ -43,34 +46,20 @@ class CollectDataPlugin(FormHandlerPlugin):
             total=total
         )
 
-        form_entry = FormEntry.objects.get(id=form_id)
-        form_elements = FormElementEntry.objects.filter(form_entry=form_entry)
+        form_elements = FormElementEntry.objects.filter(form_entry_id=form_id).exclude(plugin_uid='total')
 
-        for element in form_elements:
+        for form_element in form_elements:
 
-            plugin_data = element.plugin_data
-            json_plugin_data = json.loads(plugin_data)
+            element_info = get_element_info(self, form_element, form)
 
-            # Check if an element is help text. If it is, skip it
-            if 'text' in json_plugin_data.keys():
-                continue
-
-            else:
-                name = json_plugin_data['name']
-
-                label = json_plugin_data['label']
-                type = element.plugin_uid
-                position = element.position
-
-                saved_data = form.cleaned_data[name]
-
+            if element_info:
                 SurveyComponent.objects.create(
                     row=new_survey_row,
-                    name=name,
-                    label=label,
-                    type=type,
-                    position=position,
-                    saved_data=saved_data
+                    name=element_info['name'],
+                    label=element_info['label'],
+                    type=element_info['type'],
+                    position=element_info['position'],
+                    saved_data=element_info['saved_data']
                 )
 
 
@@ -80,6 +69,27 @@ def plugin_data_repr(self):
     :return string:
     """
     return self.data.__dict__
+
+
+def get_element_info(self, form_element, form):
+    plugin_data = form_element.plugin_data
+    json_plugin_data = json.loads(plugin_data)
+
+    if 'text' in json_plugin_data.keys():
+        return None
+
+    else:
+        name = json_plugin_data['name']
+
+        element_info = {
+            'name': name,
+            'saved_data': form.cleaned_data[name],
+            'label': json_plugin_data['label'],
+            'type': form_element.plugin_uid,
+            'position': form_element.position,
+        }
+
+        return element_info
 
 
 form_handler_plugin_registry.register(CollectDataPlugin)
