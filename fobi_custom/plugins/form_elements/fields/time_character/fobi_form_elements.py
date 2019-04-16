@@ -1,17 +1,17 @@
 from django import forms
 
 from fobi.base import FormFieldPlugin, form_element_plugin_registry
-from pldp.forms import SURVEY_METHOD_CHOICES
+from pldp.forms import SURVEY_TIME_CHARACTER_CHOICES
 
-from .forms import PLDPSurveyMethodForm
+from .forms import TimeCharacterForm
 
 
-class PLDPSurveyMethodPlugin(FormFieldPlugin):
-    """PLDPSurveyMethodPlugin."""
+class TimeCharacterPlugin(FormFieldPlugin):
+    """TimeCharacterPlugin."""
 
-    uid = "survey_method"
-    name = "Survey Method"
-    form = PLDPSurveyMethodForm
+    uid = "time_character"
+    name = "Time Character"
+    form = TimeCharacterForm
     group = "Public Life Data Protocol"  # Group to which the plugin belongs to
 
     def get_form_field_instances(self, request=None, form_entry=None,
@@ -21,11 +21,11 @@ class PLDPSurveyMethodPlugin(FormFieldPlugin):
             'required': self.data.required,
             'label': self.data.label,
             'widget': forms.widgets.Select(attrs={}),
-            'choices': SURVEY_METHOD_CHOICES,
+            'choices': SURVEY_TIME_CHARACTER_CHOICES,
             'initial': self.data.default,
         }
 
         return [(self.data.name, forms.ChoiceField, field_kwargs)]
 
 
-form_element_plugin_registry.register(PLDPSurveyMethodPlugin)
+form_element_plugin_registry.register(TimeCharacterPlugin)

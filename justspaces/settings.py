@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'fobi_custom.plugins.form_elements.fields.total',
     'fobi_custom.plugins.form_elements.fields.time_start',
     'fobi_custom.plugins.form_elements.fields.time_stop',
+    'fobi_custom.plugins.form_elements.fields.time_character',
     'fobi_custom.plugins.form_elements.fields.survey_representation',
     'fobi_custom.plugins.form_elements.fields.survey_method',
 
