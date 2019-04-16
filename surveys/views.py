@@ -75,6 +75,13 @@ class SurveyList(ListView):
     template_name = "survey_list.html"
     context_object_name = 'surveys'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['published'] = self.request.GET.get('published', 'f')
+        context['surveys'] = context['surveys'].filter(published=context['published'])
+
+        return context
+
 
 class SurveySubmittedList(TemplateView):
     template_name = "survey_submitted_list.html"
