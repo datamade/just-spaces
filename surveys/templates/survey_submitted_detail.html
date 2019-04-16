@@ -38,7 +38,13 @@
 <script>
 $(document).ready(function () {
   $('#survey-submitted-detail').DataTable({
-    "scrollX": true
+    // scrollx styling taken from
+    // https://stackoverflow.com/questions/45136218/datatables-scrollx-causing-squashed-header
+    "sScrollX": "100%",
+    "sScrollXInner": "110%",
+    "fixedColumns":   {
+      "leftColumns": 1
+    }
   });
 } );
 </script>

@@ -9,8 +9,8 @@ from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
-                                SurveyList, Signup, SurveySubmittedList, \
-                                SurveySubmittedDetail
+                                SurveyCreate, SurveyList, Signup, \
+                                SurveySubmittedList, SurveySubmittedDetail
 import fobi.views
 
 urlpatterns = [
@@ -46,8 +46,8 @@ urlpatterns = [
 
     # Create new survey
     url(r'surveys/create/$',
-        view=fobi.views.create_form_entry,
-        name='fobi.create_form_entry'),
+        login_required(SurveyCreate.as_view()),
+        name='surveys-create'),
 
     # Create survey element
     url(_(r'^elements/create/(?P<form_entry_id>\d+)/'

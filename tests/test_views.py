@@ -3,7 +3,7 @@ from django.urls import reverse
 
 
 @pytest.mark.django_db
-def test_survey_submitted_list(client, user, survey, form_entry):
+def test_survey_submitted_list(client, user, survey, survey_form_entry):
     client.force_login(user)
     url = reverse('surveys-submitted-list')
     response = client.get(url)
@@ -16,9 +16,12 @@ def test_survey_submitted_list(client, user, survey, form_entry):
 
 
 @pytest.mark.django_db
-def test_survey_submitted_detail(client, user, form_entry, survey, survey_row, survey_component):
+def test_survey_submitted_detail(client, user, survey_form_entry, survey, survey_row, survey_component):
     client.force_login(user)
-    url = reverse('surveys-submitted-detail', kwargs={'form_entry_id': form_entry.id})
+    url = reverse('surveys-submitted-detail', kwargs={'form_entry_id': survey_form_entry.id})
+    print("hello")
+    print(url)
+
     response = client.get(url)
 
     surveys_submitted = response.context['surveys_submitted']
