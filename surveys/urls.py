@@ -9,14 +9,15 @@ from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
-                                SurveyCreate, SurveyPublish, SurveyList, \
-                                Signup, SurveySubmittedList, SurveySubmittedDetail
+                                SurveyCreate, SurveyPublish, SurveyListEdit, \
+                                SurveyListRun, Signup, SurveySubmittedList, \
+                                SurveySubmittedDetail
 import fobi.views
 
 urlpatterns = [
     # placeholder view for a public-facing landing page
     url(r'^$',
-        login_required(SurveyList.as_view()),
+        login_required(SurveyListRun.as_view()),
         name='home'),
 
     url(r'^accounts/',
@@ -25,7 +26,6 @@ urlpatterns = [
     url(r'^accounts/signup$',
         Signup.as_view(),
         name='signup'),
-
 
     url(r'agencies/create/$',
         login_required(AgencyCreate.as_view()),
@@ -39,10 +39,15 @@ urlpatterns = [
         login_required(StudyCreate.as_view()),
         name='studies-create'),
 
-    # Survey list
-    url(r'surveys/$',
-        login_required(SurveyList.as_view()),
-        name='surveys-list'),
+    # Survey list edit
+    url(r'surveys/edit/$',
+        login_required(SurveyListEdit.as_view()),
+        name='surveys-list-edit'),
+
+    # Survey list run
+    url(r'surveys/run/$',
+        login_required(SurveyListRun.as_view()),
+        name='surveys-list-run'),
 
     # Create new survey
     url(r'surveys/create/$',

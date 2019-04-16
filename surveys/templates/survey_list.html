@@ -5,8 +5,11 @@
 
 <div class="card">
   <div class="card-body">
-
+    {% if published %}
     <h2 class="card-title">Run Survey</h2>
+    {% else %}
+    <h2 class="card-title">Edit Survey</h2>
+    {% endif %}
     <br />
 
     <table class="table table-hover table-striped card-text">
@@ -15,10 +18,12 @@
         <th scope="col">Survey Name</th>
         <th scope="col">Created</th>
         <th scope="col">Updated</th>
-        <th scope="col">Edit</th>
+        {% if published %}
         <th scope="col">Run</th>
-        <th scope="col">Delete</th>
+        {% else %}
+        <th scope="col">Edit</th>
         <th scope="col">Publish</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -27,13 +32,11 @@
           <td><b>{{survey.name}}</b></td>
           <td>{{survey.created}}</td>
           <td>{{survey.updated}}</td>
-          <td><a href="{% url 'fobi.edit_form_entry' survey.id %}"><i class="fas fa-pencil-alt icon edit"></i></a></td>
+          {% if published %}
           <td><a href="{% url 'fobi.view_form_entry' survey.slug %}"><i class="fas fa-clipboard-list icon run"></i></a></td>
-          <td><a href="{% url 'fobi.delete_form_entry' survey.id %}"><i class="fas fa-times icon delete"></i></a></td>
-          {% if not survey.published %}
-          <td><a href="{% url 'surveys-publish' survey.id %}"><i class="far fa-newspaper icon delete"></i></a></td>
           {% else %}
-          <td></td>
+          <td><a href="{% url 'fobi.edit_form_entry' survey.id %}"><i class="fas fa-pencil-alt icon edit"></i></a></td>
+          <td><a href="{% url 'surveys-publish' survey.id %}"><i class="far fa-newspaper icon delete"></i></a></td>
           {% endif %}
         </tr>
       {% endfor %}
