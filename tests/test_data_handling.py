@@ -1,6 +1,7 @@
 import pytest
 import requests
 import json
+import datetime
 
 from fobi_custom.plugins.form_handlers.collect_data.fobi_form_handlers import CollectDataPlugin
 from fobi.dynamic import assemble_form_class
@@ -9,19 +10,23 @@ from pldp.models import Survey, SurveyRow, SurveyComponent
 
 
 @pytest.mark.django_db
-def test_data_handler(survey_form_entry, location, study, form_element,
-                      form_element_help_text, mocker):
+def test_data_handler(survey_form_entry, location, study, form_element_float,
+                      form_element_help_text, form_element_time_start, mocker):
     """Tests the custom Fobi data handler by instantiating a sample
     survey, surveyrow, and surveycomponent with saved data"""
 
-    component_data = json.loads(form_element.plugin_data)
-    saved_data = 5
+    float_data = json.loads(form_element_float.plugin_data)
+    submitted_float_data = 5
+
+    time_start_data = json.loads(form_element_time_start.plugin_data)
+    submitted_time_start_data = datetime.time(5, 45, 00)
 
     request = mocker.MagicMock(spec=requests.Response)
     form_class = assemble_form_class(form_entry=survey_form_entry)
 
     form_class = assemble_form_class(form_entry=survey_form_entry)
-    form = form_class(data={component_data['name']: saved_data})
+    form = form_class(data={float_data['name']: submitted_float_data,
+                            time_start_data['name']: submitted_time_start_data})
 
     assert form.is_valid()
 
@@ -41,7 +46,7 @@ def test_data_handler(survey_form_entry, location, study, form_element,
     assert len(components) == 1
 
     assert survey.id
-    assert survey.time_stop
+    assert survey.time_start
     assert survey.location == location
     assert survey.study == study
 
@@ -51,9 +56,9 @@ def test_data_handler(survey_form_entry, location, study, form_element,
 
     assert component.id
     assert component.detail_level == 'basic'
-    assert component.name == component_data['name']
-    assert component.label == component_data['label']
-    assert component.type == form_element.plugin_uid
-    assert component.position == form_element.position
-    assert float(component.saved_data) == saved_data
+    assert component.name == float_data['name']
+    assert component.label == float_data['label']
+    assert component.type == form_element_float.plugin_uid
+    assert component.position == form_element_float.position
+    assert float(component.saved_data) == submitted_float_data
     assert component.row == row

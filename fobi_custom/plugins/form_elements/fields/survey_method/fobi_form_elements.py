@@ -12,7 +12,7 @@ from .forms import PLDPSurveyMethodForm
 class PLDPSurveyMethodPlugin(FormFieldPlugin):
     """PLDPSurveyMethodPlugin."""
 
-    uid = "pldp_survey_method"
+    uid = "survey_method"
     name = "Survey Method"
     form = PLDPSurveyMethodForm
     group = "Public Life Data Protocol"  # Group to which the plugin belongs to

@@ -12,7 +12,6 @@ class TimeStopForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "What is the stop time of this survey?"),
         ("name", "name"),
-        ("age", ""),
         ("help_text", ""),
         ("required", False),
     ]

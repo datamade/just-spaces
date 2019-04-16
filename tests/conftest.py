@@ -96,7 +96,7 @@ def survey_form_entry(db, user, location, study):
 
 @pytest.fixture
 @pytest.mark.django_db
-def form_element(db, survey_form_entry):
+def form_element_float(db, survey_form_entry):
     form_element_info = {
         'plugin_data': '{"label": "Sample Float Field", "help_text": " ", \
             "max_value": null, "name": "c75e27cf-4d8f-49dc-bb15-da8137dac247", \
@@ -130,6 +130,24 @@ def form_element_help_text(db, survey_form_entry):
     )
 
     return form_element_help_text
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def form_element_time_start(db, survey_form_entry):
+    form_element_time_start_info = {
+        'plugin_data': '{"label": "What is the stop time of this survey?", "name": "c14d02bc-312f-44a5-843f-cc45baa79dc3", "help_text": "", "required": false}',
+        'plugin_uid': 'time_start',
+        'position': 3,
+        'form_entry': survey_form_entry,
+
+    }
+
+    form_element_time_start = FormElementEntry.objects.create(
+        **form_element_time_start_info
+    )
+
+    return form_element_time_start
 
 
 @pytest.fixture

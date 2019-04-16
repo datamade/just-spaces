@@ -12,7 +12,6 @@ class TimeStartForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "What is the start time of this survey?"),
         ("name", "name"),
-        ("age", ""),
         ("help_text", ""),
         ("required", False),
     ]
