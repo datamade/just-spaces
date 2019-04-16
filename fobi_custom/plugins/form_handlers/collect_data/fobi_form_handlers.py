@@ -20,14 +20,11 @@ class CollectDataPlugin(FormHandlerPlugin):
 
         form_id = form_entry.id
 
-        # These are placeholders. Location and Study are required fields on all
-        # surveys, and we need to decide if they'll be form elements or
-        # part of the form entry itself. See https://github.com/datamade/just-spaces/issues/63
-        # Similarly, total should be a required field in observational surveys, and
-        # default to 1 for intercept surveys.
-        location = Location.objects.first()
-        study = Study.objects.first()
+        location = Location.objects.get(id=form_entry.surveyformentry.location.id)
+        study = Study.objects.get(id=form_entry.surveyformentry.study.id)
 
+        # This is a placeholder. Total should be a required field in
+        # observational surveys, and default to 1 for intercept surveys.
         total = 5
 
         # Here we are using PLDP's survey end time value to record time
