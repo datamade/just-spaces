@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     # custom PLDP form elements
     'fobi_custom.plugins.form_elements.fields.age',
     'fobi_custom.plugins.form_elements.fields.gender',
-    'fobi_custom.plugins.form_elements.fields.study',
+    'fobi_custom.plugins.form_elements.fields.total',
     # 'fobi_custom.plugins.form_elements.fields.time_start',
     # 'fobi_custom.plugins.form_elements.fields.time_stop',
     'fobi_custom.plugins.form_elements.fields.survey_representation',
