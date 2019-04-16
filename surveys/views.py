@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView, View
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -67,18 +67,31 @@ class SurveyPublish(TemplateView):
         context['survey'].published = True
         context['survey'].save()
 
-        return redirect('surveys-list')
+        return redirect('surveys-list-run')
 
 
-class SurveyList(ListView):
+class SurveyListEdit(ListView):
     model = SurveyFormEntry
     template_name = "survey_list.html"
     context_object_name = 'surveys'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['published'] = self.request.GET.get('published', 'f')
-        context['surveys'] = context['surveys'].filter(published=context['published'])
+        context['surveys'] = context['surveys'].filter(published=False)
+        context['published'] = False
+
+        return context
+
+
+class SurveyListRun(ListView):
+    model = SurveyFormEntry
+    template_name = "survey_list.html"
+    context_object_name = 'surveys'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['surveys'] = context['surveys'].filter(published=True)
+        context['published'] = True 
 
         return context
 
@@ -127,8 +140,6 @@ class Signup(FormView):
         form = self.form_class(request.POST, instance=superuser)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
             return redirect('login')
 
         return render(request, self.template_name, {'form': form})

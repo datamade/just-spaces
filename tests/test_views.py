@@ -3,16 +3,27 @@ from django.urls import reverse
 
 
 @pytest.mark.django_db
-def test_survey_list_run(client, user, survey_form_entry):
+def test_survey_list_edit(client, user, survey_form_entry):
     client.force_login(user)
-    url = reverse('surveys-list')
-    url += '?published=f'
+    url = reverse('surveys-list-edit')
     response = client.get(url)
 
     surveys = response.context['surveys']
 
     assert response.status_code == 200
     assert len(surveys) == 1
+
+
+@pytest.mark.django_db
+def test_survey_list_run(client, user, survey_form_entry):
+    client.force_login(user)
+    url = reverse('surveys-list-run')
+    response = client.get(url)
+
+    surveys = response.context['surveys']
+
+    assert response.status_code == 200
+    assert len(surveys) == 0
 
 
 @pytest.mark.django_db
