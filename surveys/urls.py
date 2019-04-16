@@ -39,17 +39,14 @@ urlpatterns = [
         login_required(StudyCreate.as_view()),
         name='studies-create'),
 
-    # Survey list edit
     url(r'surveys/edit/$',
         login_required(SurveyListEdit.as_view()),
         name='surveys-list-edit'),
 
-    # Survey list run
     url(r'surveys/run/$',
         login_required(SurveyListRun.as_view()),
         name='surveys-list-run'),
 
-    # Create new survey
     url(r'surveys/create/$',
         login_required(SurveyCreate.as_view()),
         name='surveys-create'),
