@@ -1,6 +1,7 @@
 import pytest
 from datetime import datetime
 from django.core.management import call_command
+from django.utils.timezone import get_current_timezone
 
 from fobi.models import FormElementEntry
 from users.models import JustSpacesUser
@@ -135,7 +136,7 @@ def form_element_help_text(db, survey_form_entry):
 @pytest.mark.django_db
 def survey(db, location, study):
     survey = Survey.objects.create(
-        time_stop=datetime.now(tz=None),
+        time_stop=datetime.now(tz=get_current_timezone()),
         location=location,
         study=study,
         form_id=1,

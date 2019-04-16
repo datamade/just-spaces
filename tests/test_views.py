@@ -9,11 +9,14 @@ def test_survey_publish(client, survey_form_entry):
     url = reverse('surveys-publish', kwargs={'form_entry_id': survey_form_entry.id})
 
     get_response = client.get(url)
+
     assert get_response.status_code == 200
 
     post_response = client.post(url)
+    survey_form_entry.refresh_from_db()
+
     assert post_response.status_code == 302
-    # assert survey_form_entry.published
+    assert survey_form_entry.published
 
 
 @pytest.mark.django_db
