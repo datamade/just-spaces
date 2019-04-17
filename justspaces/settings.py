@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'fobi_custom.plugins.form_elements.fields.time_character',
     'fobi_custom.plugins.form_elements.fields.survey_representation',
     'fobi_custom.plugins.form_elements.fields.survey_method',
+    'fobi_custom.plugins.form_elements.fields.microclimate',
 
     # fobi form handlers
     'fobi_custom.plugins.form_handlers.collect_data',
