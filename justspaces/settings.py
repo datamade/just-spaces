@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'fobi_custom.plugins.form_elements.fields.survey_representation',
     'fobi_custom.plugins.form_elements.fields.survey_method',
     'fobi_custom.plugins.form_elements.fields.microclimate',
+    'fobi_custom.plugins.form_elements.fields.temperature_c',
 
     # fobi form handlers
     'fobi_custom.plugins.form_handlers.collect_data',
