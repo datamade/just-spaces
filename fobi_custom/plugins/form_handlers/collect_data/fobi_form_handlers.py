@@ -21,38 +21,39 @@ class CollectDataPlugin(FormHandlerPlugin):
         self.timezone = get_current_timezone()
         self.today = datetime.now(tz=self.timezone).date()
 
-        meta_elements = ['total', 'time_start', 'time_stop', 'survey_method', 'survey_representation']
         self.form = form
         self.form_id = form_entry.id
 
-        location = Location.objects.get(id=form_entry.surveyformentry.location.id)
-        study = Study.objects.get(id=form_entry.surveyformentry.study.id)
+        new_survey_info = {}
+
+        new_survey_info['location'] = Location.objects.get(id=form_entry.surveyformentry.location.id)
+        new_survey_info['study'] = Study.objects.get(id=form_entry.surveyformentry.study.id)
+
+        meta_elements = [('time_start', ''),
+                         ('time_stop', datetime.now(tz=self.timezone)),
+                         ('time_character', ''),
+                         ('representation', ''),
+                         ('microclimate', ''),
+                         ('temperature_c', None),
+                         ('method', 'Digital application')]
+
+        new_survey_info['form_id'] = self.form_id
+
+        for (plugin_uid, default) in meta_elements:
+            new_survey_info[plugin_uid] = get_saved_data(self, plugin_uid, default)
+
+        new_survey = Survey.objects.create(**new_survey_info)
 
         total = get_saved_data(self, 'total', 1)
-        datetime_start = get_saved_data(self, 'time_start')
-
-        # if the survey form has a value for time_stop, use that. otherwise,
-        # use submission time
-        datetime_stop = get_saved_data(self, 'time_stop', datetime.now(tz=self.timezone))
-        method = get_saved_data(self, 'survey_method')
-        representation = get_saved_data(self, 'survey_representation')
-
-        new_survey = Survey.objects.create(
-            study=study,
-            form_id=self.form_id,
-            location=location,
-            time_start=datetime_start,
-            time_stop=datetime_stop,
-            method=method,
-            representation=representation,
-        )
 
         new_survey_row = SurveyRow.objects.create(
             survey=new_survey,
             total=total
         )
 
-        form_elements = FormElementEntry.objects.filter(form_entry_id=self.form_id).exclude(plugin_uid__in=meta_elements)
+        meta_element_names = [name for (name, default) in meta_elements]
+
+        form_elements = FormElementEntry.objects.filter(form_entry_id=self.form_id).exclude(plugin_uid__in=meta_element_names)
 
         for form_element in form_elements:
 

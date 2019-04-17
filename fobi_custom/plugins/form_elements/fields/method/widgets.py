@@ -5,4 +5,4 @@ class BasePLDPSurveyMethodPluginWidget(FormElementPluginWidget):
     """BasePLDPSurveyMethodPluginWidget."""
 
     # Same as ``uid`` value of the ``PLDPSurveyMethodPlugin``.
-    plugin_uid = "survey_method"
+    plugin_uid = "method"
