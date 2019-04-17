@@ -13,7 +13,7 @@ class PLDPAgePlugin(FormFieldPlugin):
     uid = "pldp_age"
     name = "Age"
     form = PLDPAgeForm
-    group = "Public Life Data Protocol"  # Group to which the plugin belongs to
+    group = "Observational"  # Group to which the plugin belongs to
 
     def get_form_field_instances(self, request=None, form_entry=None,
                                  form_element_entries=None, **kwargs):
