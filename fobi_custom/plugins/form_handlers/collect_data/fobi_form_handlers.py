@@ -18,56 +18,57 @@ class CollectDataPlugin(FormHandlerPlugin):
     def run(self, form_entry, request, form, form_element_entries=None):
         """To be executed by handler."""
 
-        self.timezone = get_current_timezone()
-        self.today = datetime.now(tz=self.timezone).date()
+        if form_entry.surveyformentry.published:
+            self.timezone = get_current_timezone()
+            self.today = datetime.now(tz=self.timezone).date()
 
-        self.form = form
-        self.form_id = form_entry.id
+            self.form = form
+            self.form_id = form_entry.id
 
-        new_survey_info = {}
+            new_survey_info = {}
 
-        new_survey_info['location'] = Location.objects.get(id=form_entry.surveyformentry.location.id)
-        new_survey_info['study'] = Study.objects.get(id=form_entry.surveyformentry.study.id)
+            new_survey_info['location'] = Location.objects.get(id=form_entry.surveyformentry.location.id)
+            new_survey_info['study'] = Study.objects.get(id=form_entry.surveyformentry.study.id)
 
-        meta_elements = [('time_start', ''),
-                         ('time_stop', datetime.now(tz=self.timezone)),
-                         ('time_character', ''),
-                         ('representation', ''),
-                         ('microclimate', ''),
-                         ('temperature_c', None),
-                         ('method', 'Digital application')]
+            meta_elements = [('time_start', ''),
+                             ('time_stop', datetime.now(tz=self.timezone)),
+                             ('time_character', ''),
+                             ('representation', ''),
+                             ('microclimate', ''),
+                             ('temperature_c', None),
+                             ('method', 'Digital application')]
 
-        new_survey_info['form_id'] = self.form_id
+            new_survey_info['form_id'] = self.form_id
 
-        for (plugin_uid, default) in meta_elements:
-            new_survey_info[plugin_uid] = self.get_saved_data(plugin_uid, default)
+            for (plugin_uid, default) in meta_elements:
+                new_survey_info[plugin_uid] = self.get_saved_data(plugin_uid, default)
 
-        new_survey = Survey.objects.create(**new_survey_info)
+            new_survey = Survey.objects.create(**new_survey_info)
 
-        total = self.get_saved_data('total', 1)
+            total = self.get_saved_data('total', 1)
 
-        new_survey_row = SurveyRow.objects.create(
-            survey=new_survey,
-            total=total
-        )
+            new_survey_row = SurveyRow.objects.create(
+                survey=new_survey,
+                total=total
+            )
 
-        meta_element_names = [name for (name, default) in meta_elements]
+            meta_element_names = [name for (name, default) in meta_elements]
 
-        form_elements = FormElementEntry.objects.filter(form_entry_id=self.form_id).exclude(plugin_uid__in=meta_element_names)
+            form_elements = FormElementEntry.objects.filter(form_entry_id=self.form_id).exclude(plugin_uid__in=meta_element_names)
 
-        for form_element in form_elements:
+            for form_element in form_elements:
 
-            element_info = self.get_element_info(form_element)
+                element_info = self.get_element_info(form_element)
 
-            if element_info:
-                SurveyComponent.objects.create(
-                    row=new_survey_row,
-                    name=element_info['name'],
-                    label=element_info['label'],
-                    type=element_info['type'],
-                    position=element_info['position'],
-                    saved_data=element_info['saved_data']
-                )
+                if element_info:
+                    SurveyComponent.objects.create(
+                        row=new_survey_row,
+                        name=element_info['name'],
+                        label=element_info['label'],
+                        type=element_info['type'],
+                        position=element_info['position'],
+                        saved_data=element_info['saved_data']
+                    )
 
     def get_element_info(self, form_element):
         plugin_data = form_element.plugin_data

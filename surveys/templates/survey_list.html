@@ -23,6 +23,7 @@
         <th scope="col">Run</th>
         {% else %}
         <th scope="col">Edit</th>
+        <th scope="col">Preview</th>
         <th scope="col">Publish</th>
         {% endif %}
       </tr>
@@ -35,10 +36,11 @@
           <td>{{survey.updated}}</td>
           <td>{{survey.type | title}}</td>
           {% if published %}
-          <td><a href="{% url 'fobi.view_form_entry' survey.slug %}"><i class="fas fa-clipboard-list icon run"></i></a></td>
+          <td class="text-center"><a href="{% url 'fobi.view_form_entry' survey.slug %}"><i class="fas fa-clipboard-list icon run"></i></a></td>
           {% else %}
-          <td><a href="{% url 'fobi.edit_form_entry' survey.id %}"><i class="fas fa-pencil-alt icon edit"></i></a></td>
-          <td><a href="{% url 'surveys-publish' survey.id %}"><i class="far fa-newspaper icon delete"></i></a></td>
+          <td class="text-center"><a href="{% url 'fobi.edit_form_entry' survey.id %}"><i class="fas fa-pencil-alt icon edit"></i></a></td>
+          <td class="text-center"><a href="{% url 'fobi.view_form_entry' survey.slug %}"><i class="fas fa-eye icon preview"></i></a></td>
+          <td class="text-center"><a href="{% url 'surveys-publish' survey.id %}"><i class="far fa-newspaper icon delete"></i></a></td>
           {% endif %}
         </tr>
       {% endfor %}
