@@ -40,11 +40,11 @@ class CollectDataPlugin(FormHandlerPlugin):
         new_survey_info['form_id'] = self.form_id
 
         for (plugin_uid, default) in meta_elements:
-            new_survey_info[plugin_uid] = get_saved_data(self, plugin_uid, default)
+            new_survey_info[plugin_uid] = self.get_saved_data(plugin_uid, default)
 
         new_survey = Survey.objects.create(**new_survey_info)
 
-        total = get_saved_data(self, 'total', 1)
+        total = self.get_saved_data('total', 1)
 
         new_survey_row = SurveyRow.objects.create(
             survey=new_survey,
@@ -57,7 +57,7 @@ class CollectDataPlugin(FormHandlerPlugin):
 
         for form_element in form_elements:
 
-            element_info = get_element_info(self, form_element)
+            element_info = self.get_element_info(form_element)
 
             if element_info:
                 SurveyComponent.objects.create(
@@ -69,6 +69,44 @@ class CollectDataPlugin(FormHandlerPlugin):
                     saved_data=element_info['saved_data']
                 )
 
+    def get_element_info(self, form_element):
+        plugin_data = form_element.plugin_data
+        json_plugin_data = json.loads(plugin_data)
+
+        if 'text' in json_plugin_data.keys():
+            return None
+
+        else:
+            name = json_plugin_data['name']
+
+            element_info = {
+                'name': name,
+                'saved_data': self.form.cleaned_data[name],
+                'label': json_plugin_data['label'],
+                'type': form_element.plugin_uid,
+                'position': form_element.position,
+            }
+
+            return element_info
+
+    def get_element_data(self, form_element):
+        element_info = self.get_element_info(form_element)
+        saved_data = element_info['saved_data']
+
+        return saved_data
+
+    def get_saved_data(self, plugin_uid, default_value=''):
+        try:
+            form_element = FormElementEntry.objects.get(form_entry_id=self.form_id, plugin_uid=plugin_uid)
+        except FormElementEntry.DoesNotExist:
+            saved_data = default_value
+        else:
+            saved_data = self.get_element_data(form_element)
+            if (plugin_uid in ['time_start', 'time_stop']) and saved_data:
+                saved_data = datetime.combine(self.today, saved_data).replace(tzinfo=self.timezone)
+
+        return saved_data
+
 
 def plugin_data_repr(self):
     """Human readable representation of plugin data.
@@ -76,46 +114,6 @@ def plugin_data_repr(self):
     :return string:
     """
     return self.data.__dict__
-
-
-def get_element_info(self, form_element):
-    plugin_data = form_element.plugin_data
-    json_plugin_data = json.loads(plugin_data)
-
-    if 'text' in json_plugin_data.keys():
-        return None
-
-    else:
-        name = json_plugin_data['name']
-
-        element_info = {
-            'name': name,
-            'saved_data': self.form.cleaned_data[name],
-            'label': json_plugin_data['label'],
-            'type': form_element.plugin_uid,
-            'position': form_element.position,
-        }
-
-        return element_info
-
-
-def get_element_data(self, form_element):
-    element_info = get_element_info(self, form_element)
-    saved_data = element_info['saved_data']
-
-    return saved_data
-
-
-def get_saved_data(self, plugin_uid, default_value=''):
-    try:
-        form_element = FormElementEntry.objects.get(form_entry_id=self.form_id, plugin_uid=plugin_uid)
-        saved_data = get_element_data(self, form_element)
-        if (plugin_uid in ['time_start', 'time_stop']) and saved_data:
-            saved_data = datetime.combine(self.today, saved_data).replace(tzinfo=self.timezone)
-    except FormElementEntry.DoesNotExist:
-        saved_data = default_value
-
-    return saved_data
 
 
 form_handler_plugin_registry.register(CollectDataPlugin)
