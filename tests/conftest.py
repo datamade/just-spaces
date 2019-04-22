@@ -35,6 +35,7 @@ def user(db, agency):
     user = JustSpacesUser.objects.create(
         username='sampleuser',
         agency=agency,
+        is_superuser=True
     )
 
     return user
@@ -86,12 +87,30 @@ def survey_form_entry(db, user, location, study):
         'published': False,
         'location': location,
         'study': study,
-        'type': 'observational',
+        'type': 'intercept',
     }
 
     survey_form_entry = SurveyFormEntry.objects.create(**survey_form_entry_info)
 
     return survey_form_entry
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def survey_form_entry_observational(db, user, location, study):
+    survey_form_entry_observational_info = {
+        'id': 2,
+        'user': user,
+        'name': 'Sample Form Entry Observational',
+        'published': False,
+        'location': location,
+        'study': study,
+        'type': 'observational',
+    }
+
+    survey_form_entry_observational = SurveyFormEntry.objects.create(**survey_form_entry_observational_info)
+
+    return survey_form_entry_observational
 
 
 @pytest.fixture
@@ -148,6 +167,27 @@ def form_element_time_start(db, survey_form_entry):
     )
 
     return form_element_time_start
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def form_element_observational(db, survey_form_entry_observational):
+    form_element_observational_info = {
+        'plugin_data': '{"label": "How many people do you see between the \
+                         ages of 0-14?", "name": "2f12b180-ffb4-4342-ad72-\
+                         52d482e44b1f", "age": "0-14", "help_text": "", \
+                         "required": false}',
+        'plugin_uid': 'plugin_age',
+        'position': 4,
+        'form_entry': survey_form_entry_observational,
+
+    }
+
+    form_element_observational = FormElementEntry.objects.create(
+        **form_element_observational_info
+    )
+
+    return form_element_observational
 
 
 @pytest.fixture

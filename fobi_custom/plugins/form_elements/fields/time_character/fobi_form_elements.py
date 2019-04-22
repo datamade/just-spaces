@@ -12,7 +12,7 @@ class TimeCharacterPlugin(FormFieldPlugin):
     uid = "time_character"
     name = "Time Character"
     form = TimeCharacterForm
-    group = "Public Life Data Protocol"  # Group to which the plugin belongs to
+    group = "Survey Metadata"  # Group to which the plugin belongs to
 
     def get_form_field_instances(self, request=None, form_entry=None,
                                  form_element_entries=None, **kwargs):

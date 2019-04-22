@@ -17,4 +17,4 @@ def test_survey_form_entry(client, user, survey_form_entry):
 
     assert saved_survey_form_entry.name == 'Sample Form Entry'
     assert not saved_survey_form_entry.published
-    assert saved_survey_form_entry.type == 'observational'
+    assert saved_survey_form_entry.type == 'intercept'
