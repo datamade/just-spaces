@@ -98,11 +98,12 @@ class CollectDataPlugin(FormHandlerPlugin):
     def get_saved_data(self, plugin_uid, default_value=''):
         try:
             form_element = FormElementEntry.objects.get(form_entry_id=self.form_id, plugin_uid=plugin_uid)
+        except FormElementEntry.DoesNotExist:
+            saved_data = default_value
+        else:
             saved_data = self.get_element_data(form_element)
             if (plugin_uid in ['time_start', 'time_stop']) and saved_data:
                 saved_data = datetime.combine(self.today, saved_data).replace(tzinfo=self.timezone)
-        except FormElementEntry.DoesNotExist:
-            saved_data = default_value
 
         return saved_data
 
