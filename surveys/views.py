@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.forms import formset_factory
 
 from pldp.models import Agency, Location, Study, Survey
 
@@ -11,8 +12,8 @@ from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
 
-from .models import SurveyFormEntry
-from .forms import StudyCreateForm, SurveyCreateForm
+from .models import SurveyFormEntry, SurveyChart
+from .forms import StudyCreateForm, SurveyCreateForm, SurveyChartForm
 
 
 class AgencyCreate(CreateView):
@@ -132,6 +133,9 @@ class SurveySubmittedDetail(TemplateView):
 
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)
+
+        ChartFormset = formset_factory(SurveyChartForm, can_order=True, can_delete=True)
+        context['chart_formset'] = ChartFormset()
 
         return context
 

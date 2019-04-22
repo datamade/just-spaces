@@ -9,6 +9,9 @@
     <h2 class="card-title">{{ form_entry.name }}</h2>
     <br />
 
+    <h3 class="card-title">Export</h3>
+    <br />
+
     <table class="table table-hover table-striped card-text display nowrap" id="survey-submitted-detail">
     <thead>
       <tr>
@@ -29,6 +32,16 @@
       {% endfor %}
     </tbody>
     </table>
+
+    <br />
+    <h3 class="card-title">Analyze</h3>
+    <br />
+
+    <form method="post">
+      <table>
+        {{ chart_formset }}
+      </table>
+    </form>
 
   </div>
 </div>
