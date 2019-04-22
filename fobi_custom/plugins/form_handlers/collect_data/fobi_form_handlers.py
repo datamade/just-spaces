@@ -1,10 +1,10 @@
 import json
-import datetime
+from datetime import datetime
 from django.utils.timezone import get_current_timezone
 from django.utils.translation import ugettext_lazy as _
 
 from fobi.base import FormHandlerPlugin, form_handler_plugin_registry
-from fobi.models import FormEntry, FormElementEntry
+from fobi.models import FormElementEntry
 
 from pldp.models import Study, Location, Survey, SurveyRow, SurveyComponent
 
@@ -18,63 +18,94 @@ class CollectDataPlugin(FormHandlerPlugin):
     def run(self, form_entry, request, form, form_element_entries=None):
         """To be executed by handler."""
 
-        form_id = form_entry.id
+        self.timezone = get_current_timezone()
+        self.today = datetime.now(tz=self.timezone).date()
 
-        # These are placeholders. Location and Study are required fields on all
-        # surveys, and we need to decide if they'll be form elements or
-        # part of the form entry itself. See https://github.com/datamade/just-spaces/issues/63
-        # Similarly, total should be a required field in observational surveys, and
-        # default to 1 for intercept surveys.
-        location = Location.objects.first()
-        study = Study.objects.first()
+        self.form = form
+        self.form_id = form_entry.id
 
-        total = 5
+        new_survey_info = {}
 
-        # Here we are using PLDP's survey end time value to record time
-        # of submission
-        time_stop = datetime.datetime.now(tz=get_current_timezone())
+        new_survey_info['location'] = Location.objects.get(id=form_entry.surveyformentry.location.id)
+        new_survey_info['study'] = Study.objects.get(id=form_entry.surveyformentry.study.id)
 
-        new_survey = Survey.objects.create(
-            study=study,
-            form_id=form_id,
-            location=location,
-            time_stop=time_stop
-        )
+        meta_elements = [('time_start', ''),
+                         ('time_stop', datetime.now(tz=self.timezone)),
+                         ('time_character', ''),
+                         ('representation', ''),
+                         ('microclimate', ''),
+                         ('temperature_c', None),
+                         ('method', 'Digital application')]
+
+        new_survey_info['form_id'] = self.form_id
+
+        for (plugin_uid, default) in meta_elements:
+            new_survey_info[plugin_uid] = self.get_saved_data(plugin_uid, default)
+
+        new_survey = Survey.objects.create(**new_survey_info)
+
+        total = self.get_saved_data('total', 1)
 
         new_survey_row = SurveyRow.objects.create(
             survey=new_survey,
             total=total
         )
 
-        form_entry = FormEntry.objects.get(id=form_id)
-        form_elements = FormElementEntry.objects.filter(form_entry=form_entry)
+        meta_element_names = [name for (name, default) in meta_elements]
 
-        for element in form_elements:
+        form_elements = FormElementEntry.objects.filter(form_entry_id=self.form_id).exclude(plugin_uid__in=meta_element_names)
 
-            plugin_data = element.plugin_data
-            json_plugin_data = json.loads(plugin_data)
+        for form_element in form_elements:
 
-            # Check if an element is help text. If it is, skip it
-            if 'text' in json_plugin_data.keys():
-                continue
+            element_info = self.get_element_info(form_element)
 
-            else:
-                name = json_plugin_data['name']
-
-                label = json_plugin_data['label']
-                type = element.plugin_uid
-                position = element.position
-
-                saved_data = form.cleaned_data[name]
-
+            if element_info:
                 SurveyComponent.objects.create(
                     row=new_survey_row,
-                    name=name,
-                    label=label,
-                    type=type,
-                    position=position,
-                    saved_data=saved_data
+                    name=element_info['name'],
+                    label=element_info['label'],
+                    type=element_info['type'],
+                    position=element_info['position'],
+                    saved_data=element_info['saved_data']
                 )
+
+    def get_element_info(self, form_element):
+        plugin_data = form_element.plugin_data
+        json_plugin_data = json.loads(plugin_data)
+
+        if 'text' in json_plugin_data.keys():
+            return None
+
+        else:
+            name = json_plugin_data['name']
+
+            element_info = {
+                'name': name,
+                'saved_data': self.form.cleaned_data[name],
+                'label': json_plugin_data['label'],
+                'type': form_element.plugin_uid,
+                'position': form_element.position,
+            }
+
+            return element_info
+
+    def get_element_data(self, form_element):
+        element_info = self.get_element_info(form_element)
+        saved_data = element_info['saved_data']
+
+        return saved_data
+
+    def get_saved_data(self, plugin_uid, default_value=''):
+        try:
+            form_element = FormElementEntry.objects.get(form_entry_id=self.form_id, plugin_uid=plugin_uid)
+        except FormElementEntry.DoesNotExist:
+            saved_data = default_value
+        else:
+            saved_data = self.get_element_data(form_element)
+            if (plugin_uid in ['time_start', 'time_stop']) and saved_data:
+                saved_data = datetime.combine(self.today, saved_data).replace(tzinfo=self.timezone)
+
+        return saved_data
 
 
 def plugin_data_repr(self):

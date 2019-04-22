@@ -65,11 +65,14 @@ INSTALLED_APPS = [
     # custom PLDP form elements
     'fobi_custom.plugins.form_elements.fields.age',
     'fobi_custom.plugins.form_elements.fields.gender',
-    'fobi_custom.plugins.form_elements.fields.study',
-    # 'fobi_custom.plugins.form_elements.fields.time_start',
-    # 'fobi_custom.plugins.form_elements.fields.time_stop',
-    'fobi_custom.plugins.form_elements.fields.survey_representation',
-    'fobi_custom.plugins.form_elements.fields.survey_method',
+    'fobi_custom.plugins.form_elements.fields.total',
+    'fobi_custom.plugins.form_elements.fields.time_start',
+    'fobi_custom.plugins.form_elements.fields.time_stop',
+    'fobi_custom.plugins.form_elements.fields.time_character',
+    'fobi_custom.plugins.form_elements.fields.representation',
+    'fobi_custom.plugins.form_elements.fields.method',
+    'fobi_custom.plugins.form_elements.fields.microclimate',
+    'fobi_custom.plugins.form_elements.fields.temperature_c',
 
     # fobi form handlers
     'fobi_custom.plugins.form_handlers.collect_data',
@@ -130,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
