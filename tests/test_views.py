@@ -27,6 +27,33 @@ def test_survey_list_run(client, user, survey_form_entry):
 
 
 @pytest.mark.django_db
+def test_survey_edit_intercept(client, user, survey_form_entry):
+    client.force_login(user)
+    url = reverse('fobi.edit_form_entry', kwargs={'form_entry_id': survey_form_entry.id})
+    response = client.get(url)
+
+    plugins = response.context['user_form_element_plugins']
+
+    print(plugins)
+    print(survey_form_entry.type)
+
+    assert response.status_code == 200
+    assert len(plugins) == 3
+
+
+@pytest.mark.django_db
+def test_survey_edit_observational(client, user, survey_form_entry_observational):
+    client.force_login(user)
+    url = reverse('fobi.edit_form_entry', kwargs={'form_entry_id': survey_form_entry_observational.id})
+    response = client.get(url)
+
+    plugins = response.context['user_form_element_plugins']
+
+    assert response.status_code == 200
+    assert len(plugins) == 4
+
+
+@pytest.mark.django_db
 def test_survey_publish(client, survey_form_entry):
     assert not survey_form_entry.published
 
