@@ -56,8 +56,12 @@ def test_survey_preview(client, user, survey_form_entry_observational):
     url = reverse('fobi.view_form_entry', kwargs={'form_entry_slug': survey_form_entry_observational.slug})
     response = client.get(url)
 
+    print('Preview ' + survey_form_entry_observational.name)
+    print(response.content.decode('utf-8'))
+
     assert response.status_code == 200
     assert not response.context['form_entry'].surveyformentry.published
+    assert ('Preview ' + survey_form_entry_observational.name) in response.content.decode('utf-8')
 
 
 @pytest.mark.django_db
