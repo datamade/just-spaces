@@ -84,7 +84,7 @@ def survey_form_entry(db, user, location, study):
         'id': 1,
         'user': user,
         'name': 'Sample Form Entry',
-        'published': False,
+        'published': True,
         'location': location,
         'study': study,
         'type': 'intercept',

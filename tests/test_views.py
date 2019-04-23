@@ -3,7 +3,7 @@ from django.urls import reverse
 
 
 @pytest.mark.django_db
-def test_survey_list_edit(client, user, survey_form_entry):
+def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_observational):
     client.force_login(user)
     url = reverse('surveys-list-edit')
     response = client.get(url)
@@ -15,7 +15,7 @@ def test_survey_list_edit(client, user, survey_form_entry):
 
 
 @pytest.mark.django_db
-def test_survey_list_run(client, user, survey_form_entry):
+def test_survey_list_run(client, user, survey_form_entry, survey_form_entry_observational):
     client.force_login(user)
     url = reverse('surveys-list-run')
     response = client.get(url)
@@ -23,7 +23,7 @@ def test_survey_list_run(client, user, survey_form_entry):
     surveys = response.context['surveys']
 
     assert response.status_code == 200
-    assert len(surveys) == 0
+    assert len(surveys) == 1
 
 
 @pytest.mark.django_db
@@ -51,20 +51,30 @@ def test_survey_edit_observational(client, user, survey_form_entry_observational
 
 
 @pytest.mark.django_db
-def test_survey_publish(client, survey_form_entry):
-    assert not survey_form_entry.published
+def test_survey_preview(client, user, survey_form_entry_observational):
+    client.force_login(user)
+    url = reverse('fobi.view_form_entry', kwargs={'form_entry_slug': survey_form_entry_observational.slug})
+    response = client.get(url)
 
-    url = reverse('surveys-publish', kwargs={'form_entry_id': survey_form_entry.id})
+    assert response.status_code == 200
+    assert not response.context['form_entry'].surveyformentry.published
+
+
+@pytest.mark.django_db
+def test_survey_publish(client, survey_form_entry_observational):
+    assert not survey_form_entry_observational.published
+
+    url = reverse('surveys-publish', kwargs={'form_entry_id': survey_form_entry_observational.id})
 
     get_response = client.get(url)
 
     assert get_response.status_code == 200
 
     post_response = client.post(url)
-    survey_form_entry.refresh_from_db()
+    survey_form_entry_observational.refresh_from_db()
 
     assert post_response.status_code == 302
-    assert survey_form_entry.published
+    assert survey_form_entry_observational.published
 
 
 @pytest.mark.django_db
