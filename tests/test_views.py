@@ -54,6 +54,16 @@ def test_survey_edit_observational(client, user, survey_form_entry_observational
 
 
 @pytest.mark.django_db
+def test_survey_preview(client, user, survey_form_entry):
+    client.force_login(user)
+    url = reverse('fobi.view_form_entry', kwargs={'form_entry_slug': survey_form_entry.slug})
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert not response.context['form_entry'].surveyformentry.published
+
+
+@pytest.mark.django_db
 def test_survey_publish(client, survey_form_entry):
     assert not survey_form_entry.published
 
