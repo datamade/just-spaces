@@ -40,9 +40,7 @@
     {{ chart_formset.management_form }}
     <form method="post" id="chart-formset">
       {% for form in chart_formset.forms %}
-        <table>
-          {{ form }}
-        </table>
+        {% include 'partials/chart_form.html' %}
       {% endfor %}
     </form>
 
@@ -50,9 +48,7 @@
 
     <!-- Use a hidden empty form as the base for adding new forms -->
     <div id="chart-formset-template" style="display:none">
-      <table>
-        {{ chart_formset.empty_form }}
-      </table>
+      {% include 'partials/chart_form.html' with form=chart_formset.empty_form %}
     </div>
 
     <hr />
