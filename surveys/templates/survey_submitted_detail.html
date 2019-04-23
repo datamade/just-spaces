@@ -37,11 +37,30 @@
     <h3 class="card-title">Analyze</h3>
     <br />
 
-    <form method="post">
-      <table>
-        {{ chart_formset }}
-      </table>
+    {{ chart_formset.management_form }}
+    <form method="post" id="chart-formset">
+      {% for form in chart_formset.forms %}
+        <table>
+          {{ form }}
+        </table>
+      {% endfor %}
     </form>
+
+    <button id="add-new-chart" class="btn btn-primary">Add new chart</button>
+
+    <!-- Use a hidden empty form as the base for adding new forms -->
+    <div id="chart-formset-template" style="display:none">
+      <table>
+        {{ chart_formset.empty_form }}
+      </table>
+    </div>
+
+    <hr />
+
+    <div class="float-right">
+      <button id="clear-all-charts" class="btn btn-link">Clear charts</button>
+      <button id="save-charts" class="btn btn-primary">Save charts</button>
+    </div>
 
   </div>
 </div>
@@ -57,6 +76,13 @@ $(document).ready(function () {
       "leftColumns": 1
     }
   });
+
+  $('#add-new-chart').click(function() {
+    var formIdx = $('#id_form-TOTAL_FORMS').val();
+    $('#chart-formset').append($('#chart-formset-template').html().replace(/__prefix__/g, formIdx));
+    $('#id_form-TOTAL_FORMS').val(parseInt(formIdx) + 1);
+  })
+
 } );
 </script>
 
