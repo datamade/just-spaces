@@ -30,7 +30,7 @@ class CollectDataPlugin(FormHandlerPlugin):
             new_survey_info['location'] = Location.objects.get(id=form_entry.surveyformentry.location.id)
             new_survey_info['study'] = Study.objects.get(id=form_entry.surveyformentry.study.id)
 
-            meta_elements = [('time_start', ''),
+            meta_elements = [('time_start', datetime.now(tz=self.timezone)),
                              ('time_stop', datetime.now(tz=self.timezone)),
                              ('time_character', ''),
                              ('representation', ''),
