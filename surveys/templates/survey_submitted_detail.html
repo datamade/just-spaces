@@ -37,8 +37,9 @@
     <h3 class="card-title">Analyze</h3>
     <br />
 
-    {{ chart_formset.management_form }}
     <form method="post" id="chart-formset">
+      {{ chart_formset.management_form }}
+      {% csrf_token %}
       {% for form in chart_formset.forms %}
         {% include 'partials/chart_form.html' %}
       {% endfor %}
@@ -54,7 +55,7 @@
     <hr />
 
     <div class="float-right">
-      <button id="clear-all-charts" class="btn btn-link">Clear charts</button>
+      <button id="clear-charts" class="btn btn-link">Clear charts</button>
       <button id="save-charts" class="btn btn-primary">Save charts</button>
     </div>
 
@@ -73,10 +74,28 @@ $(document).ready(function () {
     }
   });
 
+  var $totalForms = $('[name$=TOTAL_FORMS]');
+  var chartContainer = '[class^="chart-container-"]'
+
   $('#add-new-chart').click(function() {
-    var formIdx = $('#id_form-TOTAL_FORMS').val();
+    var formIdx = $totalForms.val();
     $('#chart-formset').append($('#chart-formset-template').html().replace(/__prefix__/g, formIdx));
-    $('#id_form-TOTAL_FORMS').val(parseInt(formIdx) + 1);
+    $totalForms.val(parseInt(formIdx) + 1);
+  })
+
+  $('form').on('click', '.delete-chart', function(event) {
+    event.preventDefault();
+    $(this).parents(chartContainer).remove();
+    $totalForms.val(parseInt($totalForms.val()) - 1);
+  });
+
+  $('#clear-charts').click(function() {
+    $('#chart-formset').find(chartContainer).not(':hidden').remove();
+    $totalForms.val(0);
+  })
+
+  $('#save-charts').click(function() {
+    $('#chart-formset').submit();
   })
 
 } );

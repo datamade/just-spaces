@@ -1,5 +1,17 @@
-<div class="card bg-light mb-3 p-3">
-  <table>
-    {{ form }}
-  </table>
+<div class="chart-container-__prefix__ row">
+  <div class="col-sm-8">
+    <div class="card bg-light mb-3 p-3 ml-auto">
+      <div class="card-block">
+        <button class="btn btn-danger float-right delete-chart"
+                id="delete-chart-__prefix__"
+                onclick="event.preventDefault()"
+        >
+          Remove
+        </button>
+      </div>
+      <table>
+        {{ form }}
+      </table>
+    </div>
+  </div>
 </div>

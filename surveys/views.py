@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.forms import formset_factory
+from django.contrib import messages
 
 from pldp.models import Agency, Location, Study, Survey
 
@@ -138,6 +139,17 @@ class SurveySubmittedDetail(TemplateView):
         context['chart_formset'] = ChartFormset()
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        ChartFormset = formset_factory(SurveyChartForm, can_order=True, can_delete=True)
+        formset = ChartFormset(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                form.save()
+
+        messages.add_message(request, messages.INFO, 'Charts saved!')
+        return render(request, self.template_name, self.get_context_data(**kwargs)) 
+
 
 
 class Signup(FormView):
