@@ -62,17 +62,21 @@ INSTALLED_APPS = [
     'fobi.contrib.plugins.form_elements.fields.textarea',
     'fobi.contrib.plugins.form_elements.fields.time',
 
-    # custom PLDP form elements
-    'fobi_custom.plugins.form_elements.fields.age',
-    'fobi_custom.plugins.form_elements.fields.gender',
-    'fobi_custom.plugins.form_elements.fields.total',
-    'fobi_custom.plugins.form_elements.fields.time_start',
-    'fobi_custom.plugins.form_elements.fields.time_stop',
-    'fobi_custom.plugins.form_elements.fields.time_character',
-    'fobi_custom.plugins.form_elements.fields.representation',
-    'fobi_custom.plugins.form_elements.fields.method',
-    'fobi_custom.plugins.form_elements.fields.microclimate',
-    'fobi_custom.plugins.form_elements.fields.temperature_c',
+    # custom metadata form elements
+    'fobi_custom.plugins.form_elements.fields.metadata.total',
+    'fobi_custom.plugins.form_elements.fields.metadata.time_start',
+    'fobi_custom.plugins.form_elements.fields.metadata.time_stop',
+    'fobi_custom.plugins.form_elements.fields.metadata.time_character',
+    'fobi_custom.plugins.form_elements.fields.metadata.representation',
+    'fobi_custom.plugins.form_elements.fields.metadata.method',
+    'fobi_custom.plugins.form_elements.fields.metadata.microclimate',
+    'fobi_custom.plugins.form_elements.fields.metadata.temperature_c',
+
+    # custom intercept form elements
+
+    # custom observational form elements
+    'fobi_custom.plugins.form_elements.fields.observational.age',
+    'fobi_custom.plugins.form_elements.fields.observational.gender',
 
     # fobi form handlers
     'fobi_custom.plugins.form_handlers.collect_data',
