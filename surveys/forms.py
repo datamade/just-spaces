@@ -35,3 +35,7 @@ class SurveyChartForm(forms.ModelForm):
     class Meta:
         model = SurveyChart
         fields = ['short_description']
+
+    def __init__(self, *args, form_entry, **kwargs):
+        self.form_entry = SurveyFormEntry.objects.get(id=form_entry)
+        super().__init__(*args, **kwargs)

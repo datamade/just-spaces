@@ -3,7 +3,7 @@ from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.forms import formset_factory
+from django.forms import modelformset_factory
 from django.contrib import messages
 
 from pldp.models import Agency, Location, Study, Survey
@@ -125,6 +125,11 @@ class SurveySubmittedList(TemplateView):
 
 class SurveySubmittedDetail(TemplateView):
     template_name = "survey_submitted_detail.html"
+    ChartFormset = ChartFormset = modelformset_factory(SurveyChart,
+                                                       form=SurveyChartForm,
+                                                       exclude=('form_entry',),
+                                                       can_order=True,
+                                                       can_delete=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -135,21 +140,31 @@ class SurveySubmittedDetail(TemplateView):
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)
 
-        ChartFormset = formset_factory(SurveyChartForm, can_order=True, can_delete=True)
-        context['chart_formset'] = ChartFormset()
+        context['chart_formset'] = self.ChartFormset(
+            queryset=SurveyChart.objects.filter(form_entry=context['form_entry']),
+            form_kwargs={'form_entry': context['form_entry_id']},
+        )
 
         return context
 
     def post(self, request, *args, **kwargs):
-        ChartFormset = formset_factory(SurveyChartForm, can_order=True, can_delete=True)
-        formset = ChartFormset(request.POST)
+        context = self.get_context_data(**kwargs)
+        formset = self.ChartFormset(
+            request.POST,
+            form_kwargs={'form_entry': context['form_entry_id']}
+        )
         if formset.is_valid():
             for form in formset:
-                form.save()
+                # Wait to commit the SurveyChart until we can assign it a
+                # form_entry ID.
+                survey_chart = form.save(commit=False)
+                survey_chart.form_entry = form.form_entry
+                survey_chart.save()
 
-        messages.add_message(request, messages.INFO, 'Charts saved!')
-        return render(request, self.template_name, self.get_context_data(**kwargs)) 
+                messages.add_message(request, messages.INFO, 'Charts saved!')
 
+        context['chart_formset'] = formset
+        return render(request, self.template_name, context)
 
 
 class Signup(FormView):

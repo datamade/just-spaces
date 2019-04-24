@@ -40,7 +40,7 @@
     <form method="post" id="chart-formset">
       {{ chart_formset.management_form }}
       {% csrf_token %}
-      {% for form in chart_formset.forms %}
+      {% for form in chart_formset %}
         {% include 'partials/chart_form.html' %}
       {% endfor %}
     </form>
