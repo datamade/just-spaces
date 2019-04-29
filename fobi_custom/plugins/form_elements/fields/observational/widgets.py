@@ -3,7 +3,6 @@ from django import forms
 
 
 class ObservationalWidget(forms.MultiWidget):
-    # template_name = 'observational_widget.html'
 
     def __init__(self, choices, *args, **kwargs):
         self.choices = choices
@@ -28,7 +27,6 @@ class ObservationalWidget(forms.MultiWidget):
         index = string.index(input)
         _, choice = choices[index]
         return choice
-
 
     def decompress(self, value):
         if value:
