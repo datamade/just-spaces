@@ -28,7 +28,6 @@ class ObservationalWidget(forms.MultiWidget):
         _, choice = choices[index]
         return choice
 
-
     def decompress(self, value):
         if value:
             return value.split(' ')
