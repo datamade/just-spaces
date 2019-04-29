@@ -1,16 +1,27 @@
-<div class="chart-container-__prefix__ row">
+<div class="chart-container-{{chart_id}} row">
   <div class="col-sm-8">
     <div class="card bg-light mb-3 p-3 ml-auto">
       <div class="card-block">
         <button class="btn btn-danger float-right delete-chart"
-                id="delete-chart-__prefix__"
+                id="delete-chart-{{chart_id}}"
                 onclick="event.preventDefault()"
         >
           Remove
         </button>
       </div>
       <table>
-        {{ form }}
+        <tbody>
+          <tr>
+            <th>
+              <label for="id_form-{{chart_id}}-short_description">
+                Short description:
+              </label>
+            </th>
+            <td>
+                {{form.short_description}}
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>

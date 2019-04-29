@@ -41,7 +41,7 @@
       {{ chart_formset.management_form }}
       {% csrf_token %}
       {% for form in chart_formset %}
-        {% include 'partials/chart_form.html' %}
+        {% include 'partials/chart_form.html' with chart_id=form.data.order %}
       {% endfor %}
     </form>
 
@@ -85,8 +85,8 @@ $(document).ready(function () {
 
   $('form').on('click', '.delete-chart', function(event) {
     event.preventDefault();
-    $(this).parents(chartContainer).remove();
-    $totalForms.val(parseInt($totalForms.val()) - 1);
+    $(this).parents(chartContainer).hide();
+    $(this).parents(chartContainer).find('input[name$="DELETE"]').prop("checked", "true");
   });
 
   $('#clear-charts').click(function() {
