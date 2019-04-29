@@ -148,10 +148,9 @@ class SurveySubmittedDetail(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
         formset = self.ChartFormset(
             request.POST,
-            form_kwargs={'form_entry': context['form_entry_id']}
+            form_kwargs={'form_entry': kwargs['form_entry_id']}
         )
         if formset.is_valid():
             for form in formset:
@@ -159,11 +158,23 @@ class SurveySubmittedDetail(TemplateView):
                 # form_entry ID.
                 survey_chart = form.save(commit=False)
                 survey_chart.form_entry = form.form_entry
-                survey_chart.save()
 
-                messages.add_message(request, messages.INFO, 'Charts saved!')
+                if form.cleaned_data.get('ORDER'):
+                    survey_chart.order = form.cleaned_data['ORDER']
 
-        context['chart_formset'] = formset
+                if form.cleaned_data.get('DELETE'):
+                    # If the chart has already been saved, it will have a unique
+                    # ID, and we need to delete it from the database.
+                    if survey_chart.id:
+                        survey_chart.delete()
+                    else:
+                        continue
+                else:
+                    survey_chart.save()
+
+            messages.add_message(request, messages.INFO, 'Charts saved!')
+
+        context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
 

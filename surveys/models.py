@@ -43,4 +43,9 @@ class SurveyChart(models.Model):
         on_delete=models.CASCADE
     )
 
+    order = models.IntegerField(default=0)
+
     short_description = models.TextField()
+
+    class Meta:
+        ordering = ['order']
