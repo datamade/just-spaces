@@ -2,8 +2,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from fobi.base import BaseFormFieldPluginForm, get_theme
-from pldp.forms import AGE_BASIC_CHOICES, AGE_DETAILED_CHOICES, \
-                       AGE_COMPLEX_CHOICES
+from pldp.forms import AGE_TYPE_CHOICES
 
 theme = get_theme(request=None, as_instance=True)
 
@@ -11,16 +10,10 @@ theme = get_theme(request=None, as_instance=True)
 class AgeObservationalForm(forms.Form, BaseFormFieldPluginForm):
     """AgeObservationalForm."""
 
-    DETAIL_LEVEL_CHOICES = (
-        ('basic', 'Basic'),
-        ('detailed', 'Detailed'),
-        ('complex', 'Complex'),
-    )
-
     plugin_data_fields = [
         ("label", "How many people do you see in each age range?"),
         ("name", "name"),
-        ("age", ""),
+        ("detail_level", ""),
         ("help_text", ""),
         ("required", False),
     ]
@@ -32,7 +25,7 @@ class AgeObservationalForm(forms.Form, BaseFormFieldPluginForm):
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
 
-    detail_level = forms.ChoiceField(choices=DETAIL_LEVEL_CHOICES,
+    detail_level = forms.ChoiceField(choices=AGE_TYPE_CHOICES,
                                      help_text="Following the Public Life Data "
                                      "Protocol, age data should be collected at "
                                      "one of the following levels of detail:<br /><br />"

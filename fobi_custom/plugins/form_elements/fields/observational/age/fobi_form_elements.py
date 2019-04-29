@@ -1,9 +1,12 @@
-from django import forms
-
+import sys
 from fobi.base import FormFieldPlugin, form_element_plugin_registry
+from pldp.forms import AGE_BASIC_CHOICES, AGE_DETAILED_CHOICES, \
+                       AGE_COMPLEX_CHOICES
+
+from ..widgets import ObservationalWidget
+from ..fields import ObservationalField
 
 from .forms import AgeObservationalForm
-from .widgets import AgeObservationalWidget, options
 
 
 class AgeObservationalPlugin(FormFieldPlugin):
@@ -17,29 +20,17 @@ class AgeObservationalPlugin(FormFieldPlugin):
     def get_form_field_instances(self, request=None, form_entry=None,
                                  form_element_entries=None, **kwargs):
 
+        choice_level = 'AGE_{}_CHOICES'.format(self.data.detail_level.upper())
+        choices = getattr(sys.modules[__name__], choice_level)
+
         field_kwargs = {
             'required': self.data.required,
             'label': self.data.label,
+            'choices': choices,
+            'widget': ObservationalWidget(choices=choices)
         }
 
-        return [(self.data.name, AgeObservationalField, field_kwargs)]
-
-
-class AgeObservationalField(forms.MultiValueField):
-    widget = AgeObservationalWidget()
-
-    def __init__(self, *args, **kwargs):
-        fields = [forms.IntegerField()] * options
-        
-        super(AgeObservationalField, self).__init__(fields, *args, **kwargs)
-
-    def compress(self, data_list):
-        print("incoming data list: ")
-        print(data_list)
-        saved_data = sum(data_list)
-        print("processed saved data: ")
-        print(saved_data)
-        return saved_data
+        return [(self.data.name, ObservationalField, field_kwargs)]
 
 
 form_element_plugin_registry.register(AgeObservationalPlugin)
