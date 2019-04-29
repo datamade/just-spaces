@@ -3,7 +3,6 @@ from django import forms
 
 
 class ObservationalWidget(forms.MultiWidget):
-    # template_name = 'observational_widget.html'
 
     def __init__(self, choices, *args, **kwargs):
         self.choices = choices
