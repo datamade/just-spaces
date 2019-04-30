@@ -1,6 +1,4 @@
-import sys
 from fobi.base import FormFieldPlugin, form_element_plugin_registry
-from pldp.forms import MODE_BASIC_CHOICES, MODE_DETAILED_CHOICES
 
 from ..widgets import ObservationalWidget
 from ..fields import ObservationalField
@@ -19,8 +17,7 @@ class ModeObservationalPlugin(FormFieldPlugin):
     def get_form_field_instances(self, request=None, form_entry=None,
                                  form_element_entries=None, **kwargs):
 
-        choice_level = 'MODE_{}_CHOICES'.format(self.data.detail_level.upper())
-        choices = getattr(sys.modules[__name__], choice_level)
+        choices = self.data.categories
 
         field_kwargs = {
             'required': self.data.required,
