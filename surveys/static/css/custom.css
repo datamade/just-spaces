@@ -234,6 +234,23 @@ a.article:hover {
 }
 
 /* ---------------------------------------------------
+    DATA ANALYSIS DESIGNER
+----------------------------------------------------- */
+
+.portlet-handle:hover {
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+.portlet-handle:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+/* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
 
