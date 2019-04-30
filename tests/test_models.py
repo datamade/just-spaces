@@ -13,8 +13,17 @@ def test_user(user):
 
 @pytest.mark.django_db
 def test_survey_form_entry(client, user, survey_form_entry):
-    saved_survey_form_entry = SurveyFormEntry.objects.first()
+    saved_survey_form_entry = SurveyFormEntry.objects.get(id=1)
 
     assert saved_survey_form_entry.name == 'Sample Form Entry'
     assert saved_survey_form_entry.published
     assert saved_survey_form_entry.type == 'intercept'
+
+
+@pytest.mark.django_db
+def test_survey_form_entry_observational(client, user, survey_form_entry_observational, form_element_observational):
+    saved_survey_form_entry = SurveyFormEntry.objects.get(id=2)
+
+    assert saved_survey_form_entry.name == 'Sample Form Entry Observational'
+    assert not saved_survey_form_entry.published
+    assert saved_survey_form_entry.type == 'observational'

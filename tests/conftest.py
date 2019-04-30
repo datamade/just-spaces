@@ -173,12 +173,11 @@ def form_element_time_start(db, survey_form_entry):
 @pytest.mark.django_db
 def form_element_observational(db, survey_form_entry_observational):
     form_element_observational_info = {
-        'plugin_data': '{"label": "How many people do you see between the \
-                         ages of 0-14?", "name": "2f12b180-ffb4-4342-ad72-\
-                         52d482e44b1f", "age": "0-14", "help_text": "", \
-                         "required": false}',
-        'plugin_uid': 'plugin_age',
-        'position': 4,
+        'plugin_data': '{"label": "How many people do you see in each age \
+                        range?", "name": "57bc76ce-c8dc-4d64-acd6-955d455fac20", \
+                        "detail_level": "complex", "help_text": "", "required": false}',
+        'plugin_uid': 'age_observational',
+        'position': 1,
         'form_entry': survey_form_entry_observational,
 
     }

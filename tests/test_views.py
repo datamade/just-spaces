@@ -1,6 +1,8 @@
 import pytest
 from django.urls import reverse
 
+from pldp.forms import AGE_COMPLEX_CHOICES
+
 
 @pytest.mark.django_db
 def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_observational):
@@ -39,15 +41,20 @@ def test_survey_edit_intercept(client, user, survey_form_entry):
 
 
 @pytest.mark.django_db
-def test_survey_edit_observational(client, user, survey_form_entry_observational):
+def test_survey_edit_observational(client, user, survey_form_entry_observational, form_element_observational):
     client.force_login(user)
     url = reverse('fobi.edit_form_entry', kwargs={'form_entry_id': survey_form_entry_observational.id})
     response = client.get(url)
 
     plugins = response.context['user_form_element_plugins']
+    html = response.content.decode('utf-8')
 
     assert response.status_code == 200
     assert len(plugins) == 4
+
+    for choice, _ in AGE_COMPLEX_CHOICES:
+        label = '<label>{}</label>'.format(choice)
+        assert label in html
 
 
 @pytest.mark.django_db
@@ -55,9 +62,6 @@ def test_survey_preview(client, user, survey_form_entry_observational):
     client.force_login(user)
     url = reverse('fobi.view_form_entry', kwargs={'form_entry_slug': survey_form_entry_observational.slug})
     response = client.get(url)
-
-    print('Preview ' + survey_form_entry_observational.name)
-    print(response.content.decode('utf-8'))
 
     assert response.status_code == 200
     assert not response.context['form_entry'].surveyformentry.published
