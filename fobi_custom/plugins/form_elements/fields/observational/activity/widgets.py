@@ -5,4 +5,4 @@ class BaseActivityObservationalPluginWidget(FormElementPluginWidget):
     """BaseActivityObservationalPluginWidget."""
 
     # Same as ``uid`` value of the ``ModeObservationalPlugin``.
-    plugin_uid = "posture_observational"
+    plugin_uid = "activity_observational"

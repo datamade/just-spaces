@@ -1,26 +1,25 @@
 import sys
 from fobi.base import FormFieldPlugin, form_element_plugin_registry
-from pldp.forms import POSTURE_BASIC_CHOICES, POSTURE_DETAILED_CHOICES
+from pldp.forms import OBJECTS_BASIC_CHOICES
 
 from ..widgets import ObservationalWidget
 from ..fields import ObservationalField
 
-from .forms import PostureObservationalForm
+from .forms import ObjectsObservationalForm
 
 
-class PostureObservationalPlugin(FormFieldPlugin):
-    """PostureObservationalPlugin."""
+class ObjectsObservationalPlugin(FormFieldPlugin):
+    """ObjectsObservationalPlugin."""
 
-    uid = "posture_observational"
-    name = "Posture"
-    form = PostureObservationalForm
+    uid = "objects_observational"
+    name = "Objects"
+    form = ObjectsObservationalForm
     group = "Observational"  # Group to which the plugin belongs to
 
     def get_form_field_instances(self, request=None, form_entry=None,
                                  form_element_entries=None, **kwargs):
 
-        choice_level = 'POSTURE_{}_CHOICES'.format(self.data.detail_level.upper())
-        choices = getattr(sys.modules[__name__], choice_level)
+        choices = OBJECTS_BASIC_CHOICES
 
         field_kwargs = {
             'required': self.data.required,
@@ -32,4 +31,4 @@ class PostureObservationalPlugin(FormFieldPlugin):
         return [(self.data.name, ObservationalField, field_kwargs)]
 
 
-form_element_plugin_registry.register(PostureObservationalPlugin)
+form_element_plugin_registry.register(ObjectsObservationalPlugin)
