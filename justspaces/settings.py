@@ -73,9 +73,10 @@ INSTALLED_APPS = [
     'fobi_custom.plugins.form_elements.fields.metadata.temperature_c',
 
     # custom intercept form elements
+    'fobi_custom.plugins.form_elements.fields.intercept.age_intercept',
 
     # custom observational form elements
-    'fobi_custom.plugins.form_elements.fields.observational.age',
+    'fobi_custom.plugins.form_elements.fields.observational.age_observational',
     'fobi_custom.plugins.form_elements.fields.observational.gender',
     'fobi_custom.plugins.form_elements.fields.observational.mode',
     'fobi_custom.plugins.form_elements.fields.observational.posture',
