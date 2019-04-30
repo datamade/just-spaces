@@ -1,8 +1,8 @@
 from fobi.base import FormElementPluginWidget
 
 
-class BasePLDPGenderPluginWidget(FormElementPluginWidget):
-    """BasePLDPGenderPluginWidget."""
+class BaseGenderObservationalPluginWidget(FormElementPluginWidget):
+    """BaseGenderObservationalPluginWidget."""
 
-    # Same as ``uid`` value of the ``PLDPGenderPlugin``.
-    plugin_uid = "pldp_gender"
+    # Same as ``uid`` value of the ``GenderObservationalPlugin``.
+    plugin_uid = "gender_observational"
