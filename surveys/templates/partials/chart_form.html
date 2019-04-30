@@ -2,9 +2,10 @@
   <div class="col-sm-8">
     <div class="card bg-light mb-3 p-3 ml-auto">
       <div class="card-block">
-        <button class="btn btn-danger float-right delete-chart"
-                id="delete-chart-{{chart_id}}"
-                onclick="event.preventDefault()"
+        <button
+          class="btn btn-danger float-right delete-chart"
+          id="delete-chart-{{chart_id}}"
+          onclick="event.preventDefault()"
         >
           Remove
         </button>
@@ -19,10 +20,28 @@
             </th>
             <td>
                 {{form.short_description}}
+                {{form.order}}
+                {{form.id}}
+                <!-- Use display:none instead of type="hidden" so that JQuery can check/uncheck the input -->
+                <input type="checkbox"
+                  style="display: none"
+                  name="form-{{chart_id}}-DELETE"
+                  id="id_form-{{chart_id}}-DELETE"
+                />
             </td>
           </tr>
         </tbody>
       </table>
+      {% if form.errors %}
+        <div class="alert alert-danger mt-3">
+          <h4>Errors</h4>
+          <ul>
+            {% for field, errors in form.errors.items %}
+              <li>{{field}}: {{errors}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>

@@ -40,8 +40,15 @@
     <form method="post" id="chart-formset">
       {{ chart_formset.management_form }}
       {% csrf_token %}
+
+      {% if formset.non_form_errors %}
+        <div class="alert alert-danger">
+          {{ formset.non_form_errors }}
+        </div>
+      {% endif %}
+
       {% for form in chart_formset %}
-        {% include 'partials/chart_form.html' with chart_id=form.data.order %}
+        {% include 'partials/chart_form.html' with chart_id=forloop.counter0 %}
       {% endfor %}
     </form>
 
@@ -49,7 +56,7 @@
 
     <!-- Use a hidden empty form as the base for adding new forms -->
     <div id="chart-formset-template" style="display:none">
-      {% include 'partials/chart_form.html' with form=chart_formset.empty_form %}
+      {% include 'partials/chart_form.html' with form=chart_formset.empty_form chart_id='__prefix__' %}
     </div>
 
     <hr />
@@ -77,10 +84,21 @@ $(document).ready(function () {
   var $totalForms = $('[name$=TOTAL_FORMS]');
   var chartContainer = '[class^="chart-container-"]'
 
+  function resetChartOrder() {
+    $(chartContainer).find('input[name$="order"]').each(function(idx) {
+      // Skip the empty form, whose name contains the string __prefix__
+      if (this.name.indexOf('__prefix__') === -1) {
+        formIdx = idx + 1;  // Form order values are 1-indexed
+        $(this).val(formIdx);
+      }
+    });
+  }
+
   $('#add-new-chart').click(function() {
     var formIdx = $totalForms.val();
     $('#chart-formset').append($('#chart-formset-template').html().replace(/__prefix__/g, formIdx));
     $totalForms.val(parseInt(formIdx) + 1);
+    resetChartOrder()
   })
 
   $('form').on('click', '.delete-chart', function(event) {

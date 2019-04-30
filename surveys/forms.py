@@ -34,7 +34,10 @@ class SurveyCreateForm(forms.ModelForm):
 class SurveyChartForm(forms.ModelForm):
     class Meta:
         model = SurveyChart
-        fields = ['short_description']
+        fields = ['short_description', 'order']
+        widgets = {
+            'order': forms.HiddenInput()
+        }
 
     def __init__(self, *args, form_entry, **kwargs):
         self.form_entry = SurveyFormEntry.objects.get(id=form_entry)
