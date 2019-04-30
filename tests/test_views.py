@@ -37,7 +37,7 @@ def test_survey_edit_intercept(client, user, survey_form_entry):
     plugins = response.context['user_form_element_plugins']
 
     assert response.status_code == 200
-    assert len(plugins) == 3
+    assert len(plugins) == 4
 
 
 @pytest.mark.django_db
