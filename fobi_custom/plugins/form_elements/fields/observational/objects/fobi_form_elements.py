@@ -1,25 +1,25 @@
 import sys
 from fobi.base import FormFieldPlugin, form_element_plugin_registry
-from pldp.forms import GENDER_BASIC_CHOICES
+from pldp.forms import OBJECTS_BASIC_CHOICES
 
 from ..widgets import ObservationalWidget
 from ..fields import ObservationalField
 
-from .forms import GenderObservationalForm
+from .forms import ObjectsObservationalForm
 
 
-class GenderObservationalPlugin(FormFieldPlugin):
-    """GenderObservationalPlugin."""
+class ObjectsObservationalPlugin(FormFieldPlugin):
+    """ObjectsObservationalPlugin."""
 
-    uid = "gender_observational"
-    name = "Gender"
-    form = GenderObservationalForm
+    uid = "objects_observational"
+    name = "Objects"
+    form = ObjectsObservationalForm
     group = "Observational"  # Group to which the plugin belongs to
 
     def get_form_field_instances(self, request=None, form_entry=None,
                                  form_element_entries=None, **kwargs):
 
-        choices = GENDER_BASIC_CHOICES
+        choices = OBJECTS_BASIC_CHOICES
 
         field_kwargs = {
             'required': self.data.required,
@@ -31,4 +31,4 @@ class GenderObservationalPlugin(FormFieldPlugin):
         return [(self.data.name, ObservationalField, field_kwargs)]
 
 
-form_element_plugin_registry.register(GenderObservationalPlugin)
+form_element_plugin_registry.register(ObjectsObservationalPlugin)
