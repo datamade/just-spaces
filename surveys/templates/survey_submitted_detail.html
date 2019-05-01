@@ -47,7 +47,7 @@
         </div>
       {% endif %}
 
-      <div id="sortable">
+      <div id="sortable-chart-container">
         {% for form in chart_formset %}
           {% include 'partials/chart_form.html' with chart_id=forloop.counter0 %}
         {% endfor %}
@@ -97,16 +97,17 @@ $(document).ready(function () {
     });
   }
 
-  $('#sortable').sortable({
+  // Initialize sortable chart widgets
+  $('#sortable-chart-container').sortable({
     handle: ".portlet-handle",
     stop: resetChartOrder,
   });
 
   $('#add-new-chart').click(function() {
     var formIdx = $totalForms.val();
-    $('#chart-formset').append($('#chart-formset-template').html().replace(/__prefix__/g, formIdx));
+    $('#sortable-chart-container').append($('#chart-formset-template').html().replace(/__prefix__/g, formIdx));
     $totalForms.val(parseInt(formIdx) + 1);
-    resetChartOrder()
+    resetChartOrder();
   })
 
   $('form').on('click', '.delete-chart', function(event) {
@@ -116,8 +117,7 @@ $(document).ready(function () {
   });
 
   $('#clear-charts').click(function() {
-    $('#chart-formset').find(chartContainer).not(':hidden').remove();
-    $totalForms.val(0);
+    $('#chart-formset').find(chartContainer).find('.delete-chart').click();
   })
 
   $('#save-charts').click(function() {
