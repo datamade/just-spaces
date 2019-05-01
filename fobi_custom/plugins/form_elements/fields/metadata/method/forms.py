@@ -16,7 +16,7 @@ class PLDPSurveyMethodForm(forms.Form, BaseFormFieldPluginForm):
         ("name", "name"),
         ("default", ""),
         ("help_text", ""),
-        ("required", False),
+        ("required", True),
     ]
 
     label = forms.CharField(label="Label",

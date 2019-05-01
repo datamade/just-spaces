@@ -13,7 +13,7 @@ class TimeStartForm(forms.Form, BaseFormFieldPluginForm):
         ("label", "What is the start time of this survey?"),
         ("name", "name"),
         ("help_text", ""),
-        ("required", False),
+        ("required", True),
     ]
 
     label = forms.CharField(label="Label",

@@ -206,7 +206,6 @@ def survey(db, location, study):
 @pytest.mark.django_db
 def survey_row(db, survey):
     survey_row = SurveyRow.objects.create(
-        total=5,
         survey=survey,
     )
 

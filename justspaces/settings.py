@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     'fobi.contrib.plugins.form_elements.fields.time',
 
     # custom metadata form elements
-    'fobi_custom.plugins.form_elements.fields.metadata.total',
     'fobi_custom.plugins.form_elements.fields.metadata.time_start',
     'fobi_custom.plugins.form_elements.fields.metadata.time_stop',
     'fobi_custom.plugins.form_elements.fields.metadata.time_character',

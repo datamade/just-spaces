@@ -13,7 +13,6 @@
     <thead>
       <tr>
         <th scope="col">Time Submitted</th>
-        <th scope="col">Row Total</th>
         {% for question in questions %}
           <th scope="col">{{question}}</th>
         {% endfor %}
@@ -23,7 +22,6 @@
       {% for survey in surveys_submitted %}
         <tr>
           <td>{{survey.time_stop}}</td>
-          <td>{{survey.row.total}}</td>
           {% for component in survey.components %}
             <td>{{component.saved_data}}</td>
           {% endfor %}
