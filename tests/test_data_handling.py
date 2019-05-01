@@ -51,7 +51,7 @@ def test_data_handler(survey_form_entry, location, study, form_element_float,
     assert survey.study == study
 
     assert row.id
-    assert row.total
+    assert not row.total
     assert row.survey == survey
 
     assert component.id
