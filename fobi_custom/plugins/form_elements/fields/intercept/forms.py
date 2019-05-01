@@ -16,6 +16,11 @@ EDUCATION_CHOICES = [
     ('tk', 'TK'),
 ]
 
+RACE_CHOICES = [
+    ('', '-------'),
+    ('tk', 'TK'),
+]
+
 EMPLOYMENT_CHOICES = [
     ('', '-------'),
     ('tk', 'TK'),
