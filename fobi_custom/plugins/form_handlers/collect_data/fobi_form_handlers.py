@@ -45,11 +45,11 @@ class CollectDataPlugin(FormHandlerPlugin):
 
             new_survey = Survey.objects.create(**new_survey_info)
 
-            total = self.get_saved_data('total', 1)
+            # total = self.get_saved_data('total', 1)
 
             new_survey_row = SurveyRow.objects.create(
                 survey=new_survey,
-                total=total
+                # total=total
             )
 
             meta_element_names = [name for (name, default) in meta_elements]
