@@ -2,6 +2,7 @@ from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 
 from pldp.models import Agency, Location, Study, Survey
 
@@ -39,7 +40,6 @@ class SurveyCreate(CreateView):
     form_class = SurveyCreateForm
     model = SurveyFormEntry
     template_name = "survey_create.html"
-    success_url = '/'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -51,6 +51,12 @@ class SurveyCreate(CreateView):
                                )
 
         return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        form_entry_id = self.object.formentry_ptr_id
+        success_url = reverse_lazy('fobi.edit_form_entry', kwargs={'form_entry_id': form_entry_id})
+
+        return str(success_url)
 
 
 class SurveyPublish(TemplateView):
@@ -77,7 +83,7 @@ class SurveyListEdit(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].filter(published=False)
+        context['surveys'] = context['surveys'].filter(published=False).order_by('-updated')
         context['published'] = False
 
         return context
@@ -90,8 +96,8 @@ class SurveyListRun(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].filter(published=True)
-        context['published'] = True 
+        context['surveys'] = context['surveys'].filter(published=True).order_by('-updated')
+        context['published'] = True
 
         return context
 
