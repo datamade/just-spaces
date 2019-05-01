@@ -10,7 +10,7 @@ class GenderInterceptPlugin(FormFieldPlugin):
     """GenderInterceptPlugin."""
 
     uid = "gender_intercept"
-    name = "Gender"
+    name = "What gender do you most identify with?"
     form = GenderInterceptForm
     group = "Intercept"  # Group to which the plugin belongs to
 

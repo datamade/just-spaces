@@ -2,15 +2,15 @@ from django import forms
 
 from fobi.base import FormFieldPlugin, form_element_plugin_registry
 
-from .forms import AgeInterceptForm
+from .forms import HouseholdTenureForm
 
 
-class AgeInterceptPlugin(FormFieldPlugin):
-    """AgeInterceptPlugin."""
+class HouseholdTenurePlugin(FormFieldPlugin):
+    """HouseholdTenurePlugin."""
 
-    uid = "age_intercept"
-    name = "How old are you?"
-    form = AgeInterceptForm
+    uid = "household_tenure"
+    name = "How many years have you lived at your current address?"
+    form = HouseholdTenureForm
     group = "Intercept"  # Group to which the plugin belongs to
 
     def get_form_field_instances(self, request=None, form_entry=None,
@@ -25,4 +25,4 @@ class AgeInterceptPlugin(FormFieldPlugin):
         return [(self.data.name, forms.IntegerField, field_kwargs)]
 
 
-form_element_plugin_registry.register(AgeInterceptPlugin)
+form_element_plugin_registry.register(HouseholdTenurePlugin)

@@ -10,7 +10,7 @@ class IncomePlugin(FormFieldPlugin):
     """IncomePlugin."""
 
     uid = "income"
-    name = "Income"
+    name = "What income group does your household fall under?"
     form = IncomeForm
     group = "Intercept"  # Group to which the plugin belongs to
 

@@ -10,7 +10,7 @@ class TransportationPlugin(FormFieldPlugin):
     """TransportationPlugin."""
 
     uid = "transportation"
-    name = "Transportation"
+    name = "How did you travel here?"
     form = TransportationForm
     group = "Intercept"  # Group to which the plugin belongs to
 

@@ -10,7 +10,7 @@ class EducationPlugin(FormFieldPlugin):
     """EducationPlugin."""
 
     uid = "education"
-    name = "Education"
+    name = "What is your highest formal degree of education?"
     form = EducationForm
     group = "Intercept"  # Group to which the plugin belongs to
 

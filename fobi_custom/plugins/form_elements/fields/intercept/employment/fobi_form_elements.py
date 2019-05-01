@@ -10,7 +10,7 @@ class EmploymentPlugin(FormFieldPlugin):
     """EmploymentPlugin."""
 
     uid = "employment"
-    name = "Employment"
+    name = "What is your current employment status?"
     form = EmploymentForm
     group = "Intercept"  # Group to which the plugin belongs to
 
