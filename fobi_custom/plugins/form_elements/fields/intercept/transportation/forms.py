@@ -7,11 +7,11 @@ from fobi.base import BaseFormFieldPluginForm, get_theme
 theme = get_theme(request=None, as_instance=True)
 
 
-class IncomeForm(forms.Form, BaseFormFieldPluginForm):
-    """IncomeForm."""
+class TransportationForm(forms.Form, BaseFormFieldPluginForm):
+    """TransportationForm."""
 
     plugin_data_fields = [
-        ("label", "What income group does your household fall under?"),
+        ("label", "How did you travel here?"),
         ("name", "name"),
         ("help_text", ""),
         ("required", False),

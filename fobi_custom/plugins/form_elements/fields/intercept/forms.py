@@ -10,3 +10,18 @@ INCOME_CHOICES = [
     ('', '-------'),
     ('tk', 'TK'),
 ]
+
+EDUCATION_CHOICES = [
+    ('', '-------'),
+    ('tk', 'TK'),
+]
+
+EMPLOYMENT_CHOICES = [
+    ('', '-------'),
+    ('tk', 'TK'),
+]
+
+TRANSPORTATION_CHOICES = [
+    ('', '-------'),
+    ('tk', 'TK'),
+]

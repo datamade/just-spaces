@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'fobi_custom.plugins.form_elements.fields.intercept.age_intercept',
     'fobi_custom.plugins.form_elements.fields.intercept.gender_intercept',
     'fobi_custom.plugins.form_elements.fields.intercept.income',
+    'fobi_custom.plugins.form_elements.fields.intercept.education',
 
     # custom observational form elements
     'fobi_custom.plugins.form_elements.fields.observational.age_observational',
