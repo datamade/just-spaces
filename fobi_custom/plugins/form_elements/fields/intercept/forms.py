@@ -56,5 +56,11 @@ OWN_OR_RENT_CHOICES = [
 
 TRANSPORTATION_CHOICES = [
     ('', '-------'),
-    ('tk', 'TK'),
+    ('walking', 'Walking'),
+    ('bicycle', 'Bicycle'),
+    ('car', 'Car'),
+    ('train', 'Train'),
+    ('bus', 'Bus'),
+    ('rideshare', 'Rideshare'),
+    ('other', 'Other'),
 ]
