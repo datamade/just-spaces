@@ -36,8 +36,20 @@ def test_survey_edit_intercept(client, user, survey_form_entry):
 
     plugins = response.context['user_form_element_plugins']
 
+    intercept_presets = [('age_intercept', 'How old are you?'),
+                         ('education', 'What is your highest formal degree of education?'),
+                         ('employment', 'What is your current employment status?'),
+                         ('gender_intercept', 'What gender do you most identify with?'), (
+                         'household_tenure', 'How many years have you lived at your current address?'),
+                         ('income', 'Are you a homeowner or a renter?'),
+                         ('race', 'Which race or ethnicity best describes you?'),
+                         ('transportation', 'How did you travel here?')]
+
     assert response.status_code == 200
-    assert len(plugins) == 3
+    assert len(plugins) == 4
+
+    for question in intercept_presets:
+        assert question in plugins['Intercept']
 
 
 @pytest.mark.django_db

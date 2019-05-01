@@ -73,10 +73,19 @@ INSTALLED_APPS = [
     'fobi_custom.plugins.form_elements.fields.metadata.temperature_c',
 
     # custom intercept form elements
+    'fobi_custom.plugins.form_elements.fields.intercept.age_intercept',
+    'fobi_custom.plugins.form_elements.fields.intercept.gender_intercept',
+    'fobi_custom.plugins.form_elements.fields.intercept.income',
+    'fobi_custom.plugins.form_elements.fields.intercept.education',
+    'fobi_custom.plugins.form_elements.fields.intercept.race',
+    'fobi_custom.plugins.form_elements.fields.intercept.employment',
+    'fobi_custom.plugins.form_elements.fields.intercept.household_tenure',
+    'fobi_custom.plugins.form_elements.fields.intercept.own_or_rent',
+    'fobi_custom.plugins.form_elements.fields.intercept.transportation',
 
     # custom observational form elements
-    'fobi_custom.plugins.form_elements.fields.observational.age',
-    'fobi_custom.plugins.form_elements.fields.observational.gender',
+    'fobi_custom.plugins.form_elements.fields.observational.age_observational',
+    'fobi_custom.plugins.form_elements.fields.observational.gender_observational',
     'fobi_custom.plugins.form_elements.fields.observational.mode',
     'fobi_custom.plugins.form_elements.fields.observational.posture',
     'fobi_custom.plugins.form_elements.fields.observational.activity',
