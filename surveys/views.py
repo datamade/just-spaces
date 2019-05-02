@@ -125,11 +125,11 @@ class SurveySubmittedList(TemplateView):
 
 class SurveySubmittedDetail(TemplateView):
     template_name = "survey_submitted_detail.html"
-    ChartFormset = ChartFormset = modelformset_factory(SurveyChart,
-                                                       form=SurveyChartForm,
-                                                       exclude=('form_entry',),
-                                                       extra=0,
-                                                       can_delete=True)
+    ChartFormset = modelformset_factory(SurveyChart,
+                                        form=SurveyChartForm,
+                                        exclude=('form_entry',),
+                                        extra=0,
+                                        can_delete=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
