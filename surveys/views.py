@@ -170,8 +170,9 @@ class SurveySubmittedDetail(TemplateView):
                     survey_chart = form.save(commit=False)
                     survey_chart.form_entry = form.form_entry
                     survey_chart.save()
-                    messages.add_message(request, messages.INFO, 'Charts saved!')
+            messages.success(request, 'Charts saved!')
         else:
+            messages.error(request, 'Chart validation failed! See charts below for more detail.')
             context['chart_formset'] = formset
 
         return render(request, self.template_name, context)
