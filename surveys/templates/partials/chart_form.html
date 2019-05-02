@@ -2,10 +2,31 @@
   <div class="col-sm-12">
     <div class="card bg-light mb-3 p-3 ml-auto">
       <div class="card-block">
-        <div class="float-left portlet-handle">
-          <i class="fa fa-fw fa-bars"></i>
+        <div class="float-left portlet-handle mr-2">
+          <i title="Click and drag to reposition chart" class="fa fa-fw fa-bars"></i>
+        </div>
+        <div class="float-left ordering-buttons">
+          <button
+            type="button"
+            title="Move chart up"
+            class="btn btn-outline-secondary btn-sm move-chart-up"
+            id="move-chart-down-{{chart_id}}"
+            onclick="event.preventDefault()"
+          >
+            <i class="fa fa-fw fa-arrow-up"></i>
+          </button>
+          <button
+            type="button"
+            title="Move chart down"
+            class="btn btn-outline-secondary btn-sm move-chart-down"
+            id="move-chart-down-{{chart_id}}"
+            onclick="event.preventDefault()"
+          >
+            <i class="fa fa-fw fa-arrow-down"></i>
+          </button>
         </div>
         <button
+          type="button"
           class="btn btn-danger float-right delete-chart"
           id="delete-chart-{{chart_id}}"
           onclick="event.preventDefault()"

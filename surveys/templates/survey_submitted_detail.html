@@ -88,6 +88,8 @@ $(document).ready(function () {
   var chartContainer = '[class^="chart-container-"]'
 
   function resetChartOrder() {
+    // Update the 'order' field of each chart on the page to match its visual
+    // order in the list of charts
     $(chartContainer).find('input[name$="order"]').each(function(idx) {
       // Skip the empty form, whose name contains the string __prefix__
       if (this.name.indexOf('__prefix__') === -1) {
@@ -108,21 +110,44 @@ $(document).ready(function () {
     $('#sortable-chart-container').append($('#chart-formset-template').html().replace(/__prefix__/g, formIdx));
     $totalForms.val(parseInt(formIdx) + 1);
     resetChartOrder();
-  })
+  });
 
   $('form').on('click', '.delete-chart', function(event) {
+    // Use the handler syntax .on('click', elem, fn) in order to make sure that the
+    // handler is fired for events that did not exist when the page was loaded,
+    // namely new charts
     event.preventDefault();
     $(this).parents(chartContainer).hide();
     $(this).parents(chartContainer).find('input[name$="DELETE"]').prop("checked", "true");
   });
 
+  $('form').on('click', '.move-chart-up', function(event) {
+    event.preventDefault();
+    var $parentContainer = $(this).parents(chartContainer);
+    // Move parent container up one step
+    if ($parentContainer.not(':first-child')) {
+      $parentContainer.prev().before($parentContainer);
+    }
+    resetChartOrder();
+  });
+
+  $('form').on('click', '.move-chart-down', function(event) {
+    event.preventDefault();
+    var $parentContainer = $(this).parents(chartContainer);
+    // Move parent container down one step
+    if ($parentContainer.not(':last-child')) {
+      $parentContainer.next().after($parentContainer);
+    }
+    resetChartOrder();
+  });
+
   $('#clear-charts').click(function() {
     $('#chart-formset').find(chartContainer).find('.delete-chart').click();
-  })
+  });
 
   $('#save-charts').click(function() {
     $('#chart-formset').submit();
-  })
+  });
 
 } );
 </script>
