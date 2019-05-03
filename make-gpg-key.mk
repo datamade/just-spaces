@@ -27,6 +27,7 @@ PROJECT=just-spaces
 # way.
 define GPG_SETUP
 %echo Generating a basic OpenPGP key\n
+%no-protection\n
 Key-Type: RSA\n
 Key-Length: 4096\n
 Key-Usage: sign\n
@@ -44,7 +45,9 @@ endef
 # used in the targets below.
 export GPG_SETUP
 
+.PHONY: all key
 all : transfer indoctrinate
+key : $(TMPDIR)/pubring.gpg
 
 # Turn the environmental variable used to configure the --gen-key command into
 # a target which will, in effect, get "echoed" into the command when the time
