@@ -5,12 +5,12 @@ TMPDIR:=$(shell mktemp -d)
 
 # The "name" that will be associated with the key. Make it a human friendly
 # name for your project
-NAME=Just Spaces Key
+NAME=Just Spaces Staging Key
 
 # GPG uses an email address as a easier to remember way to lookup keys on your
 # keyring. While they are not required to be unique, for the purposes of this
 # setup, please ensure that it is unique.
-EMAIL=justspaces@datamade.us
+EMAIL=justspaces+staging@datamade.us
 
 # The hostname for your project. You will need to make sure that the DNS is
 # configured to point this domain at the correct server IP address before
