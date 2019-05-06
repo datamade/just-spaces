@@ -79,23 +79,6 @@ def test_basic_chart_display(client, survey_form_entry, survey_submitted_setup):
             assert next_desc in create_response.content.decode('utf-8').split(form['short_description'])[1]
 
 
-def test_chart_validation_failure(client, survey_form_entry, survey_submitted_setup):
-    # Test that a DAD chart submitted without a description does not validate
-    # and returns appropriate errors
-    chart_data = [{'order': 1}]
-    post_data = create_formset_data(0, len(chart_data), chart_data)
-
-    create_url = reverse('surveys-submitted-detail',
-                         kwargs={'form_entry_id': survey_form_entry.id})
-
-    create_response = client.post(create_url, data=post_data)
-
-    assert create_response.status_code == 200
-    assert 'alert-danger' in create_response.content.decode('utf-8')
-    assert 'Errors' in create_response.content.decode('utf-8')
-    assert 'This field is required' in create_response.content.decode('utf-8')
-
-
 def test_delete_chart(client, survey_form_entry, survey_submitted_setup):
     # Test that the DAD can delete a chart
     chart_data = {
