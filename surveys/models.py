@@ -45,7 +45,7 @@ class SurveyChart(models.Model):
 
     order = models.IntegerField(default=0)
 
-    short_description = models.TextField()
+    short_description = models.TextField(blank=True)
 
     class Meta:
         ordering = ['order']

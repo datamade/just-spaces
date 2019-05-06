@@ -250,6 +250,12 @@ a.article:hover {
   cursor: -webkit-grabbing;
 }
 
+/* Hide/show position controls with JavaScript */
+.move-chart-up,
+.move-chart-down {
+    display: none;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */

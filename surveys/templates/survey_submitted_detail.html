@@ -112,6 +112,18 @@ $(document).ready(function () {
     });
   }
 
+  function toggleMoveButtonVisibility() {
+    // Check to see if there is only one chart on the page, and if there is, hide
+    // the move buttons on that chart
+    if ($(chartContainer).filter(':visible').length === 1) {
+      $('.move-chart-up,.move-chart-down').hide();
+    } else {
+      $('.move-chart-up,.move-chart-down').show();
+    }
+  }
+
+  toggleMoveButtonVisibility();
+
   // Initialize sortable chart widgets
   $('#sortable-chart-container').sortable({
     handle: ".portlet-handle",
@@ -123,6 +135,7 @@ $(document).ready(function () {
     $('#sortable-chart-container').append($('#chart-formset-template').html().replace(/__prefix__/g, formIdx));
     $totalForms.val(parseInt(formIdx) + 1);
     resetChartOrder();
+    toggleMoveButtonVisibility();
   });
 
   $('form').on('click', '.delete-chart', function(event) {
@@ -132,6 +145,7 @@ $(document).ready(function () {
     event.preventDefault();
     $(this).parents(chartContainer).hide();
     $(this).parents(chartContainer).find('input[name$="DELETE"]').prop("checked", "true");
+    toggleMoveButtonVisibility();
   });
 
   $('form').on('click', '.move-chart-up', function(event) {
