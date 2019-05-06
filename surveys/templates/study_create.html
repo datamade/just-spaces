@@ -3,8 +3,11 @@
 
 {% block content %}
   <h2>New Study</h2>
+   <div id="mapid"></div>
   <form method="POST" class="post-form">{% csrf_token %}
      {{ form.as_p }}
      <button type="submit" class="save btn btn-default">Save</button>
   </form>
+
+  <script type="text/javascript" src="{% static 'js/select_area.js' %}"></script>
 {% endblock %}
