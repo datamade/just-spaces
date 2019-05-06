@@ -5,12 +5,12 @@ TMPDIR:=$(shell mktemp -d)
 
 # The "name" that will be associated with the key. Make it a human friendly
 # name for your project
-NAME=Just Spaces Key
+NAME=Just Spaces Staging Key
 
 # GPG uses an email address as a easier to remember way to lookup keys on your
 # keyring. While they are not required to be unique, for the purposes of this
 # setup, please ensure that it is unique.
-EMAIL=justspaces@datamade.us
+EMAIL=justspaces+staging@datamade.us
 
 # The hostname for your project. You will need to make sure that the DNS is
 # configured to point this domain at the correct server IP address before
@@ -27,6 +27,7 @@ PROJECT=just-spaces
 # way.
 define GPG_SETUP
 %echo Generating a basic OpenPGP key\n
+%no-protection\n
 Key-Type: RSA\n
 Key-Length: 4096\n
 Key-Usage: sign\n
@@ -44,7 +45,9 @@ endef
 # used in the targets below.
 export GPG_SETUP
 
+.PHONY: all key
 all : transfer indoctrinate
+key : $(TMPDIR)/pubring.gpg
 
 # Turn the environmental variable used to configure the --gen-key command into
 # a target which will, in effect, get "echoed" into the command when the time
