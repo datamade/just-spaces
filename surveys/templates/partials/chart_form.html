@@ -38,20 +38,30 @@
         <tbody>
           <tr>
             <th>
+              <label for="id_form-{{chart_id}}-source">
+                Primary data source:
+              </label>
+            </th>
+            <td>
+              {{form.source}}
+            </td>
+          </tr>
+          <tr>
+            <th>
               <label for="id_form-{{chart_id}}-short_description">
                 Short description:
               </label>
             </th>
             <td>
-                {{form.short_description}}
-                {{form.order}}
-                {{form.id}}
-                <!-- Use display:none instead of type="hidden" so that JQuery can check/uncheck the input -->
-                <input type="checkbox"
-                  style="display: none"
-                  name="form-{{chart_id}}-DELETE"
-                  id="id_form-{{chart_id}}-DELETE"
-                />
+              {{form.short_description}}
+              {{form.order}}
+              {{form.id}}
+              <!-- Use display:none instead of type="hidden" so that JQuery can check/uncheck the input -->
+              <input type="checkbox"
+                style="display: none"
+                name="form-{{chart_id}}-DELETE"
+                id="id_form-{{chart_id}}-DELETE"
+              />
             </td>
           </tr>
         </tbody>

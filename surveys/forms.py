@@ -1,4 +1,6 @@
 from datetime import datetime
+import json
+
 from django import forms
 
 from leaflet.forms.widgets import LeafletWidget
@@ -153,14 +155,28 @@ class SurveyCreateForm(JustSpacesForm):
         fields = ['user', 'name', 'study', 'location', 'type']
 
 
+class FormElementEntryChoiceField(forms.ModelChoiceField):
+    """
+    A custom ModelChoiceField for Fobi FormElementEntry objects. Useful for
+    allowing us to show a different label in the select widget.
+    """
+    def label_from_instance(self, obj):
+        plugin_data = json.loads(obj.plugin_data)
+        return plugin_data['label']
+
+
 class SurveyChartForm(forms.ModelForm):
     class Meta:
         model = SurveyChart
-        fields = ['short_description', 'order']
+        fields = ['short_description', 'order', 'source']
         widgets = {
-            'order': forms.HiddenInput()
+            'order': forms.HiddenInput(),
+        }
+        field_classes = {
+            'source': FormElementEntryChoiceField,
         }
 
     def __init__(self, *args, form_entry, **kwargs):
         self.form_entry = SurveyFormEntry.objects.get(id=form_entry)
         super().__init__(*args, **kwargs)
+        self.fields['source'].queryset = self.form_entry.formelemententry_set.all()

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from pldp.models import Agency, Study, Location
-from fobi.models import FormEntry
+from fobi.models import FormEntry, FormElementEntry
 
 
 class SurveyFormEntry(FormEntry):
@@ -46,6 +46,12 @@ class SurveyChart(models.Model):
     order = models.IntegerField(default=0)
 
     short_description = models.TextField(blank=True)
+
+    source = models.ForeignKey(
+        FormElementEntry,
+        on_delete=models.CASCADE,
+        null=True
+    )
 
     class Meta:
         ordering = ['order']
