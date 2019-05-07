@@ -115,10 +115,17 @@ $(document).ready(function () {
   function toggleMoveButtonVisibility() {
     // Check to see if there is only one chart on the page, and if there is, hide
     // the move buttons on that chart
-    if ($(chartContainer).filter(':visible').length === 1) {
-      $('.move-chart-up,.move-chart-down').hide();
-    } else {
-      $('.move-chart-up,.move-chart-down').show();
+    var $visibleCharts = $(chartContainer).filter(':visible');
+    var numVisibleCharts = $visibleCharts.length;
+    if (numVisibleCharts > 0) {
+      if (numVisibleCharts === 1) {
+        $('.move-chart-up,.move-chart-down').hide();
+      } else {
+        $('.move-chart-up,.move-chart-down').show();
+        // Hide the up/down buttons for the first and last charts on the page
+        $visibleCharts.first().find('.move-chart-up').hide();
+        $visibleCharts.last().find('.move-chart-down').hide();
+      }
     }
   }
 
@@ -156,6 +163,7 @@ $(document).ready(function () {
       $parentContainer.prev().before($parentContainer);
     }
     resetChartOrder();
+    toggleMoveButtonVisibility();
   });
 
   $('form').on('click', '.move-chart-down', function(event) {
@@ -166,6 +174,7 @@ $(document).ready(function () {
       $parentContainer.next().after($parentContainer);
     }
     resetChartOrder();
+    toggleMoveButtonVisibility();
   });
 
   $('#clear-charts').click(function() {
