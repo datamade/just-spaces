@@ -3,6 +3,8 @@ from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.forms import modelformset_factory
+from django.contrib import messages
 
 from pldp.models import Agency, Location, Study, Survey
 
@@ -11,8 +13,8 @@ from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
 
-from .models import SurveyFormEntry
-from .forms import StudyCreateForm, SurveyCreateForm
+from .models import SurveyFormEntry, SurveyChart
+from .forms import StudyCreateForm, SurveyCreateForm, SurveyChartForm
 
 
 class AgencyCreate(CreateView):
@@ -123,6 +125,11 @@ class SurveySubmittedList(TemplateView):
 
 class SurveySubmittedDetail(TemplateView):
     template_name = "survey_submitted_detail.html"
+    ChartFormset = modelformset_factory(SurveyChart,
+                                        form=SurveyChartForm,
+                                        exclude=('form_entry',),
+                                        extra=0,
+                                        can_delete=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -133,7 +140,42 @@ class SurveySubmittedDetail(TemplateView):
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)
 
+        context['chart_formset'] = self.ChartFormset(
+            queryset=SurveyChart.objects.filter(form_entry=context['form_entry']),
+            form_kwargs={'form_entry': context['form_entry_id']},
+        )
+
         return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        formset = self.ChartFormset(
+            request.POST,
+            form_kwargs={'form_entry': kwargs['form_entry_id']}
+        )
+        if formset.is_valid():
+            for form in formset:
+                if form.cleaned_data.get('DELETE'):
+                    # If the chart has already been saved, it will have a unique
+                    # ID, and we need to delete it from the database.
+                    if form.cleaned_data.get('id') is not None:
+                        survey_chart = form.save(commit=False)
+                        survey_chart.delete()
+                    else:
+                        # This is an empty form field
+                        continue
+                else:
+                    # Wait to commit the SurveyChart until we can assign it a
+                    # form_entry ID.
+                    survey_chart = form.save(commit=False)
+                    survey_chart.form_entry = form.form_entry
+                    survey_chart.save()
+            messages.success(request, 'Charts saved!')
+        else:
+            messages.error(request, 'Chart validation failed! See charts below for more detail.')
+            context['chart_formset'] = formset
+
+        return render(request, self.template_name, context)
 
 
 class Signup(FormView):

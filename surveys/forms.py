@@ -1,6 +1,6 @@
 from django import forms
 from pldp.models import Agency, Location, Study, Survey
-from .models import SurveyFormEntry
+from .models import SurveyFormEntry, SurveyChart
 
 
 class CreateAgencyForm(forms.ModelForm):
@@ -29,3 +29,16 @@ class SurveyCreateForm(forms.ModelForm):
     class Meta:
         model = SurveyFormEntry
         fields = ['user', 'name', 'study', 'location', 'type']
+
+
+class SurveyChartForm(forms.ModelForm):
+    class Meta:
+        model = SurveyChart
+        fields = ['short_description', 'order']
+        widgets = {
+            'order': forms.HiddenInput()
+        }
+
+    def __init__(self, *args, form_entry, **kwargs):
+        self.form_entry = SurveyFormEntry.objects.get(id=form_entry)
+        super().__init__(*args, **kwargs)

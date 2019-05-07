@@ -34,3 +34,18 @@ class SurveyFormEntry(FormEntry):
         choices=SURVEY_TYPE_CHOICES,
         default='intercept'
     )
+
+
+class SurveyChart(models.Model):
+
+    form_entry = models.ForeignKey(
+        SurveyFormEntry,
+        on_delete=models.CASCADE
+    )
+
+    order = models.IntegerField(default=0)
+
+    short_description = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ['order']

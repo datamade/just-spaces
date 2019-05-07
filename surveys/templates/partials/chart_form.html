@@ -1,0 +1,71 @@
+<div class="chart-container-{{chart_id}} row">
+  <div class="col-sm-12">
+    <div class="card bg-light mb-3 p-3 ml-auto">
+      <div class="card-block">
+        <div class="float-left portlet-handle mr-2">
+          <i title="Click and drag to reposition chart" class="fa fa-fw fa-bars"></i>
+        </div>
+        <div class="float-left ordering-buttons">
+          <button
+            type="button"
+            title="Move chart up"
+            class="btn btn-outline-secondary btn-sm move-chart-up"
+            id="move-chart-down-{{chart_id}}"
+            onclick="event.preventDefault()"
+          >
+            <i class="fa fa-fw fa-arrow-up"></i>
+          </button>
+          <button
+            type="button"
+            title="Move chart down"
+            class="btn btn-outline-secondary btn-sm move-chart-down"
+            id="move-chart-down-{{chart_id}}"
+            onclick="event.preventDefault()"
+          >
+            <i class="fa fa-fw fa-arrow-down"></i>
+          </button>
+        </div>
+        <button
+          type="button"
+          class="btn btn-danger float-right delete-chart"
+          id="delete-chart-{{chart_id}}"
+          onclick="event.preventDefault()"
+        >
+          Remove
+        </button>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <th>
+              <label for="id_form-{{chart_id}}-short_description">
+                Short description:
+              </label>
+            </th>
+            <td>
+                {{form.short_description}}
+                {{form.order}}
+                {{form.id}}
+                <!-- Use display:none instead of type="hidden" so that JQuery can check/uncheck the input -->
+                <input type="checkbox"
+                  style="display: none"
+                  name="form-{{chart_id}}-DELETE"
+                  id="id_form-{{chart_id}}-DELETE"
+                />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {% if form.errors %}
+        <div class="alert alert-danger mt-3">
+          <h4>Errors</h4>
+          <ul>
+            {% for field, errors in form.errors.items %}
+              <li>{{field}}: {{errors}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
