@@ -178,6 +178,7 @@ LEAFLET_CONFIG = {
     'DEFAULT_ZOOM': 12,
     'MIN_ZOOM': 3,
     'MAX_ZOOM': 18,
+    'RESET_VIEW': False,
     'TILES': [
         (
          'Map',

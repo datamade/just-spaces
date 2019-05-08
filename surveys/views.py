@@ -6,8 +6,6 @@ from django.urls import reverse_lazy
 from django.forms import modelformset_factory
 from django.contrib import messages
 
-from leaflet.forms.widgets import LeafletWidget
-
 from pldp.models import Agency, Location, Study, StudyArea, Survey
 
 from users.models import JustSpacesUser

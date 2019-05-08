@@ -4,6 +4,12 @@
 
 {% block content %}
 
+  <script type="text/javascript">
+      $(document).ready(function() {
+        $('.basic-multiple').select2();
+      });
+  </script>
+
   <h1>Create New Study</h1>
   <br />
   {% crispy form %}

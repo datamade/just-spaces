@@ -3,8 +3,9 @@ from leaflet.forms.widgets import LeafletWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from pldp.models import Agency, Location, Study, StudyArea, Survey
+from pldp.models import Agency, Location, Study, StudyArea
 from .models import SurveyFormEntry, SurveyChart
+
 
 class CreateAgencyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -47,6 +48,7 @@ class StudyCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(StudyCreateForm, self).__init__(*args, **kwargs)
         create_default_helper(self)
+        self.fields['areas'].widget.attrs['class'] = 'basic-multiple'
 
     class Meta:
         model = Study
