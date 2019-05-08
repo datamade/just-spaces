@@ -1,10 +1,12 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, UpdateView
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 
-from pldp.models import Agency, Location, Study, Survey
+from leaflet.forms.widgets import LeafletWidget
+
+from pldp.models import Agency, Location, Study, StudyArea, Survey
 
 from users.models import JustSpacesUser
 from users.admin import JustSpacesUserCreationForm
@@ -12,7 +14,7 @@ from users.admin import JustSpacesUserCreationForm
 from fobi.views import add_form_handler_entry
 
 from .models import SurveyFormEntry
-from .forms import StudyCreateForm, SurveyCreateForm
+from .forms import StudyCreateForm, StudyAreaCreateForm, SurveyCreateForm
 
 
 class AgencyCreate(CreateView):
@@ -27,6 +29,13 @@ class LocationCreate(CreateView):
     template_name = "location_create.html"
     fields = '__all__'
     success_url = '/'
+
+
+class StudyAreaCreate(CreateView):
+    form_class = StudyAreaCreateForm
+    model = StudyArea
+    template_name = "study_area_create.html"
+    success_url = reverse_lazy('studies-create')
 
 
 class StudyCreate(CreateView):

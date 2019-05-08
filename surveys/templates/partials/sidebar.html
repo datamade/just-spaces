@@ -11,17 +11,17 @@
             <li>
                 <a href="#createSurveySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <i class="fas fa-sm fa-home"></i>
-                    New Survey
+                    Create new...
                 </a>
                 <ul class="collapse list-unstyled" id="createSurveySubmenu">
                     <li>
-                        <a href="#">Create from existing survey</a>
+                        <a href="{% url 'study-areas-create' %}">Study Area</a>
                     </li>
                     <li>
-                        <a href="#">Create from template</a>
+                        <a href="{% url 'studies-create' %}">Study</a>
                     </li>
                     <li>
-                        <a href="{% url 'surveys-create' %}">Create from scratch</a>
+                        <a href="{% url 'surveys-create' %}">Survey</a>
                     </li>
                 </ul>
             </li>
