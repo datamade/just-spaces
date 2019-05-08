@@ -1,5 +1,4 @@
 from django import forms
-<<<<<<< HEAD
 from leaflet.forms.widgets import LeafletWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
