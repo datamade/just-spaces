@@ -3,10 +3,26 @@
 
 {% block content %}
 
+{% if messages %}
+  <div class="message-container">
+  {% for message in messages %}
+    <div class="message alert {% if message.tags == 'error' %}alert-danger{% elif message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissable fade show">
+      <strong>{{ message }}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endfor %}
+  </div>
+{% endif %}
+
 <div class="card">
   <div class="card-body">
 
     <h2 class="card-title">{{ form_entry.name }}</h2>
+    <br />
+
+    <h3 class="card-title">Export</h3>
     <br />
 
     <table class="table table-hover table-striped card-text display nowrap" id="survey-submitted-detail">
@@ -30,9 +46,45 @@
     </tbody>
     </table>
 
+    <br />
+    <h3 class="card-title">Analyze</h3>
+    <br />
+
+    <form method="post" id="chart-formset">
+      {{ chart_formset.management_form }}
+      {% csrf_token %}
+
+      {% if formset.non_form_errors %}
+        <div class="alert alert-danger">
+          {{ formset.non_form_errors }}
+        </div>
+      {% endif %}
+
+      <div id="sortable-chart-container">
+        {% for form in chart_formset %}
+          {% include 'partials/chart_form.html' with chart_id=forloop.counter0 %}
+        {% endfor %}
+      </div>
+    </form>
+
+    <button id="add-new-chart" class="btn btn-primary">Add new chart</button>
+
+    <!-- Use a hidden empty form as the base for adding new forms -->
+    <div id="chart-formset-template" style="display:none">
+      {% include 'partials/chart_form.html' with form=chart_formset.empty_form chart_id='__prefix__' %}
+    </div>
+
+    <hr />
+
+    <div class="float-right">
+      <button id="clear-charts" class="btn btn-link">Clear charts</button>
+      <button id="save-charts" class="btn btn-primary">Save charts</button>
+    </div>
+
   </div>
 </div>
 
+<script src="{% static 'js/jquery-ui-1.21.1.min.js' %}" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
   $('#survey-submitted-detail').DataTable({
@@ -44,6 +96,95 @@ $(document).ready(function () {
       "leftColumns": 1
     }
   });
+
+  var $totalForms = $('[name$=TOTAL_FORMS]');
+  var chartContainer = '[class^="chart-container-"]'
+
+  function resetChartOrder() {
+    // Update the 'order' field of each chart on the page to match its visual
+    // order in the list of charts
+    $(chartContainer).find('input[name$="order"]').each(function(idx) {
+      // Skip the empty form, whose name contains the string __prefix__
+      if (this.name.indexOf('__prefix__') === -1) {
+        formIdx = idx + 1;  // Form order values are 1-indexed
+        $(this).val(formIdx);
+      }
+    });
+  }
+
+  function toggleMoveButtonVisibility() {
+    // Check to see if there is only one chart on the page, and if there is, hide
+    // the move buttons on that chart
+    var $visibleCharts = $(chartContainer).filter(':visible');
+    var numVisibleCharts = $visibleCharts.length;
+    if (numVisibleCharts > 0) {
+      if (numVisibleCharts === 1) {
+        $('.move-chart-up,.move-chart-down').hide();
+      } else {
+        $('.move-chart-up,.move-chart-down').show();
+        // Hide the up/down buttons for the first and last charts on the page
+        $visibleCharts.first().find('.move-chart-up').hide();
+        $visibleCharts.last().find('.move-chart-down').hide();
+      }
+    }
+  }
+
+  toggleMoveButtonVisibility();
+
+  // Initialize sortable chart widgets
+  $('#sortable-chart-container').sortable({
+    handle: ".portlet-handle",
+    stop: resetChartOrder,
+  });
+
+  $('#add-new-chart').click(function() {
+    var formIdx = $totalForms.val();
+    $('#sortable-chart-container').append($('#chart-formset-template').html().replace(/__prefix__/g, formIdx));
+    $totalForms.val(parseInt(formIdx) + 1);
+    resetChartOrder();
+    toggleMoveButtonVisibility();
+  });
+
+  $('form').on('click', '.delete-chart', function(event) {
+    // Use the handler syntax .on('click', elem, fn) in order to make sure that the
+    // handler is fired for events that did not exist when the page was loaded,
+    // namely new charts
+    event.preventDefault();
+    $(this).parents(chartContainer).hide();
+    $(this).parents(chartContainer).find('input[name$="DELETE"]').prop("checked", "true");
+    toggleMoveButtonVisibility();
+  });
+
+  $('form').on('click', '.move-chart-up', function(event) {
+    event.preventDefault();
+    var $parentContainer = $(this).parents(chartContainer);
+    // Move parent container up one step
+    if ($parentContainer.not(':first-child')) {
+      $parentContainer.prev().before($parentContainer);
+    }
+    resetChartOrder();
+    toggleMoveButtonVisibility();
+  });
+
+  $('form').on('click', '.move-chart-down', function(event) {
+    event.preventDefault();
+    var $parentContainer = $(this).parents(chartContainer);
+    // Move parent container down one step
+    if ($parentContainer.not(':last-child')) {
+      $parentContainer.next().after($parentContainer);
+    }
+    resetChartOrder();
+    toggleMoveButtonVisibility();
+  });
+
+  $('#clear-charts').click(function() {
+    $('#chart-formset').find(chartContainer).find('.delete-chart').click();
+  });
+
+  $('#save-charts').click(function() {
+    $('#chart-formset').submit();
+  });
+
 } );
 </script>
 

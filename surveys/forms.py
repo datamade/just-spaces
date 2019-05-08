@@ -1,11 +1,11 @@
 from django import forms
+<<<<<<< HEAD
 from leaflet.forms.widgets import LeafletWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from pldp.models import Agency, Location, Study, StudyArea
-from .models import SurveyFormEntry
-
+from pldp.models import Agency, Location, Study, StudyArea, Survey
+from .models import SurveyFormEntry, SurveyChart
 
 class CreateAgencyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -66,6 +66,19 @@ class SurveyCreateForm(forms.ModelForm):
     class Meta:
         model = SurveyFormEntry
         fields = ['user', 'name', 'study', 'location', 'type']
+
+
+class SurveyChartForm(forms.ModelForm):
+    class Meta:
+        model = SurveyChart
+        fields = ['short_description', 'order']
+        widgets = {
+            'order': forms.HiddenInput()
+        }
+
+    def __init__(self, *args, form_entry, **kwargs):
+        self.form_entry = SurveyFormEntry.objects.get(id=form_entry)
+        super().__init__(*args, **kwargs)
 
 
 def create_default_helper(self):
