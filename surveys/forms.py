@@ -39,6 +39,8 @@ class StudyAreaCreateForm(forms.ModelForm):
         leaflet_widget_attrs = {
             'map_height': '400px',
             'map_width': '100%',
+            'display_raw': 'true',
+
         }
 
         widgets = {'area': LeafletWidget(attrs=leaflet_widget_attrs)}

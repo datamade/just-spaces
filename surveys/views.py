@@ -43,7 +43,15 @@ class StudyCreate(CreateView):
     form_class = StudyCreateForm
     model = Study
     template_name = "study_create.html"
-    success_url = '/'
+    success_url = reverse_lazy('surveys-list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        url = reverse_lazy('study-areas-create')
+        extra_help_text = ' Don\'t see the area you need? Create a new one <a href="{}" target="_blank">here</a>'.format(url)
+        context['form'].fields['areas'].help_text += extra_help_text
+
+        return context
 
 
 class SurveyCreate(CreateView):
