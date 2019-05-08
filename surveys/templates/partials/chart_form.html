@@ -37,13 +37,22 @@
       <table>
         <tbody>
           <tr>
+            <th></th>
+            <td>
+              <div
+                class="highcharts-chart my-2"
+                id="highcharts-chart-{{chart_id}}">
+              </div>
+            </td>
+          </tr>
+          <tr>
             <th>
-              <label for="id_form-{{chart_id}}-source">
+              <label for="id_form-{{chart_id}}-primary_source">
                 Primary data source:
               </label>
             </th>
             <td>
-              {{form.source}}
+              {{form.primary_source}}
             </td>
           </tr>
           <tr>

@@ -1,5 +1,7 @@
-from django.views.generic import TemplateView, ListView, UpdateView
-from django.views.generic.edit import CreateView, FormView, BaseCreateView
+import json
+
+from django.views.generic import TemplateView, ListView
+from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -210,6 +212,18 @@ class SurveySubmittedDetail(TemplateView):
 
         context['form_entry'] = SurveyFormEntry.objects.get(id=context['form_entry_id'])
         context['surveys_submitted'] = Survey.objects.filter(form_id=context['form_entry_id'])
+
+        # Generate a JSON representation of survey data for use in charting
+        surveys_submitted_json = []
+        for survey in context['surveys_submitted']:
+            surveys_submitted_json.append({
+                'time_start': survey.time_start,
+                'time_stop': survey.time_stop,
+                'data': {component.name: component.saved_data
+                         for component in survey.components}
+            })
+        context['surveys_submitted_json'] = json.dumps(surveys_submitted_json,
+                                                       default=str)
 
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)

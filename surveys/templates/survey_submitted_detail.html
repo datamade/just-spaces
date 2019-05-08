@@ -55,43 +55,46 @@
     </table>
 
     <br />
-    <h3 class="card-title">Analyze</h3>
-    <br />
+    <!-- For now, only show the Analyze section for Intercept surveys. -->
+    {% if form_entry.type == 'observational' %}
+      <h3 class="card-title">Analyze</h3>
+      <br />
 
-    <form method="post" id="chart-formset">
-      {{ chart_formset.management_form }}
-      {% csrf_token %}
+      <form method="post" id="chart-formset">
+        {{ chart_formset.management_form }}
+        {% csrf_token %}
 
-      {% if formset.non_form_errors %}
-        <div class="alert alert-danger">
-          {{ formset.non_form_errors }}
+        {% if formset.non_form_errors %}
+          <div class="alert alert-danger">
+            {{ formset.non_form_errors }}
+          </div>
+        {% endif %}
+
+        <div id="sortable-chart-container">
+          {% for form in chart_formset %}
+            {% include 'partials/chart_form.html' with chart_id=forloop.counter0 %}
+          {% endfor %}
         </div>
-      {% endif %}
+      </form>
 
-      <div id="sortable-chart-container">
-        {% for form in chart_formset %}
-          {% include 'partials/chart_form.html' with chart_id=forloop.counter0 %}
-        {% endfor %}
+      <button id="add-new-chart" class="btn btn-primary">Add new chart</button>
+
+      <!-- Use a hidden empty form as the base for adding new forms -->
+      <div id="chart-formset-template" style="display:none">
+        {% include 'partials/chart_form.html' with form=chart_formset.empty_form chart_id='__prefix__' %}
       </div>
-    </form>
 
-    <button id="add-new-chart" class="btn btn-primary">Add new chart</button>
+      <hr />
 
-    <!-- Use a hidden empty form as the base for adding new forms -->
-    <div id="chart-formset-template" style="display:none">
-      {% include 'partials/chart_form.html' with form=chart_formset.empty_form chart_id='__prefix__' %}
-    </div>
-
-    <hr />
-
-    <div class="float-right">
-      <button id="clear-charts" class="btn btn-link">Clear charts</button>
-      <button id="save-charts" class="btn btn-primary">Save charts</button>
-    </div>
-
+      <div class="float-right">
+        <button id="clear-charts" class="btn btn-link">Clear charts</button>
+        <button id="save-charts" class="btn btn-primary">Save charts</button>
+      </div>
+    {% endif %}
   </div>
 </div>
 
+<script src="{% static 'js/highcharts-7.1.1.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/jquery-ui-1.21.1.min.js' %}" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
@@ -105,8 +108,86 @@ $(document).ready(function () {
     }
   });
 
+  var surveys = JSON.parse('{{ surveys_submitted_json | escapejs }}');
   var $totalForms = $('[name$=TOTAL_FORMS]');
   var chartContainer = '[class^="chart-container-"]'
+
+  function loadChart(chartId, chartTitle, dataSourceId) {
+    /**
+     * Load a Highcharts chart.
+     * @param {string} chartId - The ID attribute of the chart container on the page.
+     * @param {string} chartTitle - The title of the chart to display.
+     * @param {string} dataSourceId - The ID of the primary data source to display.
+     */
+    var chartData = {}
+    for (var i=0; i<surveys.length; i++) {
+      try {
+        var savedData = JSON.parse(surveys[i].data[dataSourceId]);
+      } catch(error) {
+        alert('Object is not valid JSON');
+        return;
+      }
+      switch (typeof(savedData)) {
+        case "number":
+          // This is a single-field count
+          // For counts, use the chart title for the category name
+          var countIsInitialized = chartData.hasOwnProperty(chartTitle);
+          chartData[chartTitle] = (countIsInitialized) ? chartData[chartTitle] + savedData : savedData;
+          break;
+        case "object":
+          // This is a JSON object corresponding to grouped fields
+          Object.keys(savedData).forEach(function(key) {
+            var countIsInitialized = chartData.hasOwnProperty(key);
+            chartData[key] = (countIsInitialized) ? chartData[key] + savedData[key] : savedData[key];
+          });
+          break;
+        default:
+          alert('Unexpected data object: ', savedData)
+          return;
+      }
+    }
+    // Format the chart data for Highcharts display
+    var categories = [];
+    var series = [{
+      data: []
+    }];
+    Object.keys(chartData).forEach(function(key) {
+      categories.push(key);
+      series[0].data.push(chartData[key]);
+    });
+    // Initialize a Highcharts chart
+    Highcharts.chart(chartId, {
+      chart: {
+        type: 'column',
+        backgroundColor: '#FFFFFF',
+        shadow: true
+      },
+      title: {
+        text: chartTitle
+      },
+      xAxis: {
+        categories: categories,
+      },
+      yAxis: {
+        title: {
+          text: chartTitle
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      series: series
+    });
+  }
+
+  function destroyChart(chartId) {
+    /**
+     * Destroy a Highcharts chart.
+     * @param {string} chartId - The ID attribute of the chart container on the page.
+     */
+    var chart = $('#' + chartId).highcharts();
+    chart.destroy();
+  }
 
   function resetChartOrder() {
     // Update the 'order' field of each chart on the page to match its visual
@@ -183,6 +264,30 @@ $(document).ready(function () {
     }
     resetChartOrder();
     toggleMoveButtonVisibility();
+  });
+
+  $('form').on('change', 'select[name$="-primary_source"]', function(event) {
+    // Listen to the primary data source select box, and update charts when the
+    // data source changes
+    var dataSourceId = $(this).val();
+    var chartId = $(this).parents(chartContainer).find('.highcharts-chart').first().attr('id');
+    if (dataSourceId === '') {
+      // User selected the null option, so remove the chart
+      destroyChart(chartId);
+    } else {
+      var chartTitle = $(this).find('option[selected]').html();
+      loadChart(chartId, chartTitle, dataSourceId);
+    }
+  });
+
+  // Load visible charts
+  $(chartContainer).filter(':visible').find('select[name$="primary_source"]').each(function() {
+    var dataSourceId = $(this).val();
+    var chartId = $(this).parents(chartContainer).find('.highcharts-chart').first().attr('id');
+    if (dataSourceId != '') {
+      var chartTitle = $(this).find('option[selected]').html();
+      loadChart(chartId, chartTitle, dataSourceId);
+    }
   });
 
   $('#clear-charts').click(function() {

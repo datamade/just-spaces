@@ -1,4 +1,4 @@
-import collections
+import json
 from django import forms
 
 
@@ -10,6 +10,6 @@ class ObservationalField(forms.MultiValueField):
 
     def compress(self, data_list):
         choices_cleaned = [choice[0] for choice in self.choices]
-        saved_data = collections.OrderedDict(zip(choices_cleaned, data_list))
+        saved_data = json.dumps(dict(zip(choices_cleaned, data_list)))
 
         return saved_data
