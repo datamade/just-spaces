@@ -14,9 +14,10 @@ var ChartHelper = function(surveys, types) {
    * @param {Object} types - An object of type definitions.
    */
   this.surveys = surveys;
-  this.countTypes = types.countTypes;
-  this.distributionTypes = types.distributionTypes;
-  this.derivedDistributionTypes = types.derivedDistributionTypes;
+  this.countTypes = types.count;
+  this.observationalTypes = types.observational;
+  this.interceptTypes = types.intercept;
+  this.freeResponseInterceptTypes = types.freeResponseIntercept;
 }
 
 ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
@@ -34,20 +35,24 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     resultType = this.surveys[0].data[dataSourceId].type;
   }
   var isCount = this.countTypes.indexOf(resultType) > -1;
-  var isDistribution = this.distributionTypes.indexOf(resultType) > -1;
-  var isDerivedDistribution = this.derivedDistributionTypes.indexOf(resultType) > -1;
+  var isObservational = this.observationalTypes.indexOf(resultType) > -1;
+  var isIntercept = this.interceptTypes.indexOf(resultType) > -1;
+  var isFreeResponseIntercept = this.freeResponseInterceptTypes.indexOf(resultType) > -1;
   // Retrieve chart data depending on the data source type
   var chartData = {};
-  if (!(isCount || isDistribution || isDerivedDistribution)) {
+  if (!(isCount || isObservational || isIntercept || isFreeResponseIntercept)) {
     // The data object needs to be one of the valid types
     throw new Error('Not a valid chart type: ' + resultType);
   } else {
+    var yAxisLabel = (isCount) ? 'Median response' : '% of responses';
     if (isCount) {
       chartData = this._getCountChartData(dataSourceId, chartTitle);
-    } else if (isDistribution) {
-      chartData = this._getDistributionChartData(dataSourceId);
+    } else if (isObservational) {
+      chartData = this._getObservationalChartData(dataSourceId);
+    } else if (isIntercept) {
+      chartData = this._getInterceptChartData(dataSourceId);
     } else {
-      chartData = this._getDerivedDistributionChartData(dataSourceId);
+      chartData = this._getFreeResponseInterceptChartData(dataSourceId);
     }
   }
   // Format the chart data for Highcharts display
@@ -74,7 +79,7 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     },
     yAxis: {
       title: {
-        text: chartTitle
+        text: yAxisLabel
       }
     },
     legend: {
@@ -109,9 +114,9 @@ ChartHelper.prototype._getCountChartData = function(dataSourceId, chartTitle) {
   return cleanedData;
 }
 
-ChartHelper.prototype._getDistributionChartData = function(dataSourceId) {
+ChartHelper.prototype._getObservationalChartData = function(dataSourceId) {
   /**
-   * Get chart data for a chart of the "distribution" type.
+   * Get chart data for a chart of the "observational" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
    */
   var chartData = {};
@@ -125,15 +130,36 @@ ChartHelper.prototype._getDistributionChartData = function(dataSourceId) {
     }
     Object.keys(savedData).forEach(function(key) {
       var countIsInitialized = chartData.hasOwnProperty(key);
-      chartData[key] = (countIsInitialized) ? chartData[key].concat([savedData[key]]) : [savedData[key]];
+      chartData[key] = (countIsInitialized) ? chartData[key] + Number(savedData[key]) : Number(savedData[key]);
     });
   }
   return percentiles(chartData);
 }
 
-ChartHelper.prototype._getDerivedDistributionChartData = function(dataSourceId) {
+ChartHelper.prototype._getInterceptChartData = function(dataSourceId) {
   /**
-   * Get chart data for a chart of the "derived distribution" type.
+   * Get chart data for a chart of the "intercept" type.
+   * @param {String} dataSourceId - The ID of the primary data source to display.
+   */
+  var chartData = {};
+  for (var i=0; i<this.surveys.length; i++) {
+    var surveyResult = this.surveys[i].data[dataSourceId];
+    try {
+      var savedData = String(surveyResult.value);
+    } catch(error) {
+      alert('Object is not a valid String: ' + String(surveyResult.value));
+      return;
+    }
+    var countIsInitialized = chartData.hasOwnProperty(savedData);
+    // Count the appearances of each response
+    chartData[savedData] = (countIsInitialized) ? chartData[savedData] + 1 : 1;
+  }
+  return percentiles(chartData);
+}
+
+ChartHelper.prototype._getFreeResponseInterceptChartData = function(dataSourceId) {
+  /**
+   * Get chart data for a chart of the "free response intercept" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
    */
   var chartData = {};
@@ -161,29 +187,20 @@ function median(numArr) {
   return i % 1 == 0 ? (numArr[i - 1] + numArr[i]) / 2 : numArr[Math.floor(i)];
 }
 
-function percentiles(arrOb) {
+function percentiles(categories) {
   /**
-   * Given an object of arrays, return percentiles for each key.
-   * @param {Object} arrOb - An object of arrays, each key representing a category.
+   * Given an object of categories:counts, return percentiles for each category.
+   * @param {Object} categories - An object of Numbers, each key representing a category.
    */
-  // Sum category arrays to return a count for each category
-  var sums = {};
-  Object.keys(arrOb).forEach(function(key) {
-    sum = 0;
-    arrOb[key].forEach(function(val) {
-      sum += val;
-    });
-    sums[key] = sum;
-  });
   // Get the total count over all categories
   var total = 0
-  Object.keys(sums).forEach(function(key) {
-    total += sums[key];
+  Object.keys(categories).forEach(function(key) {
+    total += categories[key];
   });
   // Transform the summed object into percentiles
   var percentiles = {};
-  Object.keys(sums).forEach(function(key) {
-    percentiles[key] = sums[key] / total;
+  Object.keys(categories).forEach(function(key) {
+    percentiles[key] = categories[key] / total;
   });
   return percentiles;
 }

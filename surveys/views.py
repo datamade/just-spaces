@@ -230,9 +230,10 @@ class SurveySubmittedDetail(TemplateView):
 
         # Fobi types for use in charting
         types = {
-            'countTypes': fobi_types.DAD_VALID_COUNT_TYPES,
-            'distributionTypes': fobi_types.DAD_VALID_DISTRIBUTION_TYPES,
-            'derivedDistributionTypes': fobi_types.DAD_VALID_DERIVED_DISTRIBUTION_TYPES
+            'count': fobi_types.COUNT_TYPES,
+            'observational': fobi_types.OBSERVATIONAL_TYPES,
+            'intercept': fobi_types.INTERCEPT_TYPES,
+            'freeResponseIntercept': fobi_types.FREE_RESPONSE_INTERCEPT_TYPES
         }
         context['types'] = json.dumps(types)
 

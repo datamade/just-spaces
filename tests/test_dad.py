@@ -126,11 +126,11 @@ def test_ignore_new_removed_chart(client, survey_form_entry, survey_submitted_se
 
 
 def test_valid_type_display(client, survey, survey_form_entry, survey_row):
-    # Test that all question types in the DAD_VALID_TYPES list get displayed as
+    # Test that all question types in the ALL_VALID_TYPES list get displayed as
     # primary source options in the DAD, and that other types don't get displayed.
     counter = 1
     valid_components = []
-    for idx, component_type in enumerate(fobi_types.DAD_VALID_TYPES):
+    for idx, component_type in enumerate(fobi_types.ALL_VALID_TYPES):
         valid_component = SurveyComponent.objects.create(
             detail_level='basic',
             name=str(uuid.uuid4()),
@@ -144,7 +144,7 @@ def test_valid_type_display(client, survey, survey_form_entry, survey_row):
         counter += 1
 
     invalid_components = []
-    for idx, component_type in enumerate(fobi_types.DAD_INVALID_TYPES):
+    for idx, component_type in enumerate(fobi_types.ALL_INVALID_TYPES):
         invalid_component = SurveyComponent.objects.create(
             detail_level='basic',
             name=str(uuid.uuid4()),
