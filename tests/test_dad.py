@@ -1,8 +1,12 @@
 # Tests for the Data Analysis Designer (DAD)
 import pytest
+import uuid
+
 from django.urls import reverse
+from pldp.models import SurveyComponent
 
 from surveys import models
+from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
 
 @pytest.fixture
@@ -119,3 +123,46 @@ def test_ignore_new_removed_chart(client, survey_form_entry, survey_submitted_se
     assert create_response.status_code == 200
     assert 'alert-success' in create_response.content.decode('utf-8')
     assert chart_data[0]['short_description'] not in create_response.content.decode('utf-8')
+
+
+def test_valid_type_display(client, survey, survey_form_entry, survey_row):
+    # Test that all question types in the DAD_VALID_TYPES list get displayed as
+    # primary source options in the DAD, and that other types don't get displayed.
+    counter = 1
+    valid_components = []
+    for idx, component_type in enumerate(fobi_types.DAD_VALID_TYPES):
+        valid_component = SurveyComponent.objects.create(
+            detail_level='basic',
+            name=str(uuid.uuid4()),
+            label='Test label %d' % counter,
+            type=component_type,
+            position=idx+1,
+            saved_data='foo',
+            row=survey_row,
+        )
+        valid_components.append(valid_component)
+        counter += 1
+
+    invalid_components = []
+    for idx, component_type in enumerate(fobi_types.DAD_INVALID_TYPES):
+        invalid_component = SurveyComponent.objects.create(
+            detail_level='basic',
+            name=str(uuid.uuid4()),
+            label='Test label %d' % counter,
+            type=component_type,
+            position=idx+1,
+            saved_data='foo',
+            row=survey_row,
+        )
+        invalid_components.append(invalid_component)
+        counter += 1
+
+    get_url = reverse('surveys-submitted-detail',
+                      kwargs={'form_entry_id': survey_form_entry.id})
+    get_response = client.get(get_url)
+    assert get_response.status_code == 200
+
+    for valid_component in valid_components:
+        assert valid_component.name in get_response.content.decode('utf-8')
+    for invalid_component in invalid_components:
+        assert invalid_component.name not in get_response.content.decode('utf-8')

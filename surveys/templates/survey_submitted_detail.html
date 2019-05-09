@@ -92,6 +92,7 @@
 </div>
 
 <script src="{% static 'js/highcharts-7.1.1.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/charts.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/jquery-ui-1.21.1.min.js' %}" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
@@ -105,86 +106,13 @@ $(document).ready(function () {
     }
   });
 
-  var surveys = JSON.parse('{{ surveys_submitted_json | escapejs }}');
   var $totalForms = $('[name$=TOTAL_FORMS]');
   var chartContainer = '[class^="chart-container-"]'
 
-  function loadChart(chartId, chartTitle, dataSourceId) {
-    /**
-     * Load a Highcharts chart.
-     * @param {string} chartId - The ID attribute of the chart container on the page.
-     * @param {string} chartTitle - The title of the chart to display.
-     * @param {string} dataSourceId - The ID of the primary data source to display.
-     */
-    var chartData = {}
-    for (var i=0; i<surveys.length; i++) {
-      try {
-        var savedData = JSON.parse(surveys[i].data[dataSourceId]);
-      } catch(error) {
-        alert('Object is not valid JSON');
-        return;
-      }
-      switch (typeof(savedData)) {
-        case "number":
-          // This is a single-field count
-          // For counts, use the chart title for the category name
-          var countIsInitialized = chartData.hasOwnProperty(chartTitle);
-          chartData[chartTitle] = (countIsInitialized) ? chartData[chartTitle] + savedData : savedData;
-          break;
-        case "object":
-          // This is a JSON object corresponding to grouped fields
-          Object.keys(savedData).forEach(function(key) {
-            var countIsInitialized = chartData.hasOwnProperty(key);
-            chartData[key] = (countIsInitialized) ? chartData[key] + savedData[key] : savedData[key];
-          });
-          break;
-        default:
-          alert('Unexpected data object: ', savedData)
-          return;
-      }
-    }
-    // Format the chart data for Highcharts display
-    var categories = [];
-    var series = [{
-      data: []
-    }];
-    Object.keys(chartData).forEach(function(key) {
-      categories.push(key);
-      series[0].data.push(chartData[key]);
-    });
-    // Initialize a Highcharts chart
-    Highcharts.chart(chartId, {
-      chart: {
-        type: 'column',
-        backgroundColor: '#FFFFFF',
-        shadow: true
-      },
-      title: {
-        text: chartTitle
-      },
-      xAxis: {
-        categories: categories,
-      },
-      yAxis: {
-        title: {
-          text: chartTitle
-        }
-      },
-      legend: {
-        enabled: false
-      },
-      series: series
-    });
-  }
-
-  function destroyChart(chartId) {
-    /**
-     * Destroy a Highcharts chart.
-     * @param {string} chartId - The ID attribute of the chart container on the page.
-     */
-    var chart = $('#' + chartId).highcharts();
-    chart.destroy();
-  }
+  // Load the ChartHelper from charts.js
+  var surveys = JSON.parse('{{ surveys_submitted_json | escapejs }}');
+  var types = JSON.parse('{{ types | escapejs }}');
+  charts = new ChartHelper(surveys, types);
 
   function resetChartOrder() {
     // Update the 'order' field of each chart on the page to match its visual
@@ -270,10 +198,10 @@ $(document).ready(function () {
     var chartId = $(this).parents(chartContainer).find('.highcharts-chart').first().attr('id');
     if (dataSourceId === '') {
       // User selected the null option, so remove the chart
-      destroyChart(chartId);
+      charts.destroyChart(chartId);
     } else {
-      var chartTitle = $(this).find('option[selected]').html();
-      loadChart(chartId, chartTitle, dataSourceId);
+      var chartTitle = $(this).find('option:selected').html();
+      charts.loadChart(chartId, chartTitle, dataSourceId);
     }
   });
 
@@ -282,8 +210,8 @@ $(document).ready(function () {
     var dataSourceId = $(this).val();
     var chartId = $(this).parents(chartContainer).find('.highcharts-chart').first().attr('id');
     if (dataSourceId != '') {
-      var chartTitle = $(this).find('option[selected]').html();
-      loadChart(chartId, chartTitle, dataSourceId);
+      var chartTitle = $(this).find('option:selected').html();
+      charts.loadChart(chartId, chartTitle, dataSourceId);
     }
   });
 

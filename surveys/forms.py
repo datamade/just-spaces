@@ -8,6 +8,8 @@ from crispy_forms.layout import Submit
 
 from pldp.models import Agency, Location, LocationArea, LocationLine, Study, Survey, \
                         StudyArea
+
+from fobi_custom.plugins.form_elements.fields import types as fobi_types
 from .models import SurveyFormEntry, SurveyChart
 
 
@@ -167,6 +169,7 @@ class SurveyChartForm(forms.ModelForm):
         self.form_entry = SurveyFormEntry.objects.get(id=form_entry)
         super().__init__(*args, **kwargs)
         survey = Survey.objects.filter(form_id=form_entry)[0]
-        choices = [(component.name, component.label) for component in survey.components]
+        choices = [(component.name, component.label) for component in survey.components
+                   if component.type in fobi_types.DAD_VALID_TYPES]
         choices = [('', '-----')] + choices  # Offer a null choice
         self.fields['primary_source'].widget.choices = choices

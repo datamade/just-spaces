@@ -20,6 +20,7 @@ from .models import SurveyFormEntry, SurveyChart
 from .forms import StudyCreateForm, StudyAreaCreateForm, SurveyCreateForm, \
                    SurveyChartForm, LocationCreateForm, LocationAreaCreateForm, \
                    LocationLineCreateForm, AgencyCreateForm
+from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
 
 class AgencyCreate(CreateView):
@@ -219,11 +220,21 @@ class SurveySubmittedDetail(TemplateView):
             surveys_submitted_json.append({
                 'time_start': survey.time_start,
                 'time_stop': survey.time_stop,
-                'data': {component.name: component.saved_data
-                         for component in survey.components}
+                'data': {component.name: {
+                            'type': component.type,
+                            'value': component.saved_data
+                        } for component in survey.components}
             })
         context['surveys_submitted_json'] = json.dumps(surveys_submitted_json,
                                                        default=str)
+
+        # Fobi types for use in charting
+        types = {
+            'countTypes': fobi_types.DAD_VALID_COUNT_TYPES,
+            'distributionTypes': fobi_types.DAD_VALID_DISTRIBUTION_TYPES,
+            'derivedDistributionTypes': fobi_types.DAD_VALID_DERIVED_DISTRIBUTION_TYPES
+        }
+        context['types'] = json.dumps(types)
 
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)
