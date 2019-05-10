@@ -1,3 +1,5 @@
+from datetime import datetime
+
 # Valid SurveyComponent types for the Data Analysis Designer (DAD). These are
 # the UIDs of Fobi form elements that can sensibly be turned into charts.
 
@@ -19,10 +21,16 @@ INTERCEPT_TYPES = [
 ]
 # "Free response intercept" types are distinct from other intercept types in that
 # they allow the user to freely respond with a numeric response to a question,
-# which we can then bin and display as a distribution.
-FREE_RESPONSE_INTERCEPT_TYPES = [
-    'age_intercept', 'household_tenure'
-]
+# which we can then bin and display as a distribution. Because the responses
+# only store a number, we need to preset the boundaries of the bins.
+curr_year = datetime.now().year
+FREE_RESPONSE_INTERCEPT_BINS = {
+    'age_intercept': [5, 10, 15, 18, 20, 21, 22, 25, 30, 35, 40, 45, 50, 55, 60,
+                      62, 65, 67, 70, 75, 80, 85],
+    'household_tenure': [curr_year-2015, curr_year-2010, curr_year-2000,
+                         curr_year-1990, curr_year-1980],
+}
+FREE_RESPONSE_INTERCEPT_TYPES = list(FREE_RESPONSE_INTERCEPT_BINS.keys())
 # All valid types merged into one list, for easy validation.
 ALL_VALID_TYPES = (COUNT_TYPES + OBSERVATIONAL_TYPES + INTERCEPT_TYPES +
                    FREE_RESPONSE_INTERCEPT_TYPES)

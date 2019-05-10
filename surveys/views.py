@@ -228,14 +228,18 @@ class SurveySubmittedDetail(TemplateView):
         context['surveys_submitted_json'] = json.dumps(surveys_submitted_json,
                                                        default=str)
 
-        # Fobi types for use in charting
+        # Fobi types and bins for use in charting
         types = {
             'count': fobi_types.COUNT_TYPES,
             'observational': fobi_types.OBSERVATIONAL_TYPES,
             'intercept': fobi_types.INTERCEPT_TYPES,
-            'freeResponseIntercept': fobi_types.FREE_RESPONSE_INTERCEPT_TYPES
+            'freeResponseIntercept': fobi_types.FREE_RESPONSE_INTERCEPT_TYPES,
+        }
+        bins = {
+            'freeResponseIntercept': fobi_types.FREE_RESPONSE_INTERCEPT_BINS,
         }
         context['types'] = json.dumps(types)
+        context['bins'] = json.dumps(bins)
 
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)

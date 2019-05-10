@@ -112,7 +112,8 @@ $(document).ready(function () {
   // Load the ChartHelper from charts.js
   var surveys = JSON.parse('{{ surveys_submitted_json | escapejs }}');
   var types = JSON.parse('{{ types | escapejs }}');
-  charts = new ChartHelper(surveys, types);
+  var bins = JSON.parse('{{ bins | escapejs }}');
+  charts = new ChartHelper(surveys, types, bins);
 
   function resetChartOrder() {
     // Update the 'order' field of each chart on the page to match its visual
