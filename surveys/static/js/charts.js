@@ -49,7 +49,7 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     throw new Error('Not a valid chart type: ' + resultType);
   } else {
     // Retrieve chart data depending on the data source type
-    var chartData = {};
+    var chartData = [];
     var yAxisLabel = (isCount) ? 'Median response' : '% of responses';
     if (isCount) {
       chartData = this._getCountChartData(dataSourceId, chartTitle);
@@ -66,9 +66,14 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
   var series = [{
     data: []
   }];
-  Object.keys(chartData).forEach(function(key) {
-    categories.push(key);
-    series[0].data.push(chartData[key]);
+  chartData.forEach(function(data) {
+    // chartData elements are stored as an Array where the first element is the
+    // category name and the second element is the value -- a map would be easier
+    // to work with, but wouldn't preserve the order of the categories
+    var category = data[0];
+    var value = data[1];
+    categories.push(category);
+    series[0].data.push(value);
   });
   // Initialize a Highcharts chart
   Highcharts.chart(chartId, {
@@ -136,11 +141,24 @@ ChartHelper.prototype._getCountChartData = function(dataSourceId, chartTitle) {
    * @param {String} dataSourceId - The ID of the primary data source to display.
    * @param {String} chartTitle - The title of the chart to display.
    */
-  function initChartDataFunc() { return {}};
+  function initChartDataFunc() { return []};
   var castFunc = Number;
   function updateChartDataFunc(chartData, savedData) {
-    var countIsInitialized = chartData.hasOwnProperty(chartTitle);
-    chartData[chartTitle] = (countIsInitialized) ? chartData[chartTitle].concat([savedData]) : [savedData];
+    var categoryFound = false;
+    // If an entry for this category exists in the chartData array, append the
+    // new value to its array
+    for (var i=0; i<chartData.length; i++) {
+      var categoryName = chartData[i][0];
+      if (categoryName === chartTitle) {
+        chartData[i][1].push(savedData);
+        categoryFound = true;
+        break;
+      }
+    }
+    if (!categoryFound) {
+      // Insert an entry for this count in the chartData array
+      chartData.push([chartTitle, [savedData]]);
+    }
   }
   var aggFunc = medians;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
@@ -151,12 +169,26 @@ ChartHelper.prototype._getObservationalChartData = function(dataSourceId) {
    * Get chart data for a chart of the "observational" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
    */
-  function initChartDataFunc() { return {}};
+  function initChartDataFunc() { return []};
   var castFunc = JSON.parse;
   function updateChartDataFunc(chartData, savedData) {
     Object.keys(savedData).forEach(function(key) {
-      var countIsInitialized = chartData.hasOwnProperty(key);
-      chartData[key] = (countIsInitialized) ? chartData[key] + Number(savedData[key]) : Number(savedData[key]);
+      var categoryFound = false;
+      var savedDataValue = Number(savedData[key]);
+      // If an entry for this category exists in the chartData array, inncrement
+      // its counter
+      for (var i=0; i<chartData.length; i++) {
+        var categoryName = chartData[i][0];
+        if (categoryName === key) {
+          chartData[i][1] += savedDataValue;
+          categoryFound = true;
+          break;
+        }
+      }
+      if (!categoryFound) {
+        // Insert an entry for this count in the chartData array
+        chartData.push([key, savedDataValue]);
+      }
     });
   }
   var aggFunc = percentiles;
@@ -168,12 +200,23 @@ ChartHelper.prototype._getInterceptChartData = function(dataSourceId) {
    * Get chart data for a chart of the "intercept" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
    */
-  function initChartDataFunc() { return {}};
+  function initChartDataFunc() { return []};
   var castFunc = String;
   function updateChartDataFunc(chartData, savedData) {
-    var countIsInitialized = chartData.hasOwnProperty(savedData);
-    // Count the appearances of each response
-    chartData[savedData] = (countIsInitialized) ? chartData[savedData] + 1 : 1;
+    var categoryFound = false;
+    // If an entry for this category exists in the chartData array, increment its counter
+    for (var i=0; i<chartData.length; i++) {
+      var categoryName = chartData[i][0];
+      if (categoryName === savedData) {
+        chartData[i][1] += 1;
+        categoryFound = true;
+        break;
+      }
+    }
+    if (!categoryFound) {
+      // Insert an entry for this count in the chartData array
+      chartData.push([savedData, 1]);
+    }
   }
   var aggFunc = percentiles;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
@@ -190,7 +233,7 @@ ChartHelper.prototype._getFreeResponseInterceptChartData = function(dataSourceId
     throw new Error('No freeResponseInterceptBins found for type ' + resultType);
   }
   function initChartDataFunc() {
-    var chartData = {};
+    var chartData = [];
     // Initialize the chart data with empty values for each bin
     bins.forEach(function(bin, idx, arr) {
       // The binning function places values into bins by checking if the value
@@ -198,19 +241,22 @@ ChartHelper.prototype._getFreeResponseInterceptChartData = function(dataSourceId
       // smaller so that it passes the check
       var downStep = (idx === 0) ? bin / 2 : (bin - arr[idx-1]) / 2;
       formattedBin = binValue(bin-downStep, arr);
-      chartData[formattedBin] = 0;
+      chartData.push([formattedBin, 0]);
     });
     // Add an extra bin value to make sure that the max gets displayed
-    chartData[String(bins[bins.length-1]) + '+'] = 0;
+    chartData.push([String(bins[bins.length-1]) + '+', 0]);
     return chartData;
   };
   var castFunc = Number;
   function updateChartDataFunc(chartData, savedData) {
     // Bin the value according to the type of the response
     savedData = binValue(savedData, bins);
-    var countIsInitialized = chartData.hasOwnProperty(savedData);
-    // Count the appearances of each response
-    chartData[savedData] = (countIsInitialized) ? chartData[savedData] + 1 : 1;
+    chartData.forEach(function(category, idx, arr) {
+      var categoryName = category[0];
+      if (categoryName === savedData) {
+        arr[idx][1] += 1;
+      }
+    });
   }
   var aggFunc = percentiles;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
@@ -225,39 +271,35 @@ ChartHelper.prototype.destroyChart = function(chartId) {
   chart.destroy();
 }
 
-function medians(arrObj) {
+function medians(categories) {
   /**
-   * Given a set of keys mapping to arrays of numbers, return the median.
+   * Given an array map of categories and numbers, return the median number for
+   * each category in the array.
    * Algorithm adapted from Harry Stevens' code on StackOverflow:
    * https://stackoverflow.com/a/39639518
-   * @param {Number} arrOb - An object where each key maps to an array of numbers.
+   * @param {Array} categories - A nested set of arrays acting as a Map, where
+   *                             the first element represents a category name and the
+   *                             second element is an array of numbers representing
+   *                             all recorded values for that category.
    */
-  var medians = {};
-  Object.keys(arrObj).forEach(function(key) {
-    var numArr = arrObj[key];
-    numArr.sort(function(a, b){ return a - b; });
+  return categories.map(function(category) {
+    var categoryName = category[0];
+    var numArr = category[1];
+    numArr.sort(function(a, b) { return a - b; });
     var i = numArr.length / 2;
-    medians[key] = i % 1 == 0 ? (numArr[i - 1] + numArr[i]) / 2 : numArr[Math.floor(i)];
+    return [categoryName, i % 1 == 0 ? (numArr[i - 1] + numArr[i]) / 2 : numArr[Math.floor(i)]];
   });
-  return medians;
 }
 
 function percentiles(categories) {
   /**
-   * Given an object of categories:counts, return percentiles for each category.
-   * @param {Object} categories - An object of Numbers, each key representing a category.
+   * Given an array map of categories:counts, return percentiles for each category.
+   * @param {Array} categories - A nested array of numbers acting as a Map, where
+   *                             the first element represents a category name and the
+   *                             second element represents its value.
    */
-  // Get the total count over all categories
-  var total = 0
-  Object.keys(categories).forEach(function(key) {
-    total += categories[key];
-  });
-  // Transform the summed object into percentiles
-  var percentiles = {};
-  Object.keys(categories).forEach(function(key) {
-    percentiles[key] = categories[key] / total;
-  });
-  return percentiles;
+  var total = categories.reduce(function(acc, category) { return acc + category[1] }, 0);
+  return categories.map(function(category) { return [category[0], category[1] / total]})
 }
 
 function binValue(value, bins) {
