@@ -7,31 +7,33 @@ from pldp.models import Agency, Location, Study, StudyArea
 from .models import SurveyFormEntry, SurveyChart
 
 
-class CreateAgencyForm(forms.ModelForm):
+class JustSpacesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(CreateAgencyForm, self).__init__(*args, **kwargs)
-        create_default_helper(self)
+        super(JustSpacesForm, self).__init__(*args, **kwargs)
+        self.create_default_helper()
 
+    def create_default_helper(self):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Submit'))
+
+
+class CreateAgencyForm(JustSpacesForm):
     class Meta:
         model = Agency
         fields = '__all__'
 
 
-class CreateLocationForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CreateLocationForm, self).__init__(*args, **kwargs)
-        create_default_helper(self)
-
+class CreateLocationForm(JustSpacesForm):
     class Meta:
         model = Location
         fields = '__all__'
 
 
-class StudyAreaCreateForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(StudyAreaCreateForm, self).__init__(*args, **kwargs)
-        create_default_helper(self)
-
+class StudyAreaCreateForm(JustSpacesForm):
     class Meta:
         model = StudyArea
         fields = '__all__'
@@ -46,10 +48,10 @@ class StudyAreaCreateForm(forms.ModelForm):
         widgets = {'area': LeafletWidget(attrs=leaflet_widget_attrs)}
 
 
-class StudyCreateForm(forms.ModelForm):
+class StudyCreateForm(JustSpacesForm):
     def __init__(self, *args, **kwargs):
         super(StudyCreateForm, self).__init__(*args, **kwargs)
-        create_default_helper(self)
+        self.create_default_helper()
         self.fields['areas'].widget.attrs['class'] = 'basic-multiple'
 
     class Meta:
@@ -61,11 +63,7 @@ class StudyCreateForm(forms.ModelForm):
         }
 
 
-class SurveyCreateForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(SurveyCreateForm, self).__init__(*args, **kwargs)
-        create_default_helper(self)
-
+class SurveyCreateForm(JustSpacesForm):
     class Meta:
         model = SurveyFormEntry
         fields = ['user', 'name', 'study', 'location', 'type']
@@ -82,12 +80,3 @@ class SurveyChartForm(forms.ModelForm):
     def __init__(self, *args, form_entry, **kwargs):
         self.form_entry = SurveyFormEntry.objects.get(id=form_entry)
         super().__init__(*args, **kwargs)
-
-
-def create_default_helper(self):
-    self.helper = FormHelper()
-    self.helper.form_class = 'form-horizontal'
-    self.helper.label_class = 'col-lg-2'
-    self.helper.field_class = 'col-lg-8'
-    self.helper.form_method = 'post'
-    self.helper.add_input(Submit('submit', 'Submit'))
