@@ -255,9 +255,6 @@ function binValue(value, bins) {
       if (i === 0) {
         binnedValue = '<' + String(bin);
         break;
-      } else if (i === bins.length-1) {
-        binnedValue = String(bins[bins.length-1]) + '+';
-        break;
       } else {
         var prevBin = bins[i-1];
         // Check if the bin represents a single integer instead of a range
@@ -272,7 +269,6 @@ function binValue(value, bins) {
   }
   if (binnedValue === undefined) {
     // Value was larger than all bins
-    debugger;
     binnedValue = String(bins[bins.length-1]) + '+';
   }
   return binnedValue;
