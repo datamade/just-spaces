@@ -95,29 +95,55 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
   });
 }
 
+ChartHelper.prototype._getChartData = function(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc) {
+  /**
+   * Base function for retrieving survey data for display on a chart.
+   * This function takes a number of transformation functions as arguments and
+   * applies them to the selected survey data. For an example of how it is used,
+   * see the _getCountChartData method.
+   * @param {String} dataSourceId - The ID of the primary data source to retrieve.
+   * @param {Function} initChartDataFunc - A function that takes no arguments
+   *                                       and returns the initialized chartData
+   *                                       object.
+   * @param {Function} castFunc - A function that takes as an argument the survey
+   *                              data value and casts it to the appropriate type.
+   * @param {Function} updateChartDataFunc - A function that takes as arguments the
+   *                                         initialized chartData object and the
+   *                                         formatted survey data value and updates
+   *                                         the chartData object accordingly.
+   * @param {Function} aggFunc - A function that takes as an argument the updated
+   *                             chartData object and aggregates across its values
+   *                             (e.g. returning the median value for each key)
+   */
+  var chartData = initChartDataFunc();
+  for (var i=0; i<this.surveys.length; i++) {
+    var surveyResult = this.surveys[i].data[dataSourceId];
+    try {
+      // Cast the saved value to the appropriate type
+      var savedData = castFunc(surveyResult.value);
+    } catch(error) {
+      var funcName = castFunc.name ? castFunc.name : String(castFunc);
+      throw new Error('Object cannot be cast by ' + funcName + ': ' + String(surveyResult.value));
+    }
+    updateChartDataFunc(chartData, savedData);
+  }
+  return aggFunc(chartData);
+}
+
 ChartHelper.prototype._getCountChartData = function(dataSourceId, chartTitle) {
   /**
    * Get chart data for a chart of the "count" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
    * @param {String} chartTitle - The title of the chart to display.
    */
-  var chartData = {};
-  for (var i=0; i<this.surveys.length; i++) {
-    var surveyResult = this.surveys[i].data[dataSourceId];
-    try {
-      var savedData = Number(surveyResult.value);
-    } catch(error) {
-      alert('Object is not a valid Number: ' + String(surveyResult.value));
-      return;
-    }
+  function initChartDataFunc() { return {}};
+  var castFunc = Number;
+  function updateChartDataFunc(chartData, savedData) {
     var countIsInitialized = chartData.hasOwnProperty(chartTitle);
     chartData[chartTitle] = (countIsInitialized) ? chartData[chartTitle].concat([savedData]) : [savedData];
   }
-  var cleanedData = {};
-  Object.keys(chartData).forEach(function(key) {
-    cleanedData[key] = median(chartData[key]);
-  });
-  return cleanedData;
+  var aggFunc = medians;
+  return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
 ChartHelper.prototype._getObservationalChartData = function(dataSourceId) {
@@ -125,21 +151,16 @@ ChartHelper.prototype._getObservationalChartData = function(dataSourceId) {
    * Get chart data for a chart of the "observational" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
    */
-  var chartData = {};
-  for (var i=0; i<this.surveys.length; i++) {
-    var surveyResult = this.surveys[i].data[dataSourceId];
-    try {
-      var savedData = JSON.parse(surveyResult.value);
-    } catch(error) {
-      alert('Object is not valid JSON: ' + String(surveyResult.value));
-      return;
-    }
+  function initChartDataFunc() { return {}};
+  var castFunc = JSON.parse;
+  function updateChartDataFunc(chartData, savedData) {
     Object.keys(savedData).forEach(function(key) {
       var countIsInitialized = chartData.hasOwnProperty(key);
       chartData[key] = (countIsInitialized) ? chartData[key] + Number(savedData[key]) : Number(savedData[key]);
     });
   }
-  return percentiles(chartData);
+  var aggFunc = percentiles;
+  return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
 ChartHelper.prototype._getInterceptChartData = function(dataSourceId) {
@@ -147,20 +168,15 @@ ChartHelper.prototype._getInterceptChartData = function(dataSourceId) {
    * Get chart data for a chart of the "intercept" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
    */
-  var chartData = {};
-  for (var i=0; i<this.surveys.length; i++) {
-    var surveyResult = this.surveys[i].data[dataSourceId];
-    try {
-      var savedData = String(surveyResult.value);
-    } catch(error) {
-      alert('Object is not a valid String: ' + String(surveyResult.value));
-      return;
-    }
+  function initChartDataFunc() { return {}};
+  var castFunc = String;
+  function updateChartDataFunc(chartData, savedData) {
     var countIsInitialized = chartData.hasOwnProperty(savedData);
     // Count the appearances of each response
     chartData[savedData] = (countIsInitialized) ? chartData[savedData] + 1 : 1;
   }
-  return percentiles(chartData);
+  var aggFunc = percentiles;
+  return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
 ChartHelper.prototype._getFreeResponseInterceptChartData = function(dataSourceId) {
@@ -168,22 +184,13 @@ ChartHelper.prototype._getFreeResponseInterceptChartData = function(dataSourceId
    * Get chart data for a chart of the "free response intercept" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
    */
-  var chartData = {};
-  for (var i=0; i<this.surveys.length; i++) {
-    var surveyResult = this.surveys[i].data[dataSourceId];
-    try {
-      var savedData = Number(surveyResult.value);
-    } catch(error) {
-      alert('Object is not a valid Number: ' + String(surveyResult.value));
-      return;
-    }
-    // Bin the value according to the type of the response
-    resultType = this.surveys[0].data[dataSourceId].type;
-    var bins = this.freeResponseInterceptBins[resultType];
-    if (bins === undefined) {
-      throw new Error('No freeResponseInterceptBins found for type ' + resultType);
-    }
-    savedData = binValue(savedData, bins);
+  var resultType = this.surveys[0].data[dataSourceId].type;
+  var bins = this.freeResponseInterceptBins[resultType];
+  if (bins === undefined) {
+    throw new Error('No freeResponseInterceptBins found for type ' + resultType);
+  }
+  function initChartDataFunc() {
+    var chartData = {};
     // Initialize the chart data with empty values for each bin
     bins.forEach(function(bin, idx, arr) {
       // The binning function places values into bins by checking if the value
@@ -195,11 +202,18 @@ ChartHelper.prototype._getFreeResponseInterceptChartData = function(dataSourceId
     });
     // Add an extra bin value to make sure that the max gets displayed
     chartData[String(bins[bins.length-1]) + '+'] = 0;
+    return chartData;
+  };
+  var castFunc = Number;
+  function updateChartDataFunc(chartData, savedData) {
+    // Bin the value according to the type of the response
+    savedData = binValue(savedData, bins);
     var countIsInitialized = chartData.hasOwnProperty(savedData);
     // Count the appearances of each response
     chartData[savedData] = (countIsInitialized) ? chartData[savedData] + 1 : 1;
   }
-  return percentiles(chartData);
+  var aggFunc = percentiles;
+  return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
 ChartHelper.prototype.destroyChart = function(chartId) {
@@ -211,16 +225,21 @@ ChartHelper.prototype.destroyChart = function(chartId) {
   chart.destroy();
 }
 
-function median(numArr) {
+function medians(arrObj) {
   /**
-   * Given an array of numbers, return the median.
+   * Given a set of keys mapping to arrays of numbers, return the median.
    * Algorithm adapted from Harry Stevens' code on StackOverflow:
    * https://stackoverflow.com/a/39639518
-   * @param {Number} numArr - An array of numbers.
+   * @param {Number} arrOb - An object where each key maps to an array of numbers.
    */
-  numArr.sort(function(a, b){ return a - b; });
-  var i = numArr.length / 2;
-  return i % 1 == 0 ? (numArr[i - 1] + numArr[i]) / 2 : numArr[Math.floor(i)];
+  var medians = {};
+  Object.keys(arrObj).forEach(function(key) {
+    var numArr = arrObj[key];
+    numArr.sort(function(a, b){ return a - b; });
+    var i = numArr.length / 2;
+    medians[key] = i % 1 == 0 ? (numArr[i - 1] + numArr[i]) / 2 : numArr[Math.floor(i)];
+  });
+  return medians;
 }
 
 function percentiles(categories) {
@@ -273,4 +292,3 @@ function binValue(value, bins) {
   }
   return binnedValue;
 }
-
