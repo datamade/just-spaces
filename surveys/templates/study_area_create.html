@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load leaflet_tags %}
 {% load crispy_forms_tags %}
+
+{% block extracss %}
+  {% leaflet_css %}
+  {% leaflet_css plugins="forms" %}
+{% endblock %}
+
+{% block extrajs %}
+  {% leaflet_js %}
+  {% leaflet_js plugins="forms" %}
+{% endblock %}
 
 {% block content %}
 
