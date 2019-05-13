@@ -21,3 +21,4 @@ def test_study_area_form(client, user):
 
     assert post_response.status_code == 302
     assert new_study_area.name == form_data['name']
+    assert new_study_area.area
