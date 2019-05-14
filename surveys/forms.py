@@ -41,7 +41,6 @@ class StudyAreaCreateForm(JustSpacesForm):
         leaflet_widget_attrs = {
             'map_height': '400px',
             'map_width': '100%',
-
         }
 
         widgets = {'area': LeafletWidget(attrs=leaflet_widget_attrs)}
