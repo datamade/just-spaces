@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extracss %}
+  <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+{% endblock %}
+
+{% block extrajs %}
+  <script type="text/javascript" src="{% static 'js/datatables.min.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
 <div class="card">

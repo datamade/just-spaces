@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, UpdateView
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.forms import modelformset_factory
 from django.contrib import messages
 
-from pldp.models import Agency, Location, Study, Survey
+from pldp.models import Agency, Location, Study, StudyArea, Survey
 
 from users.models import JustSpacesUser
 from users.admin import JustSpacesUserCreationForm
@@ -14,7 +14,8 @@ from users.admin import JustSpacesUserCreationForm
 from fobi.views import add_form_handler_entry
 
 from .models import SurveyFormEntry, SurveyChart
-from .forms import StudyCreateForm, SurveyCreateForm, SurveyChartForm
+from .forms import StudyCreateForm, StudyAreaCreateForm, SurveyCreateForm, \
+                   SurveyChartForm
 
 
 class AgencyCreate(CreateView):
@@ -31,11 +32,26 @@ class LocationCreate(CreateView):
     success_url = '/'
 
 
+class StudyAreaCreate(CreateView):
+    form_class = StudyAreaCreateForm
+    model = StudyArea
+    template_name = "study_area_create.html"
+    success_url = reverse_lazy('studies-create')
+
+
 class StudyCreate(CreateView):
     form_class = StudyCreateForm
     model = Study
     template_name = "study_create.html"
-    success_url = '/'
+    success_url = reverse_lazy('surveys-list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        url = reverse_lazy('study-areas-create')
+        extra_help_text = ' Don\'t see the area you need? <a href="{}" target="_blank">Create a new one here</a>'.format(url)
+        context['form'].fields['areas'].help_text += extra_help_text
+
+        return context
 
 
 class SurveyCreate(CreateView):

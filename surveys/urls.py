@@ -9,9 +9,9 @@ from django.conf.urls import url, include
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
-                                SurveyCreate, SurveyPublish, SurveyListEdit, \
-                                SurveyListRun, Signup, SurveySubmittedList, \
-                                SurveySubmittedDetail
+                            StudyAreaCreate, SurveyCreate, SurveyPublish, \
+                            SurveyListEdit, SurveyListRun, Signup, SurveySubmittedList, \
+                            SurveySubmittedDetail
 import fobi.views
 
 urlpatterns = [
@@ -34,6 +34,10 @@ urlpatterns = [
     url(r'locations/create/$',
         login_required(LocationCreate.as_view()),
         name='locations-create'),
+
+    url(r'study-areas/create/$',
+        login_required(StudyAreaCreate.as_view()),
+        name='study-areas-create'),
 
     url(r'studies/create/$',
         login_required(StudyCreate.as_view()),

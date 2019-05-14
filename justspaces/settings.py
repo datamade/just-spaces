@@ -28,12 +28,14 @@ INSTALLED_APPS = [
     'frontend',
     'surveys',
 
+    'django.contrib.gis',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'leaflet',
     'crispy_forms',
 
     # django-pldp
@@ -168,3 +170,25 @@ LOGIN_REDIRECT_URL = 'surveys-list-run'
 FOBI_DEFAULT_THEME = 'foundation5'
 FOBI_THEME_FOOTER_TEXT = gettext.gettext('')
 FOBI_RESTRICT_PLUGIN_ACCESS = False
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (39.952583, -75.165222),
+    'DEFAULT_ZOOM': 12,
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 18,
+    'RESET_VIEW': False,
+    'TILES': [
+        (
+         'Map',
+         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+         {'attribution': '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
+        ),
+        (
+         'Satellite',
+         'http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}',
+         {'attribution': '&copy; Google'}
+        ),
+    ]
+}
