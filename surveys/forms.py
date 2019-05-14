@@ -21,16 +21,23 @@ class JustSpacesForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
 
-class CreateAgencyForm(JustSpacesForm):
+class AgencyCreateForm(JustSpacesForm):
     class Meta:
         model = Agency
         fields = '__all__'
 
 
-class CreateLocationForm(JustSpacesForm):
+class LocationCreateForm(JustSpacesForm):
     class Meta:
         model = Location
         fields = '__all__'
+
+        leaflet_widget_attrs = {
+            'map_height': '400px',
+            'map_width': '100%',
+        }
+
+        widgets = {'geometry': LeafletWidget(attrs=leaflet_widget_attrs)}
 
 
 class StudyAreaCreateForm(JustSpacesForm):

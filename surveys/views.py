@@ -15,21 +15,21 @@ from fobi.views import add_form_handler_entry
 
 from .models import SurveyFormEntry, SurveyChart
 from .forms import StudyCreateForm, StudyAreaCreateForm, SurveyCreateForm, \
-                   SurveyChartForm
+                   SurveyChartForm, LocationCreateForm, AgencyCreateForm
 
 
 class AgencyCreate(CreateView):
+    form_class = AgencyCreateForm
     model = Agency
     template_name = "agency_create.html"
-    fields = '__all__'
     success_url = '/'
 
 
 class LocationCreate(CreateView):
+    form_class = LocationCreateForm
     model = Location
     template_name = "location_create.html"
-    fields = '__all__'
-    success_url = '/'
+    success_url = reverse_lazy('surveys-create')
 
 
 class StudyAreaCreate(CreateView):
@@ -43,7 +43,7 @@ class StudyCreate(CreateView):
     form_class = StudyCreateForm
     model = Study
     template_name = "study_create.html"
-    success_url = reverse_lazy('surveys-list')
+    success_url = reverse_lazy('surveys-list-edit')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
