@@ -17,6 +17,13 @@
 
   <h1>Create New Location</h1>
   <br />
-  {% crispy form %}
+
+  <form class="form-horizontal" name="location-form" method="post">
+    {% crispy form %}
+    {% crispy form_location_area %}
+    {% crispy form_location_line %}
+  </form>
+
+  <script type="text/javascript" src="{% static 'js/location_create.js' %}"></script>
 
 {% endblock %}

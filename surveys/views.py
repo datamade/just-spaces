@@ -15,7 +15,8 @@ from fobi.views import add_form_handler_entry
 
 from .models import SurveyFormEntry, SurveyChart
 from .forms import StudyCreateForm, StudyAreaCreateForm, SurveyCreateForm, \
-                   SurveyChartForm, LocationCreateForm, AgencyCreateForm
+                   SurveyChartForm, LocationCreateForm, LocationAreaCreateForm, \
+                   LocationLineCreateForm, AgencyCreateForm
 
 
 class AgencyCreate(CreateView):
@@ -27,9 +28,23 @@ class AgencyCreate(CreateView):
 
 class LocationCreate(CreateView):
     form_class = LocationCreateForm
-    model = Location
+    form_class_location_area = LocationAreaCreateForm
+    form_class_location_line = LocationLineCreateForm
+
     template_name = "location_create.html"
     success_url = reverse_lazy('surveys-create')
+
+    def get_context_data(self, **kwargs):
+        context = super(LocationCreate, self).get_context_data(**kwargs)
+
+        context['form'] = self.form_class()
+        context['form_location_area'] = self.form_class_location_area(prefix="location-area")
+        context['form_location_line'] = self.form_class_location_line(prefix="location-line")
+
+        return context
+
+    def post(self, request, **kwargs):
+        print("testing...")
 
 
 class StudyAreaCreate(CreateView):

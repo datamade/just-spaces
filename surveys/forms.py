@@ -3,7 +3,8 @@ from leaflet.forms.widgets import LeafletWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from pldp.models import Agency, Location, Study, StudyArea
+from pldp.models import Agency, Location, LocationArea, LocationLine, Study, \
+                        StudyArea
 from .models import SurveyFormEntry, SurveyChart
 
 
@@ -27,7 +28,18 @@ class AgencyCreateForm(JustSpacesForm):
         fields = '__all__'
 
 
-class LocationCreateForm(JustSpacesForm):
+class LocationCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(LocationCreateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.form_method = 'post'
+        self.helper.form_tag = False
+        self.fields['name_primary'].label = "Primary name"
+        self.fields['name_secondary'].label = "Secondary name"
+
     class Meta:
         model = Location
         fields = '__all__'
@@ -38,6 +50,59 @@ class LocationCreateForm(JustSpacesForm):
         }
 
         widgets = {'geometry': LeafletWidget(attrs=leaflet_widget_attrs)}
+
+
+class LocationAreaCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(LocationAreaCreateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.form_method = 'post'
+        self.helper.form_tag = False
+
+        self.fields['date_measured'].label = "Area: Date Measured"
+        self.fields['total_sqm'].label = "Area: Total sqm"
+        self.fields['people_sqm'].label = "Area: People sqm"
+        self.fields['typology'].label = "Area: Typology"
+
+        self.fields['location'].required = False
+
+    class Meta:
+        model = LocationArea
+        fields = '__all__'  # ['date_measured', 'total_sqm', 'people_sqm', 'typology']
+
+        widgets = {
+            'location': forms.HiddenInput(),
+            'date_measured': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+
+class LocationLineCreateForm(JustSpacesForm):
+    def __init__(self, *args, **kwargs):
+        super(LocationLineCreateForm, self).__init__(*args, **kwargs)
+        self.helper.form_tag = False
+
+        self.fields['date_measured'].label = "Line: Date Measured"
+        self.fields['total_m'].label = "Line: Total width"
+        self.fields['pedestrian_m'].label = "Line: Pedestrian width"
+        self.fields['bicycle_m'].label = "Line: Bicycle width"
+        self.fields['vehicular_m'].label = "Line: Vehicular width"
+        self.fields['typology_pedestrian'].label = "Line: Pedestrian typology"
+        self.fields['typology_bicycle'].label = "Line: Bicycle typology"
+        self.fields['typology_vehicular'].label = "Line: Vehicular typology"
+
+        self.fields['location'].required = False
+
+    class Meta:
+        model = LocationLine
+        fields = '__all__'
+
+        widgets = {
+            'location': forms.HiddenInput(),
+            'date_measured': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 
 class StudyAreaCreateForm(JustSpacesForm):
