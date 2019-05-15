@@ -37,8 +37,7 @@ class LocationCreateForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
-        self.fields['name_primary'].label = "Primary name"
-        self.fields['name_secondary'].label = "Secondary name"
+
 
     class Meta:
         model = Location
@@ -51,6 +50,11 @@ class LocationCreateForm(forms.ModelForm):
 
         widgets = {'geometry': LeafletWidget(attrs=leaflet_widget_attrs)}
 
+        labels = {
+            'name_primary': 'Primary name',
+            'name_secondary': 'Secondary name'
+        }
+
 
 class LocationAreaCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -61,21 +65,23 @@ class LocationAreaCreateForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
-
-        self.fields['date_measured'].label = "Area: Date Measured"
-        self.fields['total_sqm'].label = "Area: Total sqm"
-        self.fields['people_sqm'].label = "Area: People sqm"
-        self.fields['typology'].label = "Area: Typology"
-
         self.fields['location'].required = False
+        self.fields['date_measured'].required = False
 
     class Meta:
         model = LocationArea
-        fields = '__all__'  # ['date_measured', 'total_sqm', 'people_sqm', 'typology']
+        fields = '__all__'
 
         widgets = {
             'location': forms.HiddenInput(),
             'date_measured': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+        labels = {
+            'date_measured': 'Area: Date Measured',
+            'total_sqm': 'Area: Total sqm',
+            'people_sqm': 'Area: People sqm',
+            'typology': 'Area: Typology'
         }
 
 
@@ -83,17 +89,8 @@ class LocationLineCreateForm(JustSpacesForm):
     def __init__(self, *args, **kwargs):
         super(LocationLineCreateForm, self).__init__(*args, **kwargs)
         self.helper.form_tag = False
-
-        self.fields['date_measured'].label = "Line: Date Measured"
-        self.fields['total_m'].label = "Line: Total width"
-        self.fields['pedestrian_m'].label = "Line: Pedestrian width"
-        self.fields['bicycle_m'].label = "Line: Bicycle width"
-        self.fields['vehicular_m'].label = "Line: Vehicular width"
-        self.fields['typology_pedestrian'].label = "Line: Pedestrian typology"
-        self.fields['typology_bicycle'].label = "Line: Bicycle typology"
-        self.fields['typology_vehicular'].label = "Line: Vehicular typology"
-
         self.fields['location'].required = False
+        self.fields['date_measured'].required = False
 
     class Meta:
         model = LocationLine
@@ -102,6 +99,17 @@ class LocationLineCreateForm(JustSpacesForm):
         widgets = {
             'location': forms.HiddenInput(),
             'date_measured': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+        labels = {
+            'date_measured': 'Line: Date measured',
+            'total_m': 'Line: Total width',
+            'pedestrian_m': 'Line: Pedestrian width',
+            'bicycle_m': 'Line: Bicycle width',
+            'vehicular_m': 'Line: Vehicular width',
+            'typology_pedestrian': 'Line: Pedestrian typology',
+            'typology_bicycle': 'Line: Bicycle typology',
+            'typology_vehicular': 'Line: Vehicular typology',
         }
 
 
