@@ -50,7 +50,6 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
   } else {
     // Retrieve chart data depending on the data source type
     var chartData = [];
-    var yAxisLabel = (isCount) ? 'Median response' : '% of responses';
     if (isCount) {
       chartData = this._getCountChartData(dataSourceId, chartTitle);
     } else if (isObservational) {
@@ -75,10 +74,13 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     categories.push(category);
     series[0].data.push(value);
   });
+  // Get chart options based on the data source type
+  var yAxisLabel = (isCount) ? 'Median response' : '% of responses';
+  var chartType = (isCount) ? 'boxplot' : 'column';
   // Initialize a Highcharts chart
   Highcharts.chart(chartId, {
     chart: {
-      type: 'column',
+      type: chartType,
       backgroundColor: '#FFFFFF',
       shadow: true
     },
@@ -160,7 +162,8 @@ ChartHelper.prototype._getCountChartData = function(dataSourceId, chartTitle) {
       chartData.push([chartTitle, [savedData]]);
     }
   }
-  var aggFunc = medians;
+  var numSurveys = this.surveys[0].data[dataSourceId].length;
+  var aggFunc = (numSurveys >= 5) ? quantiles : medians;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
@@ -271,6 +274,46 @@ ChartHelper.prototype.destroyChart = function(chartId) {
   chart.destroy();
 }
 
+function quintiles(categories) {
+  /**
+   * Given an array map of categories and numbers, return an array of quintiles
+   * for each category in the array.
+   * Algorithm adapted from:
+   * https://github.com/compute-io/quantiles
+   * @param {Array} categories - A nested set of arrays acting as a Map, where
+   *                             the first element represents a category name and the
+   *                             second element is an array of numbers representing
+   *                             all recorded values for that category.
+   */
+  return categories.map(function(category) {
+    var categoryName = category[0];
+    var numArr = category[1].slice();
+    if (numArr.length < 5) {
+      throw new Error('Quintiles can only be computed for arrays of length >5, got ' + String(numArr.length))
+    }
+    numArr.sort(function(a, b) { return a - b; });
+    var quintiles = [];
+    quintiles[0] = numArr[0];
+    quintiles[5] = numArr[numArr.length-1];
+    for (var i=1; i<5; i++) {
+      // Calculate the vector index marking the quantile
+      id = (numArr.length * i / 5) - 1;
+      // Is the index an integer?
+      if (id === Math.floor(id)) {
+        // Value is the average between the value at id and id+1:
+        val = (numArr[id] + numArr[id+1]) / 2.0;
+      } else {
+        // Round up to the next index:
+        id = Math.ceil(id);
+        val = numArr[id];
+      }
+      quintiles[i] = val;
+    }
+	return qValues;
+
+  })
+}
+
 function medians(categories) {
   /**
    * Given an array map of categories and numbers, return the median number for
@@ -284,7 +327,7 @@ function medians(categories) {
    */
   return categories.map(function(category) {
     var categoryName = category[0];
-    var numArr = category[1];
+    var numArr = category[1].slice();
     numArr.sort(function(a, b) { return a - b; });
     var i = numArr.length / 2;
     return [categoryName, i % 1 == 0 ? (numArr[i - 1] + numArr[i]) / 2 : numArr[Math.floor(i)]];
