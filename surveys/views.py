@@ -79,7 +79,7 @@ class LocationCreate(CreateView):
 
                 form_location_line.cleaned_data.pop('location')
 
-                location_line = LocationLine.create(
+                location_line = LocationLine(
                                     location=location,
                                     **form_location_line.cleaned_data
                                 )
