@@ -1,4 +1,6 @@
+from datetime import datetime
 from django import forms
+
 from leaflet.forms.widgets import LeafletWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -65,8 +67,9 @@ class LocationAreaCreateForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
+        
         self.fields['location'].required = False
-        self.fields['date_measured'].required = False
+        self.fields['date_measured'].initial = datetime.now()
 
     class Meta:
         model = LocationArea
@@ -90,7 +93,7 @@ class LocationLineCreateForm(JustSpacesForm):
         super(LocationLineCreateForm, self).__init__(*args, **kwargs)
         self.helper.form_tag = False
         self.fields['location'].required = False
-        self.fields['date_measured'].required = False
+        self.fields['date_measured'].initial = datetime.now()
 
     class Meta:
         model = LocationLine

@@ -7,7 +7,7 @@ var location_area_date_measured = $('#id_location-area-date_measured')
 location_area.hide();
 location_line.hide();
 
-$("#id_geometry_type").change(function() {
+$("#id_location-geometry_type").change(function() {
     var selectedVal = this.value;
 
     if (selectedVal == 'area') {

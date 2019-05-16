@@ -1,12 +1,13 @@
 from django.views.generic import TemplateView, ListView, UpdateView
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic.edit import CreateView, FormView, BaseCreateView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.forms import modelformset_factory
 from django.contrib import messages
 
-from pldp.models import Agency, Location, Study, StudyArea, Survey
+from pldp.models import Agency, Location, LocationArea, LocationLine, Study, \
+                    StudyArea, Survey
 
 from users.models import JustSpacesUser
 from users.admin import JustSpacesUserCreationForm
@@ -37,14 +38,54 @@ class LocationCreate(CreateView):
     def get_context_data(self, **kwargs):
         context = super(LocationCreate, self).get_context_data(**kwargs)
 
-        context['form'] = self.form_class()
+        context['form_location'] = self.form_class(prefix="location")
         context['form_location_area'] = self.form_class_location_area(prefix="location-area")
         context['form_location_line'] = self.form_class_location_line(prefix="location-line")
 
         return context
 
     def post(self, request, **kwargs):
-        print("testing...")
+        form_location = LocationCreateForm(request.POST, prefix="location")
+        form_location_area = LocationAreaCreateForm(request.POST, prefix="location-area")
+        form_location_line = LocationLineCreateForm(request.POST, prefix="location-line")
+
+        print(form_location.errors)
+        print(form_location_area.errors)
+        print(form_location_line.errors)
+
+        if request.POST['location-geometry_type'] == 'area':
+            forms_valid = [form_location.is_valid(), form_location_area.is_valid()]
+
+            if all(forms_valid):
+                print("All forms valid! Saving...")
+
+                location = form_location.save()
+
+                form_location_area.cleaned_data.pop('location')
+
+                location_area = LocationArea(
+                                    location=location,
+                                    **form_location_area.cleaned_data
+                                )
+                location_area.save()
+
+        elif request.POST['location-geometry_type'] == 'line':
+            forms_valid = [form_location.is_valid(), form_location_line.is_valid()]
+
+            if all(forms_valid):
+                print("All forms valid! Saving...")
+
+                location = form_location.save()
+
+                form_location_line.cleaned_data.pop('location')
+
+                location_line = LocationLine.create(
+                                    location=location,
+                                    **form_location_line.cleaned_data
+                                )
+                location_line.save()
+
+        return redirect('surveys-create')
 
 
 class StudyAreaCreate(CreateView):
