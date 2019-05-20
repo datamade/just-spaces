@@ -49,10 +49,6 @@ class LocationCreate(CreateView):
         form_location_area = self.form_class_location_area(request.POST, prefix="location-area")
         form_location_line = self.form_class_location_line(request.POST, prefix="location-line")
 
-        print(form_location.errors)
-        print(form_location_area.errors)
-        print(form_location_line.errors)
-
         if request.POST['location-geometry_type'] == 'area':
             forms_valid = [form_location.is_valid(), form_location_area.is_valid()]
 
@@ -86,6 +82,10 @@ class LocationCreate(CreateView):
                 form_location.save()
                 return redirect('surveys-create')
 
+        print(form_location.errors)
+        print(form_location_area.errors)
+        print(form_location_line.errors)
+        
         return render(request,
                       'location_create.html',
                       {'form_location': form_location,
