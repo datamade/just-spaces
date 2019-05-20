@@ -64,6 +64,7 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
   // Format the chart data for Highcharts display
   var categories = [];
   var series = [{
+    name: this.getSeriesName(),
     data: []
   }];
   chartData.forEach(function(data) {
@@ -275,6 +276,38 @@ ChartHelper.prototype._getFreeResponseInterceptChartData = function(dataSourceId
   }
   var aggFunc = percentiles;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
+}
+
+ChartHelper.prototype.getSeriesName = function() {
+  /**
+   * Get the Highcharts series name for a given survey run.
+   */
+  if (this.surveys.length == 0) {
+    throw new Error('At least one survey is required to generate a series name');
+  }
+  // Get the timestamps of the oldest and newest runs of this survey
+  var minDate;
+  var maxDate;
+  for (var i=0; i<this.surveys.length; i++) {
+    var surveyStart = new Date(this.surveys[i]['time_start']);
+    var surveyStop = new Date(this.surveys[i]['time_stop']);
+
+    if (!minDate || surveyStart < minDate) {
+      minDate = surveyStart;
+    }
+    if (!maxDate || surveyStop > maxDate) {
+      maxDate = surveyStop;
+    }
+  }
+  // Format a date range
+  minDate = minDate.toLocaleDateString();
+  maxDate = maxDate.toLocaleDateString();
+  var dateRange = (minDate !== maxDate) ? minDate + ' - ' + maxDate : minDate;
+  // Add the N for the surveys
+  var numSurveysPrefix =  ' (' + String(this.surveys.length);
+  var numSurveysSuffix = (this.surveys.length > 1) ? ' surveys)' : ' survey)';
+  var numSurveys = numSurveysPrefix + numSurveysSuffix;
+  return dateRange + numSurveys;
 }
 
 ChartHelper.prototype.destroyChart = function(chartId) {
