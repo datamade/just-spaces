@@ -74,9 +74,19 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     categories.push(category);
     series[0].data.push(value);
   });
+  debugger;
   // Get chart options based on the data source type
-  var yAxisLabel = (isCount) ? 'Median response' : '% of responses';
-  var chartType = (isCount) ? 'boxplot' : 'column';
+  var yAxisLabel = '';
+  if (isCount) {
+    if (this.surveys.length >= 5) {
+      yAxisLabel = 'Response';
+    } else {
+      yAxisLabel = 'Median response';
+    }
+  } else {
+    yAxisLabel = '% of responses';
+  }
+  var chartType = (isCount && this.surveys.length >= 5) ? 'boxplot' : 'column';
   // Initialize a Highcharts chart
   Highcharts.chart(chartId, {
     chart: {
@@ -162,8 +172,7 @@ ChartHelper.prototype._getCountChartData = function(dataSourceId, chartTitle) {
       chartData.push([chartTitle, [savedData]]);
     }
   }
-  var numSurveys = this.surveys[0].data[dataSourceId].length;
-  var aggFunc = (numSurveys >= 5) ? quantiles : medians;
+  var aggFunc = (this.surveys.length >= 5) ? quintiles : medians;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
@@ -289,7 +298,7 @@ function quintiles(categories) {
     var categoryName = category[0];
     var numArr = category[1].slice();
     if (numArr.length < 5) {
-      throw new Error('Quintiles can only be computed for arrays of length >5, got ' + String(numArr.length))
+      throw new Error('Quintiles can only be computed for arrays of length >=5, got ' + String(numArr.length))
     }
     numArr.sort(function(a, b) { return a - b; });
     var quintiles = [];
@@ -309,9 +318,8 @@ function quintiles(categories) {
       }
       quintiles[i] = val;
     }
-	return qValues;
-
-  })
+	return [categoryName, quintiles];
+  });
 }
 
 function medians(categories) {
