@@ -40,6 +40,9 @@ class LocationCreateForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
 
+        self.fields['agency'].initial = Agency.objects.first()
+        self.fields['country'].initial = 'US'
+
     class Meta:
         model = Location
         fields = '__all__'
@@ -133,6 +136,7 @@ class StudyCreateForm(JustSpacesForm):
         super(StudyCreateForm, self).__init__(*args, **kwargs)
         self.create_default_helper()
         self.fields['areas'].widget.attrs['class'] = 'basic-multiple'
+        self.fields['agency'].initial = Agency.objects.first()
 
     class Meta:
         model = Study
