@@ -1,3 +1,5 @@
+from fobi.utils import get_registered_form_element_plugins
+
 from datetime import datetime
 
 # Valid SurveyComponent types for the Data Analysis Designer (DAD). These are
@@ -36,12 +38,10 @@ FREE_RESPONSE_INTERCEPT_BINS = {
                          curr_year-1990, curr_year-1980],
 }
 FREE_RESPONSE_INTERCEPT_TYPES = list(FREE_RESPONSE_INTERCEPT_BINS.keys())
+
+ALL_TYPES = [plugin[0] for plugin in get_registered_form_element_plugins()]
 # All valid types merged into one list, for easy validation.
 ALL_VALID_TYPES = (COUNT_TYPES + OBSERVATIONAL_TYPES + OBSERVATIONAL_COUNT_TYPES +
                    INTERCEPT_TYPES + FREE_RESPONSE_INTERCEPT_TYPES)
 # All types that cannot be displayed as charts.
-ALL_INVALID_TYPES = [
-    'method', 'representation', 'time_character', 'time_start', 'time_stop',
-    'total', 'help_text', 'checkbox_select_multiple', 'text', 'textarea', 'time',
-    'microclimate',
-]
+ALL_INVALID_TYPES = list(set(ALL_TYPES) - set(ALL_VALID_TYPES))
