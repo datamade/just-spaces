@@ -45,9 +45,9 @@ class LocationCreate(CreateView):
         return context
 
     def post(self, request, **kwargs):
-        form_location = LocationCreateForm(request.POST, prefix="location")
-        form_location_area = LocationAreaCreateForm(request.POST, prefix="location-area")
-        form_location_line = LocationLineCreateForm(request.POST, prefix="location-line")
+        form_location = self.form_class(request.POST, prefix="location")
+        form_location_area = self.form_class_location_area(request.POST, prefix="location-area")
+        form_location_line = self.form_class_location_line(request.POST, prefix="location-line")
 
         print(form_location.errors)
         print(form_location_area.errors)
