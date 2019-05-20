@@ -57,10 +57,7 @@ class LocationCreate(CreateView):
             forms_valid = [form_location.is_valid(), form_location_area.is_valid()]
 
             if all(forms_valid):
-                print("All forms valid! Saving...")
-
                 location = form_location.save()
-
                 form_location_area.cleaned_data.pop('location')
 
                 location_area = LocationArea(
@@ -68,15 +65,13 @@ class LocationCreate(CreateView):
                                     **form_location_area.cleaned_data
                                 )
                 location_area.save()
+                return redirect('surveys-create')
 
         elif request.POST['location-geometry_type'] == 'line':
             forms_valid = [form_location.is_valid(), form_location_line.is_valid()]
 
             if all(forms_valid):
-                print("All forms valid! Saving...")
-
                 location = form_location.save()
-
                 form_location_line.cleaned_data.pop('location')
 
                 location_line = LocationLine(
@@ -84,8 +79,19 @@ class LocationCreate(CreateView):
                                     **form_location_line.cleaned_data
                                 )
                 location_line.save()
+                return redirect('surveys-create')
 
-        return redirect('surveys-create')
+        else:
+            if form_location.is_valid():
+                form_location.save()
+                return redirect('surveys-create')
+
+        return render(request,
+                      'location_create.html',
+                      {'form_location': form_location,
+                       'form_location_area': form_location_area,
+                       'form_location_line': form_location_line}
+                      )
 
 
 class StudyAreaCreate(CreateView):
