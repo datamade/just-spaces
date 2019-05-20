@@ -40,7 +40,6 @@ class LocationCreateForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
 
-
     class Meta:
         model = Location
         fields = '__all__'
@@ -67,7 +66,7 @@ class LocationAreaCreateForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
-        
+
         self.fields['location'].required = False
         self.fields['date_measured'].initial = datetime.now()
 
