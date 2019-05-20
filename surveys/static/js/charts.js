@@ -17,11 +17,8 @@ var ChartHelper = function(surveys, types, bins) {
    * @param {Object} bins - An object of bin definitions for binning survey results.
    */
   this.surveys = surveys;
-  this.countTypes = types.count;
-  this.observationalTypes = types.observational;
-  this.interceptTypes = types.intercept;
-  this.freeResponseInterceptTypes = types.freeResponseIntercept;
-  this.freeResponseInterceptBins = bins.freeResponseIntercept;
+  this.types = types;
+  this.bins = bins;
 }
 
 ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
@@ -39,12 +36,13 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     resultType = this.surveys[0].data[dataSourceId].type;
   }
 
-  var isCount = this.countTypes.indexOf(resultType) > -1;
-  var isObservational = this.observationalTypes.indexOf(resultType) > -1;
-  var isIntercept = this.interceptTypes.indexOf(resultType) > -1;
-  var isFreeResponseIntercept = this.freeResponseInterceptTypes.indexOf(resultType) > -1;
+  var isCount = this.types.count.indexOf(resultType) > -1;
+  var isObservational = this.types.observational.indexOf(resultType) > -1;
+  var isObservationalCount = this.types.observationalCount.indexOf(resultType) > -1;
+  var isIntercept = this.types.intercept.indexOf(resultType) > -1;
+  var isFreeResponseIntercept = this.types.freeResponseIntercept.indexOf(resultType) > -1;
 
-  if (!(isCount || isObservational || isIntercept || isFreeResponseIntercept)) {
+  if (!(isCount || isObservational || isObservationalCount || isIntercept || isFreeResponseIntercept)) {
     // The data object needs to be one of the valid types
     throw new Error('Not a valid chart type: ' + resultType);
   } else {
@@ -54,6 +52,9 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
       chartData = this._getCountChartData(dataSourceId, chartTitle);
     } else if (isObservational) {
       chartData = this._getObservationalChartData(dataSourceId);
+    } else if (isObservationalCount) {
+      // Return chart data as raw counts
+      chartData = this._getObservationalChartData(dataSourceId, true);
     } else if (isIntercept) {
       chartData = this._getInterceptChartData(dataSourceId);
     } else {
@@ -74,7 +75,6 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     categories.push(category);
     series[0].data.push(value);
   });
-  debugger;
   // Get chart options based on the data source type
   var yAxisLabel = '';
   if (isCount) {
@@ -83,6 +83,8 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     } else {
       yAxisLabel = 'Median response';
     }
+  } else if (isObservationalCount) {
+    yAxisLabel = 'Number of responses';
   } else {
     yAxisLabel = '% of responses';
   }
@@ -176,10 +178,11 @@ ChartHelper.prototype._getCountChartData = function(dataSourceId, chartTitle) {
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
-ChartHelper.prototype._getObservationalChartData = function(dataSourceId) {
+ChartHelper.prototype._getObservationalChartData = function(dataSourceId, isCount) {
   /**
    * Get chart data for a chart of the "observational" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
+   * @param {Boolean} isCount - Whether or not to show raw counts in the chart.
    */
   function initChartDataFunc() { return []};
   var castFunc = JSON.parse;
@@ -187,7 +190,7 @@ ChartHelper.prototype._getObservationalChartData = function(dataSourceId) {
     Object.keys(savedData).forEach(function(key) {
       var categoryFound = false;
       var savedDataValue = Number(savedData[key]);
-      // If an entry for this category exists in the chartData array, inncrement
+      // If an entry for this category exists in the chartData array, increment
       // its counter
       for (var i=0; i<chartData.length; i++) {
         var categoryName = chartData[i][0];
@@ -203,7 +206,7 @@ ChartHelper.prototype._getObservationalChartData = function(dataSourceId) {
       }
     });
   }
-  var aggFunc = percentiles;
+  var aggFunc = (isCount) ? function(categories) { return categories; } : percentiles;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
@@ -240,9 +243,9 @@ ChartHelper.prototype._getFreeResponseInterceptChartData = function(dataSourceId
    * @param {String} dataSourceId - The ID of the primary data source to display.
    */
   var resultType = this.surveys[0].data[dataSourceId].type;
-  var bins = this.freeResponseInterceptBins[resultType];
+  var bins = this.bins.freeResponseIntercept[resultType];
   if (bins === undefined) {
-    throw new Error('No freeResponseInterceptBins found for type ' + resultType);
+    throw new Error('No bins found for type ' + resultType);
   }
   function initChartDataFunc() {
     var chartData = [];
@@ -350,7 +353,7 @@ function percentiles(categories) {
    *                             second element represents its value.
    */
   var total = categories.reduce(function(acc, category) { return acc + category[1] }, 0);
-  return categories.map(function(category) { return [category[0], category[1] / total]})
+  return categories.map(function(category) { return [category[0], (category[1] / total) * 100]})
 }
 
 function binValue(value, bins) {

@@ -10,8 +10,13 @@ COUNT_TYPES = [
 # "Observational" types represent counts for multiple choices, and will
 # be aggregated and displayed as percentiles (a distribution).
 OBSERVATIONAL_TYPES = [
-    'activity_observational', 'age_observational', 'gender_observational',
-    'mode_observational', 'objects_observational', 'posture_observational',
+    'age_observational', 'gender_observational', 'posture_observational',
+]
+# "Observational count" types represent counts where each observed person can
+# have one or more observation, meaning that we want to display the choices as
+# raw counts.
+OBSERVATIONAL_COUNT_TYPES = [
+    'mode_observational', 'objects_observational', 'activity_observational',
 ]
 # "Intercept" types represent one choice among multiple options selected by
 # an interviewee. They will be aggregated and displayed as percentiles.
@@ -32,8 +37,8 @@ FREE_RESPONSE_INTERCEPT_BINS = {
 }
 FREE_RESPONSE_INTERCEPT_TYPES = list(FREE_RESPONSE_INTERCEPT_BINS.keys())
 # All valid types merged into one list, for easy validation.
-ALL_VALID_TYPES = (COUNT_TYPES + OBSERVATIONAL_TYPES + INTERCEPT_TYPES +
-                   FREE_RESPONSE_INTERCEPT_TYPES)
+ALL_VALID_TYPES = (COUNT_TYPES + OBSERVATIONAL_TYPES + OBSERVATIONAL_COUNT_TYPES +
+                   INTERCEPT_TYPES + FREE_RESPONSE_INTERCEPT_TYPES)
 # All types that cannot be displayed as charts.
 ALL_INVALID_TYPES = [
     'method', 'representation', 'time_character', 'time_start', 'time_stop',

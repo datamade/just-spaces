@@ -232,6 +232,7 @@ class SurveySubmittedDetail(TemplateView):
         types = {
             'count': fobi_types.COUNT_TYPES,
             'observational': fobi_types.OBSERVATIONAL_TYPES,
+            'observationalCount': fobi_types.OBSERVATIONAL_COUNT_TYPES,
             'intercept': fobi_types.INTERCEPT_TYPES,
             'freeResponseIntercept': fobi_types.FREE_RESPONSE_INTERCEPT_TYPES,
         }
