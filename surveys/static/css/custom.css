@@ -3,7 +3,7 @@
 ----------------------------------------------------- */
 
 :root {
-  --light-green-color: #c1f2dc;
+  --light-green-color: #cde8ce;
   --off-white-color: #fafafa;
   --dark-green-color: #014c42;
   --orange-color: #e94e0c;
@@ -23,7 +23,6 @@ p {
     font-size: 1.1em;
     font-weight: 300;
     line-height: 1.7em;
-    color: var(--dark-green-color);
 }
 
 a,
@@ -83,12 +82,7 @@ span {
     min-width: 250px;
     max-width: 250px;
     background: var(--light-green-color);
-    color: var(--ucd-blue);
-    transition: all 0.1s;
-}
-
-.sidebar h3 {
-    color: var(--dark-green-color);
+    transition: all 0.2s;
 }
 
 .sidebar.active {
@@ -132,7 +126,7 @@ span {
   font-size: .9em;
   display: block;
   text-align: left;
-  color: var(--dark-green-color);
+  color: black;
   background: none;
   font-weight: 600;
   border-radius: 0px;
@@ -140,6 +134,10 @@ span {
 
 .sidebar ul li a:hover {
     padding: 5px 22px;
+}
+
+.sidebar-blurb a:hover {
+  color: var(--dark-green-color);
 }
 
 .sidebar ul li a i {
@@ -168,12 +166,6 @@ a[data-toggle="collapse"] {
     transform: translateY(-50%);
 }
 
-ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: var(--light-green-color);
-}
-
 a.download {
     background: #fff;
     color: var(--light-green-color);
@@ -188,7 +180,6 @@ a.article:hover {
 .sidebar-blurb {
   font-size: .8em;
   padding: 5px 35px;
-  color: var(--dark-green-color);
 }
 
 .about-blurb {
