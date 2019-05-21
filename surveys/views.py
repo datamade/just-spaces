@@ -82,10 +82,6 @@ class LocationCreate(CreateView):
                 form_location.save()
                 return redirect('surveys-create')
 
-        print(form_location.errors)
-        print(form_location_area.errors)
-        print(form_location_line.errors)
-        
         return render(request,
                       'location_create.html',
                       {'form_location': form_location,
