@@ -1,8 +1,11 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-<div class="col col-lg-8 card">
+<div class="col col-lg-10 card">
   <div class="card-body">
+    <h2 class="card-title">Log In</h2>
+    <br />
 
     {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
@@ -19,22 +22,14 @@
 
     <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
-    <table>
-    <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-    </tr>
-    <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-    </tr>
-    </table>
 
-    <input type="submit" value="login" class="btn btn-success float-right">
+    {{form.username | as_crispy_field}}
+    {{form.password | as_crispy_field}}
+
+    <br />
+    <input type="submit" value="Login" class="btn btn-success float-right">
     <input type="hidden" name="next" value="{{ next }}">
     </form>
-
   </div>
 </div>
-
 {% endblock %}

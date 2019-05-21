@@ -14,15 +14,18 @@
 {% endblock %}
 
 {% block content %}
+<div class="col col-lg-11 card">
+  <div class="card-body">
+    <h2 class="card-title">Create New Location</h2>
+    <br />
 
-  <h1>Create New Location</h1>
-  <br />
-
-  <form class="form-horizontal" name="location-form" method="post">
-    {% crispy form_location %}
-    {% crispy form_location_area %}
-    {% crispy form_location_line %}
-  </form>
+    <form class="form-horizontal" name="location-form" method="post">
+      {% crispy form_location %}
+      {% crispy form_location_area %}
+      {% crispy form_location_line %}
+    </form>
+  </div>
+</div>
 
   <script type="text/javascript" src="{% static 'js/location_create.js' %}"></script>
 

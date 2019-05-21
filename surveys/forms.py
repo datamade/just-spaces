@@ -21,7 +21,7 @@ class JustSpacesForm(forms.ModelForm):
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Submit'))
+        self.helper.add_input(Submit('submit', 'Submit', css_class='float-right'))
 
 
 class AgencyCreateForm(JustSpacesForm):
@@ -67,7 +67,7 @@ class LocationAreaCreateForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
-        
+
         self.fields['location'].required = False
         self.fields['date_measured'].initial = datetime.now()
 

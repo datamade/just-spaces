@@ -3,8 +3,12 @@
 {% block content %}
 <div class="col col-lg-8 card">
   <div class="card-body">
-    <p>Logged out!</p>
-    <a href="{% url 'login'%}">Click here to login again.</a>
+    <h2 class="card-title">Logged out!</h2>
+    <br />
+
+    <form action="{% url 'login'%}" method="get">
+      <input type="submit" value="Click here to log back in" class="btn btn-primary">
+    </form>
   </div>
 </div>
 {% endblock %}

@@ -4,8 +4,12 @@
 
 :root {
   --light-green-color: #cde8ce;
-  --off-white-color: #fafafa;
+  --medium-green-color: #a1bfa2;
   --dark-green-color: #014c42;
+  --light-blue-color: #e0f8ff;
+  --medium-blue-color: #d6edf4;
+  --dark-blue-color: #015c75;
+  --off-white-color: #fafafa;
   --orange-color: #e94e0c;
   --pink-color: #eb549e;
 }
@@ -133,7 +137,7 @@ span {
 }
 
 .sidebar ul li a:hover {
-    padding: 5px 22px;
+    padding: 5px 25px;
 }
 
 .sidebar-blurb a:hover {
@@ -267,6 +271,24 @@ a.article:hover {
     margin-top: .25rem;
     font-size: 80%;
     color: #dc3545;
+}
+
+.btn-success, .btn-primary {
+  color: var(--dark-green-color);
+  background-color: var(--light-green-color);
+  border-color: var(--light-green-color);
+  font-weight: 600;
+}
+
+.btn-success:hover, .btn-primary:hover {
+  color: var(--dark-green-color);
+  background-color: var(--medium-green-color);
+  border-color: var(--medium-green-color);
+  font-weight: 600;
+}
+
+.col-form-label {
+  padding-right: 3px;
 }
 
 /* ---------------------------------------------------
