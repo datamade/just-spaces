@@ -69,9 +69,10 @@ def study(db, agency):
 @pytest.mark.django_db
 def location(db, agency):
     location = Location.objects.create(
-        primary_name='Sample Location',
+        name_primary='Sample Location',
         agency=agency,
         country_id='US',
+        geometry='POLYGON((-101.744384 39.32155, -101.552124 39.330048, -101.403808 39.330048, -101.332397 39.364032, -101.744384 39.32155))',
     )
 
     return location

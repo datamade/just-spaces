@@ -1,12 +1,13 @@
 from django.views.generic import TemplateView, ListView, UpdateView
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic.edit import CreateView, FormView, BaseCreateView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.forms import modelformset_factory
 from django.contrib import messages
 
-from pldp.models import Agency, Location, Study, StudyArea, Survey
+from pldp.models import Agency, Location, LocationArea, LocationLine, Study, \
+                    StudyArea, Survey
 
 from users.models import JustSpacesUser
 from users.admin import JustSpacesUserCreationForm
@@ -15,21 +16,78 @@ from fobi.views import add_form_handler_entry
 
 from .models import SurveyFormEntry, SurveyChart
 from .forms import StudyCreateForm, StudyAreaCreateForm, SurveyCreateForm, \
-                   SurveyChartForm
+                   SurveyChartForm, LocationCreateForm, LocationAreaCreateForm, \
+                   LocationLineCreateForm, AgencyCreateForm
 
 
 class AgencyCreate(CreateView):
+    form_class = AgencyCreateForm
     model = Agency
     template_name = "agency_create.html"
-    fields = '__all__'
     success_url = '/'
 
 
 class LocationCreate(CreateView):
-    model = Location
+    form_class = LocationCreateForm
+    form_class_location_area = LocationAreaCreateForm
+    form_class_location_line = LocationLineCreateForm
+
     template_name = "location_create.html"
-    fields = '__all__'
-    success_url = '/'
+    success_url = reverse_lazy('surveys-create')
+
+    def get_context_data(self, **kwargs):
+        context = super(LocationCreate, self).get_context_data(**kwargs)
+
+        context['form_location'] = self.form_class(prefix="location")
+        context['form_location_area'] = self.form_class_location_area(prefix="location-area")
+        context['form_location_line'] = self.form_class_location_line(prefix="location-line")
+
+        return context
+
+    def post(self, request, **kwargs):
+        form_location = self.form_class(request.POST, prefix="location")
+        form_location_area = self.form_class_location_area(request.POST, prefix="location-area")
+        form_location_line = self.form_class_location_line(request.POST, prefix="location-line")
+
+        if request.POST['location-geometry_type'] == 'area':
+            forms_valid = [form_location.is_valid(), form_location_area.is_valid()]
+
+            if all(forms_valid):
+                location = form_location.save()
+                form_location_area.cleaned_data.pop('location')
+
+                location_area = LocationArea(
+                                    location=location,
+                                    **form_location_area.cleaned_data
+                                )
+                location_area.save()
+                return redirect('surveys-create')
+
+        elif request.POST['location-geometry_type'] == 'line':
+            forms_valid = [form_location.is_valid(), form_location_line.is_valid()]
+
+            if all(forms_valid):
+                location = form_location.save()
+                form_location_line.cleaned_data.pop('location')
+
+                location_line = LocationLine(
+                                    location=location,
+                                    **form_location_line.cleaned_data
+                                )
+                location_line.save()
+                return redirect('surveys-create')
+
+        else:
+            if form_location.is_valid():
+                form_location.save()
+                return redirect('surveys-create')
+
+        return render(request,
+                      'location_create.html',
+                      {'form_location': form_location,
+                       'form_location_area': form_location_area,
+                       'form_location_line': form_location_line}
+                      )
 
 
 class StudyAreaCreate(CreateView):
@@ -43,7 +101,7 @@ class StudyCreate(CreateView):
     form_class = StudyCreateForm
     model = Study
     template_name = "study_create.html"
-    success_url = reverse_lazy('surveys-list')
+    success_url = reverse_lazy('surveys-list-edit')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

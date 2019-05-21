@@ -1,9 +1,12 @@
+from datetime import datetime
 from django import forms
+
 from leaflet.forms.widgets import LeafletWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from pldp.models import Agency, Location, Study, StudyArea
+from pldp.models import Agency, Location, LocationArea, LocationLine, Study, \
+                        StudyArea
 from .models import SurveyFormEntry, SurveyChart
 
 
@@ -21,16 +24,98 @@ class JustSpacesForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
 
-class CreateAgencyForm(JustSpacesForm):
+class AgencyCreateForm(JustSpacesForm):
     class Meta:
         model = Agency
         fields = '__all__'
 
 
-class CreateLocationForm(JustSpacesForm):
+class LocationCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(LocationCreateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.form_method = 'post'
+        self.helper.form_tag = False
+
+        self.fields['agency'].initial = Agency.objects.first()
+        self.fields['country'].initial = 'US'
+
     class Meta:
         model = Location
         fields = '__all__'
+
+        leaflet_widget_attrs = {
+            'map_height': '400px',
+            'map_width': '100%',
+        }
+
+        widgets = {'geometry': LeafletWidget(attrs=leaflet_widget_attrs)}
+
+        labels = {
+            'name_primary': 'Primary name',
+            'name_secondary': 'Secondary name'
+        }
+
+
+class LocationAreaCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(LocationAreaCreateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.form_method = 'post'
+        self.helper.form_tag = False
+
+        self.fields['location'].required = False
+        self.fields['date_measured'].initial = datetime.now()
+
+    class Meta:
+        model = LocationArea
+        fields = '__all__'
+
+        widgets = {
+            'location': forms.HiddenInput(),
+            'date_measured': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+        labels = {
+            'date_measured': 'Area: Date Measured',
+            'total_sqm': 'Area: Total sqm',
+            'people_sqm': 'Area: People sqm',
+            'typology': 'Area: Typology'
+        }
+
+
+class LocationLineCreateForm(JustSpacesForm):
+    def __init__(self, *args, **kwargs):
+        super(LocationLineCreateForm, self).__init__(*args, **kwargs)
+        self.helper.form_tag = False
+        self.fields['location'].required = False
+        self.fields['date_measured'].initial = datetime.now()
+
+    class Meta:
+        model = LocationLine
+        fields = '__all__'
+
+        widgets = {
+            'location': forms.HiddenInput(),
+            'date_measured': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+        labels = {
+            'date_measured': 'Line: Date measured',
+            'total_m': 'Line: Total width',
+            'pedestrian_m': 'Line: Pedestrian width',
+            'bicycle_m': 'Line: Bicycle width',
+            'vehicular_m': 'Line: Vehicular width',
+            'typology_pedestrian': 'Line: Pedestrian typology',
+            'typology_bicycle': 'Line: Bicycle typology',
+            'typology_vehicular': 'Line: Vehicular typology',
+        }
 
 
 class StudyAreaCreateForm(JustSpacesForm):
@@ -51,6 +136,7 @@ class StudyCreateForm(JustSpacesForm):
         super(StudyCreateForm, self).__init__(*args, **kwargs)
         self.create_default_helper()
         self.fields['areas'].widget.attrs['class'] = 'basic-multiple'
+        self.fields['agency'].initial = Agency.objects.first()
 
     class Meta:
         model = Study
