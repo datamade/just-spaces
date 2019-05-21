@@ -9,7 +9,7 @@ from .forms import OwnOrRentForm
 class OwnOrRentPlugin(FormFieldPlugin):
     """OwnOrRentPlugin."""
 
-    uid = "income"
+    uid = "own_or_rent"
     name = "Are you a homeowner or a renter?"
     form = OwnOrRentForm
     group = "Intercept"  # Group to which the plugin belongs to

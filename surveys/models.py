@@ -47,5 +47,13 @@ class SurveyChart(models.Model):
 
     short_description = models.TextField(blank=True)
 
+    # A foreign key to the 'name' field on SurveyComponents, which uniquely
+    # identifies which FormElementEntry the SurveyComponent is a part of
+    primary_source = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True
+    )
+
     class Meta:
         ordering = ['order']

@@ -1,5 +1,7 @@
-from django.views.generic import TemplateView, ListView, UpdateView
-from django.views.generic.edit import CreateView, FormView, BaseCreateView
+import json
+
+from django.views.generic import TemplateView, ListView
+from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -18,6 +20,7 @@ from .models import SurveyFormEntry, SurveyChart
 from .forms import StudyCreateForm, StudyAreaCreateForm, SurveyCreateForm, \
                    SurveyChartForm, LocationCreateForm, LocationAreaCreateForm, \
                    LocationLineCreateForm, AgencyCreateForm
+from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
 
 class AgencyCreate(CreateView):
@@ -210,6 +213,34 @@ class SurveySubmittedDetail(TemplateView):
 
         context['form_entry'] = SurveyFormEntry.objects.get(id=context['form_entry_id'])
         context['surveys_submitted'] = Survey.objects.filter(form_id=context['form_entry_id'])
+
+        # Generate a JSON representation of survey data for use in charting
+        surveys_submitted_json = []
+        for survey in context['surveys_submitted']:
+            surveys_submitted_json.append({
+                'time_start': survey.time_start,
+                'time_stop': survey.time_stop,
+                'data': {component.name: {
+                            'type': component.type,
+                            'value': component.saved_data
+                        } for component in survey.components}
+            })
+        context['surveys_submitted_json'] = json.dumps(surveys_submitted_json,
+                                                       default=str)
+
+        # Fobi types and bins for use in charting
+        types = {
+            'count': fobi_types.COUNT_TYPES,
+            'observational': fobi_types.OBSERVATIONAL_TYPES,
+            'observationalCount': fobi_types.OBSERVATIONAL_COUNT_TYPES,
+            'intercept': fobi_types.INTERCEPT_TYPES,
+            'freeResponseIntercept': fobi_types.FREE_RESPONSE_INTERCEPT_TYPES,
+        }
+        bins = {
+            'freeResponseIntercept': fobi_types.FREE_RESPONSE_INTERCEPT_BINS,
+        }
+        context['types'] = json.dumps(types)
+        context['bins'] = json.dumps(bins)
 
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)
