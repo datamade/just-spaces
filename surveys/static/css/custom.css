@@ -33,10 +33,10 @@ a,
 a:hover,
 a:focus {
     color: var(--orange-color);
-    font-weight: 900;
-    background: var(--off-white-color);
-    border-radius: 5px;
-    padding: 3px 7px;
+    font-weight: 800;
+    /* background: var(--off-white-color); */
+    /* border-radius: 5px; */
+    /* padding: 3px 7px; */
     text-decoration: none;
     transition: all 0.3s;
 }
@@ -138,6 +138,12 @@ span {
 
 .sidebar ul li a:hover {
     padding: 5px 25px;
+}
+
+.sidebar-blurb a {
+  background: var(--off-white-color);
+  border-radius: 5px;
+  padding: 3px 7px;
 }
 
 .sidebar-blurb a:hover {
