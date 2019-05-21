@@ -81,6 +81,7 @@ span {
     max-width: 250px;
     background: var(--light-green-color);
     transition: all 0.2s;
+    border-right: .75px solid var(--medium-green-color);
 }
 
 .sidebar.active {
