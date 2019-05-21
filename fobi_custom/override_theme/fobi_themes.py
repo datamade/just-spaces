@@ -8,8 +8,9 @@ __all__ = ('JustSpacesTheme',)
 class JustSpacesTheme(Foundation5Theme):
     """Overriding the Foundation5 theme for Just Spaces."""
 
-    html_classes = ['my-simple-theme']
+    html_classes = ['fobi-theme']
     base_template = 'override_theme/base.html'
+    edit_form_entry_ajax_template = 'override_theme/edit_form_entry_ajax.html'
 
 
 # It's important to set the `force` argument to True, in
