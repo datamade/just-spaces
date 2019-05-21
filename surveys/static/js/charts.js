@@ -386,7 +386,7 @@ function percentiles(categories) {
    *                             second element represents its value.
    */
   var total = categories.reduce(function(acc, category) { return acc + category[1] }, 0);
-  return categories.map(function(category) { return [category[0], (category[1] / total) * 100]})
+  return categories.map(function(category) { return [category[0], Math.round((category[1] / total) * 100)]})
 }
 
 function binValue(value, bins) {
