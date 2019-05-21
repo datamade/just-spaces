@@ -279,13 +279,13 @@ a.article:hover {
   background-color: var(--light-green-color);
   border-color: var(--light-green-color);
   font-weight: 600;
+  margin-top: 20px;
 }
 
 .btn-success:hover, .btn-primary:hover {
   color: var(--dark-green-color);
   background-color: var(--medium-green-color);
   border-color: var(--medium-green-color);
-  font-weight: 600;
 }
 
 .col-form-label {
