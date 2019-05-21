@@ -23,12 +23,6 @@ body {
     background-color: var(--off-white-color)
 }
 
-p {
-    font-size: 1.1em;
-    font-weight: 300;
-    line-height: 1.7em;
-}
-
 a,
 a:hover,
 a:focus {
