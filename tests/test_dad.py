@@ -37,6 +37,7 @@ def create_formset_data(initial, total, forms):
 
 
 def test_create_chart(client, survey_form_entry, survey_submitted_setup):
+    assert 1 == 2
     # Test that the DAD can create a chart
     chart_data = [{'short_description': '__foobar__', 'order': 1}]
     post_data = create_formset_data(0, len(chart_data), chart_data)
