@@ -26,7 +26,11 @@ script:
 - docker-compose run --rm frontend lint
 - docker-compose run --rm frontend test
 notifications:
-  slack: datamade:0WsWJFQVI2yTMRKbKZSEA0TP
+  slack:
+    rooms:
+      - datamade:0WsWJFQVI2yTMRKbKZSEA0TP
+    on_success: change
+    on_failure: always
 deploy:
   provider: codedeploy
   access_key_id: AKIAJNYGDLOJKHOUWCAA
