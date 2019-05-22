@@ -37,21 +37,40 @@
       <table>
         <tbody>
           <tr>
+            <th></th>
+            <td>
+              <div
+                class="highcharts-chart my-2"
+                id="highcharts-chart-{{chart_id}}">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <label for="id_form-{{chart_id}}-primary_source">
+                Primary data source:
+              </label>
+            </th>
+            <td>
+              {{form.primary_source}}
+            </td>
+          </tr>
+          <tr>
             <th>
               <label for="id_form-{{chart_id}}-short_description">
                 Short description:
               </label>
             </th>
             <td>
-                {{form.short_description}}
-                {{form.order}}
-                {{form.id}}
-                <!-- Use display:none instead of type="hidden" so that JQuery can check/uncheck the input -->
-                <input type="checkbox"
-                  style="display: none"
-                  name="form-{{chart_id}}-DELETE"
-                  id="id_form-{{chart_id}}-DELETE"
-                />
+              {{form.short_description}}
+              {{form.order}}
+              {{form.id}}
+              <!-- Use display:none instead of type="hidden" so that JQuery can check/uncheck the input -->
+              <input type="checkbox"
+                style="display: none"
+                name="form-{{chart_id}}-DELETE"
+                id="id_form-{{chart_id}}-DELETE"
+              />
             </td>
           </tr>
         </tbody>
