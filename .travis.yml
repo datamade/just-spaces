@@ -6,7 +6,7 @@ language: python
 python:
 - '3.6'
 services:
-- docker
+- 'docker'
 install:
 - pip install --upgrade pip
 - pip install -r requirements.txt
@@ -26,9 +26,7 @@ script:
 - docker-compose run --rm frontend lint
 - docker-compose run --rm frontend test
 notifications:
-  slack:
-    rooms:
-     - secure: T7rFUOr3HU7xBt5O3d0BlxASAk/zLLFc8gsguFq2ZFv/MgOdUUEECYPXi8JTYh8xGtOayZzUG44xjZbow+R6JB/Sxiy0VJpYlkyf13zwYtsA5ybnsJNmX3/BO3Ch9IrT7wUyZQAXbZNsPMyi+nH4HrzoZB8ZkwD8IQcp01yJM+A4YFhsbtWOS8GHasm55UsnP05TWhJkAWpOt6LtPKzm4mUWPJ1fE+GN5Bx+kK9L1giBB60AAMLpdfbXvxZu5erQZ7hKALDldgYeJpbofiawhiouDAsh/e2mbTD9RgJJLNlxNWMPkkVKOmHUXRePit69znFW81vYCpF3tJb02wjTjQdqDVxGfYpYNKN4e+aIo0Fkj//guQb+khAdy//1SG1Q+5OJEsIT35w3H+fMsrecuCgPzLf8lFlkI9CEreozZQSK19++kWtqndaS2/z6e1p/DA4vxnsoQ0fT9gen3mzd6DKmm0/Dm3NTmqm6sGjKQvNcnrrCaOrIcHvuh/QVkFghyMwaHEHWntTh3AwKvau7iQ/ULpif6H5TW5YO3XBmdS2XPiJYXstA8x67TXXCytnDijLCkE2KusSMCSoCjp9EgHSQN610kcs22w7lhObyNl8a+aSKcFHNXbHFZGTYvvEJeqx8z+9vh7acSEc17dydKLu+arXPxtzMjJxQwhyQSJs=
+  slack: datamade:0WsWJFQVI2yTMRKbKZSEA0TP
 deploy:
   provider: codedeploy
   access_key_id: AKIAJNYGDLOJKHOUWCAA
