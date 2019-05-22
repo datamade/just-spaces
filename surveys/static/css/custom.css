@@ -82,8 +82,8 @@ span {
 }
 
 .sidebar.active {
-  min-width: 80px;
-  max-width: 80px;
+  min-width: 75px;
+  max-width: 75px;
   text-align: center;
 }
 
@@ -188,6 +188,10 @@ a.article:hover {
   line-height: 25px;
 }
 
+.about-link {
+  color: var(--dark-green-color);
+}
+
 .list-unstyled {
   padding-left: 40px;
 }
@@ -243,6 +247,14 @@ a.article:hover {
   border: 1px solid #ced4da;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #aaa !important;
+}
+
+.select2-container {
+  width: 100% !important;
 }
 
 .select2-container--focus {
