@@ -22,15 +22,12 @@ before_script:
 - mv justspaces/local_settings.example.py justspaces/local_settings.py
 script:
 - python manage.py migrate
-- pytest 
+- pytest
 - docker-compose run --rm frontend lint
 - docker-compose run --rm frontend test
 notifications:
-  webhooks:
-    urls:
-      - https://semabot.datamade.us/travis/
-    on_success: change
-    on_cancel: never
+  slack:
+    secure: FdZaB7zLLP1CujlCeY51A0Go0Yx2KPRmIJnXK8u5ufeoQs0Zvc93dkH7GSF7gIVRRRC33+Qat+Q9iNt6B3rq8k7K0jyBIbwuANFBCRhrDUq+LwL2SFR8kN8sfNj683U55ijpqyf9VGW1W+pboevKHAqvbdz28lgxdKrxKIbcDY2PnKjnv/C8LRNEiCNkzJe3i7Vd/m7Zg0gbF5N3GyKXRINmPFohVreVOHhhAYwqaPKh25HAnpDmbuMRFtIHrNnMbdDWRwOj8XF873MsONzES7S6mOpRhfuDSA/2jPc4sX1iVbUMjynjVGRCkxGtjOM3TEPyxn/A1hMh6grsaqRRzyDwerve5Cv8n1moJLwA3dXh+Mr5DYhHcZ7bUWLUsPGUIHh7j9Hdxidvt7Ej5/I819z9zrfaSq4wxCUsTfPBn/6hcl2R7xGoHnIz4rC7NKSVZn3ECKyrX3AVwDcP94VdbsT1SxFpOg8XzeNNdCeIFY3MxbI8Zxfs1D34t6KFhCCag0sleN7Ix/r7ILYWG0ml12eesNnlGOsyf6jYd/Z7T0CmsmuOrvG8FpqdUan8rP8HZdYXyjfJokjpmYvNe7OnRlb6ug6jqZ7vMnEgpJxZEJ6eujY9Mz4fC36YRxqaQnXLXoc9xRYs37Jo8vCkNxO0v6I15Vhyaqy+786J9IQoh34=
 deploy:
   provider: codedeploy
   access_key_id: AKIAJNYGDLOJKHOUWCAA
