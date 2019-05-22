@@ -36,21 +36,6 @@ hr {
   width: 100%;
 }
 
-.navbar {
-  padding: 15px 10px;
-  background: #fff;
-  border: none;
-  border-radius: 0;
-  margin-bottom: 40px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-btn {
-  box-shadow: none;
-  outline: none !important;
-  border: none;
-}
-
 .line {
   width: 100%;
   height: 1px;
@@ -79,6 +64,7 @@ span {
   background: var(--light-green-color);
   transition: all 0.2s;
   border-right: .75px solid var(--medium-green-color);
+  z-index: 100;
 }
 
 .sidebar.active {
@@ -132,13 +118,13 @@ span {
   padding: 5px 25px;
 }
 
-.sidebar-blurb a {
+.btn-sidebar {
   background: var(--off-white-color);
   border-radius: 5px;
   padding: 3px 7px;
 }
 
-.sidebar-blurb a:hover {
+.btn-sidebar:hover {
   color: var(--dark-green-color);
 }
 
@@ -190,6 +176,13 @@ a.article:hover {
 
 .about-link {
   color: var(--dark-green-color);
+  background: var(--off-white-color);
+  border-radius: 5px;
+  padding: 3px 7px;
+}
+
+.about-link:hover {
+  color: var(--orange-color);
 }
 
 .list-unstyled {
@@ -211,6 +204,10 @@ a.article:hover {
   min-height: 100vh;
   transition: all 0.3s;
   background: #fafafa;
+}
+
+.card {
+  box-shadow: -2px 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 .alert-box.success {
