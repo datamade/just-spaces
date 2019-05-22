@@ -37,19 +37,6 @@ class Command(BaseCommand):
         fields = '"{}" VARCHAR,'.format(header[0].lower())
         fields += ', '.join(['"{}" DOUBLE PRECISION'.format(head.lower()) for head in header[1:]])
 
-        with psycopg2.connect(DB_CONN_STR) as conn:
-            with conn.cursor() as curs:
-                try:
-                    curs.execute('''DROP TABLE IF EXISTS {}'''.format(tablename))
-                    curs.execute('''
-                        CREATE TABLE {0} (
-                            {1}
-                        )
-                    '''.format(tablename, fields))
-                except psycopg2.IntegrityError as e:
-                    conn.rollback()
-                    raise e
-
         copy_st = '''
             COPY {} FROM STDIN WITH CSV HEADER
         '''.format(tablename)
@@ -58,6 +45,12 @@ class Command(BaseCommand):
             with psycopg2.connect(DB_CONN_STR) as conn:
                 with conn.cursor() as curs:
                     try:
+                        curs.execute('''DROP TABLE IF EXISTS {}'''.format(tablename))
+                        curs.execute('''
+                            CREATE TABLE {0} (
+                                {1}
+                            )
+                        '''.format(tablename, fields))
                         curs.copy_expert(copy_st, fobj)
                     except psycopg2.IntegrityError as e:
                         conn.rollback()
