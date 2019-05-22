@@ -10,8 +10,13 @@
       });
   </script>
 
-  <h1>Create New Study</h1>
-  <br />
-  {% crispy form %}
+<div class="col col-lg-11 card">
+  <div class="card-body">
+    <h2 class="card-title">Create New Study</h2>
+    <small class="form-text text-muted">Text describing what a study is.</small>
+    <br />
+    {% crispy form %}
+  </div>
+</div>
 
 {% endblock %}

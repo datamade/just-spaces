@@ -15,13 +15,16 @@
                 </a>
                 <ul class="collapse list-unstyled" id="createSurveySubmenu">
                     <li>
-                        <a href="{% url 'studies-create' %}">Study</a>
+                        <a href="{% url 'agencies-create' %}">- Agency</a>
                     </li>
                     <li>
-                        <a href="{% url 'locations-create' %}">Survey Location</a>
+                        <a href="{% url 'studies-create' %}">- Study</a>
                     </li>
                     <li>
-                        <a href="{% url 'surveys-create' %}">Survey</a>
+                        <a href="{% url 'locations-create' %}">- Survey Location</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'surveys-create' %}">- Survey</a>
                     </li>
                 </ul>
             </li>
@@ -61,22 +64,36 @@
             {% if user.is_authenticated %}
             <div>Hello <b>{{ user.get_username }}</b>!</div>
             <br />
-            <div><a href="{% url 'logout' %}">Logout</a></div>
+            <div><a class="btn-sidebar" href="{% url 'logout' %}">Logout</a></div>
             {% else %}
-            <div><a href="{% url 'login' %}">Login</a></div>
+            <div><a class="btn-sidebar" href="{% url 'login' %}">Login</a></div>
             <br />
-            <div><a href="{% url 'signup' %}">Create new account</a></div>
+            <div><a class="btn-sidebar" href="{% url 'signup' %}">Create new account</a></div>
             {% endif %}
             <br />
-            <div><em>Just Spaces</em> is a tool from DataMade and University City District to promote better and more just public spaces</div>
+            <div class="about-blurb"><strong>Just Spaces</strong> is a tool from <a class="about-link" href="https://www.universitycity.org/" target=_blank>University City District</a> and <a class="about-link" href="https://datamade.us/" target=_blank>DataMade</a> to promote better and more just public spaces</div>
         </ul>
     </nav>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('.sidebar').toggleClass('active');
-                $('.sidebar-blurb').toggleClass('d-none');
-            });
+      var $sidebar = $('.sidebar');
+
+      $(document).ready(function () {
+        resizeSidebar();
+
+        $('#sidebarCollapse').on('click', function () {
+            $sidebar.toggleClass('active');
         });
+      });
+
+      $(window).resize(function() {
+        resizeSidebar();
+      });
+
+      function resizeSidebar() {
+        if (window.innerWidth <= 992) {
+          return $sidebar.addClass('active');
+        }
+        else $sidebar.removeClass('active');
+      }
     </script>

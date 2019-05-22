@@ -21,10 +21,10 @@ class JustSpacesForm(forms.ModelForm):
     def create_default_helper(self):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-8'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-9'
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Submit'))
+        self.helper.add_input(Submit('submit', 'Submit', css_class='float-right'))
 
 
 class AgencyCreateForm(JustSpacesForm):
@@ -38,8 +38,8 @@ class LocationCreateForm(forms.ModelForm):
         super(LocationCreateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-8'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-9'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
 
@@ -68,8 +68,8 @@ class LocationAreaCreateForm(forms.ModelForm):
         super(LocationAreaCreateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-8'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-9'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
 

@@ -1,134 +1,98 @@
+/* ---------------------------------------------------
+    COLOR PALETTE
+----------------------------------------------------- */
+
 :root {
-  --dark-green-color: #91cbb0;
+  --light-green-color: #cde8ce;
+  --medium-green-color: #a1bfa2;
+  --dark-green-color: #014c42;
+  --light-blue-color: #e0f8ff;
+  --medium-blue-color: #d6edf4;
+  --dark-blue-color: #015c75;
   --off-white-color: #fafafa;
-  --darker-green-color:  #203f31;
   --orange-color: #e94e0c;
+  --pink-color: #eb549e;
 }
+
+/* ---------------------------------------------------
+    CLASS STYLES
+----------------------------------------------------- */
 
 body {
-    min-height: 100%;
-}
-
-p {
-    font-size: 1.1em;
-    font-weight: 300;
-    line-height: 1.7em;
-    color: #999;
+  min-height: 100%;
+  background-color: var(--off-white-color)
 }
 
 a,
 a:hover,
 a:focus {
-    color: var(--orange-color);
-    font-weight: 900;
-    background: var(--off-white-color);
-    border-radius: 5px;
-    padding: 3px 7px;
-    text-decoration: none;
-    transition: all 0.3s;
+  color: var(--orange-color);
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.3s;
 }
 
 hr {
   width: 100%;
 }
 
-.navbar {
-    padding: 15px 10px;
-    background: #fff;
-    border: none;
-    border-radius: 0;
-    margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-btn {
-    box-shadow: none;
-    outline: none !important;
-    border: none;
-}
-
 .line {
-    width: 100%;
-    height: 1px;
-    border-bottom: 1px dashed #ddd;
-    margin: 40px 0;
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dashed #ddd;
+  margin: 40px 0;
 }
 
 i,
 span {
-    display: inline-block;
+  display: inline-block;
 }
 
 /* ---------------------------------------------------
-    SIDEBAR STYLE
+    SIDEBAR STYLES
 ----------------------------------------------------- */
 
 .wrapper {
-    display: flex;
-    align-items: stretch;
-    min-height: 100%;
+  display: flex;
+  align-items: stretch;
+  min-height: 100%;
 }
 
 .sidebar {
-    min-width: 250px;
-    max-width: 250px;
-    background: var(--dark-green-color);
-    color: var(--darker-green-color);
-    transition: all 0.3s;
-}
-
-.sidebar h3 {
-    color: var(--darker-green-color);
+  min-width: 250px;
+  max-width: 250px;
+  background: var(--light-green-color);
+  transition: all 0.2s;
+  border-right: .75px solid var(--medium-green-color);
+  z-index: 100;
 }
 
 .sidebar.active {
-    min-width: 80px;
-    max-width: 80px;
-    text-align: center;
+  min-width: 75px;
+  max-width: 75px;
+  text-align: center;
 }
 
 .sidebar.active .sidebar-header h3 {
-    display: none;
+  display: none;
 }
 
 .sidebar.active .sidebar-header strong {
-    display: block;
+  display: block;
 }
 
-.sidebar.active ul li a {
-    padding: 20px 10px;
-    text-align: center;
-    font-size: 0.85em;
-}
-
-.sidebar.active ul li a i {
-    margin-right: 0;
-    display: block;
-    font-size: 1.2em;
-    margin-bottom: 5px;
-}
-
-.sidebar.active ul ul a {
-    padding: 10px !important;
-}
-
-.sidebar.active .dropdown-toggle::after {
-    top: auto;
-    bottom: 10px;
-    right: 50%;
-    -webkit-transform: translateX(50%);
-    -ms-transform: translateX(50%);
-    transform: translateX(50%);
+.sidebar.active ul {
+  display: none;
 }
 
 .sidebar .sidebar-header {
-    padding: 20px;
-    background: var(--dark-green-color);
+  padding: 20px;
+  background: var(--light-green-color);
 }
 
 .sidebar .sidebar-header strong {
-    display: none;
-    font-size: 1.8em;
+  display: none;
+  font-size: 1.8em;
 }
 
 .sidebar ul {
@@ -136,7 +100,7 @@ span {
 }
 
 .sidebar ul.components {
-    padding: 0px;
+  padding: 0px;
 }
 
 .sidebar ul li a {
@@ -144,64 +108,89 @@ span {
   font-size: .9em;
   display: block;
   text-align: left;
-  color: var(--darker-green-color);
+  color: black;
   background: none;
   font-weight: 600;
   border-radius: 0px;
 }
 
 .sidebar ul li a:hover {
-    color: var(--dark-green-color);
-    background: var(--darker-green-color);
+  padding: 5px 25px;
+}
+
+.btn-sidebar {
+  background: var(--off-white-color);
+  border-radius: 5px;
+  padding: 3px 7px;
+}
+
+.btn-sidebar:hover {
+  color: var(--dark-green-color);
 }
 
 .sidebar ul li a i {
-    margin-right: 10px;
+  margin-right: 10px;
+  color: var(--pink-color);
+  background: var(--off-white-color);
+  border-radius: 5px;
+  padding: 3px 7px;
 }
 
 .sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    color: var(--off-white-color);
-    background: var(--dark-green-color);
+  color: var(--off-white-color);
+  background: var(--light-green-color);
 }
 
 a[data-toggle="collapse"] {
-    position: relative;
+  position: relative;
 }
 
 .dropdown-toggle::after {
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-}
-
-ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: var(--dark-green-color);
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
 }
 
 a.download {
-    background: #fff;
-    color: var(--dark-green-color);
+  background: #fff;
+  color: var(--light-green-color);
 }
 
 a.article,
 a.article:hover {
-    background: var(--dark-green-color); !important;
-    color: #fff !important;
+  background: var(--light-green-color); !important;
+  color: #fff !important;
 }
 
 .sidebar-blurb {
   font-size: .8em;
   padding: 5px 35px;
-  color: var(--darker-green-color);
+}
+
+.about-blurb {
+  line-height: 25px;
+}
+
+.about-link {
+  color: var(--dark-green-color);
+  background: var(--off-white-color);
+  border-radius: 5px;
+  padding: 3px 7px;
+}
+
+.about-link:hover {
+  color: var(--orange-color);
+}
+
+.list-unstyled {
+  padding-left: 40px;
 }
 
 /* ---------------------------------------------------
-    CONTENT STYLE
+    FORM STYLES
 ----------------------------------------------------- */
 
 .asteriskField {
@@ -210,11 +199,15 @@ a.article:hover {
 }
 
 .content {
-    width: 80%;
-    padding: 40px;
-    min-height: 100vh;
-    transition: all 0.3s;
-    background: #fafafa;
+  width: 80%;
+  padding: 40px;
+  min-height: 100vh;
+  transition: all 0.3s;
+  background: #fafafa;
+}
+
+.card {
+  box-shadow: -2px 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 .alert-box.success {
@@ -253,6 +246,14 @@ a.article:hover {
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #aaa !important;
+}
+
+.select2-container {
+  width: 100% !important;
+}
+
 .select2-container--focus {
   color: #495057;
   background-color: #fff;
@@ -272,7 +273,29 @@ a.article:hover {
 }
 
 .invalid-feedback {
-    display: block !important;
+  display: block !important;
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+
+.btn-success, .btn-primary {
+  color: var(--dark-green-color);
+  background-color: var(--light-green-color);
+  border-color: var(--light-green-color);
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.btn-success:hover, .btn-primary:hover {
+  color: var(--dark-green-color);
+  background-color: var(--medium-green-color);
+  border-color: var(--medium-green-color);
+}
+
+.col-form-label {
+  padding-right: 3px;
 }
 
 /* ---------------------------------------------------
@@ -295,57 +318,5 @@ a.article:hover {
 /* Hide/show position controls with JavaScript */
 .move-chart-up,
 .move-chart-down {
-    display: none;
-}
-
-/* ---------------------------------------------------
-    MEDIAQUERIES
------------------------------------------------------ */
-
-@media (max-width: 768px) {
-    .sidebar {
-        min-width: 80px;
-        max-width: 80px;
-        text-align: center;
-        margin-left: -80px !important;
-    }
-    .dropdown-toggle::after {
-        top: auto;
-        bottom: 10px;
-        right: 50%;
-        -webkit-transform: translateX(50%);
-        -ms-transform: translateX(50%);
-        transform: translateX(50%);
-    }
-    .sidebar.active {
-        margin-left: 0 !important;
-    }
-    .sidebar .sidebar-header h3 {
-        display: none;
-    }
-    .sidebar .sidebar-header strong {
-        display: block;
-    }
-    .sidebar ul li a {
-        padding: 20px 10px;
-    }
-    .sidebar ul li a span {
-        font-size: 0.85em;
-    }
-    .sidebar ul li a i {
-        margin-right: 0;
-        display: block;
-    }
-    .sidebar ul ul a {
-        padding: 10px !important;
-    }
-    .sidebar ul li a i {
-        font-size: 1.3em;
-    }
-    .sidebar {
-        margin-left: 0;
-    }
-    .sidebarCollapse span {
-        display: none;
-    }
+  display: none;
 }

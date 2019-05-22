@@ -3,9 +3,13 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-  <h1>Create New Survey</h1>
-  <br />
-  {% crispy form %}
+<div class="col col-lg-10 card">
+  <div class="card-body">
+    <h2 class="card-title">Create New Survey</h2>
+    <small class="form-text text-muted">Text describing what a survey is.</small>
+    <br />
+    {% crispy form %}
+  </div>
+</div>
 
 {% endblock %}
