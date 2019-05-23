@@ -284,6 +284,12 @@ $(document).ready(function () {
     }
   });
 
+  $('form').on('change', censusSelectBox, function(event) {
+    // Listen to ACS data source multiselect boxes, and update the charts when the
+    // data source changes
+    var geographies = $(this).val();  // The value will be an array, and may be empty
+  });
+
   // Load visible charts
   $(chartContainer).filter(':visible').find('select[name$="primary_source"]').each(function() {
     var dataSourceId = $(this).val();
