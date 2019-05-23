@@ -118,7 +118,9 @@ $(document).ready(function () {
       .appendTo( '#survey-submitted-detail_wrapper .col-md-6:eq(0)' );
 
   var $totalForms = $('[name$=TOTAL_FORMS]');
-  var chartContainer = '[class^="chart-container-"]'
+  var chartContainer = '[class^="chart-container-"]';
+  var censusSelectBox = 'select[id$="-select-census_observations"]';
+  var censusHiddenInput = 'input[name$="-census_observations"]';
 
   // Load the ChartHelper from charts.js
   var surveys = JSON.parse('{{ surveys_submitted_json | escapejs }}');
@@ -204,17 +206,35 @@ $(document).ready(function () {
   });
 
   $('form').on('change', 'select[name$="-primary_source"]', function(event) {
-    // Listen to the primary data source select box, and update charts when the
-    // data source changes
+    // Listen to the primary data source select box, and update charts and
+    // other form options when the data source changes
     var dataSourceId = $(this).val();
-    var chartId = $(this).parents(chartContainer).find('.highcharts-chart').first().attr('id');
+    var $container = $(this).parents(chartContainer);
+    var chartId = $container.find('.highcharts-chart').first().attr('id');
+    var $censusContainer = $container.find('tr[id$="-container-census_observations"]').first();
+    var $censusSelect = $container.find(censusSelectBox).first();
+    var $censusInput = $container.find(censusHiddenInput).first();
+
     if (dataSourceId === '') {
       // User selected the null option, so remove the chart
       charts.destroyChart(chartId);
+      // Clear and hide conditional inputs
+      $censusContainer.hide();
+      $censusSelect.val([]);
+      $censusInput.val('')
     } else {
+      // Show the chart
       var chartTitle = $(this).find('option:selected').html();
       charts.loadChart(chartId, chartTitle, dataSourceId);
+      // Show conditional inputs
+      $censusContainer.show();
     }
+  });
+
+  $('form').on('change', censusSelectBox, function(event) {
+    // Listen to ACS data source multiselect boxes, and update the charts when the
+    // data source changes
+    var geographies = $(this).val();  // The value will be an array, and may be empty
   });
 
   // Load visible charts
