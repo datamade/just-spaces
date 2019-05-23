@@ -1,28 +1,29 @@
 YEAR := 2017
 
 .PHONY: all clean
-all: final/acs/age_and_sex.csv \
-	 final/acs/household_income.csv \
-	 final/acs/employment_status.csv \
-	 final/acs/income_inequality.csv \
-	 final/acs/educational_attainment.csv \
-	 final/acs/means_of_transit.csv \
-	 final/acs/household_type.csv \
-	 final/acs/total_population.csv \
-	 final/acs/hours_worked_per_week.csv \
-	 final/acs/race.csv \
-	 final/acs/hispanic_or_latino_origin.csv \
-	 final/acs/household_tenure.csv \
-	 final/acs/vacancy_status.csv \
-	 final/acs/disability.csv
+all: final/acs/census_observations.csv
+
+RAW := raw/acs/age_and_sex.csv \
+	 raw/acs/household_income.csv \
+	 raw/acs/employment_status.csv \
+	 raw/acs/income_inequality.csv \
+	 raw/acs/educational_attainment.csv \
+	 raw/acs/means_of_transit.csv \
+	 raw/acs/household_type.csv \
+	 raw/acs/total_population.csv \
+	 raw/acs/hours_worked_per_week.csv \
+	 raw/acs/race.csv \
+	 raw/acs/hispanic_or_latino_origin.csv \
+	 raw/acs/household_tenure.csv \
+	 raw/acs/vacancy_status.csv \
+	 raw/acs/disability.csv
 
 clean:
-	rm -Rf raw/acs/*
+	rm -Rf raw/acs/*.csv final/*.csv
 
 raw/acs/%.csv:
 	python3 scripts/import_acs_data.py "$*" "${YEAR}" > "$@"
 
-# Eventually we may want to do more transformation on these files. For now,
-# simply copy them over
-final/acs/%.csv: raw/acs/%.csv
-	cp "$<" "$@"
+final/acs/census_observations.csv: ${RAW}
+	python3 scripts/merge_acs_data.py $^ > $@
+
