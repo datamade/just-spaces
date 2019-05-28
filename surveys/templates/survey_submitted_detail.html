@@ -117,16 +117,20 @@ $(document).ready(function () {
   table.buttons().container()
       .appendTo( '#survey-submitted-detail_wrapper .col-md-6:eq(0)' );
 
+  // Helpful JQuery selectors
   var $totalForms = $('[name$=TOTAL_FORMS]');
   var chartContainer = '[class^="chart-container-"]';
-  var censusSelectBox = 'select[id$="-select-census_observations"]';
-  var censusHiddenInput = 'input[name$="-census_observations"]';
+  var censusContainer = 'tr[id$="-container-census_areas"]';
+  var censusSelectBox = 'select[id$="-census_areas"]';
 
   // Load the ChartHelper from charts.js
   var surveys = JSON.parse('{{ surveys_submitted_json | escapejs }}');
   var types = JSON.parse('{{ types | escapejs }}');
   var bins = JSON.parse('{{ bins | escapejs }}');
   charts = new ChartHelper(surveys, types, bins);
+
+  // Load ACS variable map for Fobi types
+  var acsCompatibleTypes = JSON.parse('{{ acs_compatible_types | escapejs }}');
 
   function resetChartOrder() {
     // Update the 'order' field of each chart on the page to match its visual
@@ -156,8 +160,37 @@ $(document).ready(function () {
       }
     }
   }
-
   toggleMoveButtonVisibility();
+
+  function toggleCensusContainerVisibility($censusContainer, dataSourceId) {
+    /**
+     * Check to see whether a data source can be compared to ACS data, and if it
+     * can, show its corresponding Census selectbox.
+     *
+     * @param {Object} $censusContainer - A JQuery object representing the container to toggle.
+     * @param {String} dataSourceId - The ID of the data source in question.
+     */
+    var sourceType = surveys[0].data[dataSourceId].type;
+    var isAcsCompatibleType = false;
+    for (var i=0; i<acsCompatibleTypes.length; i++) {
+      if (sourceType === acsCompatibleTypes[i]) {
+        isAcsCompatibleType = true;
+        break;
+      }
+    }
+    if (isAcsCompatibleType) {
+      $censusContainer.show();
+    } else {
+      $censusContainer.hide();
+    }
+  }
+  $(chartContainer).filter(':visible').find(censusContainer).each(function() {
+    var $dataSourceSelect = $(this).parents(chartContainer).find('select[name$="-primary_source"]');
+    if ($dataSourceSelect.length > 0) {
+      var dataSourceId = $dataSourceSelect.val();
+      toggleCensusContainerVisibility($(this), dataSourceId);
+    }
+  });
 
   // Initialize sortable chart widgets
   $('#sortable-chart-container').sortable({
@@ -211,9 +244,8 @@ $(document).ready(function () {
     var dataSourceId = $(this).val();
     var $container = $(this).parents(chartContainer);
     var chartId = $container.find('.highcharts-chart').first().attr('id');
-    var $censusContainer = $container.find('tr[id$="-container-census_observations"]').first();
+    var $censusContainer = $container.find(censusContainer).first();
     var $censusSelect = $container.find(censusSelectBox).first();
-    var $censusInput = $container.find(censusHiddenInput).first();
 
     if (dataSourceId === '') {
       // User selected the null option, so remove the chart
@@ -221,13 +253,12 @@ $(document).ready(function () {
       // Clear and hide conditional inputs
       $censusContainer.hide();
       $censusSelect.val([]);
-      $censusInput.val('')
     } else {
       // Show the chart
       var chartTitle = $(this).find('option:selected').html();
       charts.loadChart(chartId, chartTitle, dataSourceId);
       // Show conditional inputs
-      $censusContainer.show();
+      toggleCensusContainerVisibility($censusContainer, dataSourceId);
     }
   });
 
@@ -235,6 +266,19 @@ $(document).ready(function () {
     // Listen to ACS data source multiselect boxes, and update the charts when the
     // data source changes
     var geographies = $(this).val();  // The value will be an array, and may be empty
+    var primarySourceId = $(this).parents(chartContainer).find('select[name$="primary_source"]').val();
+    if (geographies.length > 0) {
+      for (var i=0; i<geographies.length; i++) {
+        var geographyId = geographies[i];
+        var dataUrl = "{% url 'acs' %}?census_area=" + geographyId + "&primary_source=" + primarySourceId;
+        $.getJSON(dataUrl).done(function(data) {
+          console.log(data);
+        }).fail(function(jqxhr, textStatus, error) {
+          var err = textStatus + ", " + error;
+          console.log("Request to " + dataUrl + " failed: " + err);
+        });
+      }
+    }
   });
 
   // Load visible charts

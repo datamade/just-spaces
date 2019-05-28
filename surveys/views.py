@@ -15,7 +15,7 @@ from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
 
-from .models import SurveyFormEntry, SurveyChart, CensusArea
+from .models import SurveyFormEntry, SurveyChart, CensusArea, CensusObservation
 from surveys import forms as survey_forms
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
@@ -243,7 +243,7 @@ class SurveySubmittedDetail(TemplateView):
         context['surveys_submitted_json'] = json.dumps(surveys_submitted_json,
                                                        default=str)
 
-        # Fobi types and bins for use in charting
+        # Fobi types, bins, and ACS variables for use in charting
         types = {
             'count': fobi_types.COUNT_TYPES,
             'observational': fobi_types.OBSERVATIONAL_TYPES,
@@ -256,6 +256,9 @@ class SurveySubmittedDetail(TemplateView):
         }
         context['types'] = json.dumps(types)
         context['bins'] = json.dumps(bins)
+        context['acs_compatible_types'] = json.dumps(
+            list(fobi_types.TYPES_TO_ACS_VARIABLES.keys())
+        )
 
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)
@@ -313,17 +316,25 @@ class Signup(FormView):
         return render(request, self.template_name, {'form': form})
 
 
-def census_area_to_observation(request, census_area_id, variable):
+def census_area_to_observation(request):
     """
     API endpoint returning ACS data for a given CensusArea and ACS variable.
 
-    :param request: A Django HTTPRequest object.
-    :param census_area_id: The ID of a CensusArea object.
-    :param variable: The slug of an ACS variable.
+    :param request: A Django HTTPRequest object. Requires a census_area param and
+                    a primary_source param, or else will return 400.
     :returns: A JsonResponse representing the data in question. If no CensusArea
-              object matches census_area_id, returns HTTP status 404 with a message
+              object matches census_area, returns HTTP status 404 with a message
               in the 'error' key. Otherwise, returns the data in the 'data' key.
     """
+    # Check the query parameters
+    census_area_id = request.GET.get('census_area')
+    primary_source_id = request.GET.get('primary_source')
+    if not census_area_id or not primary_source_id:
+        return JsonResponse(
+            {'error': 'census_area and primary_source are required query parameters'},
+            status=400
+        )
+
     response = {}
     try:
         census_area = CensusArea.objects.get(id=census_area_id)
@@ -333,6 +344,12 @@ def census_area_to_observation(request, census_area_id, variable):
         )
         status = 404
     else:
-        response['data'] = census_area.get_observation_data(variable)
-        status = 200
+        try:
+            response['data'] = census_area.get_observations_from_component(primary_source_id)
+        except CensusObservation.DoesNotExist as e:
+            response['error'] = str(e)
+            status = 404
+        else:
+            status = 200
+
     return JsonResponse(response, status=status)
