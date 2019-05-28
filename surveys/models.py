@@ -78,9 +78,7 @@ class CensusArea(models.Model):
                 )
         else:
             raise CensusObservation.DoesNotExist(
-                'No SurveyComponent object found with the name: {}'.format(
-                    component_name
-                )
+                'No SurveyComponent found with the name: {}'.format(component_name)
             )
 
 
