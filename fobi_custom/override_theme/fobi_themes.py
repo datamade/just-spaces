@@ -11,7 +11,9 @@ class JustSpacesTheme(Foundation5Theme):
     html_classes = ['override-theme']
     base_template = 'override_theme/base.html'
     edit_form_entry_ajax_template = 'override_theme/edit_form_entry_ajax.html'
-    form_snippet_template_name = 'override_theme/form_snippet.html'
+    form_snippet_template_name = 'override_theme/snippets/form_snippet.html'
+    edit_form_element_entry_template = 'override_theme/edit_form_element_entry.html'
+    form_ajax = 'override_theme/snippets/form_ajax.html'
 
 
 # It's important to set the `force` argument to True, in

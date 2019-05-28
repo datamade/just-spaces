@@ -324,7 +324,7 @@ a.article:hover {
   font-size: 80%;
 }
 
- .icon-pink {
+ .icon-pink, .code {
    color: var(--pink-color);
  }
 
