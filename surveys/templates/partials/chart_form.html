@@ -55,14 +55,14 @@
               {{form.primary_source}}
             </td>
           </tr>
-          <tr id="id_form-{{chart_id}}-container-census_observations">
+          <tr id="id_form-{{chart_id}}-container-census_areas">
             <th>
-              <label for="id_form-{{chart_id}}-census_observations">
+              <label for="id_form-{{chart_id}}-census_areas">
                 Compare to Census geography:
               </label>
             </th>
             <td>
-              <select id="id_form-{{chart_id}}-select-census_observations" multiple>
+              <select id="id_form-{{chart_id}}-select-census_areas" multiple>
                 <option value="usa">United States</option>
                 <option value="pennsylvania">Pennsylvania</option>
                 <option value="philadelphia">Philadelphia</option>
@@ -70,7 +70,7 @@
                 <option value="southwest_philadelphia">Southwest Philadelphia</option>
                 <option value="university_city">University City</option>
               </select>
-              {{form.census_observations}} <!-- This is a hidden input -->
+              {{form.census_areas}} <!-- This is a hidden input -->
             </td>
           <tr>
             <th>

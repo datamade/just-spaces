@@ -162,11 +162,11 @@ class SurveyCreateForm(JustSpacesForm):
 class SurveyChartForm(forms.ModelForm):
     class Meta:
         model = SurveyChart
-        fields = ['short_description', 'order', 'primary_source', 'census_observations']
+        fields = ['short_description', 'order', 'primary_source', 'census_areas']
         widgets = {
             'order': forms.HiddenInput(),
             'primary_source': forms.Select(),
-            'census_observations': forms.HiddenInput()
+            'census_areas': forms.HiddenInput()
         }
 
     def __init__(self, *args, form_entry, **kwargs):

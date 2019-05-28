@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres import fields as pg_fields
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import JSONField
 
@@ -38,9 +39,14 @@ class SurveyFormEntry(FormEntry):
 
 
 class CensusObservation(models.Model):
-    fips = models.CharField(max_length=255)
+    fips_code = models.CharField(max_length=255)
     variable = models.CharField(max_length=255)
     fields = JSONField()
+
+
+class CensusArea(models.Model):
+    name = models.CharField(max_length=255)
+    fips_codes = pg_fields.ArrayField(models.CharField(max_length=12))
 
 
 class SurveyChart(models.Model):
@@ -62,7 +68,7 @@ class SurveyChart(models.Model):
         null=True
     )
 
-    census_observations = models.ManyToManyField(CensusObservation)
+    census_areas = models.ManyToManyField(CensusArea)
 
     class Meta:
         ordering = ['order']
