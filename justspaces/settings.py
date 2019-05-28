@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'leaflet',
     'crispy_forms',
+    'widget_tweaks',
 
     # django-pldp
     'countries_plus',

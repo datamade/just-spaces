@@ -296,7 +296,29 @@ a.article:hover {
 
 .col-form-label {
   padding-right: 3px;
+  font-weight: 500;
 }
+
+.help-block ul {
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+
+.help-block ul li {
+    display: inline;
+    padding-right: 15px;
+}
+
+.help-block ul li a {
+  margin-top: .25rem;
+  font-weight: 400;
+  font-size: 80%;
+}
+
+ .icon-pink {
+   color: var(--pink-color);
+ }
 
 /* ---------------------------------------------------
     DATA ANALYSIS DESIGNER

@@ -1,0 +1,83 @@
+{% load i18n fobi_tags %}
+
+<div class="col col-lg-11 card">
+  <div class="card-body">
+
+   <h2 class="card-title">{% trans "Edit" %} <span class="font-italic">{{form_entry.surveyformentry.name}}</span></h2>
+   <small class="form-text text-muted">Add, edit, delete, and reorder survey questions</small>
+   <br />
+
+   <ul class="nav nav-tabs" id="surveyTabs" role="tablist">
+     <li class="nav-item">
+       <a class="nav-link active" id="surveyQuestionsTab" data-toggle="tab" href="#survey-questions" role="tab" aria-controls="survey-questions" aria-selected="true">Questions</a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" id="surveyPropertiesTab" data-toggle="tab" href="#survey-properties" role="tab" aria-controls="survey-properties" aria-selected="false">Properties</a>
+     </li>
+   </ul>
+
+   <div class="tab-content" id="surveyTabsContent">
+
+     <div class="tab-pane fade show active" id="survey-questions" role="tabpanel" aria-labelledby="survey-questions">
+       <div class="panel-body">
+         <br />
+
+         <div class="form-group row">
+          <label for="formElementDropdown" class="col-form-label col-lg-4">
+              <i class="fas fa-plus-circle icon-pink"></i>&nbsp;
+              Add a new survey question:
+          </label>
+
+          <div class="col-lg-8">
+            <select id="formElementDropdown" class="select form-control">
+              <option>--------</option>
+              {% for group, plugins in user_form_element_plugins.items %}
+              <optgroup label="{{group}}">
+                {% for form_element_uid, form_element_name in plugins %}
+                <option value="{% url 'fobi.add_form_element_entry' form_entry.pk form_element_uid %}">{{ form_element_name }}</option>
+                {% endfor %}
+              </optgroup>
+              {% endfor %}
+            </select>
+          </div>
+          </div>
+
+         <form id="fobi-form" method="post" action="{{ request.path }}?active_tab=tab-form-elements" novalidate="novalidate" class="{% block form_elements_html_class %}form-horizontal{% endblock %}" {% block form_elements_extra_attrs %}{% endblock %}>
+           {% csrf_token %}
+           {% with assembled_form as form %}
+             {% include fobi_theme.form_snippet_template_name %}
+           {% endwith %}
+
+           {{ form_element_entry_formset.management_form }}
+
+           {% comment %}
+           {% with form_element_entry_formset as form %}
+             {% include fobi_theme.form_snippet_template_name %}
+           {% endwith %}
+           {% endcomment %}
+
+           <div class="control-group">
+             <div class="controls">
+               <button type="submit" name="ordering" class="btn btn-primary float-right">{% trans "Save ordering" %}</button>
+             </div>
+           </div>
+         </form>
+
+       </div>
+     </div>
+
+     <div class="tab-pane fade" id="survey-properties" role="tabpanel" aria-labelledby="survey-properties">
+       Survey properties TK
+     </div>
+
+   </div>
+  </div>
+ </div>
+
+ <script>
+  document.getElementById("formElementDropdown").onchange = function() {
+    if (this.selectedIndex!==0) {
+      window.location.href = this.value;
+    }
+  };
+ </script>
