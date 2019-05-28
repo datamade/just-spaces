@@ -64,7 +64,8 @@
                 {% endif %}
 
                 {% if field.help_text %}
-                <span class="help-block float-left">{{ field.help_text|safe }}</span>
+                <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                <!-- <span class="help-block float-left">{{ field.help_text|safe }}</span> -->
                 {% endif %}
             </div>
         <hr>

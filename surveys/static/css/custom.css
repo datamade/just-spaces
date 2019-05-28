@@ -306,22 +306,21 @@ a.article:hover {
   padding: 20px;
 }
 
-.help-block ul {
+.form-text ul {
     display: block;
     margin-bottom: 5px;
     margin-top: 10px;
     padding-inline-start: 0px;
 }
 
-.help-block ul li {
+.form-text ul li {
     display: inline;
     padding-right: 15px;
 }
 
-.help-block ul li a {
+.form-text ul li a {
   margin-top: .25rem;
-  font-weight: 400;
-  font-size: 80%;
+  font-weight: 600;
 }
 
  .icon-pink, .code {
