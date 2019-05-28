@@ -166,7 +166,6 @@ class SurveyChartForm(forms.ModelForm):
         widgets = {
             'order': forms.HiddenInput(),
             'primary_source': forms.Select(),
-            'census_areas': forms.HiddenInput()
         }
 
     def __init__(self, *args, form_entry, **kwargs):

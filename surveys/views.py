@@ -3,7 +3,7 @@ import json
 from django.views.generic import TemplateView, ListView, UpdateView
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.forms import modelformset_factory
 from django.contrib import messages
@@ -15,7 +15,7 @@ from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
 
-from .models import SurveyFormEntry, SurveyChart
+from .models import SurveyFormEntry, SurveyChart, CensusArea
 from surveys import forms as survey_forms
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
@@ -311,3 +311,28 @@ class Signup(FormView):
             return redirect('login')
 
         return render(request, self.template_name, {'form': form})
+
+
+def census_area_to_observation(request, census_area_id, variable):
+    """
+    API endpoint returning ACS data for a given CensusArea and ACS variable.
+
+    :param request: A Django HTTPRequest object.
+    :param census_area_id: The ID of a CensusArea object.
+    :param variable: The slug of an ACS variable.
+    :returns: A JsonResponse representing the data in question. If no CensusArea
+              object matches census_area_id, returns HTTP status 404 with a message
+              in the 'error' key. Otherwise, returns the data in the 'data' key.
+    """
+    response = {}
+    try:
+        census_area = CensusArea.objects.get(id=census_area_id)
+    except CensusArea.DoesNotExist:
+        response['error'] = 'No CensusArea object found for ID {}'.format(
+            str(census_area_id)
+        )
+        status = 404
+    else:
+        response['data'] = census_area.get_observation_data(variable)
+        status = 200
+    return JsonResponse(response, status=status)

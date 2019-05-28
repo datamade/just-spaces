@@ -48,6 +48,23 @@ class CensusArea(models.Model):
     name = models.CharField(max_length=255)
     fips_codes = pg_fields.ArrayField(models.CharField(max_length=12))
 
+    def __str__(self):
+        return self.name
+
+    def get_observation_data(self, variable):
+        """
+        Given an ACS variable, return the observation data for this area.
+
+        :param variable: The ACS variable in question.
+        :returns: A dictionary representing the stored data of the CensusObservation
+                  objects for the given area and variable.
+        """
+        observations = CensusObservation.objects.filter(
+            variable=variable,
+            fips_code__in=self.fips_codes
+        )
+        return {observation.fips_code: observation.fields for observation in observations}
+
 
 class SurveyChart(models.Model):
 
