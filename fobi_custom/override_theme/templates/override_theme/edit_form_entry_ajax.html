@@ -9,10 +9,10 @@
 
    <ul class="nav nav-tabs" id="surveyTabs" role="tablist">
      <li class="nav-item">
-       <a class="nav-link active" id="surveyQuestionsTab" data-toggle="tab" href="#survey-questions" role="tab" aria-controls="survey-questions" aria-selected="true">Questions</a>
+       <a class="nav-link active" id="surveyQuestionsTab" href="{% url 'fobi.edit_form_entry' form_entry.surveyformentry.pk %}" aria-controls="survey-questions" aria-selected="true">Questions</a>
      </li>
      <li class="nav-item">
-       <a class="nav-link" id="surveyPropertiesTab" data-toggle="tab" href="#survey-properties" role="tab" aria-controls="survey-properties" aria-selected="false">Properties</a>
+       <a class="nav-link" id="surveyPropertiesTab" href="{% url 'survey-properties-edit' form_entry.surveyformentry.pk %}" aria-controls="survey-properties" aria-selected="false">Properties</a>
      </li>
    </ul>
 
