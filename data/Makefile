@@ -18,6 +18,9 @@ RAW := raw/acs/age_and_sex.csv \
 	 raw/acs/vacancy_status.csv \
 	 raw/acs/disability.csv
 
+intermediate/acs/gender.csv: raw/acs/age_and_sex.csv
+	python3 scripts/variables/process_gender.py "$<" > "$@"
+
 clean:
 	rm -Rf raw/acs/*.csv final/*.csv
 
