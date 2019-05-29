@@ -148,24 +148,60 @@ age_and_sex:
       code: B01001_049E
 
 household_income:
-  verbose_name: Mean Household Income of Quintiles
-  # See: https://api.census.gov/data/2016/acs/acs5/groups/B19081.json
+  verbose_name: Household Income
+  # See: https://api.census.gov/data/2016/acs/acs5/groups/B19001.json
   variables:
-    - name: lowest_quintile
-      verbose_name: Lowest Quintile
-      code: B19081_001E
-    - name: second_quintile
-      verbose_name: Second Quintile
-      code: B19081_002E
-    - name: third_quintile
-      verbose_name: Third Quintile
-      code: B19081_003E
-    - name: fourth_quintile
-      verbose_name: Fourth Quintile
-      code: B19081_004E
-    - name: highest_quintile
-      verbose_name: Highest Quintile
-      code: B19081_005E
+    - name: total
+      verbose_name: Total
+      code: B19001_001E
+    - name: under_10k
+      verbose_name: Less than $10,000
+      code: B19001_002E
+    - name: 10k_to_15k
+      verbose_name: $10,000 to $14,999
+      code: B19001_003E
+    - name: 15k_to_20k
+      verbose_name: $15,000 to $19,999
+      code: B19001_004E
+    - name: 20k_to_25k
+      verbose_name: $20,000 to $24,999
+      code: B19001_005E
+    - name: 25k_to_30k
+      verbose_name: $25,000 to $29,999
+      code: B19001_006E
+    - name: 30k_to_35k
+      verbose_name: $30,000 to $34,999
+      code: B19001_007E
+    - name: 35k_to_40k
+      verbose_name: $35,000 to $39,999
+      code: B19001_008E
+    - name: 40k_to_45k
+      verbose_name: $40,000 to $44,999
+      code: B19001_009E
+    - name: 45k_to_50k
+      verbose_name: $45,000 to $49,999
+      code: B19001_010E
+    - name: 50k_to_60k
+      verbose_name: $50,000 to $59,999
+      code: B19001_011E
+    - name: 60k_to_75k
+      verbose_name: $60,000 to $74,999
+      code: B19001_012E
+    - name: 75k_to_100k
+      verbose_name: $75,000 to $99,999
+      code: B19001_013E
+    - name: 100k_to_125k
+      verbose_name: $100,000 to $124,999
+      code: B19001_014E
+    - name: 125k_to_150k
+      verbose_name: $125,000 to $149,999
+      code: B19001_015E
+    - name: 150k_to_200k
+      verbose_name: $150,000 to $199,999
+      code: B19001_016E
+    - name: 200k_plus
+      verbose_name: $200,000 or more
+      code: B19001_017E
 
 employment_status:
   verbose_name: Employment Status

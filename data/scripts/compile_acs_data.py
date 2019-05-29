@@ -81,7 +81,7 @@ FIELD_MAPPINGS = {
         'non_binary': [],
         'no_answer': [],
     },
-    # TODO: Need to get a new variable here, for comparison
+    # TODO: Use new table to find bins
     'income': {
         'under_20k': [],
         '_20_40k': [],
