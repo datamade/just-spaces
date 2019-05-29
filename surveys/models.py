@@ -65,8 +65,9 @@ class CensusArea(models.Model):
         if component:
             variable = fobi_types.TYPES_TO_ACS_VARIABLES.get(component.type)
             if variable:
+                detailed_variable = variable.get(component.detail_level)
                 observations = CensusObservation.objects.filter(
-                    variable=variable,
+                    variable=detailed_variable,
                     fips_code__in=self.fips_codes
                 )
                 return {observation.fips_code: observation.fields for observation in observations}

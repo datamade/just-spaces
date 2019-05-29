@@ -229,7 +229,7 @@ educational_attainment:
     - name: seventh_grade
       verbose_name: 7th grade
       code: B15003_011E
-    - name: eigth_grade
+    - name: eighth_grade
       verbose_name: 8th grade
       code: B15003_012E
     - name: ninth_grade

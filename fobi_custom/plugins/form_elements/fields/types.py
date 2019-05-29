@@ -48,14 +48,40 @@ ALL_INVALID_TYPES = list(set(ALL_TYPES) - set(ALL_VALID_TYPES))
 
 # A list of types with their corresponding ACS variables.
 TYPES_TO_ACS_VARIABLES = {
-    'age_observational': 'age_and_sex',
-    'gender_observational': 'age_and_sex',
-    'age_intercept': 'age_and_sex',
-    'gender_intercept': 'age_and_sex',
-    'income': 'household_income',
-    'education': 'educational_attainment',
-    'race': 'race',
-    'employment': 'employment_status',
-    'household_tenure': 'household_tenure',
-    'transportation': 'means_of_transit'
+    'age_observational': {
+        'basic': 'age_basic',
+        'detailed': 'age_detailed',
+        'complex': 'age_complex'
+    },
+    'gender_observational': {
+        'basic': 'gender_observational',
+    },
+    'age_intercept': {
+        'basic': 'age_complex',
+    },
+    'gender_intercept': {
+        'basic': 'gender_intercept',
+    },
+    'income': {
+        'basic': 'income',
+    },
+    'education': {
+        'basic': 'education',
+    },
+    'race': {
+        'basic': 'race',
+    },
+    'employment': {
+        'basic': 'employment',
+    },
+    # TODO: Need to make a tenure question in Fobi
+    'household_tenure': {
+        'basic': 'household_tenure',
+    },
+    'own_or_rent': {
+        'basic': 'own_or_rent',
+    },
+    'transportation': {
+        'basic': 'transportation',
+    },
 }
