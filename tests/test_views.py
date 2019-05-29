@@ -1,7 +1,12 @@
+import uuid
+
 import pytest
 from django.urls import reverse
-
 from pldp.forms import AGE_COMPLEX_CHOICES
+from pldp.models import SurveyComponent
+
+from surveys.models import CensusObservation
+from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
 
 @pytest.mark.django_db
@@ -30,18 +35,6 @@ def test_location_create(client, user):
     response = client.get(url)
 
     assert response.status_code == 200
-
-
-@pytest.mark.django_db
-def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_observational):
-    client.force_login(user)
-    url = reverse('surveys-list-edit')
-    response = client.get(url)
-
-    surveys = response.context['surveys']
-
-    assert response.status_code == 200
-    assert len(surveys) == 1
 
 
 @pytest.mark.django_db
@@ -162,3 +155,88 @@ def test_survey_submitted_detail(client, user, survey_form_entry, survey, survey
 
     assert response.status_code == 200
     assert len(surveys_submitted) == 1
+
+
+@pytest.mark.django_db
+def test_census_area_to_observation(client, census_area, survey_row):
+    """
+    Test that the census_area_to_observation API endpoint returns the correct
+    set of CensusObservations for a given CensusArea and SurveyComponent.
+    """
+    survey_component = SurveyComponent.objects.create(
+        detail_level='basic',
+        name=str(uuid.uuid4()),
+        label='Age',
+        type='age_intercept',
+        position=2,
+        saved_data=10,
+        row=survey_row,
+    )
+    census_observation = CensusObservation.objects.create(
+        fips_code=census_area.fips_codes[0],
+        variable=fobi_types.TYPES_TO_ACS_VARIABLES['age_intercept'],
+        fields={'foo': 'bar'}
+    )
+    response = client.get(
+        reverse('acs'),
+        {'census_area': census_area.id, 'primary_source': survey_component.name}
+    )
+    assert response.status_code == 200
+    assert response.json().get('data') is not None
+    assert response.json()['data']['1'] == census_observation.fields
+
+
+def test_census_area_to_observation_no_kwargs(client):
+    """
+    Test that the census_area_to_observation API endpoint will raise an error if
+    it's missing the required keyword arguments.
+    """
+    response = client.get(reverse('acs'))
+    assert response.status_code == 400
+    assert response.json().get('error') is not None
+    assert 'required query parameters' in response.json()['error']
+
+
+@pytest.mark.django_db
+def test_census_area_to_observation_no_census_area(client):
+    """
+    Test that the census_area_to_observation API endpoint will raise an error if
+    no CensusArea object matches the census_area parameter.
+    """
+    response = client.get(
+        reverse('acs'),
+        {'census_area': '10000', 'primary_source': 'bar'}
+    )
+    assert response.status_code == 400
+    assert response.json().get('error') is not None
+    assert 'No CensusArea object' in response.json()['error']
+
+
+@pytest.mark.django_db
+def test_census_area_to_observation_no_survey_component(client, census_area):
+    """
+    Test that the census_area_to_observation API endpoint will raise an error if
+    no SurveyComponent matches the given value for primary_source.
+    """
+    response = client.get(
+        reverse('acs'),
+        {'census_area': census_area.id, 'primary_source': 'bar'}
+    )
+    assert response.status_code == 400
+    assert response.json().get('error') is not None
+    assert 'No SurveyComponent object' in response.json()['error']
+
+
+@pytest.mark.django_db
+def test_census_area_to_observation_no_acs_variable(client, census_area, survey_component):
+    """
+    Test that the census_area_to_observation API endpoint will raise an error if
+    the SurveyComponent in question does not have a matching ACS variable.
+    """
+    response = client.get(
+        reverse('acs'),
+        {'census_area': census_area.id, 'primary_source': survey_component.name}
+    )
+    assert response.status_code == 400
+    assert response.json().get('error') is not None
+    assert 'No corresponding ACS variable' in response.json()['error']

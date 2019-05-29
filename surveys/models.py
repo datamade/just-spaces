@@ -72,13 +72,15 @@ class CensusArea(models.Model):
                 return {observation.fips_code: observation.fields for observation in observations}
             else:
                 raise CensusObservation.DoesNotExist(
-                    'Fobi type does not have a corresponding ACS variable: {}'.format(
+                    'No corresponding ACS variable for Fobi type: {}'.format(
                         component.type
                     )
                 )
         else:
             raise CensusObservation.DoesNotExist(
-                'No SurveyComponent found with the name: {}'.format(component_name)
+                'No SurveyComponent object found with the name: {}'.format(
+                    component_name
+                )
             )
 
 

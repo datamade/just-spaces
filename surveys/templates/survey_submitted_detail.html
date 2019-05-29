@@ -184,6 +184,8 @@ $(document).ready(function () {
       $censusContainer.hide();
     }
   }
+  // On first page load, toggle the Census select box visibility for any visible
+  // charts
   $(chartContainer).filter(':visible').find(censusContainer).each(function() {
     var $dataSourceSelect = $(this).parents(chartContainer).find('select[name$="-primary_source"]');
     if ($dataSourceSelect.length > 0) {
@@ -272,6 +274,7 @@ $(document).ready(function () {
         var geographyId = geographies[i];
         var dataUrl = "{% url 'acs' %}?census_area=" + geographyId + "&primary_source=" + primarySourceId;
         $.getJSON(dataUrl).done(function(data) {
+          // TODO: Display this data on the chart
           console.log(data);
         }).fail(function(jqxhr, textStatus, error) {
           var err = textStatus + ", " + error;

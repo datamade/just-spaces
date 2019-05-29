@@ -342,13 +342,13 @@ def census_area_to_observation(request):
         response['error'] = 'No CensusArea object found for ID {}'.format(
             str(census_area_id)
         )
-        status = 404
+        status = 400
     else:
         try:
             response['data'] = census_area.get_observations_from_component(primary_source_id)
         except CensusObservation.DoesNotExist as e:
             response['error'] = str(e)
-            status = 404
+            status = 400
         else:
             status = 200
 
