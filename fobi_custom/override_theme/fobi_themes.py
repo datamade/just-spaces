@@ -17,7 +17,6 @@ class JustSpacesTheme(Foundation5Theme):
     form_entry_submitted_ajax_template = 'override_theme/form_entry_submitted_ajax.html'
     add_form_element_entry_ajax_template = 'override_theme/add_form_element_entry_ajax.html'
 
-
 # It's important to set the `force` argument to True, in
 # order to override the original theme. Force can be applied
 # only once.

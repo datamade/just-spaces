@@ -286,7 +286,7 @@ a.article:hover {
   background-color: var(--light-green-color);
   border-color: var(--light-green-color);
   font-weight: 600;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .btn-success:hover, .btn-primary:hover {
