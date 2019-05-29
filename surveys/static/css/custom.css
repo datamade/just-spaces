@@ -306,6 +306,12 @@ a.article:hover {
   padding: 20px;
 }
 
+.form-group div label {
+  font-weight: 400;
+  font-size: 80%;
+  margin-bottom: .1rem;
+}
+
 .form-text ul {
     display: block;
     margin-bottom: 5px;
