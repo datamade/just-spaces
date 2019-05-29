@@ -3,12 +3,12 @@
 {% load i18n %}
 
 {% block form_page_title %}
-{% blocktrans with form_element_plugin.name as plugin_name %}<i class="fas fa-xs fa-plus-circle icon-pink"></i>&nbsp; New survey question: <span class="font-italic">{{ plugin_name }}</span>{% endblocktrans %}
+{% blocktrans with form_element_plugin.name as plugin_name %}Edit survey question{% endblocktrans %}
 {% endblock form_page_title %}
 
 {% block form_id %}form_element_entry_form{% endblock %}
 
-{% block form_primary_button_text %}{% trans "Add" %}{% endblock %}
+{% block form_primary_button_text %}{% trans "Submit" %}{% endblock %}
 
 {% block form_secondary_button %}
 <a class="btn btn-warning" href="{% url 'fobi.edit_form_entry' form_entry.id %}">Cancel</a>
