@@ -269,13 +269,14 @@ $(document).ready(function () {
     // data source changes
     var geographies = $(this).val();  // The value will be an array, and may be empty
     var primarySourceId = $(this).parents(chartContainer).find('select[name$="primary_source"]').val();
+    var chartId = $(this).parents(chartContainer).find('.highcharts-chart').first().attr('id');
+    charts.removeAllAcsSeries(chartId);
     if (geographies.length > 0) {
       for (var i=0; i<geographies.length; i++) {
         var geographyId = geographies[i];
         var dataUrl = "{% url 'acs' %}?census_area=" + geographyId + "&primary_source=" + primarySourceId;
-        $.getJSON(dataUrl).done(function(data) {
-          // TODO: Display this data on the chart
-          console.log(data);
+        $.getJSON(dataUrl).done(function(acsData) {
+          charts.addAcsSeries(chartId, acsData, geographyId);
         }).fail(function(jqxhr, textStatus, error) {
           var err = textStatus + ", " + error;
           console.log("Request to " + dataUrl + " failed: " + err);

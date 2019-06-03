@@ -81,14 +81,13 @@ FIELD_MAPPINGS = {
         'non_binary': [],
         'no_answer': [],
     },
-    # TODO: Use new table to find bins
     'income': {
-        'under_20k': [],
-        '_20_40k': [],
-        '_40_60k': [],
-        '_60_80k': [],
-        '_80_100k': [],
-        '_100k_plus': [],
+        'under_20k': ['under_10k', '10k_to_15k', '15k_to_20k'],
+        '20_40k': ['20k_to_25k', '25k_to_30k', '30k_to_35k', '35k_to_40k'],
+        '40_60k': ['40k_to_45k', '45k_to_50k', '50k_to_60k'],
+        '60_75k': ['60k_to_75k'],
+        '80_100k': ['75k_to_100k'],
+        '100k_plus': ['100k_to_125k', '125k_to_150k', '150k_to_200k', '200k_plus'],
     },
     'education': {
         'no_high_school': [
@@ -104,7 +103,6 @@ FIELD_MAPPINGS = {
         'bachelor': ['bachelors'],
         'graduate': ['masters', 'professional', 'doctorate'],
     },
-    # TODO: Figure out hispanic/latino
     'race': {
         'black': ['black'],
         'asian': ['asian'],
@@ -115,14 +113,11 @@ FIELD_MAPPINGS = {
         'multiple': ['two_or_more'],
         'other': ['other'],
     },
-    # TODO: Get a more granular source
     'employment': {
-        'full_time': [],
-        'part_time': [],
-        'seeking': [],
-        'not_seeking': [],
-        'student': [],
-        'homemaker': [],
+        'employed': ['employed'],
+        'seeking': ['unemployed'],
+        'not_seeking': ['not_in_labor_force'],
+        'in_armed_forces': ['in_armed_forces'],
     },
     'own_or_rent': {
         'owner': ['owner_total'],

@@ -32,8 +32,7 @@ INTERCEPT_TYPES = [
 # only store a number, we need to preset the boundaries of the bins.
 curr_year = datetime.now().year
 FREE_RESPONSE_INTERCEPT_BINS = {
-    'age_intercept': [5, 10, 15, 18, 20, 21, 22, 25, 30, 35, 40, 45, 50, 55, 60,
-                      62, 65, 67, 70, 75, 80, 85],
+    'age_intercept': [5, 10, 15, 18, 25, 35, 45, 55, 65, 75],
     'household_tenure': [curr_year-2015, curr_year-2010, curr_year-2000,
                          curr_year-1990, curr_year-1980],
 }

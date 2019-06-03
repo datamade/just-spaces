@@ -9,11 +9,11 @@ GENDER_INTERCEPT_CHOICES = [
 INCOME_CHOICES = [
     ('', '-------'),
     ('under_20k', 'Less than $20,000 per year'),
-    ('_20_40k', '$20,000-$40,000 per year'),
-    ('_40_60k', '$40,000-$60,000 per year'),
-    ('_60_80k', '$60,000-$80,000 per year'),
-    ('_80_100k', '$80,000-$100,000 per year'),
-    ('_100k_plus', 'More than $100,000 per year'),
+    ('20_40k', '$20,000-$40,000 per year'),
+    ('40_60k', '$40,000-$60,000 per year'),
+    ('60_75k', '$60,000-$75,000 per year'),  # ACS breakpoint is $75k
+    ('75_100k', '$75,000-$100,000 per year'),
+    ('100k_plus', 'More than $100,000 per year'),
 ]
 
 EDUCATION_CHOICES = [
@@ -39,12 +39,10 @@ RACE_CHOICES = [
 
 EMPLOYMENT_CHOICES = [
     ('', '-------'),
-    ('full_time', 'Working full-time'),
-    ('part_time', 'Working part-time'),
+    ('employed', 'Employed'),
     ('seeking', 'Seeking work'),
     ('not_seeking', 'Not seeking work'),
-    ('student', 'Student'),
-    ('homemaker', 'Homemaker'),
+    ('in_armed_forces', 'In the Armed Forces'),
 ]
 
 OWN_OR_RENT_CHOICES = [

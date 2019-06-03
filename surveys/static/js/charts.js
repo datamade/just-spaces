@@ -19,6 +19,7 @@ var ChartHelper = function(surveys, types, bins) {
   this.surveys = surveys;
   this.types = types;
   this.bins = bins;
+  this.acsSeries = [];
 }
 
 ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
@@ -317,6 +318,34 @@ ChartHelper.prototype.destroyChart = function(chartId) {
    */
   var chart = $('#' + chartId).highcharts();
   chart.destroy();
+}
+
+ChartHelper.prototype.addAcsSeries = function(chartId, acsData, seriesName) {
+  /**
+   * Add a Higcharts series for an ACS data source to the chart.
+   * @param {String} chartId - The ID attribute of the chart container on the page.
+   * @param {Object} acsData - An object where the attributes are FIPS codes and the
+   *                           values are objects representing ACS data for that FIPS code.
+   * @param {String} seriesName - A string to use for the name of the series.
+   */
+  // TOOD: Actually display the data
+  var chart = $('#' + chartId).highcharts();
+  console.log(acsData);
+}
+
+ChartHelper.prototype.removeAllAcsSeries = function(chartId) {
+  /**
+   * Remove all ACS data series from the chart.
+   */
+  var chart = $('#' + chartId).highcharts();
+  // Since we'll be deleting series in the forthcoming loop, we need to stash the
+  // length ahead of time.
+  var numSeries = chart.series.length;
+  for (var i = numSeries-1; i > -1; i--) {
+    if (chart.series[i].id && chart.series[i].id.startsWith('acs-')) {
+      chart.series[i].remove(true); // 'true' forces the chart to redraw.
+    }
+  }
 }
 
 function quintiles(categories) {
