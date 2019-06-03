@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load i18n fobi_tags %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="col col-lg-11 card">
+  <div class="card-body">
+
+   <h2 class="card-title">{% trans "Edit" %} <span class="font-italic">{{form_object}}</span></h2>
+   <small class="form-text text-muted">Add, edit, delete, and reorder survey questions</small>
+   <br />
+
+   <ul class="nav nav-tabs" id="surveyTabs" role="tablist">
+     <li class="nav-item">
+       <a class="nav-link" id="surveyQuestionsTab" href="{% url 'fobi.edit_form_entry' form_object.pk %}" aria-controls="survey-questions" aria-selected="true">Questions</a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link active" id="surveyPropertiesTab" href="{% url 'survey-properties-edit' form_object.pk %}" aria-controls="survey-properties" aria-selected="false">Properties</a>
+     </li>
+   </ul>
+
+   <div class="tab-content" id="surveyTabsContent">
+
+     <div class="tab-pane fade show active" id="survey-properties" role="tabpanel" aria-labelledby="survey-properties">
+
+       <div class="panel panel-default">
+          <div class="panel-body">
+            <br />
+            {% crispy form %}
+          </div>
+        </div>
+
+     </div>
+
+   </div>
+  </div>
+ </div>
+
+{% endblock %}
