@@ -171,6 +171,7 @@ LOGIN_REDIRECT_URL = 'surveys-list-run'
 FOBI_DEFAULT_THEME = 'foundation5'
 FOBI_THEME_FOOTER_TEXT = gettext.gettext('')
 FOBI_RESTRICT_PLUGIN_ACCESS = False
+FOBI_SAVE_SURVEY_REDIRECT_ROUTE = 'surveys-list-edit'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
