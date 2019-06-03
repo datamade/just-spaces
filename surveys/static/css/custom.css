@@ -302,13 +302,13 @@ a.article:hover {
   border-color: var(--medium-green-color);
 }
 
-.btn-warning {
+.btn-warning, .btn-secondary {
   color: var(--dark-blue-color);
   background-color: var(--light-blue-color);
   border-color: var(--light-blue-color);
 }
 
-.btn-warning:hover {
+.btn-warning:hover, .btn-secondary:hover {
   color: var(--dark-blue-color);
   background-color: var(--medium-blue-color);
   border-color: var(--medium-blue-color);

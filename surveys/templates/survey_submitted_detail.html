@@ -2,11 +2,18 @@
 {% load static %}
 
 {% block extracss %}
-  <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/buttons.bootstrap4.min.css' %}">
 {% endblock %}
 
 {% block extrajs %}
-  <script type="text/javascript" src="{% static 'js/datatables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'js/dataTables.buttons.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/buttons.bootstrap4.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/buttons.html5.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -33,7 +40,7 @@
     <h3 class="card-title">Export</h3>
     <br />
 
-    <table class="table table-hover table-striped table-responsive card-text display nowrap" id="survey-submitted-detail">
+    <table class="table table-hover table-striped table-bordered table-responsive display nowrap" id="survey-submitted-detail">
     <thead>
       <tr>
         <th scope="col">Time Submitted</th>
@@ -98,13 +105,8 @@
 <script>
 $(document).ready(function () {
   $('#survey-submitted-detail').DataTable({
-    // scrollx styling taken from
-    // https://stackoverflow.com/questions/45136218/datatables-scrollx-causing-squashed-header
-    "sScrollX": "100%",
-    "sScrollXInner": "110%",
-    "fixedColumns":   {
-      "leftColumns": 1
-    }
+    dom: 'Bfrtip',
+    buttons: ['csv'],
   });
 
   var $totalForms = $('[name$=TOTAL_FORMS]');
