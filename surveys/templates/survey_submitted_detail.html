@@ -267,20 +267,28 @@ $(document).ready(function () {
   $('form').on('change', censusSelectBox, function(event) {
     // Listen to ACS data source multiselect boxes, and update the charts when the
     // data source changes
-    var geographies = $(this).val();  // The value will be an array, and may be empty
     var primarySourceId = $(this).parents(chartContainer).find('select[name$="primary_source"]').val();
     var chartId = $(this).parents(chartContainer).find('.highcharts-chart').first().attr('id');
     charts.removeAllAcsSeries(chartId);
+
+    var geographies = $(this).find('option:selected').map(function() {
+      return {id: $(this).val(), label: $(this).text()};
+    });
     if (geographies.length > 0) {
       for (var i=0; i<geographies.length; i++) {
-        var geographyId = geographies[i];
-        var dataUrl = "{% url 'acs' %}?census_area=" + geographyId + "&primary_source=" + primarySourceId;
-        $.getJSON(dataUrl).done(function(acsData) {
-          charts.addAcsSeries(chartId, acsData, geographyId);
-        }).fail(function(jqxhr, textStatus, error) {
-          var err = textStatus + ", " + error;
-          console.log("Request to " + dataUrl + " failed: " + err);
-        });
+        var geography = geographies[i];
+        var dataUrl = "{% url 'acs' %}?census_area=" + geography.id + "&primary_source=" + primarySourceId;
+        // Since the following code executes asynchronously, wrap it in an immediately
+        // executed function in order to ensure that the proper geography label is
+        // applied. See: https://stackoverflow.com/a/15347771
+        (function(geographyLabel) {
+          $.getJSON(dataUrl).done(function(acsData) {
+            charts.addAcsSeries(chartId, acsData, geographyLabel);
+          }).fail(function(jqxhr, textStatus, error) {
+            var err = textStatus + ", " + error;
+            console.log("Request to " + dataUrl + " failed: " + err);
+          });
+        })(geography.label);
       }
     }
   });

@@ -110,7 +110,7 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
       }
     },
     legend: {
-      enabled: false
+      enabled: true 
     },
     series: series
   });
@@ -328,9 +328,17 @@ ChartHelper.prototype.addAcsSeries = function(chartId, acsData, seriesName) {
    *                           values are objects representing ACS data for that FIPS code.
    * @param {String} seriesName - A string to use for the name of the series.
    */
-  // TOOD: Actually display the data
   var chart = $('#' + chartId).highcharts();
-  console.log(acsData);
+  var seriesOpts = {
+    id: 'acs-' + seriesName,
+    name: seriesName,
+    data: []
+  };
+  var percentileData = percentiles(acsData.data);
+  for (var i=0; i<percentileData.length; i++) {
+    seriesOpts.data.push(percentileData[i][1]);
+  }
+  chart.addSeries(seriesOpts, true, true);  // Force the chart to redraw
 }
 
 ChartHelper.prototype.removeAllAcsSeries = function(chartId) {
@@ -342,8 +350,8 @@ ChartHelper.prototype.removeAllAcsSeries = function(chartId) {
   // length ahead of time.
   var numSeries = chart.series.length;
   for (var i = numSeries-1; i > -1; i--) {
-    if (chart.series[i].id && chart.series[i].id.startsWith('acs-')) {
-      chart.series[i].remove(true); // 'true' forces the chart to redraw.
+    if (chart.series[i].options.id && chart.series[i].options.id.startsWith('acs-')) {
+      chart.series[i].remove(true); // 'true' forces the chart to redraw
     }
   }
 }

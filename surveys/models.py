@@ -70,7 +70,12 @@ class CensusArea(models.Model):
                     variable=detailed_variable,
                     fips_code__in=self.fips_codes
                 )
-                return {observation.fips_code: observation.fields for observation in observations}
+                if len(observations) > 0:
+                    categories = list(observations[0].fields.keys())
+                    return [(category, sum(observation.fields[category] for observation in observations))
+                            for category in categories]
+                else:
+                    return {}
             else:
                 raise CensusObservation.DoesNotExist(
                     'No corresponding ACS variable for Fobi type: {}'.format(

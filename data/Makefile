@@ -29,7 +29,8 @@ INTERMEDIATE := intermediate/acs/age_basic.csv \
 	intermediate/acs/education.csv \
 	intermediate/acs/race.csv \
 	intermediate/acs/own_or_rent.csv \
-	intermediate/acs/transportation.csv
+	intermediate/acs/transportation.csv \
+	intermediate/acs/income.csv
 
 intermediate/acs/age_basic.csv: raw/acs/age_and_sex.csv
 	$(COMPILE_ACS_DATA)
@@ -56,6 +57,9 @@ intermediate/acs/own_or_rent.csv: raw/acs/household_tenure.csv
 	$(COMPILE_ACS_DATA)
 
 intermediate/acs/transportation.csv: raw/acs/means_of_transit.csv
+	$(COMPILE_ACS_DATA)
+
+intermediate/acs/income.csv: raw/acs/household_income.csv
 	$(COMPILE_ACS_DATA)
 
 clean:
