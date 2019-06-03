@@ -2,11 +2,12 @@
 {% load static %}
 
 {% block extracss %}
-  <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
 {% endblock %}
 
 {% block extrajs %}
-  <script type="text/javascript" src="{% static 'js/datatables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
