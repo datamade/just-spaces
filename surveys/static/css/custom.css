@@ -302,28 +302,13 @@ a.article:hover {
   border-color: var(--medium-green-color);
 }
 
-.btn-warning, .btn-secondary {
+.btn-warning {
   color: var(--dark-blue-color);
   background-color: var(--light-blue-color);
   border-color: var(--light-blue-color);
 }
 
-.buttons-csv {
-  margin-top: 0px;
-}
-
-.page-link {
-  font-weight: 500;
-  color: var(--gray-color);
-}
-
-.page-item.active .page-link {
-    font-weight: 500;
-    background-color: var(--dark-blue-color);
-    border-color: var(--dark-blue-color);
-}
-
-.btn-warning:hover, .btn-secondary:hover {
+.btn-warning:hover {
   color: var(--dark-blue-color);
   background-color: var(--medium-blue-color);
   border-color: var(--medium-blue-color);
