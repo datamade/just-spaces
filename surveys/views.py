@@ -1,6 +1,6 @@
 import json
 
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, UpdateView
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -135,7 +135,20 @@ class SurveyCreate(CreateView):
         form_entry_id = self.object.formentry_ptr_id
         success_url = reverse_lazy('fobi.edit_form_entry', kwargs={'form_entry_id': form_entry_id})
 
-        return str(success_url)
+        return success_url
+
+
+class SurveyPropertiesEdit(UpdateView):
+    model = SurveyFormEntry
+    template_name = "survey_properties_edit.html"
+    form_class = SurveyCreateForm
+    context_object_name = 'form_object'
+
+    def get_success_url(self):
+        form_entry_id = self.object.pk
+        success_url = reverse_lazy('fobi.edit_form_entry', kwargs={'form_entry_id': form_entry_id})
+
+        return success_url
 
 
 class SurveyPublish(TemplateView):

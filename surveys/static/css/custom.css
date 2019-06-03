@@ -10,6 +10,7 @@
   --medium-blue-color: #d6edf4;
   --dark-blue-color: #015c75;
   --off-white-color: #fafafa;
+  --gray-color: #e9e9e9;
   --orange-color: #e94e0c;
   --pink-color: #eb549e;
 }
@@ -280,12 +281,19 @@ a.article:hover {
   color: #dc3545;
 }
 
+.btn {
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.btn:hover {
+  font-weight: 600;
+}
+
 .btn-success, .btn-primary {
   color: var(--dark-green-color);
   background-color: var(--light-green-color);
   border-color: var(--light-green-color);
-  font-weight: 600;
-  margin-top: 20px;
 }
 
 .btn-success:hover, .btn-primary:hover {
@@ -294,9 +302,63 @@ a.article:hover {
   border-color: var(--medium-green-color);
 }
 
+.btn-warning {
+  color: var(--dark-blue-color);
+  background-color: var(--light-blue-color);
+  border-color: var(--light-blue-color);
+}
+
+.btn-warning:hover {
+  color: var(--dark-blue-color);
+  background-color: var(--medium-blue-color);
+  border-color: var(--medium-blue-color);
+}
+
+.btn-link {
+  color: var(--orange-color);
+}
+
+.btn-link:hover {
+  color: var(--orange-color);
+}
+
 .col-form-label {
   padding-right: 3px;
+  font-weight: 500;
 }
+
+.action-box {
+  background-color: var(--gray-color);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.form-group div label {
+  font-weight: 400;
+  font-size: 80%;
+  margin-bottom: .1rem;
+}
+
+.form-text ul {
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    padding-inline-start: 0px;
+}
+
+.form-text ul li {
+    display: inline;
+    padding-right: 15px;
+}
+
+.form-text ul li a {
+  margin-top: .25rem;
+  font-weight: 600;
+}
+
+ .icon-pink, .code {
+   color: var(--pink-color);
+ }
 
 /* ---------------------------------------------------
     DATA ANALYSIS DESIGNER
