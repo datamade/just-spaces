@@ -104,10 +104,13 @@
 <script src="{% static 'js/jquery-ui-1.21.1.min.js' %}" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
-  $('#survey-submitted-detail').DataTable({
-    dom: 'Bfrtip',
-    buttons: ['csv'],
+  var table = $('#survey-submitted-detail').DataTable({
+    buttons: [{ extend: 'csv', text: 'Download as CSV' }],
+    lengthChange: false,
   });
+
+  table.buttons().container()
+      .appendTo( '#survey-submitted-detail_wrapper .col-md-6:eq(0)' );
 
   var $totalForms = $('[name$=TOTAL_FORMS]');
   var chartContainer = '[class^="chart-container-"]'
