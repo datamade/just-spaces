@@ -11,5 +11,5 @@
 {% block form_primary_button_text %}{% trans "Submit" %}{% endblock %}
 
 {% block form_secondary_button %}
-<a class="btn btn-warning" href="{% url 'fobi.edit_form_entry' form_entry.id %}">Cancel</a>
+<a class="btn btn-link mr-3 mt-3 float-right" href="{% url 'fobi.edit_form_entry' form_entry.id %}">Cancel</a>
 {% endblock %}
