@@ -281,34 +281,45 @@ a.article:hover {
   color: #dc3545;
 }
 
+.btn {
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.btn:hover {
+  font-weight: 600;
+}
+
 .btn-success, .btn-primary {
   color: var(--dark-green-color);
   background-color: var(--light-green-color);
   border-color: var(--light-green-color);
-  font-weight: 600;
-  margin-top: 15px;
 }
 
 .btn-success:hover, .btn-primary:hover {
   color: var(--dark-green-color);
   background-color: var(--medium-green-color);
   border-color: var(--medium-green-color);
-  font-weight: 600;
 }
 
 .btn-warning {
   color: var(--dark-blue-color);
   background-color: var(--light-blue-color);
   border-color: var(--light-blue-color);
-  font-weight: 600;
-  margin-top: 15px;
 }
 
 .btn-warning:hover {
   color: var(--dark-blue-color);
   background-color: var(--medium-blue-color);
   border-color: var(--medium-blue-color);
-  font-weight: 600;
+}
+
+.btn-link {
+  color: var(--orange-color);
+}
+
+.btn-link:hover {
+  color: var(--orange-color);
 }
 
 .col-form-label {
