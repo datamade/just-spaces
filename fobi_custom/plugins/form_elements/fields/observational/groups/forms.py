@@ -25,7 +25,7 @@ class GroupsObservationalForm(forms.Form, BaseFormFieldPluginForm):
                             help_text="Use this survey question to count the \
                             group size in the given space. Everyone within a \
                             group should be individually counted in the \
-                            correct group field.Following the \
+                            correct group field. Following the \
                             Public Life Data Protocol, group size data will be \
                             collected in the following categories:<br /><br />"
                             + choices_to_help_text(GROUPS_BASIC_CHOICES))
