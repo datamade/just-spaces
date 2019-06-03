@@ -135,7 +135,7 @@ class SurveyCreate(CreateView):
         form_entry_id = self.object.formentry_ptr_id
         success_url = reverse_lazy('fobi.edit_form_entry', kwargs={'form_entry_id': form_entry_id})
 
-        return str(success_url)
+        return success_url
 
 
 class SurveyPropertiesEdit(UpdateView):
@@ -148,7 +148,7 @@ class SurveyPropertiesEdit(UpdateView):
         form_entry_id = self.object.pk
         success_url = reverse_lazy('fobi.edit_form_entry', kwargs={'form_entry_id': form_entry_id})
 
-        return str(success_url)
+        return success_url
 
 
 class SurveyPublish(TemplateView):
