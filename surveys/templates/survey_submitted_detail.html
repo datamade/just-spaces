@@ -106,7 +106,11 @@
 <script>
 $(document).ready(function () {
   var table = $('#survey-submitted-detail').DataTable({
-    buttons: [{ extend: 'csv', text: '<i class="fas fa-sm fa-arrow-alt-circle-down mr-2"></i>Download as CSV' }],
+    buttons: [{
+      extend: 'csv',
+      text: '<i class="fas fa-sm fa-arrow-alt-circle-down mr-2"></i>Download as CSV',
+      title: '{{ form_entry.name }}'
+    }],
     lengthChange: false,
   });
 
