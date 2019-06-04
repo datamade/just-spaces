@@ -2,7 +2,6 @@ import json
 
 from django.views.generic import TemplateView, ListView, UpdateView, DetailView
 from django.views.generic.edit import CreateView, FormView, DeleteView
-from django.views.generic.detail import SingleObjectTemplateResponseMixin
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -94,19 +93,19 @@ class LocationCreate(CreateView):
 
 
 class LocationList(ListView):
-    model = Location
+    model = pldp_models.Location
     template_name = "location_list.html"
     context_object_name = 'locations'
 
 
 class LocationDetail(DetailView):
-    model = Location
+    model = pldp_models.Location
     template_name = "location_detail.html"
     context_object_name = 'location'
 
 
 class LocationDelete(DeleteView):
-    model = Location
+    model = pldp_models.Location
     template_name = "location_delete.html"
     success_url = reverse_lazy('locations-list')
 
