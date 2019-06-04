@@ -22,25 +22,25 @@ FIELD_MAPPINGS = {
         ],
     },
     'age_detailed': {
-        'under_5': ['male_under_5', 'female_under_5'],
-        '5_to_14': ['male_5_to_9', 'male_10_to_14', 'female_5_to_9', 'female_10_to_14'],
-        '15_to_24': [
+        '<5': ['male_under_5', 'female_under_5'],
+        '5-14': ['male_5_to_9', 'male_10_to_14', 'female_5_to_9', 'female_10_to_14'],
+        '15-24': [
             'male_15_to_17', 'male_18_to_19', 'male_20', 'male_21', 'male_22_to_24',
             'female_15_to_17', 'female_18_to_19', 'female_20', 'female_21', 'female_22_to_24',
         ],
-        '25_to_44': [
+        '25-44': [
             'male_25_to_29', 'male_30_to_34', 'male_35_to_39', 'male_40_to_44',
             'female_25_to_29', 'female_30_to_34', 'female_35_to_39', 'female_40_to_44',
         ],
-        '45_to_64': [
+        '45-64': [
             'male_45_to_49', 'male_50_to_54', 'male_55_to_59', 'male_60_to_61', 'male_62_to_64',
             'female_45_to_49', 'female_50_to_54', 'female_55_to_59', 'female_60_to_61', 'female_62_to_64',
         ],
-        '65_to_74': [
+        '65-74': [
             'male_65_to_66', 'male_67_to_69', 'male_70_to_74',
             'female_65_to_66', 'female_67_to_69', 'female_70_to_74',
         ],
-        '75_plus': [
+        '75+': [
             'male_75_to_79', 'male_80_to_84', 'male_85_plus',
             'female_75_to_79', 'female_80_to_84', 'female_85_plus',
         ],
