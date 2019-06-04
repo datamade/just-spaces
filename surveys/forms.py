@@ -154,6 +154,9 @@ class SurveyCreateForm(JustSpacesForm):
     class Meta:
         model = SurveyFormEntry
         fields = ['user', 'name', 'study', 'location', 'type']
+        widgets = {
+            'user': forms.HiddenInput(),
+        }
 
 
 class SurveyChartForm(forms.ModelForm):

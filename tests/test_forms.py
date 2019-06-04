@@ -2,6 +2,7 @@ import pytest
 from django.urls import reverse
 
 from pldp.models import StudyArea, Location, LocationLine
+from surveys.models import SurveyFormEntry
 
 
 @pytest.mark.django_db
@@ -29,14 +30,15 @@ def test_location_form(client, user, agency):
     client.force_login(user)
     url = reverse('locations-create')
 
-    form_data = {'location-agency': agency.id,
-                 'location-country': 'US',
-                 'location-name_primary': 'New Location',
-                 'location-geometry': ['{"type":"LineString","coordinates":[[-75.205911,39.934886],[-75.138839,39.952281]]}'],
-                 'location-geometry_type': 'line',
-                 'location-area-date_measured': ['2019-05-20'],
-                 'location-line-date_measured': ['2019-05-21'],
-                 }
+    form_data = {
+        'location-agency': agency.id,
+        'location-country': 'US',
+        'location-name_primary': 'New Location',
+        'location-geometry': ['{"type":"LineString","coordinates":[[-75.205911,39.934886],[-75.138839,39.952281]]}'],
+        'location-geometry_type': 'line',
+        'location-area-date_measured': ['2019-05-20'],
+        'location-line-date_measured': ['2019-05-21'],
+    }
 
     post_response = client.post(url, form_data)
     new_location = Location.objects.first()
@@ -45,3 +47,27 @@ def test_location_form(client, user, agency):
     assert post_response.status_code == 302
     assert new_location.name_primary == form_data['location-name_primary']
     assert new_location_line.location == new_location
+
+
+@pytest.mark.django_db
+def test_survey_form(client, user, study, location):
+    client.force_login(user)
+    url = reverse('surveys-create')
+    get_response = client.get(url)
+
+    form_data = {
+        'user': get_response.context['form']['user'].value(),
+        'name': 'Test Survey',
+        'study': study.id,
+        'location': location.id,
+        'type': get_response.context['form']['type'].value(),
+    }
+
+    post_response = client.post(url, form_data)
+    new_survey_form = SurveyFormEntry.objects.get(name='Test Survey')
+
+    assert post_response.status_code == 302
+    assert new_survey_form.user == user
+    assert new_survey_form.study == study
+    assert new_survey_form.location == location
+    assert new_survey_form.type == 'intercept'
