@@ -33,6 +33,33 @@ def test_location_create(client, user):
 
 
 @pytest.mark.django_db
+def test_location_list(client, user):
+    client.force_login(user)
+    url = reverse('locations-list')
+    response = client.get(url)
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_location_delete(client, user, location):
+    client.force_login(user)
+    url = reverse('locations-delete', kwargs={'pk': location.id})
+    response = client.get(url)
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_location_detail(client, user, location):
+    client.force_login(user)
+    url = reverse('locations-detail', kwargs={'pk': location.id})
+    response = client.get(url)
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_observational):
     client.force_login(user)
     url = reverse('surveys-list-edit')
