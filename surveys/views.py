@@ -118,6 +118,10 @@ class SurveyCreate(CreateView):
     model = SurveyFormEntry
     template_name = "survey_create.html"
 
+    def get_initial(self):
+        self.initial['user'] = self.request.user
+        return self.initial.copy()
+
     def form_valid(self, form):
         self.object = form.save()
 
