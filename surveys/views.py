@@ -215,6 +215,29 @@ class SurveyCreate(CreateView):
         self.initial['user'] = self.request.user
         return self.initial.copy()
 
+    def get_context_data(self, **kwargs):
+        context = super(SurveyCreate, self).get_context_data(**kwargs)
+
+        url_studies_list = reverse_lazy('studies-list')
+        url_studies_create = reverse_lazy('studies-create')
+        study_help_text = 'Don\'t see the study you need? View the \
+                           <a href="{}">list of existing studies</a> or \
+                           <a href="{}">create a new \
+                           one</a>.'.format(url_studies_list, url_studies_create)
+
+        context['form'].fields['study'].help_text += study_help_text
+
+        url_locations_list = reverse_lazy('locations-list')
+        url_locations_create = reverse_lazy('locations-create')
+        location_help_text = 'Don\'t see the location you need? View the \
+                           <a href="{}">list of existing locations</a> or \
+                           <a href="{}">create a new \
+                           one</a>.'.format(url_locations_list, url_locations_create)
+
+        context['form'].fields['location'].help_text += location_help_text
+
+        return context
+
     def form_valid(self, form):
         self.object = form.save()
 
