@@ -24,6 +24,33 @@ def test_study_create(client, user, study_area):
 
 
 @pytest.mark.django_db
+def test_study_list(client, user):
+    client.force_login(user)
+    url = reverse('studies-list')
+    response = client.get(url)
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_study_delete(client, user, study):
+    client.force_login(user)
+    url = reverse('studies-delete', kwargs={'pk': study.id})
+    response = client.get(url)
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_study_detail(client, user, study):
+    client.force_login(user)
+    url = reverse('studies-detail', kwargs={'pk': study.id})
+    response = client.get(url)
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_location_create(client, user):
     client.force_login(user)
     url = reverse('locations-create')
