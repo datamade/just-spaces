@@ -72,8 +72,8 @@ class CensusArea(models.Model):
                 )
                 if len(observations) > 0:
                     categories = list(observations[0].fields.keys())
-                    return [(category, sum(observation.fields[category] for observation in observations))
-                            for category in categories]
+                    return {category: sum(observation.fields[category] for observation in observations)
+                            for category in categories}
                 else:
                     return {}
             else:

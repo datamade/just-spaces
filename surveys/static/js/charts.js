@@ -334,7 +334,18 @@ ChartHelper.prototype.addAcsSeries = function(chartId, acsData, seriesName) {
     name: seriesName,
     data: []
   };
-  var percentileData = percentiles(acsData.data);
+  // Make sure that the order of the incoming ACS series matches the order of the
+  // categories in the existing series
+  var categories = chart.xAxis[0].categories;
+  var formattedAcsData = [];
+  console.log(acsData);
+  for (var i=0; i<categories.length; i++) {
+    var category = categories[i];
+    var recordedValue = (acsData.data[category]) ? acsData.data[category] : 0;
+    formattedAcsData.push([category, recordedValue]);
+  }
+  // Format ACS data as percentiles
+  var percentileData = percentiles(formattedAcsData);
   for (var i=0; i<percentileData.length; i++) {
     seriesOpts.data.push(percentileData[i][1]);
   }
