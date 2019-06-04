@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
                             StudyAreaCreate, SurveyCreate, SurveyPublish, \
                             SurveyListEdit, SurveyListRun, Signup, SurveySubmittedList, \
-                            SurveySubmittedDetail, SurveyPropertiesEdit
+                            SurveySubmittedDetail, SurveyPropertiesEdit, LocationList, LocationDelete, LocationDetail
 import fobi.views
 
 urlpatterns = [
@@ -34,6 +34,18 @@ urlpatterns = [
     url(r'locations/create/$',
         login_required(LocationCreate.as_view()),
         name='locations-create'),
+
+    url(r'locations/list/$',
+        login_required(LocationList.as_view()),
+        name='locations-list'),
+
+    url(r'locations/delete/(?P<pk>[\w_\-]+)/$',
+        login_required(LocationDelete.as_view()),
+        name='locations-delete'),
+
+    url(r'locations/detail/(?P<pk>[\w_\-]+)/$',
+        login_required(LocationDetail.as_view()),
+        name='locations-detail'),
 
     url(r'study-areas/create/$',
         login_required(StudyAreaCreate.as_view()),

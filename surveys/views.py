@@ -1,7 +1,9 @@
 import json
 
-from django.views.generic import TemplateView, ListView, UpdateView
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic import TemplateView, ListView, UpdateView, DetailView
+from django.views.generic.edit import CreateView, FormView, DeleteView
+from django.views.generic.detail import SingleObjectTemplateResponseMixin
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -31,12 +33,13 @@ class AgencyCreate(CreateView):
 
 
 class LocationCreate(CreateView):
+
     form_class = LocationCreateForm
     form_class_location_area = LocationAreaCreateForm
     form_class_location_line = LocationLineCreateForm
 
     template_name = "location_create.html"
-    success_url = reverse_lazy('surveys-create')
+    success_url = reverse_lazy('locations-list')
 
     def get_context_data(self, **kwargs):
         context = super(LocationCreate, self).get_context_data(**kwargs)
@@ -64,7 +67,7 @@ class LocationCreate(CreateView):
                                     **form_location_area.cleaned_data
                                 )
                 location_area.save()
-                return redirect('surveys-create')
+                return redirect(self.success_url)
 
         elif request.POST['location-geometry_type'] == 'line':
             forms_valid = [form_location.is_valid(), form_location_line.is_valid()]
@@ -78,12 +81,12 @@ class LocationCreate(CreateView):
                                     **form_location_line.cleaned_data
                                 )
                 location_line.save()
-                return redirect('surveys-create')
+                return redirect(self.success_url)
 
         else:
             if form_location.is_valid():
                 form_location.save()
-                return redirect('surveys-create')
+                return redirect(self.success_url)
 
         return render(request,
                       'location_create.html',
@@ -91,6 +94,24 @@ class LocationCreate(CreateView):
                        'form_location_area': form_location_area,
                        'form_location_line': form_location_line}
                       )
+
+
+class LocationList(ListView):
+    model = Location
+    template_name = "location_list.html"
+    context_object_name = 'locations'
+    
+
+class LocationDetail(DetailView):
+    model = Location
+    template_name = "location_detail.html"
+    context_object_name = 'location'
+
+
+class LocationDelete(DeleteView):
+    model = Location
+    template_name = "location_delete.html"
+    success_url = reverse_lazy('locations-list')
 
 
 class StudyAreaCreate(CreateView):

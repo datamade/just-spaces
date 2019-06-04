@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extracss %}
+  <link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+{% endblock %}
+
+{% block extrajs %}
+  <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Locations</h2>
+    <small class="form-text text-muted">Text describing what a location is.</small>
+    <br />
+
+    <table id="locations-list" class="table table-hover table-striped table-responsive-sm card-text">
+    <thead>
+      <tr>
+        <th scope="col">Primary Name</th>
+        <th scope="col">Geometry Type</th>
+        <th scope="col">Subdivision</th>
+        <th scope="col">Character</th>
+        <th scope="col">View</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for location in locations %}
+        <tr>
+          <td><b>{{location.name_primary}}</b></td>
+          <td>{{location.geometry_type}}</td>
+          <td>{{location.subdivision}}</td>
+          <td>{{location.character}}</td>
+          <td class="text-center"><a href="{% url 'locations-detail' location.id %}"><i class="fas fa-eye icon preview"></i></a></td>
+          <td class="text-center"><a href="{% url 'locations-delete' location.id %}"><i class="far fa-trash-alt icon delete"></i></a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}
