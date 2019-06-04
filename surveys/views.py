@@ -16,8 +16,9 @@ from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
 
+from . import forms as survey_forms
+from .utils import get_or_none
 from .models import SurveyFormEntry, SurveyChart
-from surveys import forms as survey_forms
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
@@ -102,6 +103,44 @@ class LocationDetail(DetailView):
     model = pldp_models.Location
     template_name = "location_detail.html"
     context_object_name = 'location'
+
+    def get_context_data(self, **kwargs):
+        context = super(LocationDetail, self).get_context_data(**kwargs)
+
+        location = context['location']
+
+        location_area = get_or_none(pldp_models.LocationArea, location=location)
+        location_line = get_or_none(pldp_models.LocationLine, location=location)
+
+        context['rows'] = [
+            ('Region', location.region),
+            ('City', location.city),
+            ('Secondary name', location.name_secondary),
+            ('Character', location.character),
+            ('Geometry type', location.geometry_type),
+        ]
+
+        if location_area:
+            context['rows'] += [
+                ('Date measured', location_area.date_measured),
+                ('Total sqm', location_area.total_sqm),
+                ('People sqm', location_area.people_sqm),
+                ('Typology', location_area.typology),
+            ]
+
+        if location_line:
+            context['rows'] += [
+                ('Date measured', location_line.date_measured),
+                ('Total width', location_line.total_m),
+                ('Pedestrian width', location_line.pedestrian_m),
+                ('Bicycle width', location_line.bicycle),
+                ('Vehicular width', location_line.vehicular),
+                ('Pedestrian typology', location_line.typology_pedestrian),
+                ('Bicycle typology', location_line.typology_bicycle),
+                ('Vehicular typology', location_line.typology_vehicular),
+            ]
+
+        return context
 
 
 class LocationDelete(DeleteView):
