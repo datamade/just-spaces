@@ -53,6 +53,18 @@ urlpatterns = [
         login_required(survey_views.StudyCreate.as_view()),
         name='studies-create'),
 
+    url(r'studies/list/$',
+        login_required(survey_views.StudyList.as_view()),
+        name='studies-list'),
+
+    url(r'studies/delete/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.StudyDelete.as_view()),
+        name='studies-delete'),
+
+    url(r'studies/detail/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.StudyDetail.as_view()),
+        name='studies-detail'),
+
     url(r'surveys/edit/$',
         login_required(survey_views.SurveyListEdit.as_view()),
         name='surveys-list-edit'),

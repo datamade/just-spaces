@@ -133,8 +133,8 @@ class LocationDetail(DetailView):
                 ('Date measured', location_line.date_measured),
                 ('Total width', location_line.total_m),
                 ('Pedestrian width', location_line.pedestrian_m),
-                ('Bicycle width', location_line.bicycle),
-                ('Vehicular width', location_line.vehicular),
+                ('Bicycle width', location_line.bicycle_m),
+                ('Vehicular width', location_line.vehicular_m),
                 ('Pedestrian typology', location_line.typology_pedestrian),
                 ('Bicycle typology', location_line.typology_bicycle),
                 ('Vehicular typology', location_line.typology_vehicular),
@@ -167,6 +167,41 @@ class StudyCreate(CreateView):
         url = reverse_lazy('study-areas-create')
         extra_help_text = ' Don\'t see the area you need? <a href="{}" target="_blank">Create a new one here</a>'.format(url)
         context['form'].fields['areas'].help_text += extra_help_text
+
+        return context
+
+
+class StudyList(ListView):
+    model = pldp_models.Study
+    template_name = "study_list.html"
+    context_object_name = 'studies'
+
+
+class StudyDelete(DeleteView):
+    model = pldp_models.Study
+    template_name = "study_delete.html"
+    success_url = reverse_lazy('studies-list')
+
+
+class StudyDetail(DetailView):
+    model = pldp_models.Study
+    template_name = "study_detail.html"
+    context_object_name = 'study'
+
+    def get_context_data(self, **kwargs):
+        context = super(StudyDetail, self).get_context_data(**kwargs)
+        study = context['study']
+
+        context['rows'] = [
+            ('Project', study.project),
+            ('Project phase', study.project_phase),
+            ('Start date', study.start_date),
+            ('End date', study.end_date),
+            ('Scale', study.scale),
+            ('Manager email', study.manager_email),
+            ('Protocol version', study.protocol_version),
+            ('Notes', study.notes),
+        ]
 
         return context
 

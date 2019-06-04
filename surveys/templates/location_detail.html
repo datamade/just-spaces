@@ -18,13 +18,13 @@
 <div class="col col-lg-10 card">
   <div class="card-body">
     <h2 class="card-title">{{location}}</h2>
-    <small class="form-text text-muted"><b>{{location.agency}}</b> location in <b>{{location.country}}</b>.</small>
+    <h5 class="form-text text-muted"><b>{{location.agency}}</b> location in <b>{{location.country}}</b></h5>
     <br />
 
     {% leaflet_map "main" callback="main_map_init" %}
     <br />
 
-    <table id="locations-list" class="table table-striped table-responsive table-bordered rounded card-text">
+    <table id="location-detail" class="table table-striped table-responsive-sm table-bordered">
     <thead>
     </thead>
     <tbody>
@@ -32,7 +32,7 @@
       {% for label, content in rows %}
         {% if content %}
         <tr>
-          <td style="width: 25%"><b>{{label}}</b></td>
+          <td style="width: 30%"><b>{{label}}</b></td>
           <td>{{content}}</td>
         </tr>
         {% endif %}
@@ -41,7 +41,8 @@
     </tbody>
     </table>
 
-  <a class="btn btn-secondary float-right" href="{% url 'locations-list' %}">Back to location list</a>
+  <a class="btn btn-secondary float-right" href="{% url 'locations-delete' location.id %}">Delete study</a>
+  <a class="btn btn-link float-right" href="{% url 'locations-list' %}">Back to location list</a>
   </div>
 </div>
 

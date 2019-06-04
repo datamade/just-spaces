@@ -49,6 +49,12 @@ span {
   display: inline-block;
 }
 
+h5 {
+  font-weight: normal;
+  font-size: 1rem;
+  color: var(--gray-color);
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLES
 ----------------------------------------------------- */
