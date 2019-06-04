@@ -8,8 +8,7 @@ from django.urls import reverse_lazy
 from django.forms import modelformset_factory
 from django.contrib import messages
 
-from pldp.models import Agency, Location, LocationArea, LocationLine, Study, \
-                    StudyArea, Survey
+from pldp import models as pldp_models
 
 from users.models import JustSpacesUser
 from users.admin import JustSpacesUserCreationForm
@@ -17,23 +16,22 @@ from users.admin import JustSpacesUserCreationForm
 from fobi.views import add_form_handler_entry
 
 from .models import SurveyFormEntry, SurveyChart
-from .forms import StudyCreateForm, StudyAreaCreateForm, SurveyCreateForm, \
-                   SurveyChartForm, LocationCreateForm, LocationAreaCreateForm, \
-                   LocationLineCreateForm, AgencyCreateForm
+from surveys import forms as survey_forms
+
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
 
 class AgencyCreate(CreateView):
-    form_class = AgencyCreateForm
-    model = Agency
+    form_class = survey_forms.AgencyCreateForm
+    model = pldp_models.Agency
     template_name = "agency_create.html"
     success_url = '/'
 
 
 class LocationCreate(CreateView):
-    form_class = LocationCreateForm
-    form_class_location_area = LocationAreaCreateForm
-    form_class_location_line = LocationLineCreateForm
+    form_class = survey_forms.LocationCreateForm
+    form_class_location_area = survey_forms.LocationAreaCreateForm
+    form_class_location_line = survey_forms.LocationLineCreateForm
 
     template_name = "location_create.html"
     success_url = reverse_lazy('surveys-create')
@@ -59,7 +57,7 @@ class LocationCreate(CreateView):
                 location = form_location.save()
                 form_location_area.cleaned_data.pop('location')
 
-                location_area = LocationArea(
+                location_area = pldp_models.LocationArea(
                                     location=location,
                                     **form_location_area.cleaned_data
                                 )
@@ -73,7 +71,7 @@ class LocationCreate(CreateView):
                 location = form_location.save()
                 form_location_line.cleaned_data.pop('location')
 
-                location_line = LocationLine(
+                location_line = pldp_models.LocationLine(
                                     location=location,
                                     **form_location_line.cleaned_data
                                 )
@@ -94,15 +92,15 @@ class LocationCreate(CreateView):
 
 
 class StudyAreaCreate(CreateView):
-    form_class = StudyAreaCreateForm
-    model = StudyArea
+    form_class = survey_forms.StudyAreaCreateForm
+    model = pldp_models.StudyArea
     template_name = "study_area_create.html"
     success_url = reverse_lazy('studies-create')
 
 
 class StudyCreate(CreateView):
-    form_class = StudyCreateForm
-    model = Study
+    form_class = survey_forms.StudyCreateForm
+    model = pldp_models.Study
     template_name = "study_create.html"
     success_url = reverse_lazy('surveys-list-edit')
 
@@ -116,9 +114,13 @@ class StudyCreate(CreateView):
 
 
 class SurveyCreate(CreateView):
-    form_class = SurveyCreateForm
+    form_class = survey_forms.SurveyCreateForm
     model = SurveyFormEntry
     template_name = "survey_create.html"
+
+    def get_initial(self):
+        self.initial['user'] = self.request.user
+        return self.initial.copy()
 
     def form_valid(self, form):
         self.object = form.save()
@@ -141,7 +143,7 @@ class SurveyCreate(CreateView):
 class SurveyPropertiesEdit(UpdateView):
     model = SurveyFormEntry
     template_name = "survey_properties_edit.html"
-    form_class = SurveyCreateForm
+    form_class = survey_forms.SurveyCreateForm
     context_object_name = 'form_object'
 
     def get_success_url(self):
@@ -200,7 +202,7 @@ class SurveySubmittedList(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        surveys = Survey.objects.all()
+        surveys = pldp_models.Survey.objects.all()
         context['surveys_submitted'] = surveys.order_by('form_id', '-time_stop').distinct('form_id')
 
         for survey in context['surveys_submitted']:
@@ -216,7 +218,7 @@ class SurveySubmittedList(TemplateView):
 class SurveySubmittedDetail(TemplateView):
     template_name = "survey_submitted_detail.html"
     ChartFormset = modelformset_factory(SurveyChart,
-                                        form=SurveyChartForm,
+                                        form=survey_forms.SurveyChartForm,
                                         exclude=('form_entry',),
                                         extra=0,
                                         can_delete=True)
@@ -225,7 +227,7 @@ class SurveySubmittedDetail(TemplateView):
         context = super().get_context_data(**kwargs)
 
         context['form_entry'] = SurveyFormEntry.objects.get(id=context['form_entry_id'])
-        context['surveys_submitted'] = Survey.objects.filter(form_id=context['form_entry_id'])
+        context['surveys_submitted'] = pldp_models.Survey.objects.filter(form_id=context['form_entry_id'])
 
         # Generate a JSON representation of survey data for use in charting
         surveys_submitted_json = []
