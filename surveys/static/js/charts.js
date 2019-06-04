@@ -221,14 +221,27 @@ ChartHelper.prototype._getInterceptChartData = function(dataSourceId) {
    */
   var choices = this.choices;  // Extract from 'this' so we can use the choices in the following func.
   function initChartDataFunc() {
+    // Initialize all possible values with a count of 0
      var dataSourceChoices = choices[dataSourceId];
      var chartData = [];
      for (var i=0; i<dataSourceChoices.length; i++) {
-      chartData.push([dataSourceChoices[i], 0]);  // Initialize all choices with a count of 0
+      chartData.push([dataSourceChoices[i][1], 0]);
      }
      return chartData;
   };
-  var castFunc = String;
+  function castFunc(value) {
+    // Cast choices to their human-readable equivalent
+    var dataSourceChoices = choices[dataSourceId];
+    var humanReadableValue = '';
+    for (var i=0; i<dataSourceChoices.length; i++) {
+      var choice = dataSourceChoices[i][0];
+      if (value === choice) {
+        humanReadableValue = dataSourceChoices[i][1];
+        break;
+      }
+    }
+    return humanReadableValue;
+  };
   function updateChartDataFunc(chartData, savedData) {
     var categoryFound = false;
     // If an entry for this category exists in the chartData array, increment its counter
