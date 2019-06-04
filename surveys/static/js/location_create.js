@@ -11,15 +11,17 @@ typeDropdown.change(function() {
 
 
 function switchType() {
+  console.log("switch type function running...");
   var $locationArea = $('*[id^="div_id_location-area-"]');
   var $locationLine = $('*[id^="div_id_location-line-"]');
 
   var $locationLineDateMeasured = $('#id_location-line-date_measured');
   var $locationAreaDateMeasured = $('#id_location-area-date_measured');
 
-  var selectedVal = typeDropdown.value;
+  var selectedVal = typeDropdown[0].value;
 
   if (selectedVal == 'area') {
+    console.log("area selected!");
     $locationLineDateMeasured.removeAttr('required');
     $locationAreaDateMeasured.prop('required', true);
     $locationLine.hide();
