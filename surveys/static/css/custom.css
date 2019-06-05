@@ -49,6 +49,12 @@ span {
   display: inline-block;
 }
 
+h5 {
+  font-weight: normal;
+  font-size: 1rem;
+  color: var(--gray-color);
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLES
 ----------------------------------------------------- */
@@ -348,7 +354,7 @@ a.article:hover {
   padding: 20px;
 }
 
-.form-group div label {
+.form-group div label, .dataTables_info {
   font-weight: 400;
   font-size: 80%;
   margin-bottom: .1rem;
@@ -373,6 +379,10 @@ a.article:hover {
 
  .icon-pink, .code {
    color: var(--pink-color);
+ }
+
+ .leaflet-container {
+   height: 450px;
  }
 
 /* ---------------------------------------------------

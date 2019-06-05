@@ -17,7 +17,7 @@
 <div class="col col-lg-11 card">
   <div class="card-body">
     <h2 class="card-title">Create New Location</h2>
-    <small class="form-text text-muted">Text describing what a location is.</small>
+    <small class="form-text text-muted">Text describing what a location is. View the list of existing locations <a href="{% url 'locations-list' %}">here</a>.</small>
     <br />
 
     <form class="form-horizontal" name="location-form" method="post">
@@ -28,6 +28,6 @@
   </div>
 </div>
 
-  <script type="text/javascript" src="{% static 'js/location_create.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/location_create.js' %}"></script>
 
 {% endblock %}

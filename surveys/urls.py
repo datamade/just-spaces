@@ -9,48 +9,73 @@ from django.conf.urls import url, include
 from django.urls import path
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
-from surveys import views
+from surveys import views as survey_views
+
 import fobi.views
 
 urlpatterns = [
     # placeholder view for a public-facing landing page
     url(r'^$',
-        login_required(views.SurveyListRun.as_view()),
+        login_required(survey_views.SurveyListRun.as_view()),
         name='home'),
 
     url(r'^accounts/',
         include('django.contrib.auth.urls')),
 
     url(r'^accounts/signup$',
-        views.Signup.as_view(),
+        survey_views.Signup.as_view(),
         name='signup'),
 
     url(r'agencies/create/$',
-        login_required(views.AgencyCreate.as_view()),
+        login_required(survey_views.AgencyCreate.as_view()),
         name='agencies-create'),
 
     url(r'locations/create/$',
-        login_required(views.LocationCreate.as_view()),
+        login_required(survey_views.LocationCreate.as_view()),
         name='locations-create'),
 
+    url(r'locations/$',
+        login_required(survey_views.LocationList.as_view()),
+        name='locations-list'),
+
+    url(r'locations/deactivate/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.LocationDeactivate.as_view()),
+        name='locations-deactivate'),
+
+    url(r'locations/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.LocationDetail.as_view()),
+        name='locations-detail'),
+
     url(r'study-areas/create/$',
-        login_required(views.StudyAreaCreate.as_view()),
+        login_required(survey_views.StudyAreaCreate.as_view()),
         name='study-areas-create'),
 
     url(r'studies/create/$',
-        login_required(views.StudyCreate.as_view()),
+        login_required(survey_views.StudyCreate.as_view()),
         name='studies-create'),
 
+    url(r'studies/$',
+        login_required(survey_views.StudyList.as_view()),
+        name='studies-list'),
+
+    url(r'studies/deactivate/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.StudyDeactivate.as_view()),
+        name='studies-deactivate'),
+
+    url(r'studies/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.StudyDetail.as_view()),
+        name='studies-detail'),
+
     url(r'surveys/edit/$',
-        login_required(views.SurveyListEdit.as_view()),
+        login_required(survey_views.SurveyListEdit.as_view()),
         name='surveys-list-edit'),
 
     url(r'surveys/run/$',
-        login_required(views.SurveyListRun.as_view()),
+        login_required(survey_views.SurveyListRun.as_view()),
         name='surveys-list-run'),
 
     url(r'surveys/create/$',
-        login_required(views.SurveyCreate.as_view()),
+        login_required(survey_views.SurveyCreate.as_view()),
         name='surveys-create'),
 
     # Create survey element
@@ -92,7 +117,7 @@ urlpatterns = [
 
     # Edit survey properties
     url(_(r'^surveys/edit/(?P<pk>\d+)/properties/$'),
-        view=views.SurveyPropertiesEdit.as_view(),
+        view=survey_views.SurveyPropertiesEdit.as_view(),
         name='survey-properties-edit'),
 
     # Delete survey
@@ -102,7 +127,7 @@ urlpatterns = [
 
     # Publish survey
     url(_(r'^surveys/publish/(?P<form_entry_id>\d+)/$'),
-        view=views.SurveyPublish.as_view(),
+        view=survey_views.SurveyPublish.as_view(),
         name='surveys-publish'),
 
     # Survey detail
@@ -142,14 +167,14 @@ urlpatterns = [
 
     # Submitted surveys list
     url(r'^surveys/submitted$',
-        view=views.SurveySubmittedList.as_view(),
+        view=survey_views.SurveySubmittedList.as_view(),
         name='surveys-submitted-list'),
 
     # Submitted surveys detail
     url(r'^surveys/submitted/(?P<form_entry_id>\d+)$',
-        view=views.SurveySubmittedDetail.as_view(),
+        view=survey_views.SurveySubmittedDetail.as_view(),
         name='surveys-submitted-detail'),
 
     # API endpoint for retreiving CensusObservation data
-    path('acs/', view=views.census_area_to_observation, name="acs"),
+    path('acs/', view=survey_views.census_area_to_observation, name="acs"),
 ]

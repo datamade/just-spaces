@@ -26,6 +26,24 @@ def test_study_area_form(client, user):
 
 
 @pytest.mark.django_db
+def test_study_deactivate(client, user, study):
+    client.force_login(user)
+    assert study.is_active
+
+    url = reverse('studies-deactivate', kwargs={'pk': study.id})
+
+    get_response = client.get(url)
+
+    assert get_response.status_code == 200
+
+    post_response = client.post(url)
+    study.refresh_from_db()
+
+    assert post_response.status_code == 302
+    assert not study.is_active
+
+
+@pytest.mark.django_db
 def test_location_form(client, user, agency):
     client.force_login(user)
     url = reverse('locations-create')
@@ -50,6 +68,24 @@ def test_location_form(client, user, agency):
 
 
 @pytest.mark.django_db
+def test_location_deactivate(client, user, location):
+    client.force_login(user)
+    assert location.is_active
+
+    url = reverse('locations-deactivate', kwargs={'pk': location.id})
+
+    get_response = client.get(url)
+
+    assert get_response.status_code == 200
+
+    post_response = client.post(url)
+    location.refresh_from_db()
+
+    assert post_response.status_code == 302
+    assert not location.is_active
+
+
+@pytest.mark.django_db
 def test_survey_form(client, user, study, location):
     client.force_login(user)
     url = reverse('surveys-create')
@@ -71,3 +107,20 @@ def test_survey_form(client, user, study, location):
     assert new_survey_form.study == study
     assert new_survey_form.location == location
     assert new_survey_form.type == 'intercept'
+
+
+@pytest.mark.django_db
+def test_survey_publish(client, survey_form_entry_observational):
+    assert not survey_form_entry_observational.published
+
+    url = reverse('surveys-publish', kwargs={'form_entry_id': survey_form_entry_observational.id})
+
+    get_response = client.get(url)
+
+    assert get_response.status_code == 200
+
+    post_response = client.post(url)
+    survey_form_entry_observational.refresh_from_db()
+
+    assert post_response.status_code == 302
+    assert survey_form_entry_observational.published

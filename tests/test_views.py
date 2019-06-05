@@ -29,12 +29,70 @@ def test_study_create(client, user, study_area):
 
 
 @pytest.mark.django_db
+def test_study_list(client, user, study, study_inactive):
+    client.force_login(user)
+    url = reverse('studies-list')
+    response = client.get(url)
+
+    studies = response.context['studies']
+    active_study = studies[0]
+
+    assert response.status_code == 200
+    assert len(studies) == 1
+    assert active_study.title == 'Sample Study'
+
+
+@pytest.mark.django_db
+def test_study_detail(client, user, study):
+    client.force_login(user)
+    url = reverse('studies-detail', kwargs={'pk': study.id})
+    response = client.get(url)
+    html = response.content.decode('utf-8')
+
+    assert response.status_code == 200
+
+    for label, content in response.context['rows']:
+        if content:
+            assert label in html
+            assert content in html
+
+
+@pytest.mark.django_db
 def test_location_create(client, user):
     client.force_login(user)
     url = reverse('locations-create')
     response = client.get(url)
 
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_location_list(client, user, location, location_inactive):
+    client.force_login(user)
+    url = reverse('locations-list')
+    response = client.get(url)
+
+    locations = response.context['locations']
+    active_location = locations[0]
+
+    assert response.status_code == 200
+    assert len(locations) == 1
+    assert active_location.name_primary == 'Sample Location'
+
+
+@pytest.mark.django_db
+def test_location_detail(client, user, location):
+    client.force_login(user)
+    url = reverse('locations-detail', kwargs={'pk': location.id})
+    response = client.get(url)
+    html = response.content.decode('utf-8')
+
+    assert response.status_code == 200
+
+    for label, content in response.context['rows']:
+        if content:
+            assert label in html
+            assert content in html
 
 
 @pytest.mark.django_db
@@ -47,7 +105,6 @@ def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_obs
 
     assert response.status_code == 200
     assert len(surveys) == 1
-
 
 
 @pytest.mark.django_db
@@ -112,23 +169,6 @@ def test_survey_preview(client, user, survey_form_entry_observational):
     assert response.status_code == 200
     assert not response.context['form_entry'].surveyformentry.published
     assert ('Preview ' + survey_form_entry_observational.name) in response.content.decode('utf-8')
-
-
-@pytest.mark.django_db
-def test_survey_publish(client, survey_form_entry_observational):
-    assert not survey_form_entry_observational.published
-
-    url = reverse('surveys-publish', kwargs={'form_entry_id': survey_form_entry_observational.id})
-
-    get_response = client.get(url)
-
-    assert get_response.status_code == 200
-
-    post_response = client.post(url)
-    survey_form_entry_observational.refresh_from_db()
-
-    assert post_response.status_code == 302
-    assert survey_form_entry_observational.published
 
 
 @pytest.mark.django_db

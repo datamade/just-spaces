@@ -1,7 +1,8 @@
 import json
 
-from django.views.generic import TemplateView, ListView, UpdateView
+from django.views.generic import TemplateView, ListView, UpdateView, DetailView
 from django.views.generic.edit import CreateView, FormView
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
@@ -15,8 +16,9 @@ from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
 
+from . import forms as survey_forms
+from .utils import get_or_none
 from .models import SurveyFormEntry, SurveyChart, CensusArea, CensusObservation
-from surveys import forms as survey_forms
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
@@ -34,7 +36,7 @@ class LocationCreate(CreateView):
     form_class_location_line = survey_forms.LocationLineCreateForm
 
     template_name = "location_create.html"
-    success_url = reverse_lazy('surveys-create')
+    success_url = reverse_lazy('locations-list')
 
     def get_context_data(self, **kwargs):
         context = super(LocationCreate, self).get_context_data(**kwargs)
@@ -62,7 +64,7 @@ class LocationCreate(CreateView):
                                     **form_location_area.cleaned_data
                                 )
                 location_area.save()
-                return redirect('surveys-create')
+                return redirect(self.success_url)
 
         elif request.POST['location-geometry_type'] == 'line':
             forms_valid = [form_location.is_valid(), form_location_line.is_valid()]
@@ -76,12 +78,12 @@ class LocationCreate(CreateView):
                                     **form_location_line.cleaned_data
                                 )
                 location_line.save()
-                return redirect('surveys-create')
+                return redirect(self.success_url)
 
         else:
             if form_location.is_valid():
                 form_location.save()
-                return redirect('surveys-create')
+                return redirect(self.success_url)
 
         return render(request,
                       'location_create.html',
@@ -89,6 +91,74 @@ class LocationCreate(CreateView):
                        'form_location_area': form_location_area,
                        'form_location_line': form_location_line}
                       )
+
+
+class LocationList(ListView):
+    model = pldp_models.Location
+    template_name = "location_list.html"
+    context_object_name = 'locations'
+    queryset = pldp_models.Location.objects.all().exclude(is_active=False)
+
+
+class LocationDetail(DetailView):
+    model = pldp_models.Location
+    template_name = "location_detail.html"
+    context_object_name = 'location'
+
+    def get_context_data(self, **kwargs):
+        context = super(LocationDetail, self).get_context_data(**kwargs)
+
+        location = context['location']
+
+        location_area = get_or_none(pldp_models.LocationArea, location=location)
+        location_line = get_or_none(pldp_models.LocationLine, location=location)
+
+        context['rows'] = [
+            ('Region', location.region),
+            ('City', location.city),
+            ('Secondary name', location.name_secondary),
+            ('Character', location.character),
+            ('Geometry type', location.geometry_type),
+        ]
+
+        if location_area:
+            context['rows'] += [
+                ('Date measured', location_area.date_measured),
+                ('Total sqm', location_area.total_sqm),
+                ('People sqm', location_area.people_sqm),
+                ('Typology', location_area.typology),
+            ]
+
+        if location_line:
+            context['rows'] += [
+                ('Date measured', location_line.date_measured),
+                ('Total width', location_line.total_m),
+                ('Pedestrian width', location_line.pedestrian_m),
+                ('Bicycle width', location_line.bicycle_m),
+                ('Vehicular width', location_line.vehicular_m),
+                ('Pedestrian typology', location_line.typology_pedestrian),
+                ('Bicycle typology', location_line.typology_bicycle),
+                ('Vehicular typology', location_line.typology_vehicular),
+            ]
+
+        return context
+
+
+class LocationDeactivate(TemplateView):
+    template_name = "location_deactivate.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['location'] = pldp_models.Location.objects.get(id=context['pk'])
+
+        return context
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['location'].is_active = False
+        context['location'].save()
+
+        return redirect('locations-list')
 
 
 class StudyAreaCreate(CreateView):
@@ -113,6 +183,53 @@ class StudyCreate(CreateView):
         return context
 
 
+class StudyList(ListView):
+    model = pldp_models.Study
+    template_name = "study_list.html"
+    context_object_name = 'studies'
+    queryset = pldp_models.Study.objects.all().exclude(is_active=False)
+
+
+class StudyDeactivate(TemplateView):
+    template_name = "study_deactivate.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['study'] = pldp_models.Study.objects.get(id=context['pk'])
+
+        return context
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['study'].is_active = False
+        context['study'].save()
+
+        return redirect('studies-list')
+
+
+class StudyDetail(DetailView):
+    model = pldp_models.Study
+    template_name = "study_detail.html"
+    context_object_name = 'study'
+
+    def get_context_data(self, **kwargs):
+        context = super(StudyDetail, self).get_context_data(**kwargs)
+        study = context['study']
+
+        context['rows'] = [
+            ('Project', study.project),
+            ('Project phase', study.project_phase),
+            ('Start date', study.start_date),
+            ('End date', study.end_date),
+            ('Scale', study.scale),
+            ('Manager email', study.manager_email),
+            ('Protocol version', study.protocol_version),
+            ('Notes', study.notes),
+        ]
+
+        return context
+
+
 class SurveyCreate(CreateView):
     form_class = survey_forms.SurveyCreateForm
     model = SurveyFormEntry
@@ -121,6 +238,29 @@ class SurveyCreate(CreateView):
     def get_initial(self):
         self.initial['user'] = self.request.user
         return self.initial.copy()
+
+    def get_context_data(self, **kwargs):
+        context = super(SurveyCreate, self).get_context_data(**kwargs)
+
+        url_studies_list = reverse_lazy('studies-list')
+        url_studies_create = reverse_lazy('studies-create')
+        study_help_text = 'Don\'t see the study you need? View the \
+                           <a href="{}">list of existing studies</a> or \
+                           <a href="{}">create a new \
+                           one</a>.'.format(url_studies_list, url_studies_create)
+
+        context['form'].fields['study'].help_text += study_help_text
+
+        url_locations_list = reverse_lazy('locations-list')
+        url_locations_create = reverse_lazy('locations-create')
+        location_help_text = 'Don\'t see the location you need? View the \
+                           <a href="{}">list of existing locations</a> or \
+                           <a href="{}">create a new \
+                           one</a>.'.format(url_locations_list, url_locations_create)
+
+        context['form'].fields['location'].help_text += location_help_text
+
+        return context
 
     def form_valid(self, form):
         self.object = form.save()

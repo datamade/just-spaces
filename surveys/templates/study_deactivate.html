@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="col col-lg-9 card">
+  <div class="card-body">
+    <h2 class="card-title">Deactivate Study</h2>
+
+     <p class="card-text">Are you sure you want to deactivate <b>{{object}}</b>?</p>
+     <p class="card-text">Once studies are deactivated they can only be recovered by a site administrator.</p>
+
+     <form method="POST" class="post-form">{% csrf_token %}
+     <button type="submit" class="save btn btn-secondary float-right">Deactivate</button>
+     <a class="btn btn-link mr-3 mt-3 float-right" href="{% url 'studies-list' %}">Cancel</a>
+  </form>
+{% endblock %}

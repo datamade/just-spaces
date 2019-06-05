@@ -32,6 +32,10 @@ class AgencyCreateForm(JustSpacesForm):
         model = Agency
         fields = '__all__'
 
+        widgets = {
+            'is_active': forms.HiddenInput()
+        }
+
 
 class LocationCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -55,7 +59,10 @@ class LocationCreateForm(forms.ModelForm):
             'map_width': '100%',
         }
 
-        widgets = {'geometry': LeafletWidget(attrs=leaflet_widget_attrs)}
+        widgets = {
+            'geometry': LeafletWidget(attrs=leaflet_widget_attrs),
+            'is_active': forms.HiddenInput()
+        }
 
         labels = {
             'name_primary': 'Primary name',
@@ -146,7 +153,8 @@ class StudyCreateForm(JustSpacesForm):
         fields = '__all__'
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
-            'end_date': forms.DateInput(attrs={'type': 'date'})
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'is_active': forms.HiddenInput()
         }
 
 

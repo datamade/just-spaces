@@ -17,7 +17,7 @@ function switchType() {
   var $locationLineDateMeasured = $('#id_location-line-date_measured');
   var $locationAreaDateMeasured = $('#id_location-area-date_measured');
 
-  var selectedVal = typeDropdown.value;
+  var selectedVal = typeDropdown[0].value;
 
   if (selectedVal == 'area') {
     $locationLineDateMeasured.removeAttr('required');
