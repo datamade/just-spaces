@@ -294,25 +294,6 @@ $(document).ready(function () {
     }
   });
 
-  $('form').on('change', censusSelectBox, function(event) {
-    // Listen to ACS data source multiselect boxes, and update the charts when the
-    // data source changes
-    var geographies = $(this).val();  // The value will be an array, and may be empty
-    var primarySourceId = $(this).parents(chartContainer).find('select[name$="primary_source"]').val();
-    if (geographies.length > 0) {
-      for (var i=0; i<geographies.length; i++) {
-        var geographyId = geographies[i];
-        var dataUrl = "{% url 'acs' %}?census_area=" + geographyId + "&primary_source=" + primarySourceId;
-        $.getJSON(dataUrl).done(function(data) {
-          console.log(data);
-        }).fail(function(jqxhr, textStatus, error) {
-          var err = textStatus + ", " + error;
-          console.log("Request to " + dataUrl + " failed: " + err);
-        });
-      }
-    }
-  });
-
   // Load visible charts
   $(chartContainer).filter(':visible').find('select[name$="primary_source"]').each(function() {
     var dataSourceId = $(this).val();
