@@ -27,6 +27,8 @@ INTERMEDIATE := intermediate/acs/age_basic.csv \
 	intermediate/acs/gender_observational.csv \
 	intermediate/acs/gender_intercept.csv \
 	intermediate/acs/education.csv \
+	intermediate/acs/employment.csv \
+	intermediate/acs/household_tenure.csv \
 	intermediate/acs/race.csv \
 	intermediate/acs/own_or_rent.csv \
 	intermediate/acs/transportation.csv \
@@ -50,6 +52,9 @@ intermediate/acs/gender_intercept.csv: raw/acs/age_and_sex.csv
 intermediate/acs/education.csv: raw/acs/educational_attainment.csv
 	$(COMPILE_ACS_DATA)
 
+intermediate/acs/household_tenure.csv: raw/acs/household_tenure.csv
+	$(COMPILE_ACS_DATA)
+
 intermediate/acs/race.csv: raw/acs/race.csv
 	$(COMPILE_ACS_DATA)
 
@@ -60,6 +65,9 @@ intermediate/acs/transportation.csv: raw/acs/means_of_transit.csv
 	$(COMPILE_ACS_DATA)
 
 intermediate/acs/income.csv: raw/acs/household_income.csv
+	$(COMPILE_ACS_DATA)
+
+intermediate/acs/employment.csv: raw/acs/employment_status.csv
 	$(COMPILE_ACS_DATA)
 
 clean:

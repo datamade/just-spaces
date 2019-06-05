@@ -1,2 +1,4 @@
 census==0.8.13
 PyYAML==3.13
+
+-e git+https://github.com/datamade/django-pldp.git#egg=django-pldp

@@ -361,7 +361,6 @@ ChartHelper.prototype.addAcsSeries = function(chartId, acsData, seriesName) {
   // categories in the existing series
   var categories = chart.xAxis[0].categories;
   var formattedAcsData = [];
-  console.log(acsData);
   for (var i = 0; i < categories.length; i++) {
     var category = categories[i];
     var recordedValue = (acsData.data[category]) ? acsData.data[category] : 0;
@@ -472,7 +471,7 @@ function binValue(value, bins) {
     var bin = bins[i];
     if (value < bin) {
       if (i === 0) {
-        binnedValue = '<' + String(bin);
+        binnedValue = '0-' + String(bin-1);
         break;
       } else {
         var prevBin = bins[i - 1];

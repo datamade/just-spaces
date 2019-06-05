@@ -1,7 +1,5 @@
 from fobi.utils import get_registered_form_element_plugins
 
-from datetime import datetime
-
 # Valid SurveyComponent types for the Data Analysis Designer (DAD). These are
 # the UIDs of Fobi form elements that can sensibly be turned into charts.
 
@@ -30,11 +28,9 @@ INTERCEPT_TYPES = [
 # they allow the user to freely respond with a numeric response to a question,
 # which we can then bin and display as a distribution. Because the responses
 # only store a number, we need to preset the boundaries of the bins.
-curr_year = datetime.now().year
 FREE_RESPONSE_INTERCEPT_BINS = {
     'age_intercept': [5, 15, 25, 45, 65, 75],
-    'household_tenure': [curr_year-2015, curr_year-2010, curr_year-2000,
-                         curr_year-1990, curr_year-1980],
+    'household_tenure': [1980, 1990, 2000, 2010, 2015],
 }
 FREE_RESPONSE_INTERCEPT_TYPES = list(FREE_RESPONSE_INTERCEPT_BINS.keys())
 
@@ -73,7 +69,6 @@ TYPES_TO_ACS_VARIABLES = {
     'employment': {
         'basic': 'employment',
     },
-    # TODO: Need to make a tenure question in Fobi
     'household_tenure': {
         'basic': 'household_tenure',
     },

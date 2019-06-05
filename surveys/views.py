@@ -264,7 +264,6 @@ class SurveySubmittedDetail(TemplateView):
             form_field_instance = plugin.get_form_field_instances()[0]
             form_field_name = form_field_instance[0]
             # Plugin choices look like: [('', '-------'), ('owner', 'Homeowner'), ('renter', 'Renter')]
-            # TODO: Refactor to display the human-readable name
             if form_field_instance[2].get('choices'):
                 form_field_choices = [[choice[0], choice[1]]
                                       for choice in form_field_instance[2]['choices']

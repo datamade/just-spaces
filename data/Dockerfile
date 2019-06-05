@@ -11,11 +11,12 @@ RUN set -ex \
 	" \
 	&& deps=" \
 		unzip \
+		git \
 		make \
 		wget \
 	" \
 	&& apt-get update && apt-get install -y $deps $buildDeps --no-install-recommends \
-	&& pip install --no-cache-dir -r requirements.txt \
+	&& pip install --src /opt/pypi --no-cache-dir -r requirements.txt \
 	&& apt-get purge -y --auto-remove $buildDeps \
 	&& rm  -Rf /var/lib/apt/lists/*
 

@@ -4,6 +4,7 @@ services:
     build: .
     volumes:
       - ./:/usr/local/src
+      - ../fobi_custom:/usr/local/src/scripts/fobi_custom
     working_dir: /usr/local/src
     entrypoint: make
     command: all

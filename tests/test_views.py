@@ -74,7 +74,7 @@ def test_survey_edit_intercept(client, user, survey_form_entry):
                          ('education', 'What is your highest formal degree of education?'),
                          ('employment', 'What is your current employment status?'),
                          ('gender_intercept', 'What gender do you most identify with?'), (
-                         'household_tenure', 'How many years have you lived at your current address?'),
+                         'household_tenure', 'What year did you move into your current address?'),
                          ('own_or_rent', 'Are you a homeowner or a renter?'),
                          ('race', 'Which race or ethnicity best describes you?'),
                          ('transportation', 'How did you travel here?')]
