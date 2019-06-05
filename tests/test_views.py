@@ -42,8 +42,14 @@ def test_study_detail(client, user, study):
     client.force_login(user)
     url = reverse('studies-detail', kwargs={'pk': study.id})
     response = client.get(url)
+    html = response.content.decode('utf-8')
 
     assert response.status_code == 200
+
+    for label, content in response.context['rows']:
+        if content:
+            assert label in html
+            assert content in html
 
 
 @pytest.mark.django_db
@@ -74,8 +80,14 @@ def test_location_detail(client, user, location):
     client.force_login(user)
     url = reverse('locations-detail', kwargs={'pk': location.id})
     response = client.get(url)
+    html = response.content.decode('utf-8')
 
     assert response.status_code == 200
+
+    for label, content in response.context['rows']:
+        if content:
+            assert label in html
+            assert content in html
 
 
 @pytest.mark.django_db
