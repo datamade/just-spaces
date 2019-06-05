@@ -6,6 +6,7 @@ refigure it to a more strictful RESTful approach.
 
 """
 from django.conf.urls import url, include
+from django.urls import path
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from surveys import views as survey_views
@@ -173,4 +174,7 @@ urlpatterns = [
     url(r'^surveys/submitted/(?P<form_entry_id>\d+)$',
         view=survey_views.SurveySubmittedDetail.as_view(),
         name='surveys-submitted-detail'),
+
+    # API endpoint for retreiving CensusObservation data
+    path('acs/', view=views.census_area_to_observation, name="acs"),
 ]

@@ -69,7 +69,13 @@
     python manage.py initialize_pldp
     ```
 
-9. Run the app locally!
+9. Load ACS data:
+
+    ```bash
+    python manage.py import_data
+    ```
+
+10. Run the app locally!
 
     ```bash
     # In one shell, bundle and watch JavaScript assets

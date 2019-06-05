@@ -1,7 +1,9 @@
 YEAR := 2017
 
 .PHONY: all clean
-all: raw/acs/age_and_sex.csv \
+all: final/acs/census_observations.csv
+
+RAW := raw/acs/age_and_sex.csv \
 	 raw/acs/household_income.csv \
 	 raw/acs/employment_status.csv \
 	 raw/acs/income_inequality.csv \
@@ -17,7 +19,11 @@ all: raw/acs/age_and_sex.csv \
 	 raw/acs/disability.csv
 
 clean:
-	rm -Rf raw/acs/*
+	rm -Rf raw/acs/*.csv final/*.csv
 
 raw/acs/%.csv:
 	python3 scripts/import_acs_data.py "$*" "${YEAR}" > "$@"
+
+final/acs/census_observations.csv: ${RAW}
+	python3 scripts/merge_acs_data.py $^ > $@
+
