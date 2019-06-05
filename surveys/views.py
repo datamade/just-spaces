@@ -1,7 +1,7 @@
 import json
 
 from django.views.generic import TemplateView, ListView, UpdateView, DetailView
-from django.views.generic.edit import CreateView, FormView, DeleteView
+from django.views.generic.edit import CreateView, FormView
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -188,12 +188,6 @@ class StudyList(ListView):
     template_name = "study_list.html"
     context_object_name = 'studies'
     queryset = pldp_models.Study.objects.all().exclude(is_active=False)
-
-
-class StudyDelete(DeleteView):
-    model = pldp_models.Study
-    template_name = "study_delete.html"
-    success_url = reverse_lazy('studies-list')
 
 
 class StudyDeactivate(TemplateView):
