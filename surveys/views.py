@@ -3,7 +3,7 @@ import json
 from django.views.generic import TemplateView, ListView, UpdateView
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.forms import modelformset_factory
 from django.contrib import messages
@@ -15,7 +15,7 @@ from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
 
-from .models import SurveyFormEntry, SurveyChart
+from .models import SurveyFormEntry, SurveyChart, CensusArea, CensusObservation
 from surveys import forms as survey_forms
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
@@ -243,7 +243,7 @@ class SurveySubmittedDetail(TemplateView):
         context['surveys_submitted_json'] = json.dumps(surveys_submitted_json,
                                                        default=str)
 
-        # Fobi types and bins for use in charting
+        # Fobi types, bins, and ACS variables for use in charting
         types = {
             'count': fobi_types.COUNT_TYPES,
             'observational': fobi_types.OBSERVATIONAL_TYPES,
@@ -256,6 +256,9 @@ class SurveySubmittedDetail(TemplateView):
         }
         context['types'] = json.dumps(types)
         context['bins'] = json.dumps(bins)
+        context['acs_compatible_types'] = json.dumps(
+            list(fobi_types.TYPES_TO_ACS_VARIABLES.keys())
+        )
 
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)
@@ -311,3 +314,42 @@ class Signup(FormView):
             return redirect('login')
 
         return render(request, self.template_name, {'form': form})
+
+
+def census_area_to_observation(request):
+    """
+    API endpoint returning ACS data for a given CensusArea and ACS variable.
+
+    :param request: A Django HTTPRequest object. Requires a census_area param and
+                    a primary_source param, or else will return 400.
+    :returns: A JsonResponse representing the data in question. If no CensusArea
+              object matches census_area, returns HTTP status 404 with a message
+              in the 'error' key. Otherwise, returns the data in the 'data' key.
+    """
+    # Check the query parameters
+    census_area_id = request.GET.get('census_area')
+    primary_source_id = request.GET.get('primary_source')
+    if not census_area_id or not primary_source_id:
+        return JsonResponse(
+            {'error': 'census_area and primary_source are required query parameters'},
+            status=400
+        )
+
+    response = {}
+    try:
+        census_area = CensusArea.objects.get(id=census_area_id)
+    except CensusArea.DoesNotExist:
+        response['error'] = 'No CensusArea object found for ID {}'.format(
+            str(census_area_id)
+        )
+        status = 400
+    else:
+        try:
+            response['data'] = census_area.get_observations_from_component(primary_source_id)
+        except CensusObservation.DoesNotExist as e:
+            response['error'] = str(e)
+            status = 400
+        else:
+            status = 200
+
+    return JsonResponse(response, status=status)

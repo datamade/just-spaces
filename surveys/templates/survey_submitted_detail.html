@@ -117,14 +117,20 @@ $(document).ready(function () {
   table.buttons().container()
       .appendTo( '#survey-submitted-detail_wrapper .col-md-6:eq(0)' );
 
+  // Helpful JQuery selectors
   var $totalForms = $('[name$=TOTAL_FORMS]');
-  var chartContainer = '[class^="chart-container-"]'
+  var chartContainer = '[class^="chart-container-"]';
+  var censusContainer = 'tr[id$="-container-census_areas"]';
+  var censusSelectBox = 'select[id$="-census_areas"]';
 
   // Load the ChartHelper from charts.js
   var surveys = JSON.parse('{{ surveys_submitted_json | escapejs }}');
   var types = JSON.parse('{{ types | escapejs }}');
   var bins = JSON.parse('{{ bins | escapejs }}');
   charts = new ChartHelper(surveys, types, bins);
+
+  // Load ACS variable map for Fobi types
+  var acsCompatibleTypes = JSON.parse('{{ acs_compatible_types | escapejs }}');
 
   function resetChartOrder() {
     // Update the 'order' field of each chart on the page to match its visual
@@ -154,8 +160,39 @@ $(document).ready(function () {
       }
     }
   }
-
   toggleMoveButtonVisibility();
+
+  function toggleCensusContainerVisibility($censusContainer, dataSourceId) {
+    /**
+     * Check to see whether a data source can be compared to ACS data, and if it
+     * can, show its corresponding Census selectbox.
+     *
+     * @param {Object} $censusContainer - A JQuery object representing the container to toggle.
+     * @param {String} dataSourceId - The ID of the data source in question.
+     */
+    var sourceType = surveys[0].data[dataSourceId].type;
+    var isAcsCompatibleType = false;
+    for (var i=0; i<acsCompatibleTypes.length; i++) {
+      if (sourceType === acsCompatibleTypes[i]) {
+        isAcsCompatibleType = true;
+        break;
+      }
+    }
+    if (isAcsCompatibleType) {
+      $censusContainer.show();
+    } else {
+      $censusContainer.hide();
+    }
+  }
+  // On first page load, toggle the Census select box visibility for any visible
+  // charts
+  $(chartContainer).filter(':visible').find(censusContainer).each(function() {
+    var $dataSourceSelect = $(this).parents(chartContainer).find('select[name$="-primary_source"]');
+    if ($dataSourceSelect.length > 0) {
+      var dataSourceId = $dataSourceSelect.val();
+      toggleCensusContainerVisibility($(this), dataSourceId);
+    }
+  });
 
   // Initialize sortable chart widgets
   $('#sortable-chart-container').sortable({
@@ -204,16 +241,46 @@ $(document).ready(function () {
   });
 
   $('form').on('change', 'select[name$="-primary_source"]', function(event) {
-    // Listen to the primary data source select box, and update charts when the
-    // data source changes
+    // Listen to the primary data source select box, and update charts and
+    // other form options when the data source changes
     var dataSourceId = $(this).val();
-    var chartId = $(this).parents(chartContainer).find('.highcharts-chart').first().attr('id');
+    var $container = $(this).parents(chartContainer);
+    var chartId = $container.find('.highcharts-chart').first().attr('id');
+    var $censusContainer = $container.find(censusContainer).first();
+    var $censusSelect = $container.find(censusSelectBox).first();
+
     if (dataSourceId === '') {
       // User selected the null option, so remove the chart
       charts.destroyChart(chartId);
+      // Clear and hide conditional inputs
+      $censusContainer.hide();
+      $censusSelect.val([]);
     } else {
+      // Show the chart
       var chartTitle = $(this).find('option:selected').html();
       charts.loadChart(chartId, chartTitle, dataSourceId);
+      // Show conditional inputs
+      toggleCensusContainerVisibility($censusContainer, dataSourceId);
+    }
+  });
+
+  $('form').on('change', censusSelectBox, function(event) {
+    // Listen to ACS data source multiselect boxes, and update the charts when the
+    // data source changes
+    var geographies = $(this).val();  // The value will be an array, and may be empty
+    var primarySourceId = $(this).parents(chartContainer).find('select[name$="primary_source"]').val();
+    if (geographies.length > 0) {
+      for (var i=0; i<geographies.length; i++) {
+        var geographyId = geographies[i];
+        var dataUrl = "{% url 'acs' %}?census_area=" + geographyId + "&primary_source=" + primarySourceId;
+        $.getJSON(dataUrl).done(function(data) {
+          // TODO: Display this data on the chart
+          console.log(data);
+        }).fail(function(jqxhr, textStatus, error) {
+          var err = textStatus + ", " + error;
+          console.log("Request to " + dataUrl + " failed: " + err);
+        });
+      }
     }
   });
 

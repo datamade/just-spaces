@@ -6,53 +6,51 @@ refigure it to a more strictful RESTful approach.
 
 """
 from django.conf.urls import url, include
+from django.urls import path
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
-from surveys.views import AgencyCreate, LocationCreate, StudyCreate, \
-                            StudyAreaCreate, SurveyCreate, SurveyPublish, \
-                            SurveyListEdit, SurveyListRun, Signup, SurveySubmittedList, \
-                            SurveySubmittedDetail, SurveyPropertiesEdit
+from surveys import views
 import fobi.views
 
 urlpatterns = [
     # placeholder view for a public-facing landing page
     url(r'^$',
-        login_required(SurveyListRun.as_view()),
+        login_required(views.SurveyListRun.as_view()),
         name='home'),
 
     url(r'^accounts/',
         include('django.contrib.auth.urls')),
 
     url(r'^accounts/signup$',
-        Signup.as_view(),
+        views.Signup.as_view(),
         name='signup'),
 
     url(r'agencies/create/$',
-        login_required(AgencyCreate.as_view()),
+        login_required(views.AgencyCreate.as_view()),
         name='agencies-create'),
 
     url(r'locations/create/$',
-        login_required(LocationCreate.as_view()),
+        login_required(views.LocationCreate.as_view()),
         name='locations-create'),
 
     url(r'study-areas/create/$',
-        login_required(StudyAreaCreate.as_view()),
+        login_required(views.StudyAreaCreate.as_view()),
         name='study-areas-create'),
 
     url(r'studies/create/$',
-        login_required(StudyCreate.as_view()),
+        login_required(views.StudyCreate.as_view()),
         name='studies-create'),
 
     url(r'surveys/edit/$',
-        login_required(SurveyListEdit.as_view()),
+        login_required(views.SurveyListEdit.as_view()),
         name='surveys-list-edit'),
 
     url(r'surveys/run/$',
-        login_required(SurveyListRun.as_view()),
+        login_required(views.SurveyListRun.as_view()),
         name='surveys-list-run'),
 
     url(r'surveys/create/$',
-        login_required(SurveyCreate.as_view()),
+        login_required(views.SurveyCreate.as_view()),
         name='surveys-create'),
 
     # Create survey element
@@ -94,7 +92,7 @@ urlpatterns = [
 
     # Edit survey properties
     url(_(r'^surveys/edit/(?P<pk>\d+)/properties/$'),
-        view=SurveyPropertiesEdit.as_view(),
+        view=views.SurveyPropertiesEdit.as_view(),
         name='survey-properties-edit'),
 
     # Delete survey
@@ -104,7 +102,7 @@ urlpatterns = [
 
     # Publish survey
     url(_(r'^surveys/publish/(?P<form_entry_id>\d+)/$'),
-        view=SurveyPublish.as_view(),
+        view=views.SurveyPublish.as_view(),
         name='surveys-publish'),
 
     # Survey detail
@@ -144,11 +142,14 @@ urlpatterns = [
 
     # Submitted surveys list
     url(r'^surveys/submitted$',
-        view=SurveySubmittedList.as_view(),
+        view=views.SurveySubmittedList.as_view(),
         name='surveys-submitted-list'),
 
     # Submitted surveys detail
     url(r'^surveys/submitted/(?P<form_entry_id>\d+)$',
-        view=SurveySubmittedDetail.as_view(),
+        view=views.SurveySubmittedDetail.as_view(),
         name='surveys-submitted-detail'),
+
+    # API endpoint for retreiving CensusObservation data
+    path('acs/', view=views.census_area_to_observation, name="acs"),
 ]
