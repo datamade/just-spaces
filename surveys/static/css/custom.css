@@ -381,6 +381,10 @@ a.article:hover {
    color: var(--pink-color);
  }
 
+ .leaflet-container {
+   height: 450px;
+ }
+
 /* ---------------------------------------------------
     DATA ANALYSIS DESIGNER
 ----------------------------------------------------- */
