@@ -12,27 +12,6 @@
 
 {% block content %}
 
-<!-- <div class="card">
-  <div class="card-body">
-    <h2 class="card-title">Studies</h2>
-    <small class="form-text text-muted">Text describing what a study is.</small>
-    <br />
-
-    <table id="survey-list" class="table table-hover table-striped table-responsive-sm card-text">
-    <thead>
-      <th scope="col">Survey Name</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>sdfsd</td>
-      </tr>
-    </tbody>
-    </table>
-
-  </div>
-</div> -->
-
-
 <div class="card">
   <div class="card-body">
     {% if published %}
@@ -50,11 +29,11 @@
         <th scope="col">Updated</th>
         <th scope="col">Type</th>
         {% if published %}
-        <th scope="col">Run</th>
+        <th class="text-center" scope="col">Run</th>
         {% else %}
-        <th scope="col">Edit</th>
-        <th scope="col">Preview</th>
-        <th scope="col">Publish</th>
+        <th class="text-center" scope="col">Edit</th>
+        <th class="text-center" scope="col">Preview</th>
+        <th class="text-center" scope="col">Publish</th>
         {% endif %}
       </tr>
     </thead>

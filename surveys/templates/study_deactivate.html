@@ -10,7 +10,7 @@
      <p class="card-text">Once studies are deactivated they can only be recovered by a site administrator.</p>
 
      <form method="POST" class="post-form">{% csrf_token %}
-     <button type="submit" class="save btn btn-primary float-right">Deactivate</button>
+     <button type="submit" class="save btn btn-secondary float-right">Deactivate</button>
      <a class="btn btn-link mr-3 mt-3 float-right" href="{% url 'studies-list' %}">Cancel</a>
   </form>
 {% endblock %}
