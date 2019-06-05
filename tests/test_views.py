@@ -24,12 +24,17 @@ def test_study_create(client, user, study_area):
 
 
 @pytest.mark.django_db
-def test_study_list(client, user):
+def test_study_list(client, user, study, study_inactive):
     client.force_login(user)
     url = reverse('studies-list')
     response = client.get(url)
 
+    studies = response.context['studies']
+    active_study = studies[0]
+
     assert response.status_code == 200
+    assert len(studies) == 1
+    assert active_study.title == 'Sample Study'
 
 
 @pytest.mark.django_db
@@ -51,12 +56,17 @@ def test_location_create(client, user):
 
 
 @pytest.mark.django_db
-def test_location_list(client, user):
+def test_location_list(client, user, location, location_inactive):
     client.force_login(user)
     url = reverse('locations-list')
     response = client.get(url)
 
+    locations = response.context['locations']
+    active_location = locations[0]
+
     assert response.status_code == 200
+    assert len(locations) == 1
+    assert active_location.name_primary == 'Sample Location'
 
 
 @pytest.mark.django_db
@@ -78,19 +88,6 @@ def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_obs
 
     assert response.status_code == 200
     assert len(surveys) == 1
-
-
-@pytest.mark.django_db
-def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_observational):
-    client.force_login(user)
-    url = reverse('surveys-list-edit')
-    response = client.get(url)
-
-    surveys = response.context['surveys']
-
-    assert response.status_code == 200
-    assert len(surveys) == 1
-
 
 
 @pytest.mark.django_db

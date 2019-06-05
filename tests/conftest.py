@@ -67,6 +67,19 @@ def study(db, agency):
 
 @pytest.fixture
 @pytest.mark.django_db
+def study_inactive(db, agency):
+    study_inactive = Study.objects.create(
+        title='Sample Inactive Study',
+        manager_name='Sample Study Manager',
+        agency=agency,
+        is_active=False
+    )
+
+    return study_inactive
+
+
+@pytest.fixture
+@pytest.mark.django_db
 def location(db, agency):
     location = Location.objects.create(
         name_primary='Sample Location',
@@ -76,6 +89,20 @@ def location(db, agency):
     )
 
     return location
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def location_inactive(db, agency):
+    location_inactive = Location.objects.create(
+        name_primary='Sample Inactive Location',
+        agency=agency,
+        country_id='US',
+        geometry='POLYGON((-101.744384 39.32155, -101.552124 39.330048, -101.403808 39.330048, -101.332397 39.364032, -101.744384 39.32155))',
+        is_active=False
+    )
+
+    return location_inactive
 
 
 @pytest.fixture
