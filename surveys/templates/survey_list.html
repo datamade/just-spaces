@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extracss %}
-  <link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
 {% endblock %}
 
 {% block extrajs %}
@@ -11,6 +11,27 @@
 {% endblock %}
 
 {% block content %}
+
+<!-- <div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Studies</h2>
+    <small class="form-text text-muted">Text describing what a study is.</small>
+    <br />
+
+    <table id="survey-list" class="table table-hover table-striped table-responsive-sm card-text">
+    <thead>
+      <th scope="col">Survey Name</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sdfsd</td>
+      </tr>
+    </tbody>
+    </table>
+
+  </div>
+</div> -->
+
 
 <div class="card">
   <div class="card-body">
@@ -59,4 +80,11 @@
   </div>
 </div>
 
+<script>
+$(document).ready( function () {
+  $('#survey-list').DataTable({
+    lengthChange: false,
+  });
+} );
+</script>
 {% endblock %}

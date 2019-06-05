@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extracss %}
-  <link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
 {% endblock %}
 
 {% block extrajs %}
@@ -43,5 +43,13 @@
 
   </div>
 </div>
+
+<script>
+$(document).ready( function () {
+  $('#studies-list').DataTable({
+    lengthChange: false,
+  });
+} );
+</script>
 
 {% endblock %}
