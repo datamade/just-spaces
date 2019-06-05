@@ -174,8 +174,8 @@ def test_census_area_to_observation(client, census_area, survey_row):
     )
     census_observation = CensusObservation.objects.create(
         fips_code=census_area.fips_codes[0],
-        variable=fobi_types.TYPES_TO_ACS_VARIABLES['age_intercept'],
-        fields={'foo': 'bar'}
+        variable=fobi_types.TYPES_TO_ACS_VARIABLES['age_intercept']['basic'],
+        fields={'0-4': 0, '5-14': 1, '15-24': 3, '25-44': 5, '45-64': 0, '65-74': 12, '75+': 0},
     )
     response = client.get(
         reverse('acs'),
@@ -183,7 +183,7 @@ def test_census_area_to_observation(client, census_area, survey_row):
     )
     assert response.status_code == 200
     assert response.json().get('data') is not None
-    assert response.json()['data']['1'] == census_observation.fields
+    assert response.json()['data'] == census_observation.fields
 
 
 def test_census_area_to_observation_no_kwargs(client):
@@ -224,7 +224,7 @@ def test_census_area_to_observation_no_survey_component(client, census_area):
     )
     assert response.status_code == 400
     assert response.json().get('error') is not None
-    assert 'No SurveyComponent object' in response.json()['error']
+    assert 'No SurveyComponent found' in response.json()['error']
 
 
 @pytest.mark.django_db
