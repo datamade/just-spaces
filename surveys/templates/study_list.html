@@ -25,7 +25,7 @@
         <th scope="col">Agency</th>
         <th scope="col">Manager</th>
         <th scope="col">Manager Email</th>
-        <th scope="col">Delete</th>
+        <th scope="col">Deactivate</th>
       </tr>
     </thead>
     <tbody>
@@ -35,7 +35,7 @@
           <td>{{study.agency}}</td>
           <td>{{study.manager_name}}</td>
           <td>{{study.manager_email}}</td>
-          <td class="text-center"><a href="{% url 'studies-delete' study.id %}"><i class="far fa-trash-alt icon delete"></i></a></td>
+          <td class="text-center"><a href="{% url 'studies-deactivate' study.id %}"><i class="fas fa-times-circle icon delete"></i></a></td>
         </tr>
       {% endfor %}
     </tbody>

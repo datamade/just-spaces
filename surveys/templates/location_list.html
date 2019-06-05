@@ -25,7 +25,7 @@
         <th scope="col">Geometry Type</th>
         <th scope="col">Subdivision</th>
         <th scope="col">Character</th>
-        <th scope="col">Delete</th>
+        <th scope="col">Deactivate</th>
       </tr>
     </thead>
     <tbody>
@@ -35,7 +35,7 @@
           <td>{{location.geometry_type}}</td>
           <td>{{location.subdivision}}</td>
           <td>{{location.character}}</td>
-          <td class="text-center"><a href="{% url 'locations-delete' location.id %}"><i class="far fa-trash-alt icon delete"></i></a></td>
+          <td class="text-center"><a href="{% url 'locations-deactivate' location.id %}"><i class="fas fa-times-circle icon delete"></i></a></td>
         </tr>
       {% endfor %}
     </tbody>

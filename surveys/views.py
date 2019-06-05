@@ -97,6 +97,7 @@ class LocationList(ListView):
     model = pldp_models.Location
     template_name = "location_list.html"
     context_object_name = 'locations'
+    queryset = pldp_models.Location.objects.all().exclude(is_active=False)
 
 
 class LocationDetail(DetailView):
@@ -143,10 +144,21 @@ class LocationDetail(DetailView):
         return context
 
 
-class LocationDelete(DeleteView):
-    model = pldp_models.Location
-    template_name = "location_delete.html"
-    success_url = reverse_lazy('locations-list')
+class LocationDeactivate(TemplateView):
+    template_name = "location_deactivate.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['location'] = pldp_models.Location.objects.get(id=context['pk'])
+
+        return context
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['location'].is_active = False
+        context['location'].save()
+
+        return redirect('locations-list')
 
 
 class StudyAreaCreate(CreateView):
@@ -175,12 +187,30 @@ class StudyList(ListView):
     model = pldp_models.Study
     template_name = "study_list.html"
     context_object_name = 'studies'
+    queryset = pldp_models.Study.objects.all().exclude(is_active=False)
 
 
 class StudyDelete(DeleteView):
     model = pldp_models.Study
     template_name = "study_delete.html"
     success_url = reverse_lazy('studies-list')
+
+
+class StudyDeactivate(TemplateView):
+    template_name = "study_deactivate.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['study'] = pldp_models.Study.objects.get(id=context['pk'])
+
+        return context
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['study'].is_active = False
+        context['study'].save()
+
+        return redirect('studies-list')
 
 
 class StudyDetail(DetailView):

@@ -37,9 +37,9 @@ urlpatterns = [
         login_required(survey_views.LocationList.as_view()),
         name='locations-list'),
 
-    url(r'locations/delete/(?P<pk>[\w_\-]+)/$',
-        login_required(survey_views.LocationDelete.as_view()),
-        name='locations-delete'),
+    url(r'locations/deactivate/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.LocationDeactivate.as_view()),
+        name='locations-deactivate'),
 
     url(r'locations/detail/(?P<pk>[\w_\-]+)/$',
         login_required(survey_views.LocationDetail.as_view()),
@@ -57,9 +57,9 @@ urlpatterns = [
         login_required(survey_views.StudyList.as_view()),
         name='studies-list'),
 
-    url(r'studies/delete/(?P<pk>[\w_\-]+)/$',
-        login_required(survey_views.StudyDelete.as_view()),
-        name='studies-delete'),
+    url(r'studies/deactivate/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.StudyDeactivate.as_view()),
+        name='studies-deactivate'),
 
     url(r'studies/detail/(?P<pk>[\w_\-]+)/$',
         login_required(survey_views.StudyDetail.as_view()),
