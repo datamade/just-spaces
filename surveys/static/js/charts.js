@@ -188,8 +188,34 @@ ChartHelper.prototype._getObservationalChartData = function(dataSourceId, isCoun
    * @param {String} dataSourceId - The ID of the primary data source to display.
    * @param {Boolean} isCount - Whether or not to show raw counts in the chart.
    */
-  function initChartDataFunc() { return [] };
-  var castFunc = JSON.parse;
+  var choices = this.choices;  // Extract from 'this' so we can use the choices in the following func.
+  function initChartDataFunc() {
+    // Initialize all possible values with a count of 0
+     var dataSourceChoices = choices[dataSourceId];
+     var chartData = [];
+     for (var i=0; i<dataSourceChoices.length; i++) {
+      chartData.push([dataSourceChoices[i][1], 0]);
+     }
+     return chartData;
+  };
+  function castFunc(value) {
+    // Cast choices to their human-readable equivalent
+    var dataSourceChoices = choices[dataSourceId];
+    // Observational data are stored in a JSON blob, so iterate its attributes and
+    // convert them to human-readable format
+    var parsedValue = JSON.parse(value);
+    var humanReadableValue = {};
+    Object.keys(parsedValue).forEach(function(key, idx) {
+      for (var i=0; i<dataSourceChoices.length; i++) {
+        var choice = dataSourceChoices[i][0];
+        if (key === choice) {
+          humanReadableValue[dataSourceChoices[i][1]] = parsedValue[key];
+          break;
+        }
+      }
+    });
+    return humanReadableValue;
+  };
   function updateChartDataFunc(chartData, savedData) {
     Object.keys(savedData).forEach(function(key) {
       var categoryFound = false;
