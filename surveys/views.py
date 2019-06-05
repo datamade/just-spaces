@@ -16,7 +16,7 @@ from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
 
-import .forms as survey_forms
+from . import forms as survey_forms
 from .utils import get_or_none
 from .models import SurveyFormEntry, SurveyChart, CensusArea, CensusObservation
 

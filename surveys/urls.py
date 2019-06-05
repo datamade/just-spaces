@@ -176,5 +176,5 @@ urlpatterns = [
         name='surveys-submitted-detail'),
 
     # API endpoint for retreiving CensusObservation data
-    path('acs/', view=views.census_area_to_observation, name="acs"),
+    path('acs/', view=survey_views.census_area_to_observation, name="acs"),
 ]
