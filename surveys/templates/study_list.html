@@ -10,9 +10,17 @@
   <script type="text/javascript" src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
 {% endblock %}
 
-{% block head %}Studies{% endblock %}
+{% block head %}
+  Studies
+{% endblock %}
 
-{% block subhead %}Text describing what a study is.{% endblock %}
+{% block top_button %}
+  <a class="btn btn-primary ml-auto mr-3" href="{% url 'studies-create' %}">Create new study</a>
+{% endblock %}
+
+{% block subhead %}
+  Text describing what a study is.
+{% endblock %}
 
 {% block card_content %}
   <table id="studies-list" class="table table-hover table-striped table-responsive-sm card-text">

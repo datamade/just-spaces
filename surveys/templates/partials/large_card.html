@@ -5,7 +5,12 @@
 
 <div class="col col-lg-11 card">
   <div class="card-body">
-    <h2 class="card-title">{% block head %}{% endblock %}</h2>
+
+    <div class="row ml-1">
+      <h2 class="card-title">{% block head %}{% endblock %}</h2>
+      {% block top_button %}{% endblock %}
+    </div>
+
     <h5 class="form-text text-muted">{% block subhead %}{% endblock %}</h5>
     <br />
     {% block card_content %}{% endblock %}

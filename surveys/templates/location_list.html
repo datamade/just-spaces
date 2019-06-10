@@ -12,6 +12,11 @@
 
 {% block head %}Locations{% endblock %}
 
+{% block top_button %}
+  <a class="btn btn-primary ml-auto mr-3" href="{% url 'locations-create' %}">Create new location</a>
+{% endblock %}
+
+
 {% block subhead %}Text describing what a location is.{% endblock %}
 
 {% block card_content %}

@@ -12,6 +12,10 @@
 
 {% block head %}{% if published %}Run Survey{% else %}Edit Survey{% endif %}{% endblock %}
 
+{% block top_button %}
+  <a class="btn btn-primary ml-auto mr-3" href="{% url 'surveys-create' %}">Create new survey</a>
+{% endblock %}
+
 {% block card_content %}
   <table id="survey-list" class="table table-hover table-striped table-responsive-sm card-text">
   <thead>
