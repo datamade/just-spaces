@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.postgres import fields as pg_fields
-from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import JSONField
 
-from pldp.models import Agency, Study, Location, SurveyComponent
+from pldp.models import Study, Location, SurveyComponent
 from fobi.models import FormEntry
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
@@ -38,6 +37,8 @@ class SurveyFormEntry(FormEntry):
         choices=SURVEY_TYPE_CHOICES,
         default='intercept'
     )
+
+    is_active = models.BooleanField(default=True)
 
 
 class CensusObservation(models.Model):
