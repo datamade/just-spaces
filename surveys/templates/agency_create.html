@@ -1,17 +1,8 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'partials/large_card.html' %}
 {% load crispy_forms_tags %}
 
-{% block content %}
+{% block head %}Create New Agency{% endblock %}
 
-<div class="col col-lg-10 card">
-  <div class="card-body">
-    <h2 class="card-title">Create New Agency</h2>
-    <small class="form-text text-muted">Text describing what an agency is.</small>
-    <br />
-    {% crispy form %}
-  </div>
-</div>
+{% block subhead %}Text describing what an agency is.{% endblock %}
 
-
-{% endblock %}
+{% block card_content %}{% crispy form %}{% endblock %}

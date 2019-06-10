@@ -1,15 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'partials/large_card.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block content %}
-<div class="col col-lg-10 card">
-  <div class="card-body">
-    <h2 class="card-title">Create New Survey</h2>
-    <small class="form-text text-muted">Text describing what a survey is.</small>
-    <br />
-    {% crispy form %}
-  </div>
-</div>
+{% block head %}Create New Survey{% endblock %}
 
+{% block subhead %}Text describing what a survey is.{% endblock %}
+
+{% block card_content %}
+  {% crispy form %}
 {% endblock %}

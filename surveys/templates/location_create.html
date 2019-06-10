@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'partials/large_card.html' %}
 {% load static %}
 {% load leaflet_tags %}
 {% load crispy_forms_tags %}
@@ -13,21 +13,18 @@
   {% leaflet_js plugins="forms" %}
 {% endblock %}
 
-{% block content %}
-<div class="col col-lg-11 card">
-  <div class="card-body">
-    <h2 class="card-title">Create New Location</h2>
-    <small class="form-text text-muted">Text describing what a location is. View the list of existing locations <a href="{% url 'locations-list' %}">here</a>.</small>
-    <br />
+{% block head %}Create New Location{% endblock %}
 
-    <form class="form-horizontal" name="location-form" method="post">
-      {% crispy form_location %}
-      {% crispy form_location_area %}
-      {% crispy form_location_line %}
-    </form>
-  </div>
-</div>
+{% block subhead %}Text describing what a location is. View the list of existing locations <a href="{% url 'locations-list' %}">here</a>.{% endblock %}
 
-<script type="text/javascript" src="{% static 'js/location_create.js' %}"></script>
+{% block card_content %}
+<form class="form-horizontal" name="location-form" method="post">
+  {% crispy form_location %}
+  {% crispy form_location_area %}
+  {% crispy form_location_line %}
+</form>
+{% endblock %}
 
+{% block footer_js %}
+  <script type="text/javascript" src="{% static 'js/location_create.js' %}"></script>
 {% endblock %}

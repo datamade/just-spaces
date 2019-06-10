@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'partials/large_card.html' %}
 {% load static %}
 {% load leaflet_tags %}
 {% load crispy_forms_tags %}
@@ -13,14 +13,10 @@
   {% leaflet_js plugins="forms" %}
 {% endblock %}
 
-{% block content %}
-<div class="col col-lg-11 card">
-  <div class="card-body">
-    <h2 class="card-title">Create New Study Area</h2>
-    <small class="form-text text-muted">Text describing what a study area is.</small>
-    <br />
-    {% crispy form %}
-  </div>
-</div>
+{% block head %}Create New Study Area{% endblock %}
 
+{% block subhead %}Text describing what a study area is.{% endblock %}
+
+{% block card_content %}
+  {% crispy form %}
 {% endblock %}

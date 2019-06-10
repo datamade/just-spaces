@@ -51,8 +51,8 @@ span {
 
 h5 {
   font-weight: normal;
-  font-size: 1rem;
-  color: var(--gray-color);
+  font-size: .9rem;
+  padding-bottom: 10px;
 }
 
 /* ---------------------------------------------------

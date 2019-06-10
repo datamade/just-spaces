@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'partials/large_card.html' %}
 {% load static %}
 
 {% block extracss %}
@@ -10,40 +10,31 @@
   <script type="text/javascript" src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
 {% endblock %}
 
-{% block content %}
+{% block head %}Submitted Survey Data{% endblock %}
 
-<div class="card">
-  <div class="card-body">
-
-    <h2 class="card-title">Submitted Survey Data</h2>
-    <br />
-
-    <table class="table table-hover table-striped table-responsive-sm card-text">
-    <thead>
+{% block card_content %}
+  <table class="table table-hover table-striped table-responsive-sm card-text">
+  <thead>
+    <tr>
+      <th scope="col">Survey Title</th>
+      <th scope="col">Last Submitted</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for survey in surveys_submitted %}
       <tr>
-        <th scope="col">Survey Title</th>
-        <th scope="col">Last Submitted</th>
+        <td>
+          {% if survey.form_title != '[Deleted Survey]' %}
+            <a href="{% url 'surveys-submitted-detail' survey.form_id %}">
+              {{survey.form_title}}
+            </a>
+          {% else %}
+              {{survey.form_title}}
+          {% endif %}
+        </td>
+        <td>{{survey.time_stop}}</td>
       </tr>
-    </thead>
-    <tbody>
-      {% for survey in surveys_submitted %}
-        <tr>
-          <td>
-            {% if survey.form_title != '[Deleted Survey]' %}
-              <a href="{% url 'surveys-submitted-detail' survey.form_id %}">
-                {{survey.form_title}}
-              </a>
-            {% else %}
-                {{survey.form_title}}
-            {% endif %}
-          </td>
-          <td>{{survey.time_stop}}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-
-  </div>
-</div>
-
+    {% endfor %}
+  </tbody>
+  </table>
 {% endblock %}
