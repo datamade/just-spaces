@@ -2,18 +2,18 @@ GENDER_INTERCEPT_CHOICES = [
     ('', '-------'),
     ('male', 'Male'),
     ('female', 'Female'),
-    ('non-binary', 'Non-binary'),
-    ('no-answer', 'Choose not to answer'),
+    ('non_binary', 'Non-binary'),
+    ('no_answer', 'Choose not to answer'),
 ]
 
 INCOME_CHOICES = [
     ('', '-------'),
-    ('<20k', 'Less than $20,000 per year'),
-    ('20-40k', '$20,000-$40,000 per year'),
-    ('40-60k', '$40,000-$60,000 per year'),
-    ('60-80k', '$60,000-$80,000 per year'),
-    ('80-100k', '$80,000-$100,000 per year'),
-    ('100k+', 'More than $100,000 per year'),
+    ('under_20k', 'Less than $20,000 per year'),
+    ('20_40k', '$20,000-$40,000 per year'),
+    ('40_60k', '$40,000-$60,000 per year'),
+    ('60_75k', '$60,000-$75,000 per year'),  # ACS breakpoint is $75k
+    ('75_100k', '$75,000-$100,000 per year'),
+    ('100k_plus', 'More than $100,000 per year'),
 ]
 
 EDUCATION_CHOICES = [
@@ -39,12 +39,10 @@ RACE_CHOICES = [
 
 EMPLOYMENT_CHOICES = [
     ('', '-------'),
-    ('full_time', 'Working full-time'),
-    ('part_time', 'Working part-time'),
+    ('employed', 'Employed'),
     ('seeking', 'Seeking work'),
     ('not_seeking', 'Not seeking work'),
-    ('student', 'Student'),
-    ('homemaker', 'Homemaker'),
+    ('in_armed_forces', 'In the Armed Forces'),
 ]
 
 OWN_OR_RENT_CHOICES = [
@@ -64,7 +62,6 @@ TRANSPORTATION_CHOICES = [
     ('bus', 'Bus'),
     ('trolley', 'Trolley'),
     ('ferryboat', 'Ferryboat'),
-    ('rideshare', 'Rideshare'),
-    ('taxicab', 'Taxicab'),
+    ('taxicab', 'Taxicab or rideshare'),
     ('other_means', 'Other'),
 ]

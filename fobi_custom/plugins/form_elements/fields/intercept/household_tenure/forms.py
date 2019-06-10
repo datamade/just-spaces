@@ -10,7 +10,7 @@ class HouseholdTenureForm(forms.Form, BaseFormFieldPluginForm):
     """HouseholdTenureForm."""
 
     plugin_data_fields = [
-        ("label", "How many years have you lived at your current address?"),
+        ("label", "What year did you move into your current address?"),
         ("name", "name"),
         ("age", ""),
         ("help_text", ""),

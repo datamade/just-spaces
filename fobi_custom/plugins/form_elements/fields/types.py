@@ -1,7 +1,5 @@
 from fobi.utils import get_registered_form_element_plugins
 
-from datetime import datetime
-
 # Valid SurveyComponent types for the Data Analysis Designer (DAD). These are
 # the UIDs of Fobi form elements that can sensibly be turned into charts.
 
@@ -30,12 +28,9 @@ INTERCEPT_TYPES = [
 # they allow the user to freely respond with a numeric response to a question,
 # which we can then bin and display as a distribution. Because the responses
 # only store a number, we need to preset the boundaries of the bins.
-curr_year = datetime.now().year
 FREE_RESPONSE_INTERCEPT_BINS = {
-    'age_intercept': [5, 10, 15, 18, 20, 21, 22, 25, 30, 35, 40, 45, 50, 55, 60,
-                      62, 65, 67, 70, 75, 80, 85],
-    'household_tenure': [curr_year-2015, curr_year-2010, curr_year-2000,
-                         curr_year-1990, curr_year-1980],
+    'age_intercept': [5, 15, 25, 45, 65, 75],
+    'household_tenure': [1980, 1990, 2000, 2010, 2015],
 }
 FREE_RESPONSE_INTERCEPT_TYPES = list(FREE_RESPONSE_INTERCEPT_BINS.keys())
 
@@ -48,14 +43,39 @@ ALL_INVALID_TYPES = list(set(ALL_TYPES) - set(ALL_VALID_TYPES))
 
 # A list of types with their corresponding ACS variables.
 TYPES_TO_ACS_VARIABLES = {
-    'age_observational': 'age_and_sex',
-    'gender_observational': 'age_and_sex',
-    'age_intercept': 'age_and_sex',
-    'gender_intercept': 'age_and_sex',
-    'income': 'household_income',
-    'education': 'educational_attainment',
-    'race': 'race',
-    'employment': 'employment_status',
-    'household_tenure': 'household_tenure',
-    'transportation': 'means_of_transit'
+    'age_observational': {
+        'basic': 'age_basic',
+        'detailed': 'age_detailed',
+        'complex': 'age_complex'
+    },
+    'gender_observational': {
+        'basic': 'gender_observational',
+    },
+    'age_intercept': {
+        'basic': 'age_detailed',
+    },
+    'gender_intercept': {
+        'basic': 'gender_intercept',
+    },
+    'income': {
+        'basic': 'income',
+    },
+    'education': {
+        'basic': 'education',
+    },
+    'race': {
+        'basic': 'race',
+    },
+    'employment': {
+        'basic': 'employment',
+    },
+    'household_tenure': {
+        'basic': 'household_tenure',
+    },
+    'own_or_rent': {
+        'basic': 'own_or_rent',
+    },
+    'transportation': {
+        'basic': 'transportation',
+    },
 }

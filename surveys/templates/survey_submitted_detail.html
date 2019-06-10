@@ -93,7 +93,7 @@
     <hr />
 
     <div class="float-right">
-      <button id="clear-charts" class="btn btn-link">Clear charts</button>
+      <button id="clear-charts" class="btn btn-link mt-3">Clear charts</button>
       <button id="save-charts" class="btn btn-primary">Save charts</button>
     </div>
   </div>
@@ -127,7 +127,8 @@ $(document).ready(function () {
   var surveys = JSON.parse('{{ surveys_submitted_json | escapejs }}');
   var types = JSON.parse('{{ types | escapejs }}');
   var bins = JSON.parse('{{ bins | escapejs }}');
-  charts = new ChartHelper(surveys, types, bins);
+  var choices = JSON.parse('{{ choices | escapejs }}');
+  charts = new ChartHelper(surveys, types, bins, choices);
 
   // Load ACS variable map for Fobi types
   var acsCompatibleTypes = JSON.parse('{{ acs_compatible_types | escapejs }}');
@@ -267,19 +268,28 @@ $(document).ready(function () {
   $('form').on('change', censusSelectBox, function(event) {
     // Listen to ACS data source multiselect boxes, and update the charts when the
     // data source changes
-    var geographies = $(this).val();  // The value will be an array, and may be empty
     var primarySourceId = $(this).parents(chartContainer).find('select[name$="primary_source"]').val();
+    var chartId = $(this).parents(chartContainer).find('.highcharts-chart').first().attr('id');
+    charts.removeAllAcsSeries(chartId);
+
+    var geographies = $(this).find('option:selected').map(function() {
+      return {id: $(this).val(), label: $(this).text()};
+    });
     if (geographies.length > 0) {
       for (var i=0; i<geographies.length; i++) {
-        var geographyId = geographies[i];
-        var dataUrl = "{% url 'acs' %}?census_area=" + geographyId + "&primary_source=" + primarySourceId;
-        $.getJSON(dataUrl).done(function(data) {
-          // TODO: Display this data on the chart
-          console.log(data);
-        }).fail(function(jqxhr, textStatus, error) {
-          var err = textStatus + ", " + error;
-          console.log("Request to " + dataUrl + " failed: " + err);
-        });
+        var geography = geographies[i];
+        var dataUrl = "{% url 'acs' %}?census_area=" + geography.id + "&primary_source=" + primarySourceId;
+        // Since the following code executes asynchronously, wrap it in an immediately
+        // executed function in order to ensure that the proper geography label is
+        // applied. See: https://stackoverflow.com/a/15347771
+        (function(geographyLabel) {
+          $.getJSON(dataUrl).done(function(acsData) {
+            charts.addAcsSeries(chartId, acsData, geographyLabel);
+          }).fail(function(jqxhr, textStatus, error) {
+            var err = textStatus + ", " + error;
+            console.log("Request to " + dataUrl + " failed: " + err);
+          });
+        })(geography.label);
       }
     }
   });

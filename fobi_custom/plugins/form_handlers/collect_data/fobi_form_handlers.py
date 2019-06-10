@@ -64,6 +64,7 @@ class CollectDataPlugin(FormHandlerPlugin):
                         label=element_info['label'],
                         type=element_info['type'],
                         position=element_info['position'],
+                        detail_level=element_info['detail_level'],
                         saved_data=element_info['saved_data']
                     )
 
@@ -81,6 +82,7 @@ class CollectDataPlugin(FormHandlerPlugin):
                 'name': name,
                 'saved_data': self.form.cleaned_data[name],
                 'label': json_plugin_data['label'],
+                'detail_level': json_plugin_data.get('detail_level', 'basic'),
                 'type': form_element.plugin_uid,
                 'position': form_element.position,
             }

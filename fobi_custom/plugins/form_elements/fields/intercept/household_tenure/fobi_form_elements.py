@@ -9,7 +9,7 @@ class HouseholdTenurePlugin(FormFieldPlugin):
     """HouseholdTenurePlugin."""
 
     uid = "household_tenure"
-    name = "How many years have you lived at your current address?"
+    name = "What year did you move into your current address?"
     form = HouseholdTenureForm
     group = "Intercept"  # Group to which the plugin belongs to
 

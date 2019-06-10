@@ -384,21 +384,32 @@ class SurveySubmittedDetail(TemplateView):
                                                        default=str)
 
         # Fobi types, bins, and ACS variables for use in charting
-        types = {
+        context['types'] = json.dumps({
             'count': fobi_types.COUNT_TYPES,
             'observational': fobi_types.OBSERVATIONAL_TYPES,
             'observationalCount': fobi_types.OBSERVATIONAL_COUNT_TYPES,
             'intercept': fobi_types.INTERCEPT_TYPES,
             'freeResponseIntercept': fobi_types.FREE_RESPONSE_INTERCEPT_TYPES,
-        }
-        bins = {
+        })
+        context['bins'] = json.dumps({
             'freeResponseIntercept': fobi_types.FREE_RESPONSE_INTERCEPT_BINS,
-        }
-        context['types'] = json.dumps(types)
-        context['bins'] = json.dumps(bins)
+        })
         context['acs_compatible_types'] = json.dumps(
             list(fobi_types.TYPES_TO_ACS_VARIABLES.keys())
         )
+        # Get the possible choices for each survey question
+        choices = {}
+        for formelemententry in context['form_entry'].formelemententry_set.all():
+            plugin = formelemententry.get_plugin()
+            form_field_instance = plugin.get_form_field_instances()[0]
+            form_field_name = form_field_instance[0]
+            # Plugin choices look like: [('', '-------'), ('owner', 'Homeowner'), ('renter', 'Renter')]
+            if form_field_instance[2].get('choices'):
+                form_field_choices = [[choice[0], choice[1]]
+                                      for choice in form_field_instance[2]['choices']
+                                      if choice[0] != '']
+                choices[form_field_name] = form_field_choices
+        context['choices'] = json.dumps(choices)
 
         first_survey = context['surveys_submitted'][0]
         context['questions'] = first_survey.components.values_list('label', flat=True)
