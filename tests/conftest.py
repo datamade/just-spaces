@@ -125,9 +125,28 @@ def survey_form_entry(db, user, location, study):
 
 @pytest.fixture
 @pytest.mark.django_db
+def survey_form_entry_inactive(db, user, location, study):
+    survey_form_entry_info = {
+        'id': 2,
+        'user': user,
+        'name': 'Sample Form Entry Inactive',
+        'published': True,
+        'location': location,
+        'study': study,
+        'type': 'intercept',
+        'active': False,
+    }
+
+    survey_form_entry_inactive = SurveyFormEntry.objects.create(**survey_form_entry_info)
+
+    return survey_form_entry_inactive
+
+
+@pytest.fixture
+@pytest.mark.django_db
 def survey_form_entry_observational(db, user, location, study):
     survey_form_entry_observational_info = {
-        'id': 2,
+        'id': 3,
         'user': user,
         'name': 'Sample Form Entry Observational',
         'published': False,

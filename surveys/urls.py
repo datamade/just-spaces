@@ -125,6 +125,11 @@ urlpatterns = [
         view=fobi.views.delete_form_entry,
         name='fobi.delete_form_entry'),
 
+    # Deactivate survey
+    url(_(r'^surveys/deactivate/(?P<pk>[\w_\-]+)/$'),
+        view=survey_views.SurveyDeactivate.as_view(),
+        name='surveys-deactivate'),
+
     # Publish survey
     url(_(r'^surveys/publish/(?P<form_entry_id>\d+)/$'),
         view=survey_views.SurveyPublish.as_view(),

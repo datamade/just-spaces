@@ -22,7 +22,7 @@ def test_survey_form_entry(client, user, survey_form_entry):
 
 @pytest.mark.django_db
 def test_survey_form_entry_observational(client, user, survey_form_entry_observational, form_element_observational):
-    saved_survey_form_entry = SurveyFormEntry.objects.get(id=2)
+    saved_survey_form_entry = SurveyFormEntry.objects.get(id=3)
 
     assert saved_survey_form_entry.name == 'Sample Form Entry Observational'
     assert not saved_survey_form_entry.published

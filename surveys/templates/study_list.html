@@ -35,7 +35,7 @@
           <td>{{study.agency}}</td>
           <td>{{study.manager_name}}</td>
           <td>{{study.manager_email}}</td>
-          <td class="text-center"><a href="{% url 'studies-deactivate' study.id %}"><i class="fas fa-times-circle icon delete"></i></a></td>
+          <td class="text-center"><a href="{% url 'studies-deactivate' study.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
         </tr>
       {% endfor %}
     </tbody>

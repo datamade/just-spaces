@@ -96,7 +96,7 @@ def test_location_detail(client, user, location):
 
 
 @pytest.mark.django_db
-def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_observational):
+def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_inactive, survey_form_entry_observational):
     client.force_login(user)
     url = reverse('surveys-list-edit')
     response = client.get(url)
@@ -108,7 +108,7 @@ def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_obs
 
 
 @pytest.mark.django_db
-def test_survey_list_run(client, user, survey_form_entry, survey_form_entry_observational):
+def test_survey_list_run(client, user, survey_form_entry, survey_form_entry_inactive, survey_form_entry_observational):
     client.force_login(user)
     url = reverse('surveys-list-run')
     response = client.get(url)
