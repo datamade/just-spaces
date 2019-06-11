@@ -110,6 +110,24 @@ def test_survey_form(client, user, study, location):
 
 
 @pytest.mark.django_db
+def test_survey_deactivate(client, user, survey_form_entry):
+    client.force_login(user)
+    assert survey_form_entry.active
+
+    url = reverse('surveys-deactivate', kwargs={'pk': survey_form_entry.id})
+
+    get_response = client.get(url)
+
+    assert get_response.status_code == 200
+
+    post_response = client.post(url)
+    survey_form_entry.refresh_from_db()
+
+    assert post_response.status_code == 302
+    assert not survey_form_entry.active
+
+
+@pytest.mark.django_db
 def test_survey_publish(client, survey_form_entry_observational):
     assert not survey_form_entry_observational.published
 

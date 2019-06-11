@@ -35,7 +35,7 @@
           <td>{{location.geometry_type}}</td>
           <td>{{location.subdivision}}</td>
           <td>{{location.character}}</td>
-          <td class="text-center"><a href="{% url 'locations-deactivate' location.id %}"><i class="fas fa-times-circle icon delete"></i></a></td>
+          <td class="text-center"><a href="{% url 'locations-deactivate' location.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
         </tr>
       {% endfor %}
     </tbody>

@@ -293,6 +293,23 @@ class SurveyPropertiesEdit(UpdateView):
         return success_url
 
 
+class SurveyDeactivate(TemplateView):
+    template_name = "survey_deactivate.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = SurveyFormEntry.objects.get(id=context['pk'])
+
+        return context
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['object'].active = False
+        context['object'].save()
+
+        return redirect('surveys-list-edit')
+
+
 class SurveyPublish(TemplateView):
     template_name = "survey_publish.html"
 
@@ -317,7 +334,7 @@ class SurveyListEdit(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].filter(published=False).order_by('-updated')
+        context['surveys'] = context['surveys'].exclude(active=False).filter(published=False).order_by('-updated')
         context['published'] = False
 
         return context
@@ -330,7 +347,7 @@ class SurveyListRun(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].filter(published=True).order_by('-updated')
+        context['surveys'] = context['surveys'].exclude(active=False).filter(published=True).order_by('-updated')
         context['published'] = True
 
         return context
