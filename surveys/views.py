@@ -283,7 +283,7 @@ class SurveyCreate(CreateView):
 class SurveyPropertiesEdit(UpdateView):
     model = SurveyFormEntry
     template_name = "survey_properties_edit.html"
-    form_class = survey_forms.SurveyCreateForm
+    form_class = survey_forms.SurveyEditForm
     context_object_name = 'form_object'
 
     def get_success_url(self):

@@ -174,6 +174,23 @@ class SurveyCreateForm(JustSpacesForm):
         }
 
 
+class SurveyEditForm(JustSpacesForm):
+    def __init__(self, *args, **kwargs):
+        super(SurveyEditForm, self).__init__(*args, **kwargs)
+        self.fields['study'].required = True
+        self.fields['location'].required = True
+
+    class Meta:
+        model = SurveyFormEntry
+        fields = ['user', 'name', 'study', 'location', 'type', 'active']
+        widgets = {
+            'user': forms.HiddenInput(),
+            'type': forms.HiddenInput(),
+            'active': forms.HiddenInput(),
+        }
+
+
+
 class SurveyChartForm(forms.ModelForm):
     class Meta:
         model = SurveyChart

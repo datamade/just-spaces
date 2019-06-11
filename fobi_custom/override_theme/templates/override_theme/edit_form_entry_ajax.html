@@ -3,8 +3,12 @@
 <div class="col col-lg-11 card">
   <div class="card-body">
 
-   <h2 class="card-title">{% trans "Edit" %} <span class="font-italic">{{form_entry.surveyformentry.name}}</span></h2>
-   <small class="form-text text-muted">Add, edit, delete, and reorder survey questions</small>
+  <div class="row ml-1">
+    <h2 class="card-title">{% trans "Edit" %} <span class="font-italic">{{form_entry.surveyformentry.name}}</span></h2>
+    <a class="btn btn-secondary ml-auto mr-3" href="{% url 'fobi.view_form_entry' form_entry.slug %}" target="_blank">Preview {{form_entry.surveyformentry.name}}</a>
+  </div>
+
+   <h5 class="form-text text-muted">Add, edit, delete, and reorder survey questions</h5>
    <br />
 
    <ul class="nav nav-tabs" id="surveyTabs" role="tablist">
@@ -58,31 +62,12 @@
 
            <div class="control-group">
              <div class="controls">
-               <button type="submit" name="ordering" class="btn btn-primary float-right">{% trans "Save ordering" %}</button>
+               <button type="submit" name="ordering" class="btn btn-primary float-right">{% trans "Save and exit" %}</button>
              </div>
            </div>
          </form>
 
        </div>
-     </div>
-
-     <div class="tab-pane fade" id="survey-properties" role="tabpanel" aria-labelledby="survey-properties">
-
-       <div class="panel panel-default">
-          <div class="panel-body">
-            <form method="post" action="{{ request.path }}?active_tab=tab-form-properties" enctype="multipart/form-data" class="{% block form_properties_html_class %}form-horizontal{% endblock %}">
-              {% csrf_token %}
-              {% include fobi_theme.form_snippet_template_name %}
-
-              <div class="{% block form_properties_button_outer_wrapper_html_class %}control-group{% endblock %}">
-                <div class="{% block form_properties_button_wrapper_html_class %}controls{% endblock %}">
-                  <input type="submit" class="{% block form_properties_button_html_class %}btn btn-primary float-right{% endblock %}" value="{% trans 'Submit changes' %}"/>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-
      </div>
 
    </div>
