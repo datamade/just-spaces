@@ -329,7 +329,7 @@ class SurveyPublish(TemplateView):
 
 class SurveyListEdit(ListView):
     model = SurveyFormEntry
-    template_name = "survey_list.html"
+    template_name = "survey_list_edit.html"
     context_object_name = 'surveys'
 
     def get_context_data(self, **kwargs):
@@ -342,7 +342,7 @@ class SurveyListEdit(ListView):
 
 class SurveyListRun(ListView):
     model = SurveyFormEntry
-    template_name = "survey_list.html"
+    template_name = "survey_list_run.html"
     context_object_name = 'surveys'
 
     def get_context_data(self, **kwargs):
