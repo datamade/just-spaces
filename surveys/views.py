@@ -15,6 +15,7 @@ from users.models import JustSpacesUser
 from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
+from fobi import models as fobi_models
 
 from . import forms as survey_forms
 from .utils import get_or_none
@@ -349,6 +350,16 @@ class SurveyListRun(ListView):
         context = super().get_context_data(**kwargs)
         context['surveys'] = context['surveys'].exclude(active=False).filter(published=True).order_by('-updated')
         context['published'] = True
+
+        for survey in context['surveys']:
+            survey_questions = fobi_models.FormElementEntry.objects.all().filter(form_entry_id=survey.id)
+            survey.question_count = len(survey_questions)
+
+            try:
+                last_run = pldp_models.Survey.objects.all().filter(form_id=survey.id).order_by('-time_stop')[0].time_stop
+                survey.last_run = last_run
+            except IndexError:
+                survey.last_run = '-'
 
         return context
 
