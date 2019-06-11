@@ -398,6 +398,10 @@ a.article:hover {
    height: 450px;
  }
 
+ textarea.form-control {
+    height: 100px;
+}
+
 /* ---------------------------------------------------
     DATA ANALYSIS DESIGNER
 ----------------------------------------------------- */

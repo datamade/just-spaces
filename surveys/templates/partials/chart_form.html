@@ -1,7 +1,11 @@
+{% load widget_tweaks %}
+
 <div class="chart-container-{{chart_id}} row">
   <div class="col-sm-12">
     <div class="card bg-light mb-3 p-3 ml-auto">
-      <div class="card-block">
+
+      <div class="row row ml-1">
+
         <div class="float-left portlet-handle mr-2">
           <i title="Click and drag to reposition chart" class="fa fa-fw fa-bars"></i>
         </div>
@@ -9,7 +13,7 @@
           <button
             type="button"
             title="Move chart up"
-            class="btn btn-outline-secondary btn-sm move-chart-up"
+            class="btn btn-outline-secondary btn-sm move-chart-up mt-0"
             id="move-chart-down-{{chart_id}}"
             onclick="event.preventDefault()"
           >
@@ -18,7 +22,7 @@
           <button
             type="button"
             title="Move chart down"
-            class="btn btn-outline-secondary btn-sm move-chart-down"
+            class="btn btn-outline-secondary btn-sm move-chart-down mt-0"
             id="move-chart-down-{{chart_id}}"
             onclick="event.preventDefault()"
           >
@@ -27,63 +31,58 @@
         </div>
         <button
           type="button"
-          class="btn btn-danger float-right delete-chart"
+          class="btn btn-danger delete-chart ml-auto mr-3 mt-0"
           id="delete-chart-{{chart_id}}"
           onclick="event.preventDefault()"
         >
           Remove
         </button>
       </div>
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <td>
-              <div
-                class="highcharts-chart my-2"
-                id="highcharts-chart-{{chart_id}}">
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <label for="id_form-{{chart_id}}-primary_source">
-                Survey question:
-              </label>
-            </th>
-            <td>
-              {{form.primary_source}}
-            </td>
-          </tr>
-          <tr id="id_form-{{chart_id}}-container-census_areas" style="display:none">
-            <th>
-              <label for="id_form-{{chart_id}}-census_areas">
-                Compare to Census geographies:
-              </label>
-            </th>
-            <td>
-              {{form.census_areas}}
-            </td>
-          <tr>
-            <th>
-              <label for="id_form-{{chart_id}}-short_description">
-                Short description:
-              </label>
-            </th>
-            <td>
-              {{form.short_description}}
-              {{form.order}}
-              {{form.id}}
-              <!-- Use display:none instead of type="hidden" so that JQuery can check/uncheck the input -->
-              <input type="checkbox"
-                style="display: none"
-                name="form-{{chart_id}}-DELETE"
-                id="id_form-{{chart_id}}-DELETE"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+      <div class="form-horizontal">
+        <div
+          class="highcharts-chart my-2"
+          id="highcharts-chart-{{chart_id}}">
+        </div>
+
+        <br />
+
+        <div class="form-group row">
+          <label for="id_form-{{chart_id}}-primary_source" class="col-form-label col-lg-3">
+            Survey question:
+          </label>
+          <div class="col-lg-9">
+            {{form.primary_source | attr:"class:form-control"}}
+          </div>
+        </div>
+
+        <div class="form-group row" id="id_form-{{chart_id}}-container-census_areas" style="display:none">
+          <label for="id_form-{{chart_id}}-census_areas" class="col-form-label col-lg-3">
+            Compare to Census:
+          </label>
+          <div class="col-lg-9">
+            {{form.census_areas | attr:"class:form-control basic-multiple"}}
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="id_form-{{chart_id}}-short_description" class="col-form-label col-lg-3">
+            Short description:
+          </label>
+          <div class="col-lg-9">
+            {{form.short_description | attr:"class:form-control"}}
+            {{form.order}}
+            {{form.id}}
+            <!-- Use display:none instead of type="hidden" so that JQuery can check/uncheck the input -->
+            <input type="checkbox"
+              style="display: none"
+              name="form-{{chart_id}}-DELETE"
+              id="id_form-{{chart_id}}-DELETE"
+            />
+          </div>
+        </div>
+      </div>
+
       {% if form.errors %}
         <div class="alert alert-danger mt-3">
           <h4>Errors</h4>
