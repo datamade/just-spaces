@@ -36,6 +36,10 @@
 
 {% block subhead %}Use this view to look at and construct analyses of your collected data.{% endblock %}
 
+{% block top_button %}
+  <a class="btn btn-primary ml-auto mr-3" href="{% url 'surveys-submitted-list' %}">Back to collected data list</a>
+{% endblock %}
+
 {% block card_content %}
     <h4 class="card-title">Export</h5>
     <br />

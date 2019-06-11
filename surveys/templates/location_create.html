@@ -15,7 +15,11 @@
 
 {% block head %}Create New Location{% endblock %}
 
-{% block subhead %}Text describing what a location is. View the list of existing locations <a href="{% url 'locations-list' %}">here</a>.{% endblock %}
+{% block subhead %}Text describing what a location is.{% endblock %}
+
+{% block top_button %}
+  <a class="btn btn-primary ml-auto mr-3" href="{% url 'locations-list' %}">View existing locations</a>
+{% endblock %}
 
 {% block card_content %}
 <form class="form-horizontal" name="location-form" method="post">

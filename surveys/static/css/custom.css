@@ -55,6 +55,11 @@ h5 {
   padding-bottom: 10px;
 }
 
+.card-title {
+    margin-top: .75rem;
+    margin-bottom: 0rem;
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLES
 ----------------------------------------------------- */
