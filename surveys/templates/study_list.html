@@ -30,7 +30,7 @@
       <th scope="col">Agency</th>
       <th scope="col">Manager</th>
       <th scope="col">Manager Email</th>
-      <th class="text-center" scope="col">Deactivate</th>
+      <th class="text-center" scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -52,6 +52,10 @@
   $(document).ready( function () {
     $('#studies-list').DataTable({
       lengthChange: false,
+      columnDefs: [{
+        targets: [4],
+        orderable: false,
+      }],
     });
   } );
   </script>

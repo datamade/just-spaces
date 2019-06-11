@@ -18,7 +18,7 @@
 
 
 {% block card_content %}
-  <table class="table table-hover table-striped table-responsive-sm card-text">
+  <table id="submitted-survey-list" class="table table-hover table-striped table-responsive-sm card-text">
   <thead>
     <tr>
       <th scope="col">Survey Title</th>
@@ -42,4 +42,14 @@
     {% endfor %}
   </tbody>
   </table>
+{% endblock %}
+
+{% block footer_js %}
+  <script>
+  $(document).ready( function () {
+    $('#submitted-survey-list').DataTable({
+      lengthChange: false,
+    });
+  } );
+  </script>
 {% endblock %}

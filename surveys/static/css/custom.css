@@ -382,8 +382,16 @@ a.article:hover {
   font-weight: 600;
 }
 
- .icon-pink, .code {
+ .icon-pink, .code, .publish, .run {
    color: var(--pink-color);
+ }
+
+ .edit {
+   color: var(--dark-green-color);
+ }
+
+ .preview {
+   color: var(--medium-green-color);
  }
 
  .leaflet-container {

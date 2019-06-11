@@ -21,8 +21,7 @@
   <thead>
     <tr>
       <th scope="col">Survey Name</th>
-      <th scope="col">Created</th>
-      <th scope="col">Updated</th>
+      <th scope="col">Last Updated</th>
       <th scope="col">Type</th>
       {% if published %}
       <th class="text-center" scope="col">Run</th>
@@ -38,7 +37,6 @@
     {% for survey in surveys %}
       <tr>
         <td><b>{{survey.name}}</b></td>
-        <td>{{survey.created}}</td>
         <td>{{survey.updated}}</td>
         <td>{{survey.type | title}}</td>
         {% if published %}
@@ -60,6 +58,10 @@
     $(document).ready( function () {
       $('#survey-list').DataTable({
         lengthChange: false,
+        columnDefs: [{
+          targets: [3, 4, 5, 6],
+          orderable: false,
+        }],
       });
     } );
   </script>
