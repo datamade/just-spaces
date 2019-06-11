@@ -30,14 +30,19 @@ class ObjectsObservationalForm(forms.Form, BaseFormFieldPluginForm):
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
 
-    help_text = forms.CharField(
-        label=_("Help text"),
-        required=False,
-        widget=forms.widgets.Textarea(
-            attrs={'class': theme.form_element_html_class}
-        )
-    )
+    help_text = forms.CharField(label=_("Help text"),
+                                required=False,
+                                widget=forms.widgets.Textarea(
+                                attrs={'class': theme.form_element_html_class}),
+                                help_text="This text will show up under the \
+                                          question and provide the \
+                                          survey taker with additional \
+                                          information."
+                                )
 
-    required = forms.BooleanField(label="Required", required=False)
+    required = forms.BooleanField(label="Required",
+                                  required=False,
+                                  help_text="Is answering this question required to submit the survey?")
+
 
 ObjectsObservationalFormset = forms.formset_factory(ObjectsObservationalForm)
