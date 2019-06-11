@@ -22,7 +22,7 @@
     <tr>
       <th scope="col">Survey Name</th>
       <th scope="col">Type</th>
-      <th scope="col">Questions</th>
+      <th scope="col">Length</th>
       <th scope="col">Last Run</th>
       <th class="text-center" scope="col">Run</th>
       <th class="text-center" scope="col">Delete</th>
@@ -32,8 +32,12 @@
     {% for survey in surveys %}
       <tr>
         <td><b>{{survey.name}}</b></td>
-        <td>{{survey.type | title}}</td>
-        <td>{{survey.question_count}}</td>
+        <td>{{survey.type}}</td>
+        {% if survey.question_count == 1 %}
+          <td>{{survey.question_count}} question</td>
+        {% else %}
+          <td>{{survey.question_count}} questions</td>
+        {% endif %}
         <td>{{survey.last_run}}</td>
         <td class="text-center"><a class="btn btn-primary mt-0" href="{% url 'fobi.view_form_entry' survey.slug %}">Run survey</a></td>
         <td class="text-center"><a href="{% url 'surveys-deactivate' survey.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
