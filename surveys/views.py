@@ -475,6 +475,7 @@ class SurveySubmittedDetail(TemplateView):
                     survey_chart = form.save(commit=False)
                     survey_chart.form_entry = form.form_entry
                     survey_chart.save()
+                    form.save_m2m()  # Save CensusArea related objects
             messages.success(request, 'Charts saved!')
         else:
             messages.error(request, 'Chart validation failed! See charts below for more detail.')
