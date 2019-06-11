@@ -9,24 +9,10 @@
         <ul class="list-unstyled components">
             {% if user.is_authenticated %}
             <li>
-                <a href="#createSurveySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <i class="fas fa-sm fa-home"></i>
-                    Create new...
+                <a href="{% url 'surveys-create' %}">
+                    <i class="fa fa-plus-circle icon edit"></i>
+                    Create new survey
                 </a>
-                <ul class="collapse list-unstyled" id="createSurveySubmenu">
-                    <li>
-                        <a href="{% url 'agencies-create' %}">- Agency</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'studies-create' %}">- Study</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'locations-create' %}">- Survey Location</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'surveys-create' %}">- Survey</a>
-                    </li>
-                </ul>
             </li>
             <li>
                 <a href="{% url 'surveys-list-edit' %}">
@@ -45,6 +31,23 @@
                     <i class="fas fa-copy"></i>
                     View collected data
                 </a>
+            </li>
+            <li>
+                <a href="#createSurveySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-sm fa-home"></i>
+                    Admin
+                </a>
+                <ul class="collapse list-unstyled" id="createSurveySubmenu">
+                    <li>
+                        <a href="{% url 'agencies-create' %}">- Create Agency</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'studies-create' %}">- Create Study</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'locations-create' %}">- Create Survey Location</a>
+                    </li>
+                </ul>
             </li>
             {% endif %}
             <li>
@@ -71,7 +74,11 @@
             <div><a class="btn-sidebar" href="{% url 'signup' %}">Create new account</a></div>
             {% endif %}
             <br />
-            <div class="about-blurb"><strong>Just Spaces</strong> is a tool from <a class="about-link" href="https://www.universitycity.org/" target=_blank>University City District</a> and <a class="about-link" href="https://datamade.us/" target=_blank>DataMade</a> to promote better and more just public spaces</div>
+            <div class="about-blurb">
+              <strong>Just Spaces</strong> is a tool from <a class="about-link" href="https://www.universitycity.org/" target=_blank>University City District</a> to promote better and more just public spaces
+            </div>
+            <br />
+            <div>Built by <a class="about-link" href="https://datamade.us/" target=_blank>DataMade</a></div>
         </ul>
     </nav>
 
