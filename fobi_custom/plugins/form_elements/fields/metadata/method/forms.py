@@ -2,6 +2,8 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from fobi.base import BaseFormFieldPluginForm, get_theme
+
+from ...utils import choices_to_help_text
 from pldp.forms import SURVEY_METHOD_CHOICES
 
 
@@ -14,18 +16,23 @@ class PLDPSurveyMethodForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "Which method will be used for this survey?"),
         ("name", "name"),
-        ("default", ""),
+        ("default", "digital application"),
         ("help_text", ""),
-        ("required", True),
+        ("required", False),
     ]
 
-    label = forms.CharField(label="Question text",
-                            required=True,
-                            )
+    label = forms.CharField(
+        label="Question text",
+        required=True,
+        help_text="Following categories defined by the Public Life Data Protocol, the following \
+                  options will be provided: <br /><br />" +
+                  choices_to_help_text(SURVEY_METHOD_CHOICES)
+        )
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
 
-    default = forms.ChoiceField(choices=SURVEY_METHOD_CHOICES,
+    default = forms.ChoiceField(label="Default answer",
+                                choices=SURVEY_METHOD_CHOICES,
                                 help_text="Select the method that will be used "
                                 "for this survey. This will be the default, "
                                 "but users will be able to change this "
@@ -39,7 +46,15 @@ class PLDPSurveyMethodForm(forms.Form, BaseFormFieldPluginForm):
         required=False,
         widget=forms.widgets.Textarea(
             attrs={'class': theme.form_element_html_class}
-        )
+        ),
+        help_text="This text will show up under the \
+                  question and provide the \
+                  survey taker with additional \
+                  information."
     )
 
-    required = forms.BooleanField(label="Required", required=False)
+    required = forms.BooleanField(
+        label="Required",
+        required=False,
+        help_text="Is answering this question required to submit the survey?"
+    )
