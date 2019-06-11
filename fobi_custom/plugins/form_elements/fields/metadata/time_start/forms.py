@@ -16,7 +16,7 @@ class TimeStartForm(forms.Form, BaseFormFieldPluginForm):
         ("required", True),
     ]
 
-    label = forms.CharField(label="Label",
+    label = forms.CharField(label="Question text",
                             required=True)
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())

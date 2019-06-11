@@ -16,7 +16,7 @@ class TemperatureCForm(forms.Form, BaseFormFieldPluginForm):
         ("required", False),
     ]
 
-    label = forms.CharField(label="Label",
+    label = forms.CharField(label="Question text",
                             required=True)
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())

@@ -21,7 +21,7 @@ class PostureObservationalForm(forms.Form, BaseFormFieldPluginForm):
         ("required", False),
     ]
 
-    label = forms.CharField(label="Label",
+    label = forms.CharField(label="Question text",
                             required=True,
                             help_text="Use this survey question to count the \
                             primary postures of a group of people.")

@@ -16,7 +16,7 @@ class GenderObservationalForm(forms.Form, BaseFormFieldPluginForm):
         ("required", False),
     ]
 
-    label = forms.CharField(label="Label",
+    label = forms.CharField(label="Question text",
                             required=True,
                             help_text="Use this survey element to count the \
                             observed genders of a group of people. Options are \

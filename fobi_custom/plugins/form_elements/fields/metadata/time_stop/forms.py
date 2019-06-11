@@ -16,7 +16,7 @@ class TimeStopForm(forms.Form, BaseFormFieldPluginForm):
         ("required", True),
     ]
 
-    label = forms.CharField(label="Label",
+    label = forms.CharField(label="Question text",
                             required=True,
                             help_text="If this question is left blank or "
                             "not included, end time will be recorded as "

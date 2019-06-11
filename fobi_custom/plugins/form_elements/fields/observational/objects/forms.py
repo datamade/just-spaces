@@ -20,7 +20,7 @@ class ObjectsObservationalForm(forms.Form, BaseFormFieldPluginForm):
         ("required", False),
     ]
 
-    label = forms.CharField(label="Label",
+    label = forms.CharField(label="Question text",
                             required=True,
                             help_text="Use this survey question to count the \
                             activities of a group of people. Following the \

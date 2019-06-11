@@ -3,6 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from fobi.base import BaseFormFieldPluginForm, get_theme
 
+from ...utils import choices_to_help_text_skip_first
+from ..forms import INCOME_CHOICES
 
 theme = get_theme(request=None, as_instance=True)
 
@@ -17,9 +19,13 @@ class IncomeForm(forms.Form, BaseFormFieldPluginForm):
         ("required", False),
     ]
 
-    label = forms.CharField(label="Label",
-                            required=True,
-                            )
+    label = forms.CharField(
+        label="Question text",
+        required=True,
+        help_text="Following categories defined by the Census, the following \
+                  options will be provided: <br /><br />" +
+                  choices_to_help_text_skip_first(INCOME_CHOICES)
+        )
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
 
@@ -28,7 +34,15 @@ class IncomeForm(forms.Form, BaseFormFieldPluginForm):
         required=False,
         widget=forms.widgets.Textarea(
             attrs={'class': theme.form_element_html_class}
-        )
+        ),
+        help_text="This text will show up under the \
+                  question and provide the \
+                  survey taker with additional \
+                  information."
     )
 
-    required = forms.BooleanField(label="Required", required=False)
+    required = forms.BooleanField(
+        label="Required",
+        required=False,
+        help_text="Is answering this question required to submit the survey?"
+    )

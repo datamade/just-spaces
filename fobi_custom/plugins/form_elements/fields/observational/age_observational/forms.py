@@ -21,7 +21,7 @@ class AgeObservationalForm(forms.Form, BaseFormFieldPluginForm):
         ("required", False),
     ]
 
-    label = forms.CharField(label="Label",
+    label = forms.CharField(label="Question text",
                             required=True,
                             help_text="Use this survey element to count the \
                             observed ages of a group of people.")
