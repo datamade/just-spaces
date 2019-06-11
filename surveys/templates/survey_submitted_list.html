@@ -22,6 +22,7 @@
   <thead>
     <tr>
       <th scope="col">Survey Title</th>
+      <th scope="col">Times Run</th>
       <th scope="col">Last Submitted</th>
     </tr>
   </thead>
@@ -37,6 +38,7 @@
               {{survey.form_title}}
           {% endif %}
         </td>
+        <td>{{survey.times_run}}</td>
         <td>{{survey.time_stop}}</td>
       </tr>
     {% endfor %}

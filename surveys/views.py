@@ -380,6 +380,9 @@ class SurveySubmittedList(TemplateView):
             except SurveyFormEntry.DoesNotExist:
                 survey.form_title = "[Deleted Survey]"
 
+            survey_submissions = surveys.filter(form_id=survey.form_id)
+            survey.times_run = len(survey_submissions)
+
         return context
 
 
