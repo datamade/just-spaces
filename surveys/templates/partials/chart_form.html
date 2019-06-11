@@ -53,6 +53,9 @@
           </label>
           <div class="col-lg-9">
             {{form.primary_source | attr:"class:form-control"}}
+            <small class="form-text text-muted">
+              Select the survey question you'd like to analyze.
+            </small>
           </div>
         </div>
 
@@ -62,6 +65,9 @@
           </label>
           <div class="col-lg-9">
             {{form.census_areas | attr:"class:form-control basic-multiple"}}
+            <small class="form-text text-muted">
+              Select one or multiple Census geographies to compare to the data collected for this question.
+            </small>
           </div>
         </div>
 
@@ -79,6 +85,9 @@
               name="form-{{chart_id}}-DELETE"
               id="id_form-{{chart_id}}-DELETE"
             />
+            <small class="form-text text-muted">
+              Write a short description of your survey question and analysis.
+            </small>
           </div>
         </div>
       </div>
