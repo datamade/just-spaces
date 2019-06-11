@@ -12,7 +12,7 @@ class JustSpacesTheme(Foundation5Theme):
     base_template = 'override_theme/base.html'
     edit_form_entry_ajax_template = 'override_theme/edit_form_entry_ajax.html'
     form_snippet_template_name = 'override_theme/snippets/form_snippet.html'
-    question_form_snippet_template_name = 'override_theme/snippets/question_form_snippet.html'
+    editable_form_snippet_template_name = 'override_theme/snippets/editable_form_snippet.html'
     form_ajax = 'override_theme/snippets/form_ajax.html'
     form_entry_submitted_ajax_template = 'override_theme/form_entry_submitted_ajax.html'
     add_form_element_entry_ajax_template = 'override_theme/add_form_element_entry_ajax.html'
