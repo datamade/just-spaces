@@ -13,11 +13,13 @@
 {% block head %}Locations{% endblock %}
 
 {% block top_button %}
-  <a class="btn btn-primary ml-auto mr-3" href="{% url 'locations-create' %}">Create new location</a>
+  <a class="btn btn-primary ml-sm-auto ml-2 mr-sm-3" href="{% url 'locations-create' %}">Create new location</a>
 {% endblock %}
 
-
-{% block subhead %}Text describing what a location is.{% endblock %}
+{% block subhead %}
+A location should describe a precise geographic site at which an agency collects survey data.
+It can have either a line or area geometry.
+{% endblock %}
 
 {% block card_content %}
   <table id="locations-list" class="table table-hover table-striped table-responsive-sm card-text">

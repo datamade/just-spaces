@@ -13,7 +13,12 @@
 {% block head %}Edit Survey{% endblock %}
 
 {% block top_button %}
-    <a class="btn btn-primary ml-auto mr-3" href="{% url 'surveys-create' %}">Create new survey</a>
+    <a class="btn btn-primary ml-sm-auto ml-2 mr-sm-3" href="{% url 'surveys-create' %}">Create new survey</a>
+{% endblock %}
+
+{% block subhead %}
+Use this page to edit survey questions and properties and preview surveys before publishing.
+When a survey is ready to be run it can be published, at which point it can no longer be edited.
 {% endblock %}
 
 {% block card_content %}

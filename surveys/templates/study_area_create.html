@@ -15,7 +15,10 @@
 
 {% block head %}Create New Study Area{% endblock %}
 
-{% block subhead %}Text describing what a study area is.{% endblock %}
+{% block subhead %}
+Study area geometries should describe the total area covered by a study.
+A study can have multiple non-contiguous study areas.
+{% endblock %}
 
 {% block card_content %}
   {% crispy form %}

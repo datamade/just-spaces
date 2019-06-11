@@ -13,9 +13,12 @@
 {% block head %}Submitted Survey Data{% endblock %}
 
 {% block top_button %}
-  <a class="btn btn-primary ml-auto mr-3" href="{% url 'surveys-list-run' %}">Run another survey</a>
+  <a class="btn btn-primary ml-sm-auto ml-2 mr-sm-3" href="{% url 'surveys-list-run' %}">Run another survey</a>
 {% endblock %}
 
+{% block subhead %}
+An overview of collected survey data.
+{% endblock %}
 
 {% block card_content %}
   <table id="submitted-survey-list" class="table table-hover table-striped table-responsive-sm card-text">

@@ -7,11 +7,11 @@
   <div class="card-body">
 
     <div class="row ml-1">
-      <h2 class="card-title ml-2">{% block head %}{% endblock %}</h2>
+      <h2 class="card-title">{% block head %}{% endblock %}</h2>
       {% block top_button %}{% endblock %}
     </div>
 
-    <h5 class="form-text text-muted col-lg-7 mt-2">{% block subhead %}{% endblock %}</h5>
+    <h5 class="form-text text-muted col-lg-8 mt-2 pl-0">{% block subhead %}{% endblock %}</h5>
     <br />
     {% block card_content %}{% endblock %}
   </div>
