@@ -212,7 +212,7 @@ a.article:hover {
 }
 
 .content {
-  width: 80%;
+  width: 95%;
   padding: 40px;
   min-height: 100vh;
   transition: all 0.3s;
@@ -437,4 +437,21 @@ a.article:hover {
   div.dataTables_wrapper div.dataTables_paginate {
       text-align: left !important;
   }
+}
+
+@media screen and (max-width: 600px) {
+ .sidebar.active {
+   min-width: 30px;
+   max-width: 30px;
+ }
+
+ .sidebar.active .sidebar-header {
+   padding: 20px 0px 0px 0px !important;
+ }
+
+ .sidebar .sidebar-header strong {
+   font-size: .7rem;
+   font-weight: 900;
+   transform: rotate(-45deg);
+ }
 }
