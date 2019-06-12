@@ -53,7 +53,7 @@ def test_agency_detail(client, user, agency):
     for label, content in response.context['rows']:
         if content:
             assert label in html
-            assert content in html
+            assert str(content) in html
 
 
 @pytest.mark.django_db

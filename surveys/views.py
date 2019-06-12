@@ -28,7 +28,7 @@ class AgencyCreate(CreateView):
     form_class = survey_forms.AgencyCreateForm
     model = pldp_models.Agency
     template_name = "agency_create.html"
-    success_url = '/'
+    success_url = 'agencies-list'
 
 
 class AgencyList(ListView):
@@ -52,7 +52,7 @@ class AgencyDetail(DetailView):
             ('Department', agency.department),
             ('Phone', agency.phone),
             ('Type', agency.type),
-            ('Language', agency.language.name_en),
+            ('Language', agency.language),
         ]
 
         return context
