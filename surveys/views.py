@@ -210,14 +210,14 @@ class StudyAreaCreate(CreateView):
     form_class = survey_forms.StudyAreaCreateForm
     model = pldp_models.StudyArea
     template_name = "study_area_create.html"
-    success_url = reverse_lazy('studies-create')
+    success_url = reverse_lazy('studies-list')
 
 
 class StudyCreate(CreateView):
     form_class = survey_forms.StudyCreateForm
     model = pldp_models.Study
     template_name = "study_create.html"
-    success_url = reverse_lazy('surveys-list-edit')
+    success_url = reverse_lazy('studies-list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
