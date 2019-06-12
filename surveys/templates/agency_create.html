@@ -3,6 +3,10 @@
 
 {% block head %}Create New Agency{% endblock %}
 
+{% block top_button %}
+  <a class="btn btn-primary ml-sm-auto ml-2 mr-sm-3" href="{% url 'agencies-list' %}">View existing agencies</a>
+{% endblock %}
+
 {% block subhead %}
 Each organization using the Just Spaces tool should keep one central agency
 record containing its key attributes and reliable contact information.

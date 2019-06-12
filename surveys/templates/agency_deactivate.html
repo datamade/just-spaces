@@ -1,0 +1,9 @@
+{% extends 'partials/deactivate.html' %}
+
+{% block object_name %}
+Agency
+{% endblock %}
+
+{% block redirect_url %}
+  {% url 'agencies-list' %}
+{% endblock %}

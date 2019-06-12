@@ -31,6 +31,50 @@ class AgencyCreate(CreateView):
     success_url = '/'
 
 
+class AgencyList(ListView):
+    model = pldp_models.Agency
+    template_name = "agency_list.html"
+    context_object_name = 'agencies'
+    queryset = pldp_models.Agency.objects.all().exclude(is_active=False)
+
+
+class AgencyDetail(DetailView):
+    model = pldp_models.Agency
+    template_name = "agency_detail.html"
+    context_object_name = 'agency'
+
+    def get_context_data(self, **kwargs):
+        context = super(AgencyDetail, self).get_context_data(**kwargs)
+
+        agency = context['agency']
+
+        context['rows'] = [
+            ('Department', agency.department),
+            ('Phone', agency.phone),
+            ('Type', agency.type),
+            ('Language', agency.language.name_en),
+        ]
+
+        return context
+
+
+class AgencyDeactivate(TemplateView):
+    template_name = "agency_deactivate.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = pldp_models.Agency.objects.get(id=context['pk'])
+
+        return context
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['object'].is_active = False
+        context['object'].save()
+
+        return redirect('agencies-list')
+
+
 class LocationCreate(CreateView):
     form_class = survey_forms.LocationCreateForm
     form_class_location_area = survey_forms.LocationAreaCreateForm
@@ -150,14 +194,14 @@ class LocationDeactivate(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['location'] = pldp_models.Location.objects.get(id=context['pk'])
+        context['object'] = pldp_models.Location.objects.get(id=context['pk'])
 
         return context
 
     def post(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
-        context['location'].is_active = False
-        context['location'].save()
+        context['object'].is_active = False
+        context['object'].save()
 
         return redirect('locations-list')
 
@@ -196,14 +240,14 @@ class StudyDeactivate(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['study'] = pldp_models.Study.objects.get(id=context['pk'])
+        context['object'] = pldp_models.Study.objects.get(id=context['pk'])
 
         return context
 
     def post(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
-        context['study'].is_active = False
-        context['study'].save()
+        context['object'].is_active = False
+        context['object'].save()
 
         return redirect('studies-list')
 

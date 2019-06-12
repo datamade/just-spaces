@@ -19,6 +19,44 @@ def test_study_area_create(client, user):
 
 
 @pytest.mark.django_db
+def test_agency_create(client, user):
+    client.force_login(user)
+    url = reverse('agencies-create')
+    response = client.get(url)
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_agency_list(client, user, agency):
+    client.force_login(user)
+    url = reverse('agencies-list')
+    response = client.get(url)
+
+    agencies = response.context['agencies']
+    active_agency = agencies[0]
+
+    assert response.status_code == 200
+    assert len(agencies) == 1
+    assert active_agency.name == 'Sample Agency'
+
+
+@pytest.mark.django_db
+def test_agency_detail(client, user, agency):
+    client.force_login(user)
+    url = reverse('agencies-detail', kwargs={'pk': agency.id})
+    response = client.get(url)
+    html = response.content.decode('utf-8')
+
+    assert response.status_code == 200
+
+    for label, content in response.context['rows']:
+        if content:
+            assert label in html
+            assert content in html
+
+
+@pytest.mark.django_db
 def test_study_create(client, user, study_area):
     client.force_login(user)
     url = reverse('studies-create')
