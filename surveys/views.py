@@ -425,7 +425,7 @@ class SurveySubmittedList(TemplateView):
                 survey.form_title = "[Deleted Survey]"
 
             survey_submissions = surveys.filter(form_id=survey.form_id)
-            survey.times_run = len(survey_submissions)
+            survey.times_run = survey_submissions.count()
 
         return context
 
