@@ -2,6 +2,8 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from fobi.base import BaseFormFieldPluginForm, get_theme
+
+from ...utils import choices_to_help_text
 from pldp.forms import SURVEY_TIME_CHARACTER_CHOICES
 
 
@@ -19,13 +21,18 @@ class TimeCharacterForm(forms.Form, BaseFormFieldPluginForm):
         ("required", False),
     ]
 
-    label = forms.CharField(label="Label",
-                            required=True,
-                            )
+    label = forms.CharField(
+        label="Question text",
+        required=True,
+        help_text="Using categories defined by the Public Life Data Protocol, the following \
+                  options will be provided: <br /><br />" +
+                  choices_to_help_text(SURVEY_TIME_CHARACTER_CHOICES)
+        )
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
 
-    default = forms.ChoiceField(choices=SURVEY_TIME_CHARACTER_CHOICES,
+    default = forms.ChoiceField(label="Default answer",
+                                choices=SURVEY_TIME_CHARACTER_CHOICES,
                                 help_text="This will be the default, but users will be "
                                 "able to change this selection when running "
                                 "the survey.",
@@ -33,12 +40,16 @@ class TimeCharacterForm(forms.Form, BaseFormFieldPluginForm):
                                     attrs={'class': theme.form_element_html_class}
                                 ))
 
-    help_text = forms.CharField(
-        label=_("Help text"),
-        required=False,
-        widget=forms.widgets.Textarea(
-            attrs={'class': theme.form_element_html_class}
-        )
-    )
+    help_text = forms.CharField(label=_("Help text"),
+                                required=False,
+                                widget=forms.widgets.Textarea(
+                                attrs={'class': theme.form_element_html_class}),
+                                help_text="This text will show up under the \
+                                          question and provide the \
+                                          survey taker with additional \
+                                          information."
+                                )
 
-    required = forms.BooleanField(label="Required", required=False)
+    required = forms.BooleanField(label="Required",
+                                  required=False,
+                                  help_text="Is answering this question required to submit the survey?")

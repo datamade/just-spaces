@@ -147,6 +147,7 @@ class StudyCreateForm(JustSpacesForm):
         self.create_default_helper()
         self.fields['areas'].widget.attrs['class'] = 'basic-multiple'
         self.fields['agency'].initial = Agency.objects.first()
+        self.fields['title'].required = True
 
     class Meta:
         model = Study
@@ -159,6 +160,11 @@ class StudyCreateForm(JustSpacesForm):
 
 
 class SurveyCreateForm(JustSpacesForm):
+    def __init__(self, *args, **kwargs):
+        super(SurveyCreateForm, self).__init__(*args, **kwargs)
+        self.fields['study'].required = True
+        self.fields['location'].required = True
+
     class Meta:
         model = SurveyFormEntry
         fields = ['user', 'name', 'study', 'location', 'type', 'active']
@@ -166,6 +172,23 @@ class SurveyCreateForm(JustSpacesForm):
             'user': forms.HiddenInput(),
             'active': forms.HiddenInput(),
         }
+
+
+class SurveyEditForm(JustSpacesForm):
+    def __init__(self, *args, **kwargs):
+        super(SurveyEditForm, self).__init__(*args, **kwargs)
+        self.fields['study'].required = True
+        self.fields['location'].required = True
+
+    class Meta:
+        model = SurveyFormEntry
+        fields = ['user', 'name', 'study', 'location', 'type', 'active']
+        widgets = {
+            'user': forms.HiddenInput(),
+            'type': forms.HiddenInput(),
+            'active': forms.HiddenInput(),
+        }
+
 
 
 class SurveyChartForm(forms.ModelForm):

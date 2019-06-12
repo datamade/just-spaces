@@ -1,16 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'partials/small_card.html' %}
 {% load static %}
 
-{% block content %}
-<div class="col col-lg-10 card">
-  <div class="card-body col-lg-9">
-    <h2 class="card-title">Publish Survey</h2>
+{% block head %}Publish Survey{% endblock %}
 
-     <p class="card-text">Are you sure you want to publish <b>{{survey.name}}</b>?</p>
-     <p class="card-text">Surveys must be published before they can be run, but cannot be edited
-       once they've been published.</p>
+{% block card_content %}
+  <p class="card-text">Are you sure you want to publish <b>{{survey.name}}</b>?</p>
+  <p class="card-text">Surveys must be published before they can be run, but cannot be edited
+    once they've been published.</p>
 
-     <form method="POST" class="post-form">{% csrf_token %}
-     <button type="submit" class="save btn btn-primary">Publish</button>
+  <form method="POST" class="post-form">
+    {% csrf_token %}
+    <button type="submit" class="save btn btn-primary">Publish</button>
   </form>
 {% endblock %}

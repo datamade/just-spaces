@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block form_page_title %}
-{% blocktrans with form_element_plugin.name as plugin_name %}<i class="fas fa-xs fa-plus-circle icon-pink"></i>&nbsp; New survey question: <span class="font-italic">{{ plugin_name }}</span>{% endblocktrans %}
+{% blocktrans with form_element_plugin.name as plugin_name %}<i class="fas fa-xs fa-plus-circle icon-pink"></i>&nbsp; New survey question: <span class="font-italic mb-3">{{ plugin_name }}</span>{% endblocktrans %}
 {% endblock form_page_title %}
 
 {% block form_id %}form_element_entry_form{% endblock %}

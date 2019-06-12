@@ -17,7 +17,7 @@ class TotalForm(forms.Form, BaseFormFieldPluginForm):
         ("required", True),
     ]
 
-    label = forms.CharField(label="Label",
+    label = forms.CharField(label="Question text",
                             required=True,
                             help_text="Use this survey element to count the \
                             total number of people. This is a required "

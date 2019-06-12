@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'partials/large_card.html' %}
 {% load static %}
 {% load leaflet_tags %}
 {% load crispy_forms_tags %}
@@ -13,45 +13,41 @@
   {% leaflet_js plugins="forms" %}
 {% endblock %}
 
-{% block content %}
+{% block head %}{{location}}{% endblock %}
 
-<div class="col col-lg-10 card">
-  <div class="card-body">
-    <h2 class="card-title">{{location}}</h2>
-    <h5 class="form-text text-muted"><b>{{location.agency}}</b> location in <b>{{location.country}}</b></h5>
-    <br />
+{% block subhead %}<b>{{location.agency}}</b> location in <b>{{location.country}}</b>{% endblock %}
 
-    {% leaflet_map "main" callback="main_map_init" %}
-    <br />
+{% block card_content %}
+  {% leaflet_map "main" callback="main_map_init" %}
+  <br />
 
-    <table id="location-detail" class="table table-striped table-responsive-sm table-bordered">
-    <thead>
-    </thead>
-    <tbody>
+  <table id="location-detail" class="table table-striped table-responsive-sm table-bordered">
+  <thead>
+  </thead>
+  <tbody>
 
-      {% for label, content in rows %}
-        {% if content %}
-        <tr>
-          <td style="width: 30%"><b>{{label}}</b></td>
-          <td>{{content}}</td>
-        </tr>
-        {% endif %}
-      {% endfor %}
+    {% for label, content in rows %}
+      {% if content %}
+      <tr>
+        <td style="width: 30%"><b>{{label}}</b></td>
+        <td>{{content}}</td>
+      </tr>
+      {% endif %}
+    {% endfor %}
 
-    </tbody>
-    </table>
+  </tbody>
+  </table>
 
-  <a class="btn btn-secondary float-right" href="{% url 'locations-deactivate' location.id %}">Deactivate location</a>
+  <a class="btn btn-secondary float-right" href="{% url 'locations-deactivate' location.id %}">Delete location</a>
   <a class="btn btn-link float-right" href="{% url 'locations-list' %}">Back to location list</a>
-  </div>
-</div>
+{% endblock %}
 
-<script type="text/javascript">
-  function main_map_init (map, options) {
-    var raw_data = '{{location.geometry.geojson|escapejs}}';
-    var data = JSON.parse(raw_data);
-    L.geoJson(data).addTo(map);
-  }
-</script>
-
+{% block footer_js %}
+  <script type="text/javascript">
+    function main_map_init (map, options) {
+      var raw_data = '{{location.geometry.geojson|escapejs}}';
+      var data = JSON.parse(raw_data);
+      L.geoJson(data).addTo(map);
+    }
+  </script>
 {% endblock %}

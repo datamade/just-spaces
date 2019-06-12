@@ -1,0 +1,29 @@
+{% extends 'partials/large_card.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head %}{{agency}}{% endblock %}
+
+{% block subhead %}Contact: <b>{{agency.email}}</b>{% endblock %}
+
+{% block card_content %}
+  <table id="agency-detail" class="table table-striped table-responsive-sm table-bordered">
+  <thead>
+  </thead>
+  <tbody>
+
+    {% for label, content in rows %}
+      {% if content %}
+      <tr>
+        <td style="width: 30%"><b>{{label}}</b></td>
+        <td>{{content}}</td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+
+  </tbody>
+  </table>
+
+  <a class="btn btn-secondary float-right" href="{% url 'agencies-deactivate' agency.id %}">Delete agency</a>
+  <a class="btn btn-link float-right" href="{% url 'agencies-list' %}">Back to agency list</a>
+{% endblock %}

@@ -51,8 +51,14 @@ span {
 
 h5 {
   font-weight: normal;
-  font-size: 1rem;
-  color: var(--gray-color);
+  font-size: .9rem;
+  padding-bottom: 10px;
+  line-height: 1.3rem;
+}
+
+.card-title {
+    margin-top: .75rem;
+    margin-bottom: 0rem;
 }
 
 /* ---------------------------------------------------
@@ -377,13 +383,25 @@ a.article:hover {
   font-weight: 600;
 }
 
- .icon-pink, .code {
+ .icon-pink, .code, .publish, .run {
    color: var(--pink-color);
+ }
+
+ .edit {
+   color: var(--dark-green-color);
+ }
+
+ .preview {
+   color: var(--medium-green-color);
  }
 
  .leaflet-container {
    height: 450px;
  }
+
+ textarea.form-control {
+    height: 100px;
+}
 
 /* ---------------------------------------------------
     DATA ANALYSIS DESIGNER
@@ -406,4 +424,17 @@ a.article:hover {
 .move-chart-up,
 .move-chart-down {
   display: none;
+}
+
+/* ---------------------------------------------------
+    MEDIA QUERIES
+----------------------------------------------------- */
+
+@media screen and (max-width: 767px) {
+  div.dataTables_wrapper div.dataTables_length,
+  div.dataTables_wrapper div.dataTables_filter,
+  div.dataTables_wrapper div.dataTables_info,
+  div.dataTables_wrapper div.dataTables_paginate {
+      text-align: left !important;
+  }
 }

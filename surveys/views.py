@@ -15,6 +15,7 @@ from users.models import JustSpacesUser
 from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
+from fobi import models as fobi_models
 
 from . import forms as survey_forms
 from .utils import get_or_none
@@ -27,7 +28,51 @@ class AgencyCreate(CreateView):
     form_class = survey_forms.AgencyCreateForm
     model = pldp_models.Agency
     template_name = "agency_create.html"
-    success_url = '/'
+    success_url = reverse_lazy('agencies-list')
+
+
+class AgencyList(ListView):
+    model = pldp_models.Agency
+    template_name = "agency_list.html"
+    context_object_name = 'agencies'
+    queryset = pldp_models.Agency.objects.all().exclude(is_active=False)
+
+
+class AgencyDetail(DetailView):
+    model = pldp_models.Agency
+    template_name = "agency_detail.html"
+    context_object_name = 'agency'
+
+    def get_context_data(self, **kwargs):
+        context = super(AgencyDetail, self).get_context_data(**kwargs)
+
+        agency = context['agency']
+
+        context['rows'] = [
+            ('Department', agency.department),
+            ('Phone', agency.phone),
+            ('Type', agency.type),
+            ('Language', agency.language),
+        ]
+
+        return context
+
+
+class AgencyDeactivate(TemplateView):
+    template_name = "agency_deactivate.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = pldp_models.Agency.objects.get(id=context['pk'])
+
+        return context
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['object'].is_active = False
+        context['object'].save()
+
+        return redirect('agencies-list')
 
 
 class LocationCreate(CreateView):
@@ -149,14 +194,14 @@ class LocationDeactivate(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['location'] = pldp_models.Location.objects.get(id=context['pk'])
+        context['object'] = pldp_models.Location.objects.get(id=context['pk'])
 
         return context
 
     def post(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
-        context['location'].is_active = False
-        context['location'].save()
+        context['object'].is_active = False
+        context['object'].save()
 
         return redirect('locations-list')
 
@@ -165,14 +210,14 @@ class StudyAreaCreate(CreateView):
     form_class = survey_forms.StudyAreaCreateForm
     model = pldp_models.StudyArea
     template_name = "study_area_create.html"
-    success_url = reverse_lazy('studies-create')
+    success_url = reverse_lazy('studies-list')
 
 
 class StudyCreate(CreateView):
     form_class = survey_forms.StudyCreateForm
     model = pldp_models.Study
     template_name = "study_create.html"
-    success_url = reverse_lazy('surveys-list-edit')
+    success_url = reverse_lazy('studies-list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -195,14 +240,14 @@ class StudyDeactivate(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['study'] = pldp_models.Study.objects.get(id=context['pk'])
+        context['object'] = pldp_models.Study.objects.get(id=context['pk'])
 
         return context
 
     def post(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
-        context['study'].is_active = False
-        context['study'].save()
+        context['object'].is_active = False
+        context['object'].save()
 
         return redirect('studies-list')
 
@@ -283,7 +328,7 @@ class SurveyCreate(CreateView):
 class SurveyPropertiesEdit(UpdateView):
     model = SurveyFormEntry
     template_name = "survey_properties_edit.html"
-    form_class = survey_forms.SurveyCreateForm
+    form_class = survey_forms.SurveyEditForm
     context_object_name = 'form_object'
 
     def get_success_url(self):
@@ -329,7 +374,7 @@ class SurveyPublish(TemplateView):
 
 class SurveyListEdit(ListView):
     model = SurveyFormEntry
-    template_name = "survey_list.html"
+    template_name = "survey_list_edit.html"
     context_object_name = 'surveys'
 
     def get_context_data(self, **kwargs):
@@ -342,13 +387,23 @@ class SurveyListEdit(ListView):
 
 class SurveyListRun(ListView):
     model = SurveyFormEntry
-    template_name = "survey_list.html"
+    template_name = "survey_list_run.html"
     context_object_name = 'surveys'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['surveys'] = context['surveys'].exclude(active=False).filter(published=True).order_by('-updated')
         context['published'] = True
+
+        for survey in context['surveys']:
+            survey_questions = fobi_models.FormElementEntry.objects.all().filter(form_entry_id=survey.id)
+            survey.question_count = survey_questions.count()
+
+            try:
+                last_run = pldp_models.Survey.objects.all().filter(form_id=survey.id).order_by('-time_stop')[0].time_stop
+                survey.last_run = last_run
+            except IndexError:
+                survey.last_run = '-'
 
         return context
 
@@ -368,6 +423,9 @@ class SurveySubmittedList(TemplateView):
                 survey.form_title = survey_form_entry.name
             except SurveyFormEntry.DoesNotExist:
                 survey.form_title = "[Deleted Survey]"
+
+            survey_submissions = surveys.filter(form_id=survey.form_id)
+            survey.times_run = survey_submissions.count()
 
         return context
 
@@ -461,6 +519,7 @@ class SurveySubmittedDetail(TemplateView):
                     survey_chart = form.save(commit=False)
                     survey_chart.form_entry = form.form_entry
                     survey_chart.save()
+                    form.save_m2m()  # Save CensusArea related objects
             messages.success(request, 'Charts saved!')
         else:
             messages.error(request, 'Chart validation failed! See charts below for more detail.')

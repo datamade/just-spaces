@@ -13,10 +13,10 @@ class TimeStartForm(forms.Form, BaseFormFieldPluginForm):
         ("label", "What is the start time of this survey?"),
         ("name", "name"),
         ("help_text", ""),
-        ("required", True),
+        ("required", False),
     ]
 
-    label = forms.CharField(label="Label",
+    label = forms.CharField(label="Question text",
                             required=True)
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())
@@ -24,8 +24,13 @@ class TimeStartForm(forms.Form, BaseFormFieldPluginForm):
     help_text = forms.CharField(label=_("Help text"),
                                 required=False,
                                 widget=forms.widgets.Textarea(
-                                attrs={'class': theme.form_element_html_class})
+                                attrs={'class': theme.form_element_html_class}),
+                                help_text="This text will show up under the \
+                                          question and provide the \
+                                          survey taker with additional \
+                                          information."
                                 )
 
     required = forms.BooleanField(label="Required",
-                                  required=False)
+                                  required=False,
+                                  help_text="Is answering this question required to submit the survey?")

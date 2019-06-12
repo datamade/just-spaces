@@ -1,22 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'partials/large_card.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block content %}
+{% block head %}
+Create New Study
+{% endblock %}
 
+{% block subhead %}
+A study is run by an agency, defines a project's overall parameters in both
+time and space, and can contain multiple related surveys.
+{% endblock %}
+
+{% block top_button %}
+  <a class="btn btn-primary ml-sm-auto ml-2 mr-sm-3" href="{% url 'studies-list' %}">View existing studies</a>
+{% endblock %}
+
+{% block card_content %}
+  {% crispy form %}
+{% endblock %}
+
+{% block footer_js %}
   <script type="text/javascript">
       $(document).ready(function() {
         $('.basic-multiple').select2();
       });
   </script>
-
-<div class="col col-lg-11 card">
-  <div class="card-body">
-    <h2 class="card-title">Create New Study</h2>
-    <small class="form-text text-muted">Text describing what a study is. View the list of existing studies <a href="{% url 'studies-list' %}">here</a>.</small>
-    <br />
-    {% crispy form %}
-  </div>
-</div>
-
 {% endblock %}

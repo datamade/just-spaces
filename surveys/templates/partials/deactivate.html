@@ -1,16 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'partials/small_card.html' %}
 {% load static %}
 
-{% block content %}
-<div class="col col-lg-9 card">
-  <div class="card-body">
-    <h2 class="card-title">Delete {% block object_name %}{% endblock %}</h2>
+{% block head %}Delete {% block object_name %}{% endblock %}{% endblock %}
 
-     <p class="card-text">Are you sure you want to delete <b>{{object}}</b>?</p>
-     <p class="card-text">Once deleted, this can only be recovered by a site administrator.</p>
+{% block card_content %}
+  <p class="card-text">Are you sure you want to delete <b>{{object}}</b>?</p>
+  <p class="card-text">Once deleted, this can only be recovered by a site administrator.</p>
 
-     <form method="POST" class="post-form">{% csrf_token %}
-     <button type="submit" class="save btn btn-secondary float-right">Delete</button>
-     <a class="btn btn-link mr-3 mt-3 float-right" href="{% block redirect_url %}{% endblock %}">Cancel</a>
+  <form method="POST" class="post-form">{% csrf_token %}
+    <button type="submit" class="save btn btn-secondary float-right">Delete</button>
   </form>
+  <a class="btn btn-link mr-3 mt-3 float-right" href="{% block redirect_url %}{% endblock %}">Cancel</a>
 {% endblock %}

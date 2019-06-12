@@ -26,9 +26,21 @@ urlpatterns = [
         survey_views.Signup.as_view(),
         name='signup'),
 
+    url(r'agencies/$',
+        login_required(survey_views.AgencyList.as_view()),
+        name='agencies-list'),
+
     url(r'agencies/create/$',
         login_required(survey_views.AgencyCreate.as_view()),
         name='agencies-create'),
+
+    url(r'agencies/deactivate/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.AgencyDeactivate.as_view()),
+        name='agencies-deactivate'),
+
+    url(r'agencies/(?P<pk>[\w_\-]+)/$',
+        login_required(survey_views.AgencyDetail.as_view()),
+        name='agencies-detail'),
 
     url(r'locations/create/$',
         login_required(survey_views.LocationCreate.as_view()),

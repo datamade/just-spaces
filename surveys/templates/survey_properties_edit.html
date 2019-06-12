@@ -1,40 +1,36 @@
-{% extends 'base.html' %}
+{% extends 'partials/large_card.html' %}
 {% load i18n fobi_tags %}
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block content %}
-<div class="col col-lg-11 card">
-  <div class="card-body">
+{% block head %}Edit <span class="font-italic">{{form_object}}</span>{% endblock %}
 
-   <h2 class="card-title">{% trans "Edit" %} <span class="font-italic">{{form_object}}</span></h2>
-   <small class="form-text text-muted">Add, edit, delete, and reorder survey questions</small>
-   <br />
+{% block subhead %}Modify survey properties{% endblock %}
 
-   <ul class="nav nav-tabs" id="surveyTabs" role="tablist">
-     <li class="nav-item">
-       <a class="nav-link" id="surveyQuestionsTab" href="{% url 'fobi.edit_form_entry' form_object.pk %}" aria-controls="survey-questions" aria-selected="true">Questions</a>
-     </li>
-     <li class="nav-item">
-       <a class="nav-link active" id="surveyPropertiesTab" href="{% url 'survey-properties-edit' form_object.pk %}" aria-controls="survey-properties" aria-selected="false">Properties</a>
-     </li>
-   </ul>
+{% block card_content %}
+  <ul class="nav nav-tabs" id="surveyTabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link" id="surveyQuestionsTab" href="{% url 'fobi.edit_form_entry' form_object.pk %}" aria-controls="survey-questions" aria-selected="true">Questions</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" id="surveyPropertiesTab" href="{% url 'survey-properties-edit' form_object.pk %}" aria-controls="survey-properties" aria-selected="false">Properties</a>
+    </li>
+  </ul>
 
-   <div class="tab-content" id="surveyTabsContent">
+  <div class="tab-content" id="surveyTabsContent">
 
-     <div class="tab-pane fade show active" id="survey-properties" role="tabpanel" aria-labelledby="survey-properties">
+    <div class="tab-pane fade show active" id="survey-properties" role="tabpanel" aria-labelledby="survey-properties">
 
-       <div class="panel panel-default">
-          <div class="panel-body">
-            <br />
-            {% crispy form %}
-          </div>
-        </div>
+      <div class="panel panel-default">
+         <div class="panel-body">
+           <br />
+           <h5 class="text-muted"><b>{{form_object}}</b> is an <b>{{form_object.type}}</b> survey created by <b>{{form_object.user}}</b> on {{form_object.created}} <br /><br />Last updated {{form_object.updated}}</h5>
+           <br />
+           {% crispy form %}
+         </div>
+       </div>
 
-     </div>
+    </div>
 
-   </div>
   </div>
- </div>
-
 {% endblock %}

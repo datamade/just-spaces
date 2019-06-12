@@ -1,17 +1,15 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'partials/large_card.html' %}
 {% load crispy_forms_tags %}
 
-{% block content %}
+{% block head %}Create New Agency{% endblock %}
 
-<div class="col col-lg-10 card">
-  <div class="card-body">
-    <h2 class="card-title">Create New Agency</h2>
-    <small class="form-text text-muted">Text describing what an agency is.</small>
-    <br />
-    {% crispy form %}
-  </div>
-</div>
-
-
+{% block top_button %}
+  <a class="btn btn-primary ml-sm-auto ml-2 mr-sm-3" href="{% url 'agencies-list' %}">View existing agencies</a>
 {% endblock %}
+
+{% block subhead %}
+Each organization using the Just Spaces tool should keep one central agency
+record containing its key attributes and reliable contact information.
+{% endblock %}
+
+{% block card_content %}{% crispy form %}{% endblock %}

@@ -1,9 +1,10 @@
 <div class="col col-lg-6 card">
   <div class="card-body">
-    <h2 class="card-title">Survey submitted!</h2>
+    <h2 class="card-title"><i>{{form_entry}}</i> submitted!</h2>
+    <br />
 
-    <a class="btn btn-warning" href="{% url 'surveys-list-run' %}">Back to surveys</a>
-    <a class="btn btn-primary" href="{% url 'fobi.view_form_entry' form_entry_slug %}">Run again</a>
+    <a class="btn btn-primary float-right" href="{% url 'fobi.view_form_entry' form_entry_slug %}">Run again</a>
+    <a class="btn btn-link mr-3 mt-3 float-right" href="{% url 'surveys-list-run' %}">Back to surveys</a>
 
   </div>
 </div>
