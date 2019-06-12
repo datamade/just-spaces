@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from fobi.base import BaseFormFieldPluginForm, get_theme
 
-from ...utils import choices_to_help_text_skip_first
+from ...utils import choices_to_help_text
 from ..forms import EMPLOYMENT_CHOICES
 
 
@@ -23,9 +23,9 @@ class EmploymentForm(forms.Form, BaseFormFieldPluginForm):
     label = forms.CharField(
         label="Question text",
         required=True,
-        help_text="Following categories defined by the Census, the following \
+        help_text="Using categories defined by the Census, the following \
                   options will be provided: <br /><br />" +
-                  choices_to_help_text_skip_first(EMPLOYMENT_CHOICES)
+                  choices_to_help_text(EMPLOYMENT_CHOICES, True)
         )
 
     name = forms.CharField(required=True, widget=forms.widgets.HiddenInput())

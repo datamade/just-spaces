@@ -397,7 +397,7 @@ class SurveyListRun(ListView):
 
         for survey in context['surveys']:
             survey_questions = fobi_models.FormElementEntry.objects.all().filter(form_entry_id=survey.id)
-            survey.question_count = len(survey_questions)
+            survey.question_count = survey_questions.count()
 
             try:
                 last_run = pldp_models.Survey.objects.all().filter(form_id=survey.id).order_by('-time_stop')[0].time_stop

@@ -24,7 +24,7 @@ class MicroclimateForm(forms.Form, BaseFormFieldPluginForm):
     label = forms.CharField(
         label="Question text",
         required=True,
-        help_text="Following categories defined by the Public Life Data Protocol, the following \
+        help_text="Using categories defined by the Public Life Data Protocol, the following \
                   options will be provided: <br /><br />" +
                   choices_to_help_text(SURVEY_MICROCLIMATE_CHOICES)
         )
