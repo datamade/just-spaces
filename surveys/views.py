@@ -28,7 +28,7 @@ class AgencyCreate(CreateView):
     form_class = survey_forms.AgencyCreateForm
     model = pldp_models.Agency
     template_name = "agency_create.html"
-    success_url = 'agencies-list'
+    success_url = reverse_lazy('agencies-list')
 
 
 class AgencyList(ListView):
