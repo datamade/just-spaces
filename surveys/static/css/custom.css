@@ -212,7 +212,7 @@ a.article:hover {
 }
 
 .content {
-  width: 95%;
+  width: 80%;
   padding: 40px;
   min-height: 100vh;
   transition: all 0.3s;
@@ -436,6 +436,10 @@ a.article:hover {
   div.dataTables_wrapper div.dataTables_info,
   div.dataTables_wrapper div.dataTables_paginate {
       text-align: left !important;
+  }
+
+  .content {
+    width: 95%;
   }
 }
 
