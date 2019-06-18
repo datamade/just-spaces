@@ -25,7 +25,7 @@
     {% else %}
         <div class="row{% if field.errors %} error{% endif %} form-group">
             <label class="col-form-label col-lg-4" for="{{ field.id_for_label }}">
-              <div class="float-left portlet-handle mr-5">
+              <div class="float-left portlet-handle mr-3">
                 <i title="Click and drag to reposition survey question" class="fa fa-fw fa-bars"></i>
               </div>
               {{ field.label }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
