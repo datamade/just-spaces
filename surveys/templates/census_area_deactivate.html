@@ -1,0 +1,9 @@
+{% extends 'partials/deactivate.html' %}
+
+{% block object_name %}
+  Census Area
+{% endblock %}
+
+{% block redirect_url %}
+  {% url 'census-areas-list' %}
+{% endblock %}
