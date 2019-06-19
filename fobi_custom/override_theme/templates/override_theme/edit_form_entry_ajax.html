@@ -62,7 +62,8 @@
 
            <div class="control-group">
              <div class="controls">
-               <button type="submit" name="ordering" class="btn btn-primary float-right">{% trans "Save and exit" %}</button>
+               <a href="{% url 'surveys-publish' form_entry.id %}" class="btn btn-primary float-right">Publish</a>
+               <button type="submit" name="ordering" class="btn btn-link float-right">{% trans "Save and exit" %}</button>
              </div>
            </div>
          </form>

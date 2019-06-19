@@ -10,6 +10,7 @@
 
   <form method="POST" class="post-form">
     {% csrf_token %}
-    <button type="submit" class="save btn btn-primary">Publish</button>
+    <button type="submit" class="save btn btn-primary float-right">Publish</button>
+    <a href="{% url 'fobi.edit_form_entry' survey.id %}" class="btn btn-link float-right">Edit survey</a>
   </form>
 {% endblock %}
