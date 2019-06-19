@@ -7,7 +7,7 @@
             <strong>JS</strong>
         </div>
         <ul class="list-unstyled components">
-            {% if user.is_authenticated %}
+            {% if user.is_staff %}
             <li>
                 <a href="{% url 'surveys-create' %}">
                     <i class="fa fa-plus-circle icon edit"></i>
@@ -20,12 +20,16 @@
                     Edit survey
                 </a>
             </li>
+            {% endif %}
+            {% if user.is_authenticated %}
             <li>
                 <a href="{% url 'surveys-list-run' %}">
                     <i class="fas fa-clipboard-list icon run"></i>
                     Run survey
                 </a>
             </li>
+            {% endif %}
+            {% if user.is_staff %}
             <li>
                 <a href="{% url 'surveys-submitted-list' %}">
                     <i class="fas fa-copy"></i>
@@ -46,6 +50,9 @@
                     </li>
                     <li>
                         <a href="{% url 'locations-list' %}">- Locations</a>
+                    </li>
+                    <li>
+                        <a href="/admin/users/justspacesuser/">- Users</a>
                     </li>
                 </ul>
             </li>
@@ -70,8 +77,6 @@
             <div><a class="btn-sidebar" href="{% url 'logout' %}">Logout</a></div>
             {% else %}
             <div><a class="btn-sidebar" href="{% url 'login' %}">Login</a></div>
-            <br />
-            <div><a class="btn-sidebar" href="{% url 'signup' %}">Create new account</a></div>
             {% endif %}
             <br />
             <div class="about-blurb">

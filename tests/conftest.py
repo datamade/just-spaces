@@ -35,7 +35,8 @@ def user(db, agency):
     user = JustSpacesUser.objects.create(
         username='sampleuser',
         agency=agency,
-        is_superuser=True
+        is_superuser=True,
+        is_staff=True,
     )
 
     return user

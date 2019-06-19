@@ -528,21 +528,6 @@ class SurveySubmittedDetail(TemplateView):
         return render(request, self.template_name, context)
 
 
-class Signup(FormView):
-    template_name = "registration/signup.html"
-    form_class = JustSpacesUserCreationForm
-    success_url = '/'
-
-    def post(self, request):
-        superuser = JustSpacesUser(is_superuser=True, is_staff=True)
-        form = self.form_class(request.POST, instance=superuser)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-
-        return render(request, self.template_name, {'form': form})
-
-
 def census_area_to_observation(request):
     """
     API endpoint returning ACS data for a given CensusArea and ACS variable.

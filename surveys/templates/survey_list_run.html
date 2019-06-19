@@ -25,7 +25,9 @@
       <th scope="col">Length</th>
       <th scope="col">Last Run</th>
       <th class="text-center" scope="col">Run</th>
-      <th class="text-center" scope="col">Delete</th>
+      {% if user.is_staff %}
+        <th class="text-center" scope="col">Delete</th>
+      {% endif %}
     </tr>
   </thead>
   <tbody>
@@ -40,7 +42,9 @@
         {% endif %}
         <td>{{survey.last_run}}</td>
         <td class="text-center"><a class="btn btn-primary mt-0" href="{% url 'fobi.view_form_entry' survey.slug %}">Run survey</a></td>
-        <td class="text-center"><a href="{% url 'surveys-deactivate' survey.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
+        {% if user.is_staff %}
+          <td class="text-center"><a href="{% url 'surveys-deactivate' survey.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
+        {% endif %}
       </tr>
     {% endfor %}
   </tbody>
@@ -53,7 +57,11 @@
       $('#survey-list-run').DataTable({
         lengthChange: false,
         columnDefs: [{
-          targets: [4, 5],
+          {% if user.is_staff %}
+            targets: [4, 5],
+          {% else %}
+            targets: [4],
+          {% endif %}
           orderable: false,
         }],
       });
