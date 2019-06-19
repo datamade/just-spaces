@@ -2,9 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.admin import UserAdmin
 from .models import JustSpacesUser
+from surveys.forms import JustSpacesForm
 
 
-class JustSpacesUserCreationForm(UserCreationForm):
+class JustSpacesUserCreationForm(UserCreationForm, JustSpacesForm):
 
     class Meta(UserCreationForm.Meta):
         model = JustSpacesUser
