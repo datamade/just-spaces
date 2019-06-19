@@ -82,6 +82,10 @@ INSTALLED_APPS = [
     'fobi_custom.plugins.form_elements.fields.intercept.race',
     'fobi_custom.plugins.form_elements.fields.intercept.employment',
     'fobi_custom.plugins.form_elements.fields.intercept.household_tenure',
+    'fobi_custom.plugins.form_elements.fields.intercept.location_intersection_home',
+    'fobi_custom.plugins.form_elements.fields.intercept.location_intersection_work',
+    'fobi_custom.plugins.form_elements.fields.intercept.location_zip_home',
+    'fobi_custom.plugins.form_elements.fields.intercept.location_zip_work',
     'fobi_custom.plugins.form_elements.fields.intercept.own_or_rent',
     'fobi_custom.plugins.form_elements.fields.intercept.transportation',
 
