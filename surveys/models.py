@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.gis.db import models as geo_models
 from django.contrib.postgres import fields as pg_fields
 from django.contrib.postgres.fields import JSONField
 
@@ -44,11 +45,18 @@ class SurveyFormEntry(FormEntry):
         return self.name
 
 
+class CensusBlockGroup(models.Model):
+    fips_code = models.CharField(max_length=12, primary_key=True)
+    geom = geo_models.MultiPolygonField(srid=4269)
+
+
 class CensusObservation(models.Model):
     fips_code = models.CharField(max_length=255)
     variable = models.CharField(max_length=255)
     fields = JSONField()
 
+    class Meta:
+        unique_together = ['fips_code', 'variable']
 
 class CensusArea(models.Model):
     name = models.CharField(max_length=255)
