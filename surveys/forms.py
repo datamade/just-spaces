@@ -6,11 +6,10 @@ from leaflet.forms.widgets import LeafletWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from pldp.models import Agency, Location, LocationArea, LocationLine, Study, Survey, \
-                        StudyArea
+import pldp.models as pldp_models
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
-from .models import SurveyFormEntry, SurveyChart
+from . import models as survey_models
 
 
 class JustSpacesForm(forms.ModelForm):
@@ -29,7 +28,7 @@ class JustSpacesForm(forms.ModelForm):
 
 class AgencyCreateForm(JustSpacesForm):
     class Meta:
-        model = Agency
+        model = pldp_models.Agency
         fields = '__all__'
 
         widgets = {
@@ -47,11 +46,11 @@ class LocationCreateForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
 
-        self.fields['agency'].initial = Agency.objects.first()
+        self.fields['agency'].initial = pldp_models.Agency.objects.first()
         self.fields['country'].initial = 'US'
 
     class Meta:
-        model = Location
+        model = pldp_models.Location
         fields = '__all__'
 
         leaflet_widget_attrs = {
@@ -84,7 +83,7 @@ class LocationAreaCreateForm(forms.ModelForm):
         self.fields['date_measured'].initial = datetime.now()
 
     class Meta:
-        model = LocationArea
+        model = pldp_models.LocationArea
         fields = '__all__'
 
         widgets = {
@@ -108,7 +107,7 @@ class LocationLineCreateForm(JustSpacesForm):
         self.fields['date_measured'].initial = datetime.now()
 
     class Meta:
-        model = LocationLine
+        model = pldp_models.LocationLine
         fields = '__all__'
 
         widgets = {
@@ -130,7 +129,7 @@ class LocationLineCreateForm(JustSpacesForm):
 
 class StudyAreaCreateForm(JustSpacesForm):
     class Meta:
-        model = StudyArea
+        model = pldp_models.StudyArea
         fields = '__all__'
 
         leaflet_widget_attrs = {
@@ -146,11 +145,11 @@ class StudyCreateForm(JustSpacesForm):
         super(StudyCreateForm, self).__init__(*args, **kwargs)
         self.create_default_helper()
         self.fields['areas'].widget.attrs['class'] = 'basic-multiple'
-        self.fields['agency'].initial = Agency.objects.first()
+        self.fields['agency'].initial = pldp_models.Agency.objects.first()
         self.fields['title'].required = True
 
     class Meta:
-        model = Study
+        model = pldp_models.Study
         fields = '__all__'
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
@@ -166,7 +165,7 @@ class SurveyCreateForm(JustSpacesForm):
         self.fields['location'].required = True
 
     class Meta:
-        model = SurveyFormEntry
+        model = survey_models.SurveyFormEntry
         fields = ['user', 'name', 'study', 'location', 'type', 'active']
         widgets = {
             'user': forms.HiddenInput(),
@@ -181,7 +180,7 @@ class SurveyEditForm(JustSpacesForm):
         self.fields['location'].required = True
 
     class Meta:
-        model = SurveyFormEntry
+        model = survey_models.SurveyFormEntry
         fields = ['user', 'name', 'study', 'location', 'type', 'active']
         widgets = {
             'user': forms.HiddenInput(),
@@ -190,10 +189,15 @@ class SurveyEditForm(JustSpacesForm):
         }
 
 
+class CensusAreaCreateForm(JustSpacesForm):
+    class Meta:
+        model = survey_models.CensusArea
+        fields = ['name']
+
 
 class SurveyChartForm(forms.ModelForm):
     class Meta:
-        model = SurveyChart
+        model = survey_models.SurveyChart
         fields = ['short_description', 'order', 'primary_source', 'census_areas']
         widgets = {
             'order': forms.HiddenInput(),
@@ -201,9 +205,9 @@ class SurveyChartForm(forms.ModelForm):
         }
 
     def __init__(self, *args, form_entry, **kwargs):
-        self.form_entry = SurveyFormEntry.objects.get(id=form_entry)
+        self.form_entry = survey_models.SurveyFormEntry.objects.get(id=form_entry)
         super().__init__(*args, **kwargs)
-        survey = Survey.objects.filter(form_id=form_entry)[0]
+        survey = pldp_models.Survey.objects.filter(form_id=form_entry)[0]
         choices = [(component.name, component.label) for component in survey.components
                    if component.type in fobi_types.ALL_VALID_TYPES]
         choices = [('', '-----')] + choices  # Offer a null choice

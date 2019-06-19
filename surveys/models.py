@@ -53,6 +53,7 @@ class CensusObservation(models.Model):
 class CensusArea(models.Model):
     name = models.CharField(max_length=255)
     fips_codes = pg_fields.ArrayField(models.CharField(max_length=12))
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

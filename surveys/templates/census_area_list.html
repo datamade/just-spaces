@@ -1,0 +1,54 @@
+{% extends 'partials/large_card.html' %}
+{% load static %}
+
+{% block extracss %}
+  <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block extrajs %}
+  <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+{% endblock %}
+
+{% block head %}Census Areas{% endblock %}
+
+{% block top_button %}
+  <a class="btn btn-primary ml-sm-auto ml-2 mr-sm-3" href="{% url 'census-areas-create' %}">Create new census area</a>
+{% endblock %}
+
+{% block subhead %}
+Text describing a census area
+{% endblock %}
+
+{% block card_content %}
+  <table id="census-areas-list" class="table table-hover table-striped table-responsive-sm card-text">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col" class="text-center">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for census_area in census_areas %}
+      <tr>
+        <td><b><a href="{% url 'census-areas-edit' census_area.id %}">{{census_area.name}}</a></b></td>
+        <td class="text-center"><a href="{% url 'census-areas-deactivate' census_area.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+{% endblock %}
+
+{% block footer_js %}
+  <script>
+  $(document).ready( function () {
+    $('#census-areas-list').DataTable({
+      lengthChange: false,
+      columnDefs: [{
+        targets: [1],
+        orderable: false,
+      }],
+    });
+  } );
+  </script>
+{% endblock %}

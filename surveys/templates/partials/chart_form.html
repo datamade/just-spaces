@@ -67,6 +67,7 @@
             {{form.census_areas | attr:"class:form-control basic-multiple"}}
             <small class="form-text text-muted">
               Select one or multiple Census geographies to compare to the data collected for this question.
+              Don't see the census area you need? <a href="{% url 'census-areas-create' %}" target="_blank">Create a new one here.</a>
             </small>
           </div>
         </div>
