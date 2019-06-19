@@ -1,5 +1,4 @@
 GENDER_INTERCEPT_CHOICES = [
-    ('', '-------'),
     ('male', 'Male'),
     ('female', 'Female'),
     ('non_binary', 'Non-binary'),
@@ -7,7 +6,6 @@ GENDER_INTERCEPT_CHOICES = [
 ]
 
 INCOME_CHOICES = [
-    ('', '-------'),
     ('under_20k', 'Less than $20,000 per year'),
     ('20_40k', '$20,000-$40,000 per year'),
     ('40_60k', '$40,000-$60,000 per year'),
@@ -17,7 +15,6 @@ INCOME_CHOICES = [
 ]
 
 EDUCATION_CHOICES = [
-    ('', '-------'),
     ('no_high_school', 'No high school diploma'),
     ('high_school', 'High school diploma'),
     ('associate', 'Associate\'s degree'),
@@ -26,7 +23,6 @@ EDUCATION_CHOICES = [
 ]
 
 RACE_CHOICES = [
-    ('', '-------'),
     ('black', 'African-American/Black'),
     ('asian', 'Asian'),
     ('white', 'White'),
@@ -38,7 +34,6 @@ RACE_CHOICES = [
 ]
 
 EMPLOYMENT_CHOICES = [
-    ('', '-------'),
     ('employed', 'Employed'),
     ('seeking', 'Seeking work'),
     ('not_seeking', 'Not seeking work'),
@@ -46,14 +41,12 @@ EMPLOYMENT_CHOICES = [
 ]
 
 OWN_OR_RENT_CHOICES = [
-    ('', '-------'),
     ('owner', 'Homeowner'),
     ('renter', 'Renter'),
     ('other', 'Other'),
 ]
 
 TRANSPORTATION_CHOICES = [
-    ('', '-------'),
     ('walked', 'Walked'),
     ('bicycle', 'Bicycle'),
     ('car_truck_van', 'Car, truck, or van'),
