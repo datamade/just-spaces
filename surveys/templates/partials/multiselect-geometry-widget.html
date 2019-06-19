@@ -1,11 +1,12 @@
 {% load static %}
+{% load leaflet_tags %}
 {% block extrastyles %}
   {% leaflet_css %}
 {% endblock %}
 
 <div id="map" style="height:500px; width:100%"></div>
 
-{% leafletj_js %}
+{% leaflet_js %}
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {

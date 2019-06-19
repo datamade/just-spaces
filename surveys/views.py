@@ -619,3 +619,8 @@ def census_area_to_observation(request):
             status = 200
 
     return JsonResponse(response, status=status)
+
+
+class TestMultiSelectGeometryWidgetView(FormView):
+    template_name = 'test_multiselect.html'
+    form_class = survey_forms.TestMultiSelectGeometryWidgetForm

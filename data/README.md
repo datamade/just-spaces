@@ -36,8 +36,22 @@ Make the data:
 docker-compose run --rm make
 ```
 
-Remove generated files to rerun the pipeline:
+To remove generated files to rerun the pipeline:
 
 ```
 docker-compose run --rm make clean
 ```
+
+## Updating data for a new year
+
+If you'd like to update ACS data for a new year, you'll need to remove the generated files and rerun the Make pipeline.
+
+Start by removing generated files:
+
+```
+docker-compose run --rm make clean
+```
+
+Next, adjust the global variable `YEAR` in `Makefile` to correspond to the year you'd like to retrieve ACS estimates for.
+
+Finally, rerun the pipeline with `docker-compose run --rm make`. This will create new files in the `data` directory that you can use to import into the app.

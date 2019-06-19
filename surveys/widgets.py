@@ -26,7 +26,7 @@ class MultiSelectGeometryWidget(SelectMultiple):
         super().__init__(updated_attrs)
 
     def get_context(self, name, value, attrs):
-        if not getattr(self, 'geometries'):
+        if not getattr(self, 'geometry_queryset'):
             raise NameError(
                 'MultiSelectGeometryWidgets must be instantiated with a `geometry_queryset` attribute.'
             )

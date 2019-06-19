@@ -10,6 +10,7 @@ import pldp.models as pldp_models
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
 from . import models as survey_models
+from surveys import widgets
 
 
 class JustSpacesForm(forms.ModelForm):
@@ -212,3 +213,10 @@ class SurveyChartForm(forms.ModelForm):
                    if component.type in fobi_types.ALL_VALID_TYPES]
         choices = [('', '-----')] + choices  # Offer a null choice
         self.fields['primary_source'].widget.choices = choices
+
+
+class TestMultiSelectGeometryWidgetForm(forms.Form):
+    geom = forms.MultipleChoiceField(
+        choices=[],
+        widget=widgets.CensusTractWidget()
+    )
