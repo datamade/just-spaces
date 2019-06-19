@@ -20,7 +20,7 @@ class EmploymentPlugin(FormFieldPlugin):
         field_kwargs = {
             'required': self.data.required,
             'label': self.data.label,
-            'widget': forms.widgets.Select(attrs={}),
+            'widget': forms.widgets.RadioSelect(attrs={}),
             'choices': EMPLOYMENT_CHOICES,
         }
 
