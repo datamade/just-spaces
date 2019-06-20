@@ -197,11 +197,15 @@ class CensusAreaCreateForm(JustSpacesForm):
         model = survey_models.CensusArea
         fields = ['name', 'fips_codes']
         widgets = {
-            'fips_codes': widgets.MultiSelectGeometryWidget(
-                choices=[(choice.fips_code, choice) for choice
-                         in survey_models.CensusBlockGroup.objects.all()]
-            ),
+            'fips_codes': widgets.MultiSelectGeometryWidget(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fips_codes'].widget.choices = [
+            (choice.fips_code, choice) for choice
+            in survey_models.CensusBlockGroup.objects.all()
+        ]
 
 
 class SurveyChartForm(forms.ModelForm):
@@ -221,10 +225,3 @@ class SurveyChartForm(forms.ModelForm):
                    if component.type in fobi_types.ALL_VALID_TYPES]
         choices = [('', '-----')] + choices  # Offer a null choice
         self.fields['primary_source'].widget.choices = choices
-
-
-class TestMultiSelectGeometryWidgetForm(forms.Form):
-    geom = forms.MultipleChoiceField(
-        choices=[(choice.fips_code, choice) for choice in survey_models.CensusBlockGroup.objects.all()],
-        widget=widgets.MultiSelectGeometryWidget()
-    )
