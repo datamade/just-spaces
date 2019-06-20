@@ -4,21 +4,30 @@
   {% leaflet_css %}
 {% endblock %}
 
-<div id="map" style="height:500px; width:100%"></div>
+<div id="map" style="height:600px; width:100%"></div>
 
 {% leaflet_js %}
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
     var map = L.map('map', {
-      center: [39.74, -89.50],  // Centroid of Illinois
-      zoom: 6,
+      center: [40, -75.16],  // Centroid of Philadelphia
+      zoom: 11,
       dragging: true,
       touchZoom: true,
       zoomControl: true,
       tap: true,
       scrollWheelZoom: false
     });
+
+    var tileUrl = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
+    var attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
+                      'contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+    var baselayer = L.tileLayer(tileUrl, {
+      attribution: attribution,
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
 
     var layerStyle = {
       'color': '#7a7a7a',
@@ -71,7 +80,7 @@
       push: function(layerId) {
         // Add the layer with the given layerId to the list of selected layers
         var selectedLayers = this.get();
-        if (selectedLayers.indexOf(layerId) > -1) {
+        if (selectedLayers.indexOf(layerId) == -1) {
           var input = this._getInput();
           for (var i=0; i<input.length; i++) {
             if (input.options[i].value === layerId) {
@@ -133,7 +142,7 @@
 
     function resetHighlight(e) {
       var layer = getLayer(e);
-      var style = (layer.feature.properties.selected) ? layerStyle : selectedStyle;
+      var style = (layer.feature.properties.selected) ? selectedStyle : layerStyle;
       layer.setStyle(style);
     }
 

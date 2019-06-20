@@ -217,6 +217,6 @@ class SurveyChartForm(forms.ModelForm):
 
 class TestMultiSelectGeometryWidgetForm(forms.Form):
     geom = forms.MultipleChoiceField(
-        choices=[],
-        widget=widgets.CensusTractWidget()
+        choices=[(choice.fips_code, choice) for choice in survey_models.CensusBlockGroup.objects.all()],
+        widget=widgets.MultiSelectGeometryWidget()
     )

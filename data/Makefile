@@ -82,5 +82,8 @@ final/acs/census_observations.csv: ${INTERMEDIATE}
 raw/shapefiles/cb_2018_42_bg_500k.zip:
 	wget -O $@ https://www2.census.gov/geo/tiger/GENZ2018/shp/$(notdir $@)
 
-final/shapefiles/cb_2018_42_bg_500k.shp: raw/shapefiles/cb_2018_42_bg_500k.zip
-	unzip "$<" -d final/shapefiles/
+intermediate/shapefiles/cb_2018_42_bg_500k.shp: raw/shapefiles/cb_2018_42_bg_500k.zip
+	unzip "$<" -d $(dir $@)
+
+final/shapefiles/cb_2018_42_bg_500k.shp: intermediate/shapefiles/cb_2018_42_bg_500k.shp
+	ogr2ogr -dialect SQLite -sql "SELECT * FROM $(notdir $(basename $@)) WHERE COUNTYFP = '101'" $@ $<

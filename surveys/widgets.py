@@ -14,7 +14,7 @@ class MultiSelectGeometryWidget(SelectMultiple):
 
     def __init__(self, attrs=None):
         '''
-        Make the actual form input hidden so that the user only interacts
+        Make the select form input hidden so that the user only interacts
         with the map widget.
         '''
         if attrs is None:
@@ -26,27 +26,16 @@ class MultiSelectGeometryWidget(SelectMultiple):
         super().__init__(updated_attrs)
 
     def get_context(self, name, value, attrs):
-        if not getattr(self, 'geometry_queryset'):
-            raise NameError(
-                'MultiSelectGeometryWidgets must be instantiated with a `geometry_queryset` attribute.'
-            )
-
         context = super().get_context(name, value, attrs)
-
         context['json'] = json.dumps({
             'type': 'FeatureCollection',
             'features': [{
                             'type': 'Feature',
-                            'geometry': json.loads(geom.geom.json),
+                            'geometry': json.loads(choice.geom.json),
                             'properties': {
-                                'id': geom.pk,
+                                'id': choice.pk,
                             }
                         }
-                        for geom in self.geometry_queryset]
+                        for _, choice in self.choices]
         })
-
         return context
-
-
-class CensusTractWidget(MultiSelectGeometryWidget):
-    geometry_queryset = models.CensusBlockGroup.objects.all()

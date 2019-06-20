@@ -4,6 +4,7 @@
 ## Requirements
 - Python 3.x
 - Docker
+- GDAL (for data imports)
 
 ## Running the app locally
 
