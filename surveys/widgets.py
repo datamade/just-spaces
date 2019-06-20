@@ -2,15 +2,13 @@ import json
 
 from django.forms.widgets import SelectMultiple
 
-from surveys import models
-
 
 class MultiSelectGeometryWidget(SelectMultiple):
     '''
     Widget for displaying and selecting multiple geometries.
     '''
     input_type = 'select'
-    template_name = 'partials/multiselect-geometry-widget.html'
+    template_name = 'partials/multiselect_geometry_widget.html'
 
     def __init__(self, attrs=None):
         '''

@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('surveys', '0010_surveyformentry_active'),
+        ('surveys', '0011_censusarea_is_active'),
     ]
 
     operations = [
