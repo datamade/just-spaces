@@ -2,6 +2,14 @@
 {% load leaflet_tags %}
 {% block extrastyles %}
   {% leaflet_css %}
+  <style>
+    .leaflet-control-clear-button {
+      border-radius: 7px;
+    }
+    .btn.btn-default:hover {
+      background-color: lightgrey;
+    }
+  </style>
 {% endblock %}
 
 <div id="map" style="height:600px; width:100%"></div>
@@ -102,8 +110,42 @@
             }
           }
         }
+      },
+      clear: function() {
+        // Remove all layers from the list of selected layers
+        var selectedLayers = this.get();
+        for (var i=0; i<selectedLayers.length; i++) {
+          this.pop(selectedLayers[i]);
+        }
       }
     };
+
+    // Add a custom layer control to the map to clear all layers
+    L.Control.ClearButton = L.Control.extend({
+      options: {
+        position: 'topright',
+      },
+      onAdd: function(map) {
+        var container = L.DomUtil.create(
+          'div',
+          'leaflet-bar leaflet-control leaflet-control-clear-button'
+        );
+        container.style.backgroundColor = 'white';
+        container.innerHTML = '<button class="btn btn-default" style="margin-top:0">' +
+                                '<i class="fa fa-fw fa-times" style="color:red"></i>' +
+                                'Clear all' +
+                              '</button>';
+        container.onclick = function(e) {
+          e.preventDefault();
+          jsonLayer.eachLayer(function(layer) {
+            layer.setStyle(layerStyle);
+          });
+          SelectedLayers.clear();
+        };
+        return container;
+      }
+    });
+    map.addControl(new L.Control.ClearButton());
 
     function selectFeature(e) {
       var layer = getLayer(e);
