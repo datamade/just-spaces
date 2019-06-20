@@ -58,9 +58,18 @@ class CensusObservation(models.Model):
     class Meta:
         unique_together = ['fips_code', 'variable']
 
+
 class CensusArea(models.Model):
     name = models.CharField(max_length=255)
-    fips_codes = pg_fields.ArrayField(models.CharField(max_length=12))
+    fips_codes = pg_fields.ArrayField(
+        models.CharField(max_length=12),
+        verbose_name='Block Groups',
+        help_text=(
+            'Select one or more Census block groups that comprise this area. '
+            'Add or remove a block group by clicking on it, or remove all block '
+            'groups by clicking the "Clear all" button.'
+        )
+    )
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

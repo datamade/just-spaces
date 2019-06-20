@@ -10,20 +10,23 @@ class MultiSelectGeometryWidget(SelectMultiple):
     input_type = 'select'
     template_name = 'partials/multiselect_geometry_widget.html'
 
-    def __init__(self, attrs=None):
-        '''
-        Make the select form input hidden so that the user only interacts
-        with the map widget.
-        '''
+    def __init__(self, attrs=None, choices=()):
+        """
+        Override __init__ to update the config dictionary to make sure that the
+        non-map input is always hidden.
+        """
         if attrs is None:
             updated_attrs = {'style': 'display:none'}
         else:
             updated_attrs = attrs.copy()
             updated_attrs['style'] = 'display:none'
 
-        super().__init__(updated_attrs)
+        super().__init__(attrs=updated_attrs, choices=choices)
 
     def get_context(self, name, value, attrs):
+        """
+        Override get_context to create GeoJSON geometries to pass into the template.
+        """
         context = super().get_context(name, value, attrs)
         context['json'] = json.dumps({
             'type': 'FeatureCollection',
@@ -37,3 +40,12 @@ class MultiSelectGeometryWidget(SelectMultiple):
                         for _, choice in self.choices]
         })
         return context
+
+    def format_value(self, value):
+        """
+        Override format_value to make sure that Array values get cast to
+        Python lists properly. See: https://stackoverflow.com/a/53216766
+        """
+        if value is not None and not isinstance(value, (tuple, list)):
+            value = value.split(',')
+        return super().format_value(value)

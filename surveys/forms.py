@@ -191,9 +191,17 @@ class SurveyEditForm(JustSpacesForm):
 
 
 class CensusAreaCreateForm(JustSpacesForm):
+    use_required_attribute = False
+
     class Meta:
         model = survey_models.CensusArea
-        fields = ['name']
+        fields = ['name', 'fips_codes']
+        widgets = {
+            'fips_codes': widgets.MultiSelectGeometryWidget(
+                choices=[(choice.fips_code, choice) for choice
+                         in survey_models.CensusBlockGroup.objects.all()]
+            ),
+        }
 
 
 class SurveyChartForm(forms.ModelForm):

@@ -209,7 +209,7 @@
     if (savedObjects) {
       for (var i=0; i<savedObjects.length; i++) {
         jsonLayer.eachLayer(function(layer) {
-          if (layer.feature.properties.id === parseInt(savedObjects[i])) {
+          if (layer.feature.properties.id === savedObjects[i]) {
             selectFeature(layer);
             existingLayers.push(layer);
           }
