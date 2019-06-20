@@ -210,8 +210,4 @@ urlpatterns = [
     url(r'census-areas/deactivate/(?P<pk>\d+)/$',
         login_required(survey_views.CensusAreaDeactivate.as_view()),
         name='census-areas-deactivate'),
-
-    path('test-multiselect/',
-         view=survey_views.TestMultiSelectGeometryWidgetView.as_view(),
-         name="test-multiselect"),
 ]
