@@ -14,6 +14,7 @@ RUN set -ex \
 		git \
 		make \
 		wget \
+		gdal-bin \
 	" \
 	&& apt-get update && apt-get install -y $deps $buildDeps --no-install-recommends \
 	&& pip install --src /opt/pypi --no-cache-dir -r requirements.txt \

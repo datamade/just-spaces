@@ -1,0 +1,207 @@
+{% load static %}
+{% load leaflet_tags %}
+{% block extrastyles %}
+  {% leaflet_css %}
+  <style>
+    .leaflet-control-clear-button {
+      border-radius: 7px;
+    }
+    .btn.btn-default:hover {
+      background-color: lightgrey;
+    }
+  </style>
+{% endblock %}
+
+{% leaflet_js %}
+
+<script type="text/javascript">
+  function initMap(map, options) {
+    var layerStyle = {
+      'color': '#7a7a7a',
+      'weight': 3,
+      'opacity': 0.5,
+      'fillColor': '#999999',
+      'fillOpacity': 0.3,
+    };
+    var selectedStyle = {
+      'color': '#7a7a7a',
+      'weight': 3,
+      'opacity': 0.5,
+      'fillColor': 'black',
+      'fillOpacity': 0.7
+    };
+
+    function getLayer(e) {
+      // Check if the input is an Event or a Layer object, and return the corresponding
+      // Layer appropriately.
+      if (e.target) {
+        layer = e.target;
+      } else {
+        layer = e;
+      }
+      return layer;
+    }
+
+    var SelectedLayers = {
+      // Common operations to perform on selected layers
+      _getInput: function() { return document.getElementsByName('{{ widget.name }}')[0]; },
+      get: function() {
+        // Get the IDs of all selected layers
+        var input = this._getInput();
+        var layerIds = [];
+        if (!input.selectedOptions) {
+          // Support older versions of IE without the selectedOptions property
+          // See: https://stackoverflow.com/q/11583728
+          for (var i=0; i<input.length; i++) {
+            if (input.options[i].selected) {
+              layerIds.push(input.options[i].value);
+            }
+          }
+        } else {
+          for (var i=0; i<input.selectedOptions.length; i++) {
+            layerIds.push(input.selectedOptions[i].value);
+          }
+        }
+        return layerIds;
+      },
+      push: function(layerId) {
+        // Add the layer with the given layerId to the list of selected layers
+        var selectedLayers = this.get();
+        if (selectedLayers.indexOf(layerId) == -1) {
+          var input = this._getInput();
+          for (var i=0; i<input.length; i++) {
+            if (input.options[i].value === layerId) {
+              input.options[i].setAttribute('selected', 'selected');
+              break;
+            }
+          }
+        }
+      },
+      pop: function(layerId) {
+        // Remove the layer with the given layerId from the list of selected layers
+        var selectedLayers = this.get();
+        if (selectedLayers.indexOf(layerId) > -1) {
+          var input = this._getInput();
+          for (var i=0; i<input.length; i++) {
+            if (input.options[i].value === layerId) {
+              input.options[i].removeAttribute('selected');
+              return input.options[i];
+            }
+          }
+        }
+      },
+      clear: function() {
+        // Remove all layers from the list of selected layers
+        var selectedLayers = this.get();
+        for (var i=0; i<selectedLayers.length; i++) {
+          this.pop(selectedLayers[i]);
+        }
+      }
+    };
+
+    // Add a custom layer control to the map to clear all layers
+    L.Control.ClearButton = L.Control.extend({
+      options: {
+        position: 'topright',
+      },
+      onAdd: function(map) {
+        var container = L.DomUtil.create(
+          'div',
+          'leaflet-bar leaflet-control leaflet-control-clear-button'
+        );
+        container.style.backgroundColor = 'white';
+        container.innerHTML = '<button class="btn btn-default" style="margin-top:0">' +
+                                '<i class="fa fa-fw fa-times" style="color:red"></i>' +
+                                'Clear all' +
+                              '</button>';
+        container.onclick = function(e) {
+          e.preventDefault();
+          jsonLayer.eachLayer(function(layer) {
+            layer.setStyle(layerStyle);
+          });
+          SelectedLayers.clear();
+        };
+        return container;
+      }
+    });
+    map.addControl(new L.Control.ClearButton());
+
+    function selectFeature(e) {
+      var layer = getLayer(e);
+      var layerId = layer.feature.properties.id;
+
+      if (layer.feature.properties.selected) {
+        // Layer was already selected; turn it off and remove it from the list of
+        // selected layers
+        layer.feature.properties.selected = false;
+        SelectedLayers.pop(layerId);
+        resetHighlight(e);
+      } else {
+        layer.feature.properties.selected = true;
+        SelectedLayers.push(layerId);
+        layer.setStyle(selectedStyle);
+      }
+
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+      }
+    }
+
+    function highlightFeature(e) {
+      var layer = getLayer(e);
+
+      layer.setStyle({
+        color: 'black',
+        weight: 5,
+        opacity: 0.6,
+      });
+
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+      }
+    }
+
+    function resetHighlight(e) {
+      var layer = getLayer(e);
+      var style = (layer.feature.properties.selected) ? selectedStyle : layerStyle;
+      layer.setStyle(style);
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on('mouseover', function(e) {
+        highlightFeature(e);
+      }).on('mouseout', function(e) {
+        resetHighlight(e);
+      }).on('click', function(e) {
+        selectFeature(e);
+      })
+    }
+
+    var jsonLayer = L.geoJSON(JSON.parse('{{ json | escapejs }}'), {
+      style: layerStyle,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+
+    // Make sure existing selected layers are highlighted
+    var existingLayers = [];
+    var savedObjects = SelectedLayers.get();
+    if (savedObjects) {
+      for (var i=0; i<savedObjects.length; i++) {
+        jsonLayer.eachLayer(function(layer) {
+          if (layer.feature.properties.id === savedObjects[i]) {
+            selectFeature(layer);
+            existingLayers.push(layer);
+          }
+        });
+      }
+    }
+    // Fit bounds to existing layers
+    if (existingLayers.length) {
+      map.fitBounds(L.featureGroup(existingLayers).getBounds());
+    }
+  }
+</script>
+
+{% leaflet_map "map" callback="initMap" %}
+
+{% include "django/forms/widgets/select.html" %}

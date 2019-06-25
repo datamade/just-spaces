@@ -10,6 +10,7 @@ import pldp.models as pldp_models
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
 from . import models as survey_models
+from surveys import widgets
 
 
 class JustSpacesForm(forms.ModelForm):
@@ -190,9 +191,21 @@ class SurveyEditForm(JustSpacesForm):
 
 
 class CensusAreaCreateForm(JustSpacesForm):
+    use_required_attribute = False
+
     class Meta:
         model = survey_models.CensusArea
-        fields = ['name']
+        fields = ['name', 'fips_codes']
+        widgets = {
+            'fips_codes': widgets.MultiSelectGeometryWidget(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fips_codes'].widget.choices = [
+            (choice.fips_code, choice) for choice
+            in survey_models.CensusBlockGroup.objects.all()
+        ]
 
 
 class SurveyChartForm(forms.ModelForm):

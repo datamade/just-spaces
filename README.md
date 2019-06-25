@@ -4,6 +4,7 @@
 ## Requirements
 - Python 3.x
 - Docker
+- GDAL (for data imports)
 
 ## Running the app locally
 
@@ -86,6 +87,16 @@
     ```
 
     Navigate to http://localhost:8000/.
+
+## Importing new ACS data
+
+If you'd like to refresh ACS data, there are a few steps you'll need to take:
+
+0. If your database is running in production, [make a backup of it with `pg_dump`](https://www.postgresql.org/docs/9.1/backup.html) just in case
+1. Follow [the instructions in the `data` repo](./data/README.md#updating-data-for-a-new-year) to remake ACS data for a new year
+2. Rerun `python manage.py import_data`
+
+The `import_data` management command will update data if it already exists, so you shouldn't experience data loss during import. Still, we recommend that you practice caution and make a backup.
 
 ## On form building
 This app uses a custom fork of [django-fobi](https://github.com/datamade/django-fobi) for the Create Survey, Edit Survey, and Run Survey views. django-fobi's [documentation](https://django-fobi.readthedocs.io/en/0.13.8/) is an immensely helpful resource. Add-ons to the base are in this repo's `fobi-custom` folder, including custom plugins that draw from [`django-pldp`](https://github.com/datamade/django-pldp), our implementation of the Public Life Data Protocol.

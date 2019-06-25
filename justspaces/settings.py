@@ -181,16 +181,16 @@ FOBI_SAVE_SURVEY_REDIRECT_ROUTE = 'surveys-list-edit'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LEAFLET_CONFIG = {
-    'DEFAULT_CENTER': (39.952583, -75.165222),
-    'DEFAULT_ZOOM': 12,
+    'DEFAULT_CENTER': (40, -75.16),  # Centroid of Philadelphia
+    'DEFAULT_ZOOM': 11,
     'MIN_ZOOM': 3,
     'MAX_ZOOM': 18,
     'RESET_VIEW': False,
     'TILES': [
         (
          'Map',
-         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-         {'attribution': '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
+         'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+         {'attribution': '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'}
         ),
         (
          'Satellite',

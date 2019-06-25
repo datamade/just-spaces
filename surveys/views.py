@@ -434,7 +434,7 @@ class CensusAreaCreate(CreateView):
     form_class = survey_forms.CensusAreaCreateForm
     model = survey_models.CensusArea
     template_name = "census_area_create.html"
-    success_url = reverse_lazy('census-area-list')
+    success_url = reverse_lazy('census-areas-list')
 
 
 class CensusAreaList(ListView):
