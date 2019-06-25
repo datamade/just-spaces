@@ -25,13 +25,25 @@
   <thead>
     <tr>
       <th scope="col">Name</th>
+      <th scope="col" class="text-center">Is preset</th>
       <th scope="col" class="text-center">Delete</th>
     </tr>
   </thead>
   <tbody>
     {% for census_area in census_areas %}
       <tr>
-        <td><b><a href="{% url 'census-areas-edit' census_area.id %}">{{census_area.name}}</a></b></td>
+        <td>
+          <b>
+            {% if not census_area.is_preset %}
+              <a href="{% url 'census-areas-edit' census_area.id %}">{{census_area.name}}</a>
+            {% else %}
+              <span data-toggle="tooltip" title="Preset census areas cannot be edited." tabindex="0">
+                {{ census_area.name}}
+              </span>
+            {% endif %}
+          </b>
+        </td>
+        <td class="text-center">{% if census_area.is_preset %}<i class="fa fa-fw fa-check-circle" style="color:green"></i>{% endif %}</td>
         <td class="text-center"><a href="{% url 'census-areas-deactivate' census_area.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
       </tr>
     {% endfor %}

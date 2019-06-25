@@ -61,7 +61,8 @@ class Command(BaseCommand):
         for name, fips_codes in CENSUS_AREAS.items():
             _, created = models.CensusArea.objects.get_or_create(
                 name=name,
-                fips_codes=fips_codes
+                fips_codes=fips_codes,
+                is_preset=True
             )
             if created:
                 created_areas += 1
