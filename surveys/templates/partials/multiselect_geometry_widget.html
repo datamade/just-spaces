@@ -12,31 +12,10 @@
   </style>
 {% endblock %}
 
-<div id="map" style="height:600px; width:100%"></div>
-
 {% leaflet_js %}
 
 <script type="text/javascript">
-  document.addEventListener('DOMContentLoaded', function() {
-    var map = L.map('map', {
-      center: [40, -75.16],  // Centroid of Philadelphia
-      zoom: 11,
-      dragging: true,
-      touchZoom: true,
-      zoomControl: true,
-      tap: true,
-      scrollWheelZoom: false
-    });
-
-    var tileUrl = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
-    var attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
-                      'contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
-    var baselayer = L.tileLayer(tileUrl, {
-      attribution: attribution,
-      subdomains: 'abcd',
-      maxZoom: 19
-    }).addTo(map);
-
+  function initMap(map, options) {
     var layerStyle = {
       'color': '#7a7a7a',
       'weight': 3,
@@ -220,7 +199,9 @@
     if (existingLayers.length) {
       map.fitBounds(L.featureGroup(existingLayers).getBounds());
     }
-  });
+  }
 </script>
+
+{% leaflet_map "map" callback="initMap" %}
 
 {% include "django/forms/widgets/select.html" %}
