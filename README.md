@@ -92,7 +92,7 @@
 
 If you'd like to refresh ACS data, there are a few steps you'll need to take:
 
-0. If your database is running in production, make a backup of it with `pg_dump` just in case
+0. If your database is running in production, [make a backup of it with `pg_dump`](https://www.postgresql.org/docs/9.1/backup.html) just in case
 1. Follow [the instructions in the `data` repo](./data/README.md#updating-data-for-a-new-year) to remake ACS data for a new year
 2. Rerun `python manage.py import_data`
 
