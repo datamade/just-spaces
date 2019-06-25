@@ -19,7 +19,7 @@ Alternatively, if you're indoctrinated into this project, retrieve the canonical
 `.env` file from the Blackbox keyring:
 
 ```
-blackbox_cat ../configs/.env.gpg > .env
+(cd .. && blackbox_cat configs/.env.gpg > data/.env)
 ```
 
 Next, install requirements with Docker Compose:
