@@ -19,7 +19,7 @@ from fobi import models as fobi_models
 
 from . import forms as survey_forms
 from .utils import get_or_none
-from .models import SurveyFormEntry, SurveyChart, CensusArea, CensusObservation
+from . import models as survey_models
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
@@ -277,7 +277,7 @@ class StudyDetail(DetailView):
 
 class SurveyCreate(CreateView):
     form_class = survey_forms.SurveyCreateForm
-    model = SurveyFormEntry
+    model = survey_models.SurveyFormEntry
     template_name = "survey_create.html"
 
     def get_initial(self):
@@ -326,7 +326,7 @@ class SurveyCreate(CreateView):
 
 
 class SurveyPropertiesEdit(UpdateView):
-    model = SurveyFormEntry
+    model = survey_models.SurveyFormEntry
     template_name = "survey_properties_edit.html"
     form_class = survey_forms.SurveyEditForm
     context_object_name = 'form_object'
@@ -343,7 +343,7 @@ class SurveyDeactivate(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object'] = SurveyFormEntry.objects.get(id=context['pk'])
+        context['object'] = survey_models.SurveyFormEntry.objects.get(id=context['pk'])
 
         return context
 
@@ -360,7 +360,7 @@ class SurveyPublish(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['survey'] = SurveyFormEntry.objects.get(id=context['form_entry_id'])
+        context['survey'] = survey_models.SurveyFormEntry.objects.get(id=context['form_entry_id'])
 
         return context
 
@@ -373,7 +373,7 @@ class SurveyPublish(TemplateView):
 
 
 class SurveyListEdit(ListView):
-    model = SurveyFormEntry
+    model = survey_models.SurveyFormEntry
     template_name = "survey_list_edit.html"
     context_object_name = 'surveys'
 
@@ -386,7 +386,7 @@ class SurveyListEdit(ListView):
 
 
 class SurveyListRun(ListView):
-    model = SurveyFormEntry
+    model = survey_models.SurveyFormEntry
     template_name = "survey_list_run.html"
     context_object_name = 'surveys'
 
@@ -419,9 +419,9 @@ class SurveySubmittedList(TemplateView):
 
         for survey in context['surveys_submitted']:
             try:
-                survey_form_entry = SurveyFormEntry.objects.get(formentry_ptr=survey.form_id)
+                survey_form_entry = survey_models.SurveyFormEntry.objects.get(formentry_ptr=survey.form_id)
                 survey.form_title = survey_form_entry.name
-            except SurveyFormEntry.DoesNotExist:
+            except survey_models.SurveyFormEntry.DoesNotExist:
                 survey.form_title = "[Deleted Survey]"
 
             survey_submissions = surveys.filter(form_id=survey.form_id)
@@ -430,9 +430,48 @@ class SurveySubmittedList(TemplateView):
         return context
 
 
+class CensusAreaCreate(CreateView):
+    form_class = survey_forms.CensusAreaCreateForm
+    model = survey_models.CensusArea
+    template_name = "census_area_create.html"
+    success_url = reverse_lazy('census-areas-list')
+
+
+class CensusAreaList(ListView):
+    model = survey_models.CensusArea
+    template_name = "census_area_list.html"
+    context_object_name = 'census_areas'
+    queryset = survey_models.CensusArea.objects.all().exclude(is_active=False)
+
+
+class CensusAreaEdit(UpdateView):
+    model = survey_models.CensusArea
+    template_name = "census_area_edit.html"
+    form_class = survey_forms.CensusAreaCreateForm
+    context_object_name = 'form_object'
+    success_url = reverse_lazy('census-areas-list')
+
+
+class CensusAreaDeactivate(TemplateView):
+    template_name = "census_area_deactivate.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = survey_models.CensusArea.objects.get(id=context['pk'])
+
+        return context
+
+    def post(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['object'].is_active = False
+        context['object'].save()
+
+        return redirect('census-areas-list')
+
+
 class SurveySubmittedDetail(TemplateView):
     template_name = "survey_submitted_detail.html"
-    ChartFormset = modelformset_factory(SurveyChart,
+    ChartFormset = modelformset_factory(survey_models.SurveyChart,
                                         form=survey_forms.SurveyChartForm,
                                         exclude=('form_entry',),
                                         extra=0,
@@ -441,7 +480,7 @@ class SurveySubmittedDetail(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['form_entry'] = SurveyFormEntry.objects.get(id=context['form_entry_id'])
+        context['form_entry'] = survey_models.SurveyFormEntry.objects.get(id=context['form_entry_id'])
         context['surveys_submitted'] = pldp_models.Survey.objects.filter(form_id=context['form_entry_id'])
 
         # Generate a JSON representation of survey data for use in charting
@@ -490,7 +529,7 @@ class SurveySubmittedDetail(TemplateView):
         context['questions'] = first_survey.components.values_list('label', flat=True)
 
         context['chart_formset'] = self.ChartFormset(
-            queryset=SurveyChart.objects.filter(form_entry=context['form_entry']),
+            queryset=survey_models.SurveyChart.objects.filter(form_entry=context['form_entry']),
             form_kwargs={'form_entry': context['form_entry_id']},
         )
 
@@ -549,8 +588,8 @@ def census_area_to_observation(request):
 
     response = {}
     try:
-        census_area = CensusArea.objects.get(id=census_area_id)
-    except CensusArea.DoesNotExist:
+        census_area = survey_models.CensusArea.objects.get(id=census_area_id)
+    except survey_models.CensusArea.DoesNotExist:
         response['error'] = 'No CensusArea object found for ID {}'.format(
             str(census_area_id)
         )
@@ -558,7 +597,7 @@ def census_area_to_observation(request):
     else:
         try:
             response['data'] = census_area.get_observations_from_component(primary_source_id)
-        except CensusObservation.DoesNotExist as e:
+        except survey_models.CensusObservation.DoesNotExist as e:
             response['error'] = str(e)
             status = 400
         else:

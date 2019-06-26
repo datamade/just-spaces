@@ -191,4 +191,20 @@ urlpatterns = [
 
     # API endpoint for retreiving CensusObservation data
     path('acs/', view=survey_views.census_area_to_observation, name="acs"),
+
+    url(r'census-areas/create/$',
+        login_required(survey_views.CensusAreaCreate.as_view()),
+        name='census-areas-create'),
+
+    url(r'census-areas/$',
+        login_required(survey_views.CensusAreaList.as_view()),
+        name='census-areas-list'),
+
+    url(r'census-areas/edit/(?P<pk>\d+)/$',
+        login_required(survey_views.CensusAreaEdit.as_view()),
+        name='census-areas-edit'),
+
+    url(r'census-areas/deactivate/(?P<pk>\d+)/$',
+        login_required(survey_views.CensusAreaDeactivate.as_view()),
+        name='census-areas-deactivate'),
 ]

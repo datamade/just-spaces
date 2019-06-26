@@ -1,0 +1,23 @@
+{% extends 'partials/large_card.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head %}Create New Census Area{% endblock %}
+
+{% block subhead %}
+  Create custom collections of Census block groups to aggregate when comparing survey data to surrounding neighborhoods.
+{% endblock %}
+
+{% block top_button %}
+  <a class="btn btn-primary ml-sm-auto ml-2 mr-sm-3" href="{% url 'census-areas-list' %}">View existing census areas</a>
+{% endblock %}
+
+{% block card_content %}
+<form class="form-horizontal" name="census-area-form" method="post">
+  {% crispy form %}
+</form>
+{% endblock %}
+
+{% block footer_js %}
+
+{% endblock %}

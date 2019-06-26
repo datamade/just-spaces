@@ -2,7 +2,7 @@ YEAR := 2017
 COMPILE_ACS_DATA = cat $< | python3 scripts/compile_acs_data.py $(basename $(notdir $@)) > $@
 
 .PHONY: all clean
-all: final/acs/census_observations.csv
+all: final/acs/census_observations.csv final/shapefiles/cb_2018_42_bg_500k.shp
 
 # Raw tables from the ACS API
 RAW := raw/acs/age_and_sex.csv \
@@ -71,7 +71,7 @@ intermediate/acs/employment.csv: raw/acs/employment_status.csv
 	$(COMPILE_ACS_DATA)
 
 clean:
-	rm -Rf raw/acs/*.csv intermediate/acs/*.csv final/*.csv
+	rm -Rf raw/acs/*.csv raw/shapefiles/*.zip intermediate/acs/*.csv final/acs/*.csv final/shapefiles/*
 
 raw/acs/%.csv:
 	python3 scripts/import_acs_data.py "$*" "${YEAR}" > "$@"
@@ -79,3 +79,11 @@ raw/acs/%.csv:
 final/acs/census_observations.csv: ${INTERMEDIATE}
 	python3 scripts/merge_acs_data.py $^ > $@
 
+raw/shapefiles/cb_2018_42_bg_500k.zip:
+	wget -O $@ https://www2.census.gov/geo/tiger/GENZ2018/shp/$(notdir $@)
+
+intermediate/shapefiles/cb_2018_42_bg_500k.shp: raw/shapefiles/cb_2018_42_bg_500k.zip
+	unzip "$<" -d $(dir $@)
+
+final/shapefiles/cb_2018_42_bg_500k.shp: intermediate/shapefiles/cb_2018_42_bg_500k.shp
+	ogr2ogr -dialect SQLite -sql "SELECT * FROM $(notdir $(basename $@)) WHERE COUNTYFP = '101'" $@ $<
