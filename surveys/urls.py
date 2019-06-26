@@ -9,8 +9,9 @@ from django.conf.urls import url, include
 from django.urls import path
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
+
 from surveys import views as survey_views
+from .utils import staff_required_custom_login
 
 import fobi.views
 
@@ -24,59 +25,59 @@ urlpatterns = [
         include('django.contrib.auth.urls')),
 
     url(r'agencies/$',
-        staff_member_required(survey_views.AgencyList.as_view()),
+        staff_required_custom_login(survey_views.AgencyList.as_view()),
         name='agencies-list'),
 
     url(r'agencies/create/$',
-        staff_member_required(survey_views.AgencyCreate.as_view()),
+        staff_required_custom_login(survey_views.AgencyCreate.as_view()),
         name='agencies-create'),
 
     url(r'agencies/deactivate/(?P<pk>[\w_\-]+)/$',
-        staff_member_required(survey_views.AgencyDeactivate.as_view()),
+        staff_required_custom_login(survey_views.AgencyDeactivate.as_view()),
         name='agencies-deactivate'),
 
     url(r'agencies/(?P<pk>[\w_\-]+)/$',
-        staff_member_required(survey_views.AgencyDetail.as_view()),
+        staff_required_custom_login(survey_views.AgencyDetail.as_view()),
         name='agencies-detail'),
 
     url(r'locations/create/$',
-        staff_member_required(survey_views.LocationCreate.as_view()),
+        staff_required_custom_login(survey_views.LocationCreate.as_view()),
         name='locations-create'),
 
     url(r'locations/$',
-        staff_member_required(survey_views.LocationList.as_view()),
+        staff_required_custom_login(survey_views.LocationList.as_view()),
         name='locations-list'),
 
     url(r'locations/deactivate/(?P<pk>[\w_\-]+)/$',
-        staff_member_required(survey_views.LocationDeactivate.as_view()),
+        staff_required_custom_login(survey_views.LocationDeactivate.as_view()),
         name='locations-deactivate'),
 
     url(r'locations/(?P<pk>[\w_\-]+)/$',
-        staff_member_required(survey_views.LocationDetail.as_view()),
+        staff_required_custom_login(survey_views.LocationDetail.as_view()),
         name='locations-detail'),
 
     url(r'study-areas/create/$',
-        staff_member_required(survey_views.StudyAreaCreate.as_view()),
+        staff_required_custom_login(survey_views.StudyAreaCreate.as_view()),
         name='study-areas-create'),
 
     url(r'studies/create/$',
-        staff_member_required(survey_views.StudyCreate.as_view()),
+        staff_required_custom_login(survey_views.StudyCreate.as_view()),
         name='studies-create'),
 
     url(r'studies/$',
-        staff_member_required(survey_views.StudyList.as_view()),
+        staff_required_custom_login(survey_views.StudyList.as_view()),
         name='studies-list'),
 
     url(r'studies/deactivate/(?P<pk>[\w_\-]+)/$',
-        staff_member_required(survey_views.StudyDeactivate.as_view()),
+        staff_required_custom_login(survey_views.StudyDeactivate.as_view()),
         name='studies-deactivate'),
 
     url(r'studies/(?P<pk>[\w_\-]+)/$',
-        staff_member_required(survey_views.StudyDetail.as_view()),
+        staff_required_custom_login(survey_views.StudyDetail.as_view()),
         name='studies-detail'),
 
     url(r'surveys/edit/$',
-        staff_member_required(survey_views.SurveyListEdit.as_view()),
+        staff_required_custom_login(survey_views.SurveyListEdit.as_view()),
         name='surveys-list-edit'),
 
     url(r'surveys/run/$',
@@ -84,23 +85,23 @@ urlpatterns = [
         name='surveys-list-run'),
 
     url(r'surveys/create/$',
-        staff_member_required(survey_views.SurveyCreate.as_view()),
+        staff_required_custom_login(survey_views.SurveyCreate.as_view()),
         name='surveys-create'),
 
     # Create survey element
     url(_(r'^elements/create/(?P<form_entry_id>\d+)/'
           r'(?P<form_element_plugin_uid>[\w_\-]+)/$'),
-        staff_member_required(fobi.views.add_form_element_entry),
+        staff_required_custom_login(fobi.views.add_form_element_entry),
         name='fobi.add_form_element_entry'),
 
     # Edit survey element
     url(_(r'^elements/edit/(?P<form_element_entry_id>\d+)/$'),
-        staff_member_required(fobi.views.edit_form_element_entry),
+        staff_required_custom_login(fobi.views.edit_form_element_entry),
         name='fobi.edit_form_element_entry'),
 
     # Delete survey element
     url(_(r'^elements/delete/(?P<form_element_entry_id>\d+)/$'),
-        staff_member_required(fobi.views.delete_form_element_entry),
+        staff_required_custom_login(fobi.views.delete_form_element_entry),
         name='fobi.delete_form_element_entry'),
 
     # Create survey handler
@@ -121,27 +122,27 @@ urlpatterns = [
 
     # Edit survey
     url(_(r'^surveys/edit/(?P<form_entry_id>\d+)/$'),
-        staff_member_required(fobi.views.edit_form_entry),
+        staff_required_custom_login(fobi.views.edit_form_entry),
         name='fobi.edit_form_entry'),
 
     # Edit survey properties
     url(_(r'^surveys/edit/(?P<pk>\d+)/properties/$'),
-        staff_member_required(survey_views.SurveyPropertiesEdit.as_view()),
+        staff_required_custom_login(survey_views.SurveyPropertiesEdit.as_view()),
         name='survey-properties-edit'),
 
     # Delete survey
     url(_(r'^surveys/delete/(?P<form_entry_id>\d+)/$'),
-        staff_member_required(fobi.views.delete_form_entry),
+        staff_required_custom_login(fobi.views.delete_form_entry),
         name='fobi.delete_form_entry'),
 
     # Deactivate survey
     url(_(r'^surveys/deactivate/(?P<pk>[\w_\-]+)/$'),
-        staff_member_required(survey_views.SurveyDeactivate.as_view()),
+        staff_required_custom_login(survey_views.SurveyDeactivate.as_view()),
         name='surveys-deactivate'),
 
     # Publish survey
     url(_(r'^surveys/publish/(?P<form_entry_id>\d+)/$'),
-        staff_member_required(survey_views.SurveyPublish.as_view()),
+        staff_required_custom_login(survey_views.SurveyPublish.as_view()),
         name='surveys-publish'),
 
     # Survey detail
@@ -176,17 +177,17 @@ urlpatterns = [
 
     # Delete form element entry
     url(_(r'^surveys/elements/delete/(?P<form_element_entry_id>\d+)/$'),
-        staff_member_required(fobi.views.delete_form_element_entry),
+        staff_required_custom_login(fobi.views.delete_form_element_entry),
         name='fobi.delete_form_element_entry'),
 
     # Submitted surveys list
     url(r'^surveys/submitted$',
-        staff_member_required(survey_views.SurveySubmittedList.as_view()),
+        staff_required_custom_login(survey_views.SurveySubmittedList.as_view()),
         name='surveys-submitted-list'),
 
     # Submitted surveys detail
     url(r'^surveys/submitted/(?P<form_entry_id>\d+)$',
-        staff_member_required(survey_views.SurveySubmittedDetail.as_view()),
+        staff_required_custom_login(survey_views.SurveySubmittedDetail.as_view()),
         name='surveys-submitted-detail'),
 
     # API endpoint for retreiving CensusObservation data
