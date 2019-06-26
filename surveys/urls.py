@@ -162,17 +162,17 @@ urlpatterns = [
 
     # Export survey
     url(_(r'^surveys/export/(?P<form_entry_id>\d+)/$'),
-        view=fobi.views.export_form_entry,
+        view=staff_required_custom_login(fobi.views.export_form_entry),
         name='fobi.export_form_entry'),
 
     # Import survey
     url(_(r'^surveys/import/$'),
-        view=fobi.views.import_form_entry,
+        view=staff_required_custom_login(fobi.views.import_form_entry),
         name='fobi.import_form_entry'),
 
     # Survey importers
     url(_(r'^surveys/importer/(?P<form_importer_plugin_uid>[\w_\-]+)/$'),
-        view=fobi.views.form_importer,
+        view=staff_required_custom_login(fobi.views.form_importer),
         name='fobi.form_importer'),
 
     # Delete form element entry
@@ -194,18 +194,18 @@ urlpatterns = [
     path('acs/', view=survey_views.census_area_to_observation, name="acs"),
 
     url(r'census-areas/create/$',
-        login_required(survey_views.CensusAreaCreate.as_view()),
+        staff_required_custom_login(survey_views.CensusAreaCreate.as_view()),
         name='census-areas-create'),
 
     url(r'census-areas/$',
-        login_required(survey_views.CensusAreaList.as_view()),
+        staff_required_custom_login(survey_views.CensusAreaList.as_view()),
         name='census-areas-list'),
 
     url(r'census-areas/edit/(?P<pk>\d+)/$',
-        login_required(survey_views.CensusAreaEdit.as_view()),
+        staff_required_custom_login(survey_views.CensusAreaEdit.as_view()),
         name='census-areas-edit'),
 
     url(r'census-areas/deactivate/(?P<pk>\d+)/$',
-        login_required(survey_views.CensusAreaDeactivate.as_view()),
+        staff_required_custom_login(survey_views.CensusAreaDeactivate.as_view()),
         name='census-areas-deactivate'),
 ]
