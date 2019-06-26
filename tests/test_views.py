@@ -10,8 +10,8 @@ from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
 
 @pytest.mark.django_db
-def test_study_area_create(client, user):
-    client.force_login(user)
+def test_study_area_create(client, user_staff):
+    client.force_login(user_staff)
     url = reverse('study-areas-create')
     get_response = client.get(url)
 
@@ -19,8 +19,8 @@ def test_study_area_create(client, user):
 
 
 @pytest.mark.django_db
-def test_agency_create(client, user):
-    client.force_login(user)
+def test_agency_create(client, user_staff):
+    client.force_login(user_staff)
     url = reverse('agencies-create')
     response = client.get(url)
 
@@ -28,8 +28,8 @@ def test_agency_create(client, user):
 
 
 @pytest.mark.django_db
-def test_agency_list(client, user, agency):
-    client.force_login(user)
+def test_agency_list(client, user_staff, agency):
+    client.force_login(user_staff)
     url = reverse('agencies-list')
     response = client.get(url)
 
@@ -42,8 +42,8 @@ def test_agency_list(client, user, agency):
 
 
 @pytest.mark.django_db
-def test_agency_detail(client, user, agency):
-    client.force_login(user)
+def test_agency_detail(client, user_staff, agency):
+    client.force_login(user_staff)
     url = reverse('agencies-detail', kwargs={'pk': agency.id})
     response = client.get(url)
     html = response.content.decode('utf-8')
@@ -57,8 +57,8 @@ def test_agency_detail(client, user, agency):
 
 
 @pytest.mark.django_db
-def test_study_create(client, user, study_area):
-    client.force_login(user)
+def test_study_create(client, user_staff, study_area):
+    client.force_login(user_staff)
     url = reverse('studies-create')
     response = client.get(url)
 
@@ -67,8 +67,8 @@ def test_study_create(client, user, study_area):
 
 
 @pytest.mark.django_db
-def test_study_list(client, user, study, study_inactive):
-    client.force_login(user)
+def test_study_list(client, user_staff, study, study_inactive):
+    client.force_login(user_staff)
     url = reverse('studies-list')
     response = client.get(url)
 
@@ -81,8 +81,8 @@ def test_study_list(client, user, study, study_inactive):
 
 
 @pytest.mark.django_db
-def test_study_detail(client, user, study):
-    client.force_login(user)
+def test_study_detail(client, user_staff, study):
+    client.force_login(user_staff)
     url = reverse('studies-detail', kwargs={'pk': study.id})
     response = client.get(url)
     html = response.content.decode('utf-8')
@@ -96,8 +96,8 @@ def test_study_detail(client, user, study):
 
 
 @pytest.mark.django_db
-def test_location_create(client, user):
-    client.force_login(user)
+def test_location_create(client, user_staff):
+    client.force_login(user_staff)
     url = reverse('locations-create')
     response = client.get(url)
 
@@ -105,8 +105,8 @@ def test_location_create(client, user):
 
 
 @pytest.mark.django_db
-def test_location_list(client, user, location, location_inactive):
-    client.force_login(user)
+def test_location_list(client, user_staff, location, location_inactive):
+    client.force_login(user_staff)
     url = reverse('locations-list')
     response = client.get(url)
 
@@ -119,8 +119,8 @@ def test_location_list(client, user, location, location_inactive):
 
 
 @pytest.mark.django_db
-def test_location_detail(client, user, location):
-    client.force_login(user)
+def test_location_detail(client, user_staff, location):
+    client.force_login(user_staff)
     url = reverse('locations-detail', kwargs={'pk': location.id})
     response = client.get(url)
     html = response.content.decode('utf-8')
@@ -134,8 +134,8 @@ def test_location_detail(client, user, location):
 
 
 @pytest.mark.django_db
-def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_inactive, survey_form_entry_observational):
-    client.force_login(user)
+def test_survey_list_edit(client, user_staff, survey_form_entry, survey_form_entry_inactive, survey_form_entry_observational):
+    client.force_login(user_staff)
     url = reverse('surveys-list-edit')
     response = client.get(url)
 
@@ -146,8 +146,8 @@ def test_survey_list_edit(client, user, survey_form_entry, survey_form_entry_ina
 
 
 @pytest.mark.django_db
-def test_survey_list_run(client, user, survey_form_entry, survey_form_entry_inactive, survey_form_entry_observational):
-    client.force_login(user)
+def test_survey_list_run(client, user_field, survey_form_entry, survey_form_entry_inactive, survey_form_entry_observational):
+    client.force_login(user_field)
     url = reverse('surveys-list-run')
     response = client.get(url)
 
@@ -158,8 +158,8 @@ def test_survey_list_run(client, user, survey_form_entry, survey_form_entry_inac
 
 
 @pytest.mark.django_db
-def test_survey_edit_intercept(client, user, survey_form_entry):
-    client.force_login(user)
+def test_survey_edit_intercept(client, user_staff, survey_form_entry):
+    client.force_login(user_staff)
     url = reverse('fobi.edit_form_entry', kwargs={'form_entry_id': survey_form_entry.id})
     response = client.get(url)
 
@@ -182,8 +182,8 @@ def test_survey_edit_intercept(client, user, survey_form_entry):
 
 
 @pytest.mark.django_db
-def test_survey_edit_observational(client, user, survey_form_entry_observational, form_element_observational):
-    client.force_login(user)
+def test_survey_edit_observational(client, user_staff, survey_form_entry_observational, form_element_observational):
+    client.force_login(user_staff)
     url = reverse('fobi.edit_form_entry', kwargs={'form_entry_id': survey_form_entry_observational.id})
     response = client.get(url)
 
@@ -199,8 +199,8 @@ def test_survey_edit_observational(client, user, survey_form_entry_observational
 
 
 @pytest.mark.django_db
-def test_survey_preview(client, user, survey_form_entry_observational):
-    client.force_login(user)
+def test_survey_preview(client, user_staff, survey_form_entry_observational):
+    client.force_login(user_staff)
     url = reverse('fobi.view_form_entry', kwargs={'form_entry_slug': survey_form_entry_observational.slug})
     response = client.get(url)
 
@@ -210,8 +210,19 @@ def test_survey_preview(client, user, survey_form_entry_observational):
 
 
 @pytest.mark.django_db
-def test_survey_submitted_list(client, user, survey, survey_form_entry):
-    client.force_login(user)
+def test_survey_run(client, user_field, survey_form_entry):
+    client.force_login(user_field)
+    url = reverse('fobi.view_form_entry', kwargs={'form_entry_slug': survey_form_entry.slug})
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert response.context['form_entry'].surveyformentry.published
+    assert (survey_form_entry.name) in response.content.decode('utf-8')
+
+
+@pytest.mark.django_db
+def test_survey_submitted_list(client, user_staff, survey, survey_form_entry):
+    client.force_login(user_staff)
     url = reverse('surveys-submitted-list')
     response = client.get(url)
 
@@ -223,8 +234,8 @@ def test_survey_submitted_list(client, user, survey, survey_form_entry):
 
 
 @pytest.mark.django_db
-def test_survey_submitted_detail(client, user, survey_form_entry, survey, survey_row, survey_component):
-    client.force_login(user)
+def test_survey_submitted_detail(client, user_staff, survey_form_entry, survey, survey_row, survey_component):
+    client.force_login(user_staff)
 
     url = reverse('surveys-submitted-detail', kwargs={'form_entry_id': survey_form_entry.id})
     response = client.get(url)

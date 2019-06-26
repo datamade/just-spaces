@@ -36,7 +36,9 @@ def create_formset_data(initial, total, forms):
     return output_form
 
 
-def test_create_chart(client, survey_form_entry, survey_submitted_setup):
+def test_create_chart(client, user_staff, survey_form_entry, survey_submitted_setup):
+    client.force_login(user_staff)
+
     # Test that the DAD can create a chart
     chart_data = [{'short_description': '__foobar__', 'order': 1}]
     post_data = create_formset_data(0, len(chart_data), chart_data)
@@ -54,7 +56,9 @@ def test_create_chart(client, survey_form_entry, survey_submitted_setup):
     assert new_chart.short_description == chart_data[0]['short_description']
 
 
-def test_basic_chart_display(client, survey_form_entry, survey_submitted_setup):
+def test_basic_chart_display(client, user_staff, survey_form_entry, survey_submitted_setup):
+    client.force_login(user_staff)
+
     # Test that the DAD displays charts in the correct number and order
     chart_data = [
         {'short_description': '__bar__', 'order': 2},
@@ -83,7 +87,9 @@ def test_basic_chart_display(client, survey_form_entry, survey_submitted_setup):
             assert next_desc in create_response.content.decode('utf-8').split(form['short_description'])[1]
 
 
-def test_delete_chart(client, survey_form_entry, survey_submitted_setup):
+def test_delete_chart(client, user_staff, survey_form_entry, survey_submitted_setup):
+    client.force_login(user_staff)
+
     # Test that the DAD can delete a chart
     chart_data = {
         'short_description': '__delete_me__',
@@ -110,7 +116,9 @@ def test_delete_chart(client, survey_form_entry, survey_submitted_setup):
     assert chart_data['short_description'] not in delete_response.content.decode('utf-8')
 
 
-def test_ignore_new_removed_chart(client, survey_form_entry, survey_submitted_setup):
+def test_ignore_new_removed_chart(client, user_staff, survey_form_entry, survey_submitted_setup):
+    client.force_login(user_staff)
+
     # Test that the DAD will not create a new chart if the 'delete' field is checked
     chart_data = [{'short_description': '__delete_me__', 'order': 1, 'DELETE': True}]
     post_data = create_formset_data(0, len(chart_data), chart_data)
@@ -125,7 +133,9 @@ def test_ignore_new_removed_chart(client, survey_form_entry, survey_submitted_se
     assert chart_data[0]['short_description'] not in create_response.content.decode('utf-8')
 
 
-def test_valid_type_display(client, survey, survey_form_entry, survey_row):
+def test_valid_type_display(client, user_staff, survey, survey_form_entry, survey_row):
+    client.force_login(user_staff)
+
     # Test that all question types in the ALL_VALID_TYPES list get displayed as
     # primary source options in the DAD, and that other types don't get displayed.
     counter = 1

@@ -13,7 +13,9 @@
 {% block head %}Run Survey{% endblock %}
 
 {% block top_button %}
+  {% if user.is_staff %}
   <a class="btn btn-primary ml-sm-auto ml-2 mr-sm-3" href="{% url 'surveys-create' %}">Create new survey</a>
+  {% endif %}
 {% endblock %}
 
 {% block card_content %}

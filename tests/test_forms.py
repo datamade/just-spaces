@@ -6,8 +6,8 @@ from surveys.models import SurveyFormEntry
 
 
 @pytest.mark.django_db
-def test_study_area_form(client, user):
-    client.force_login(user)
+def test_study_area_form(client, user_staff):
+    client.force_login(user_staff)
     url = reverse('study-areas-create')
 
     form_data = {
@@ -26,8 +26,8 @@ def test_study_area_form(client, user):
 
 
 @pytest.mark.django_db
-def test_study_deactivate(client, user, study):
-    client.force_login(user)
+def test_study_deactivate(client, user_staff, study):
+    client.force_login(user_staff)
     assert study.is_active
 
     url = reverse('studies-deactivate', kwargs={'pk': study.id})
@@ -44,8 +44,8 @@ def test_study_deactivate(client, user, study):
 
 
 @pytest.mark.django_db
-def test_location_form(client, user, agency):
-    client.force_login(user)
+def test_location_form(client, user_staff, agency):
+    client.force_login(user_staff)
     url = reverse('locations-create')
 
     form_data = {
@@ -68,8 +68,8 @@ def test_location_form(client, user, agency):
 
 
 @pytest.mark.django_db
-def test_location_deactivate(client, user, location):
-    client.force_login(user)
+def test_location_deactivate(client, user_staff, location):
+    client.force_login(user_staff)
     assert location.is_active
 
     url = reverse('locations-deactivate', kwargs={'pk': location.id})
@@ -86,8 +86,8 @@ def test_location_deactivate(client, user, location):
 
 
 @pytest.mark.django_db
-def test_survey_form(client, user, study, location):
-    client.force_login(user)
+def test_survey_form(client, user_staff, study, location):
+    client.force_login(user_staff)
     url = reverse('surveys-create')
     get_response = client.get(url)
 
@@ -103,15 +103,15 @@ def test_survey_form(client, user, study, location):
     new_survey_form = SurveyFormEntry.objects.get(name='Test Survey')
 
     assert post_response.status_code == 302
-    assert new_survey_form.user == user
+    assert new_survey_form.user == user_staff
     assert new_survey_form.study == study
     assert new_survey_form.location == location
     assert new_survey_form.type == 'intercept'
 
 
 @pytest.mark.django_db
-def test_survey_deactivate(client, user, survey_form_entry):
-    client.force_login(user)
+def test_survey_deactivate(client, user_staff, survey_form_entry):
+    client.force_login(user_staff)
     assert survey_form_entry.active
 
     url = reverse('surveys-deactivate', kwargs={'pk': survey_form_entry.id})
@@ -128,7 +128,9 @@ def test_survey_deactivate(client, user, survey_form_entry):
 
 
 @pytest.mark.django_db
-def test_survey_publish(client, survey_form_entry_observational):
+def test_survey_publish(client, user_staff, survey_form_entry_observational):
+    client.force_login(user_staff)
+
     assert not survey_form_entry_observational.published
 
     url = reverse('surveys-publish', kwargs={'form_entry_id': survey_form_entry_observational.id})

@@ -5,14 +5,14 @@ from surveys.models import SurveyFormEntry
 
 
 @pytest.mark.django_db
-def test_user(user):
-    saved_user = JustSpacesUser.objects.first()
+def test_user(user_staff):
+    saved_user = JustSpacesUser.objects.get(username='sampleuser_staff')
 
     assert saved_user.agency.name == 'Sample Agency'
 
 
 @pytest.mark.django_db
-def test_survey_form_entry(client, user, survey_form_entry):
+def test_survey_form_entry(client, user_staff, survey_form_entry):
     saved_survey_form_entry = SurveyFormEntry.objects.get(id=1)
 
     assert saved_survey_form_entry.name == 'Sample Form Entry'
@@ -21,7 +21,7 @@ def test_survey_form_entry(client, user, survey_form_entry):
 
 
 @pytest.mark.django_db
-def test_survey_form_entry_observational(client, user, survey_form_entry_observational, form_element_observational):
+def test_survey_form_entry_observational(client, user_staff, survey_form_entry_observational, form_element_observational):
     saved_survey_form_entry = SurveyFormEntry.objects.get(id=3)
 
     assert saved_survey_form_entry.name == 'Sample Form Entry Observational'

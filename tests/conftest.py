@@ -31,15 +31,28 @@ def agency(db):
 
 @pytest.fixture
 @pytest.mark.django_db
-def user(db, agency):
-    user = JustSpacesUser.objects.create(
-        username='sampleuser',
+def user_staff(db, agency):
+    user_staff = JustSpacesUser.objects.create(
+        username='sampleuser_staff',
         agency=agency,
         is_superuser=True,
         is_staff=True,
     )
 
-    return user
+    return user_staff
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def user_field(db, agency):
+    user_field = JustSpacesUser.objects.create(
+        username='sampleuser_field',
+        agency=agency,
+        is_superuser=False,
+        is_staff=False,
+    )
+
+    return user_field
 
 
 @pytest.fixture
@@ -108,10 +121,10 @@ def location_inactive(db, agency):
 
 @pytest.fixture
 @pytest.mark.django_db
-def survey_form_entry(db, user, location, study):
+def survey_form_entry(db, user_staff, location, study):
     survey_form_entry_info = {
         'id': 1,
-        'user': user,
+        'user': user_staff,
         'name': 'Sample Form Entry',
         'published': True,
         'location': location,
@@ -126,10 +139,10 @@ def survey_form_entry(db, user, location, study):
 
 @pytest.fixture
 @pytest.mark.django_db
-def survey_form_entry_inactive(db, user, location, study):
+def survey_form_entry_inactive(db, user_staff, location, study):
     survey_form_entry_info = {
         'id': 2,
-        'user': user,
+        'user': user_staff,
         'name': 'Sample Form Entry Inactive',
         'published': True,
         'location': location,
@@ -145,10 +158,10 @@ def survey_form_entry_inactive(db, user, location, study):
 
 @pytest.fixture
 @pytest.mark.django_db
-def survey_form_entry_observational(db, user, location, study):
+def survey_form_entry_observational(db, user_staff, location, study):
     survey_form_entry_observational_info = {
         'id': 3,
-        'user': user,
+        'user': user_staff,
         'name': 'Sample Form Entry Observational',
         'published': False,
         'location': location,
