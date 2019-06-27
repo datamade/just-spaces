@@ -107,17 +107,17 @@ urlpatterns = [
     # Create survey handler
     url(_(r'^handlers/create/(?P<form_entry_id>\d+)/'
           r'(?P<form_handler_plugin_uid>[\w_\-]+)/$'),
-        view=fobi.views.add_form_handler_entry,
+        view=staff_required_custom_login(fobi.views.add_form_handler_entry),
         name='fobi.add_form_handler_entry'),
 
     # Edit survey handler
     url(_(r'^handlers/edit/(?P<form_handler_entry_id>\d+)/$'),
-        view=fobi.views.edit_form_handler_entry,
+        view=staff_required_custom_login(fobi.views.edit_form_handler_entry),
         name='fobi.edit_form_handler_entry'),
 
     # Delete survey handler
     url(_(r'^handlers/delete/(?P<form_handler_entry_id>\d+)/$'),
-        view=fobi.views.delete_form_handler_entry,
+        view=staff_required_custom_login(fobi.views.delete_form_handler_entry),
         name='fobi.delete_form_handler_entry'),
 
     # Edit survey

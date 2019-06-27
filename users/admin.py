@@ -30,8 +30,9 @@ class JustSpacesUserAdmin(UserAdmin):
             be run by field users. Staff users can also view all collected \
             data and design data visualizations on the collected data pages.<br /> \
         3. <b>Superusers</b> have all the permissions of staff users. They can \
-        also create, edit, and delete other users. <b>All superusers should \
-        also have "Staff status" selected below</b>.<br />'
+            also create, edit, and delete other users. Only superusers can set \
+            and change user passwords. <b>All superusers should \
+            also have "Staff status" selected below</b>.<br />'
 
     fieldsets = (
         (None, {'fields': ('username', 'password', 'agency')}),
