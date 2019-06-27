@@ -98,5 +98,13 @@ If you'd like to refresh ACS data, there are a few steps you'll need to take:
 
 The `import_data` management command will update data if it already exists, so you shouldn't experience data loss during import. Still, we recommend that you practice caution and make a backup.
 
+## Permissioning
+
+This app employs three classes of users:
+
+1. `Field users` can run published surveys.
+2. `Staff users` have all the permissions of field users. They can also create, edit, and delete Agencies, Studies, Study Areas, Surveys, and Locations. They can publish surveys so they can be run by field users. Staff users can also view all collected data and design data visualizations on the collected data pages.
+3. `Superusers` have all the permissions of staff users. They can also create, edit, and delete other users. Only superusers can set and change user passwords. **All superusers should also have staff status.**
+
 ## On form building
 This app uses a custom fork of [django-fobi](https://github.com/datamade/django-fobi) for the Create Survey, Edit Survey, and Run Survey views. django-fobi's [documentation](https://django-fobi.readthedocs.io/en/0.13.8/) is an immensely helpful resource. Add-ons to the base are in this repo's `fobi-custom` folder, including custom plugins that draw from [`django-pldp`](https://github.com/datamade/django-pldp), our implementation of the Public Life Data Protocol.
