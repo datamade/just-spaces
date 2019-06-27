@@ -31,11 +31,24 @@ def agency(db):
 
 @pytest.fixture
 @pytest.mark.django_db
+def superuser(db, agency):
+    superuser = JustSpacesUser.objects.create(
+        username='samplesuperuser',
+        agency=agency,
+        is_superuser=True,
+        is_staff=True,
+    )
+
+    return superuser
+
+
+@pytest.fixture
+@pytest.mark.django_db
 def user_staff(db, agency):
     user_staff = JustSpacesUser.objects.create(
         username='sampleuser_staff',
         agency=agency,
-        is_superuser=True,
+        is_superuser=False,
         is_staff=True,
     )
 

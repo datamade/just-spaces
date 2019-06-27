@@ -21,18 +21,25 @@ class JustSpacesUserChangeForm(UserChangeForm):
 
 
 class JustSpacesUserAdmin(UserAdmin):
+    permissions_description = 'Just Spaces has three levels of user \
+        permissions:<br /><br /> \
+        1. <b>Field users</b> can run published surveys.<br /> \
+        2. <b>Staff users</b> have all the permissions of field users. They can \
+            also create, edit, and delete Agencies, Studies, Study Areas, \
+            Surveys, and Locations. They can publish surveys so they can \
+            be run by field users. Staff users can also view all collected \
+            data and design data visualizations on the collected data pages.<br /> \
+        3. <b>Superusers</b> have all the permissions of staff users. They can \
+        also create, edit, and delete other users. <b>All superusers should \
+        also have "Staff status" selected below</b>.<br />'
+
     fieldsets = (
         (None, {'fields': ('username', 'password', 'agency')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (_('Permissions'),
             {
                 'fields': ('is_active', 'is_staff', 'is_superuser'),
-                'description': 'Just Spaces has two levels of user \
-                    permissions: <b>staff users</b> and <b>field users</b>. \
-                    Staff users can use all functions of the site, while field \
-                    users are limited to running surveys. For staff users, \
-                    select both "Staff status" and "Superuser status" below. \
-                    For field users, select neither.'
+                'description': permissions_description,
             }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )

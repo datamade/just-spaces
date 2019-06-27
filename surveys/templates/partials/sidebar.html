@@ -54,9 +54,11 @@
                     <li>
                         <a href="{% url 'census-areas-list' %}">- Census Areas</a>
                     </li>
-                    <li>
-                        <a href="/admin/users/justspacesuser/">- Users</a>
-                    </li>
+                    {% if user.is_superuser %}
+                      <li>
+                          <a href="/admin/users/justspacesuser/">- Users</a>
+                      </li>
+                    {% endif %}
                 </ul>
             </li>
             {% endif %}
