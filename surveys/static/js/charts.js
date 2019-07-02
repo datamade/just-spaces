@@ -69,7 +69,7 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
   var series = [{
     name: this.getSeriesName(),
     data: [],
-    color: '#e94e0c',
+    color: '#a1bfa2',
   }];
   chartData.forEach(function(data) {
     // chartData elements are stored as an Array where the first element is the
@@ -95,16 +95,16 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
   }
   var chartType = (isCount && this.surveys.length >= 5) ? 'boxplot' : 'column';
   var ACSColors = [
-      '#015c75',
-      '#eb549e',
-      '#e4c23f',
-      '#cde8ce',
-      '#dcc3ce',
-      '#e9ac92',
-      '#d6edf4',
-      '#546455',
-      '#a1bfa2',
-      '#e48b8b'
+    '#ffd700',
+    '#ffb14e',
+    '#fa8775',
+    '#eb549e',
+    '#e94e0c',
+    '#cd58bb',
+    '#9e86d7',
+    '#015c75',
+    '#cde8ce',
+    '#d6edf4'
   ]
 
   shuffle(ACSColors);
