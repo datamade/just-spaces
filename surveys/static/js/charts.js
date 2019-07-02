@@ -68,7 +68,8 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
   var categories = [];
   var series = [{
     name: this.getSeriesName(),
-    data: []
+    data: [],
+    color: '#a1bfa2',
   }];
   chartData.forEach(function(data) {
     // chartData elements are stored as an Array where the first element is the
@@ -93,6 +94,21 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     yAxisLabel = '% of responses';
   }
   var chartType = (isCount && this.surveys.length >= 5) ? 'boxplot' : 'column';
+  var ACSColors = [
+    '#ffd700',
+    '#ffb14e',
+    '#fa8775',
+    '#eb549e',
+    '#e94e0c',
+    '#cd58bb',
+    '#9e86d7',
+    '#015c75',
+    '#cde8ce',
+    '#d6edf4'
+  ]
+
+  shuffle(ACSColors);
+
   // Initialize a Highcharts chart
   Highcharts.chart(chartId, {
     chart: {
@@ -114,7 +130,8 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     legend: {
       enabled: true
     },
-    series: series
+    series: series,
+    colors: ACSColors
   });
 }
 
@@ -516,4 +533,16 @@ function binValue(value, bins) {
     binnedValue = String(bins[bins.length - 1]) + '+';
   }
   return binnedValue;
+}
+
+/**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
 }
