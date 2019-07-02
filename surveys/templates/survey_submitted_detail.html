@@ -112,7 +112,6 @@ Use this page to download, view, and construct analyses of your collected survey
   <script src="{% static 'js/jquery-ui-1.21.1.min.js' %}" type="text/javascript"></script>
   <script>
     $(document).ready(function () {
-      $('.basic-multiple').select2();
       var table = $('#survey-submitted-detail').DataTable({
         buttons: [{
           extend: 'csv',
@@ -188,6 +187,8 @@ Use this page to download, view, and construct analyses of your collected survey
         }
       }
       if (isAcsCompatibleType) {
+        // initialize select2 just before a Census container is shown
+        $censusContainer.find(".basic-multiple").select2();
         $censusContainer.show();
       } else {
         $censusContainer.hide();
