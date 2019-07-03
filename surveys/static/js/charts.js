@@ -40,12 +40,13 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
   }
 
   var isCount = this.types.count.indexOf(resultType) > -1;
+  var isDistribution = this.types.distribution.indexOf(resultType) > -1;
   var isObservational = this.types.observational.indexOf(resultType) > -1;
   var isObservationalCount = this.types.observationalCount.indexOf(resultType) > -1;
   var isIntercept = this.types.intercept.indexOf(resultType) > -1;
   var isFreeResponseIntercept = this.types.freeResponseIntercept.indexOf(resultType) > -1;
 
-  if (!(isCount || isObservational || isObservationalCount || isIntercept || isFreeResponseIntercept)) {
+  if (!(isCount || isDistribution || isObservational || isObservationalCount || isIntercept || isFreeResponseIntercept)) {
     // The data object needs to be one of the valid types
     throw new Error('Not a valid chart type: ' + resultType);
   } else {
@@ -53,6 +54,8 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     var chartData = [];
     if (isCount) {
       chartData = this._getCountChartData(dataSourceId, chartTitle);
+    } else if (isDistribution) {
+      chartData = this._getDistributionChartData(dataSourceId, chartTitle);
     } else if (isObservational) {
       chartData = this._getObservationalChartData(dataSourceId);
     } else if (isObservationalCount) {
@@ -196,6 +199,34 @@ ChartHelper.prototype._getCountChartData = function(dataSourceId, chartTitle) {
     }
   }
   var aggFunc = (this.surveys.length >= 5) ? quintiles : medians;
+  return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
+}
+
+ChartHelper.prototype._getDistributionChartData = function(dataSourceId, chartTitle) {
+  /**
+   * Get chart data for a chart of the "count" type.
+   * @param {String} dataSourceId - The ID of the primary data source to display.
+   * @param {String} chartTitle - The title of the chart to display.
+   */
+  function initChartDataFunc() { return []; }
+  var castFunc = String;
+  function updateChartDataFunc(chartData, savedData) {
+    var categoryFound = false;
+    // If an entry for this category exists in the chartData array, increment its counter
+    for (var i = 0; i < chartData.length; i++) {
+      var categoryName = chartData[i][0];
+      if (categoryName === savedData) {
+        chartData[i][1] += 1;
+        categoryFound = true;
+        break;
+      }
+    }
+    if (!categoryFound) {
+      // Insert an entry for this count in the chartData array
+      chartData.push([savedData, 1]);
+    }
+  }
+  var aggFunc = percentiles;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
