@@ -30,10 +30,7 @@ sudo -H -u datamade $VENV_DIR/bin/pip install --upgrade setuptools
 
 # Install the project requirements into the deployment specific virtual
 # environment.
-sudo -H -u datamade $VENV_DIR/bin/pip install -r $PROJECT_DIR/requirements.txt -r $PROJECT_DIR/dev-requirements.txt --upgrade
-
-# Install NPM dependencies.
-(cd $PROJECT_DIR && $VENV_DIR/bin/docker-compose build && $VENV_DIR/bin/docker-compose run --rm frontend build)
+sudo -H -u datamade $VENV_DIR/bin/pip install -r $PROJECT_DIR/requirements.txt --upgrade
 
 # Move project configuration files into the appropriate locations within the project.
 mv $PROJECT_DIR/configs/local_settings.$DEPLOYMENT_GROUP_NAME.py $PROJECT_DIR/justspaces/local_settings.py

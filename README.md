@@ -3,7 +3,6 @@
 
 ## Requirements
 - Python 3.x
-- Docker
 - GDAL (for data imports)
 
 ## Running the app locally
@@ -24,7 +23,7 @@
 3. Install the Django requirements.
 
     ```bash
-    pip install -r requirements.txt -r dev-requirements.txt
+    pip install -r requirements.txt
     ```
 
 4. Copy the example local settings file to the correct location:
@@ -33,30 +32,19 @@
     cp just-spaces/local_settings.example.py just-spaces/local_settings.py
     ```
 
-5. We use the [Parcel bundler](https://parceljs.org/) via Node.js to compile frontend
-   JavaScript to syntax that is cross-browser compatible. In order to avoid requiring
-   a local Node.js installation, the JavaScript dev environment is containerized
-   with Docker and Docker Compose. Use the `build` command to build the frontend
-   dev environment container, a build process that will install NPM dependencies
-   for the frontend:
-
-    ```bash
-    docker-compose build
-    ```
-
-6. Create the database:
+5. Create the database:
 
     ```bash
     createdb just-spaces
     ```
 
-7. Run migrations:
+6. Run migrations:
 
     ```bash
     python manage.py migrate
     ```
 
-8. Make a superuser for so that you can access the admin interface:
+7. Make a superuser for so that you can access the admin interface:
 
     ```bash
      python manage.py createsuperuser
@@ -79,10 +67,6 @@
 10. Run the app locally!
 
     ```bash
-    # In one shell, bundle and watch JavaScript assets
-    docker-compose up
-
-    # In another shell, run the dev server
     python manage.py runserver
     ```
 

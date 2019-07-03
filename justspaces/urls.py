@@ -22,6 +22,5 @@ from .views import pong
 urlpatterns = [
     url(r'^pong/$', pong,),
     url(r'^admin/', admin.site.urls),
-    url(r'^frontend/', include('frontend.urls')),
     url(r'', include('surveys.urls')),
 ]
