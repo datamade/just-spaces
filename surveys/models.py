@@ -39,6 +39,14 @@ class SurveyFormEntry(FormEntry):
         default='intercept'
     )
 
+    survey_template = models.ForeignKey(
+        FormEntry,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="survey_template_name"
+    )
+
     active = models.BooleanField(default=True)
 
     def __str__(self):

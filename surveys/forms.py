@@ -165,9 +165,17 @@ class SurveyCreateForm(JustSpacesForm):
         self.fields['study'].required = True
         self.fields['location'].required = True
 
+        self.fields['name'].help_text = "Survey names should be unique and memorable."
+        self.fields['type'].help_text = "This selection will determine which questions \
+                                        are available to add to your survey."
+        self.fields['survey_template'].help_text = "Choose a template if you'd like to \
+                                                   prepopulate your survey with a set of \
+                                                   recommended questions. You'll still be  \
+                                                   able to edit them on the next screen."
+
     class Meta:
         model = survey_models.SurveyFormEntry
-        fields = ['user', 'name', 'study', 'location', 'type', 'active']
+        fields = ['user', 'name', 'study', 'location', 'type', 'survey_template', 'active']
         widgets = {
             'user': forms.HiddenInput(),
             'active': forms.HiddenInput(),
