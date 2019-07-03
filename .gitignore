@@ -8,11 +8,5 @@
 /configs/local_settings.staging.py
 /configs/.env
 
-# JavaScript bundling
-.cache
-frontend/static/frontend/js/*
-frontend/tests/compiled
-yarn-error.log
-
 # Editors
 .vscode
