@@ -181,6 +181,18 @@ class SurveyCreateForm(JustSpacesForm):
             'active': forms.HiddenInput(),
         }
 
+    def clean_survey_template(self):
+        template = self.cleaned_data['survey_template']
+        survey_type = self.cleaned_data['type']
+
+        if template and (template.surveyformentry.type != survey_type):
+            if survey_type == 'intercept':
+                raise forms.ValidationError("Make sure you choose an intercept template to create a new intercept survey!")
+            if survey_type == 'observational':
+                raise forms.ValidationError("Make sure you choose an observational template to create a new observational survey!")
+
+        return template
+
 
 class SurveyEditForm(JustSpacesForm):
     def __init__(self, *args, **kwargs):
