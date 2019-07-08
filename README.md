@@ -76,7 +76,13 @@
     python manage.py import_data
     ```
 
-10. Run the app locally!
+10. Load templates:
+
+    ```bash
+    python manage.py import_survey_templates
+    ```
+
+11. Run the app locally!
 
     ```bash
     # In one shell, bundle and watch JavaScript assets
