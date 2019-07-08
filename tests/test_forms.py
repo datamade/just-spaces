@@ -1,8 +1,13 @@
 import pytest
+import os
+import json
+
 from django.urls import reverse
+from django.core.management import call_command
 
 from pldp.models import StudyArea, Location, LocationLine
 from surveys.models import SurveyFormEntry
+from fobi.models import FormElementEntry
 
 
 @pytest.mark.django_db
@@ -87,26 +92,41 @@ def test_location_deactivate(client, user_staff, location):
 
 @pytest.mark.django_db
 def test_survey_form(client, user_staff, study, location):
+    call_command('import_survey_templates')
+
     client.force_login(user_staff)
     url = reverse('surveys-create')
     get_response = client.get(url)
 
-    form_data = {
-        'user': get_response.context['form']['user'].value(),
-        'name': 'Test Survey',
-        'study': study.id,
-        'location': location.id,
-        'type': get_response.context['form']['type'].value(),
-    }
+    filepath = os.path.join('surveys',
+                            'survey_template_data',
+                            'survey_templates.json'
+                            )
 
-    post_response = client.post(url, form_data)
-    new_survey_form = SurveyFormEntry.objects.get(name='Test Survey')
+    with open(filepath) as json_file:
+        first_template_json = json.load(json_file)[0]
+        template_name = first_template_json['name']
+        template = SurveyFormEntry.objects.get(name=template_name).formentry_ptr_id
 
-    assert post_response.status_code == 302
-    assert new_survey_form.user == user_staff
-    assert new_survey_form.study == study
-    assert new_survey_form.location == location
-    assert new_survey_form.type == 'intercept'
+        form_data = {
+            'user': get_response.context['form']['user'].value(),
+            'name': 'Test Survey',
+            'study': study.id,
+            'location': location.id,
+            'type': get_response.context['form']['type'].value(),
+            'survey_template': template
+        }
+
+        post_response = client.post(url, form_data)
+        new_survey_form = SurveyFormEntry.objects.get(name='Test Survey')
+        first_template_question = FormElementEntry.objects.filter(form_entry=new_survey_form)[0]
+
+        assert post_response.status_code == 302
+        assert new_survey_form.user == user_staff
+        assert new_survey_form.study == study
+        assert new_survey_form.location == location
+        assert new_survey_form.type == 'intercept'
+        assert first_template_question.plugin_uid == first_template_json['questions'][0]['plugin_uid']
 
 
 @pytest.mark.django_db

@@ -343,6 +343,7 @@ class SurveyCreate(CreateView):
             form_entry_id=form_entry_id,
         )
 
+
     def get_success_url(self):
         form_entry_id = self.object.formentry_ptr_id
         success_url = reverse_lazy('fobi.edit_form_entry', kwargs={'form_entry_id': form_entry_id})

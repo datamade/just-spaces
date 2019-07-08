@@ -4,8 +4,8 @@
     "type": "intercept",
     "questions": [
       {
-        "plugin_data": "{\"label\": \"How many people do you see of each gender?\", \"help_text\": \"\", \"required\": false}",
-        "plugin_uid": "gender_observational",
+        "plugin_data": "{\"label\": \"What year did you move into your current address?\", \"age\": null, \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "household_tenure",
         "position": 1
       }
     ]
