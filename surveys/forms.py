@@ -146,7 +146,10 @@ class StudyCreateForm(JustSpacesForm):
         super(StudyCreateForm, self).__init__(*args, **kwargs)
         self.create_default_helper()
         self.fields['areas'].widget.attrs['class'] = 'basic-multiple'
+
         self.fields['agency'].initial = pldp_models.Agency.objects.first()
+        self.fields['agency'].queryset = pldp_models.Agency.objects.filter(is_active='t')
+
         self.fields['title'].required = True
 
     class Meta:
@@ -163,7 +166,10 @@ class SurveyCreateForm(JustSpacesForm):
     def __init__(self, *args, **kwargs):
         super(SurveyCreateForm, self).__init__(*args, **kwargs)
         self.fields['study'].required = True
+        self.fields['study'].queryset = pldp_models.Study.objects.filter(is_active='t')
+
         self.fields['location'].required = True
+        self.fields['location'].queryset = pldp_models.Location.objects.filter(is_active='t')
 
         self.fields['name'].help_text = "Survey names should be unique and memorable."
         self.fields['type'].help_text = "This selection will determine which questions \
