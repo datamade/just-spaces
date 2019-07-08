@@ -50,7 +50,7 @@ class SurveyFormEntry(FormEntry):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return self.name + " (" + str(self.type) + ")"
 
 
 class CensusBlockGroup(models.Model):
