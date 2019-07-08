@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from django.views.generic import TemplateView, ListView, UpdateView, DetailView
 from django.views.generic.edit import CreateView, FormView
@@ -305,6 +306,8 @@ class SurveyCreate(CreateView):
 
         context['form'].fields['location'].help_text += location_help_text
 
+        context['form'].fields['survey_template'].queryset = survey_models.SurveyFormEntry.objects.filter(is_cloneable='t')
+
         return context
 
     def form_valid(self, form):
@@ -316,7 +319,30 @@ class SurveyCreate(CreateView):
                                'collect_data'
                                )
 
+        # add survey questions from template
+        template = form.cleaned_data['survey_template']
+
+        if template:
+            template_questions = fobi_models.FormElementEntry.objects.filter(form_entry=template)
+
+            for question in template_questions:
+                self.add_template_question(question, self.object.formentry_ptr_id)
+
         return HttpResponseRedirect(self.get_success_url())
+
+    def add_template_question(self, question, form_entry_id):
+        plugin_data_json = json.loads(question.plugin_data)
+        plugin_data_json['name'] = str(uuid.uuid4())
+
+        plugin_data = json.dumps(plugin_data_json)
+
+        new_question = fobi_models.FormElementEntry.objects.create(
+            plugin_data=plugin_data,
+            plugin_uid=question.plugin_uid,
+            position=question.position,
+            form_entry_id=form_entry_id,
+        )
+
 
     def get_success_url(self):
         form_entry_id = self.object.formentry_ptr_id

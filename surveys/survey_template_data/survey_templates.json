@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Sample Survey Template Intercept",
+    "type": "intercept",
+    "questions": [
+      {
+        "plugin_data": "{\"label\": \"What year did you move into your current address?\", \"age\": null, \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "household_tenure",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "name": "Sample Survey Template Observational",
+    "type": "observational",
+    "questions": [
+      {
+        "plugin_data": "{\"label\": \"How many people do you see of each gender?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "gender_observational",
+        "position": 1
+      }
+    ]
+  }
+]
