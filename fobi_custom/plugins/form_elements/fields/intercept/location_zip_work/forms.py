@@ -12,7 +12,6 @@ class LocationZipWorkForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "What is the zip code of your workplace?"),
         ("name", "name"),
-        ("age", ""),
         ("help_text", ""),
         ("required", ""),
     ]

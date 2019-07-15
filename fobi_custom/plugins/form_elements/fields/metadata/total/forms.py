@@ -12,7 +12,6 @@ class TotalForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "What is the total number of people counted in this survey?"),
         ("name", "name"),
-        ("age", ""),
         ("help_text", ""),
         ("required", True),
     ]

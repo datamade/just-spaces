@@ -405,7 +405,7 @@ class SurveyListEdit(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].exclude(active=False).filter(published=False).order_by('-updated')
+        context['surveys'] = context['surveys'].filter(active=True, is_cloneable=False, published=False).order_by('-updated')
         context['published'] = False
 
         return context
@@ -418,7 +418,7 @@ class SurveyListRun(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].exclude(active=False).filter(published=True).order_by('-updated')
+        context['surveys'] = context['surveys'].filter(active=True, is_cloneable=False, published=True).order_by('-updated')
         context['published'] = True
 
         for survey in context['surveys']:

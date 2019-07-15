@@ -1,23 +1,165 @@
 [
   {
-    "name": "Sample Survey Template Intercept",
-    "type": "intercept",
+    "name": "Event Survey – Observational",
+    "type": "observational",
     "questions": [
       {
-        "plugin_data": "{\"label\": \"What year did you move into your current address?\", \"age\": null, \"help_text\": \"\", \"required\": false}",
-        "plugin_uid": "household_tenure",
+        "plugin_data": "{\"label\": \"How many people do you see in each age range?\", \"detail_level\": \"basic\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "age_observational",
         "position": 1
+      },
+      {
+        "plugin_data": "{\"label\": \"How many people do you see of each gender?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "gender_observational",
+        "position": 2
+      },
+      {
+        "plugin_data": "{\"label\": \"How many people do you see engaged in each activity?\", \"detail_level\": \"basic\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "activity_observational",
+        "position": 3
+      },
+      {
+        "plugin_data": "{\"label\": \"How many people do you see in each size group?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "groups_observational",
+        "position": 4
       }
     ]
   },
   {
-    "name": "Sample Survey Template Observational",
+    "name": "Event Survey – Intercept",
+    "type": "intercept",
+    "questions": [
+      {
+        "plugin_data": "{\"label\": \"How did you hear about this event?\", \"choices\": \"Facebook\\r\\nTwitter\\r\\nInstagram\\r\\nEmail\\r\\nPosters/signs\\r\\nFriend/word of mouth\\r\\nOther\", \"help_text\": \"\", \"initial\": \"\", \"required\": false}",
+        "plugin_uid": "radio",
+        "position": 1
+      },
+      {
+        "plugin_data": "{\"label\": \"On a scale from 1-5 (5 being the best), how would you rate this event?\", \"choices\": \"1\\r\\n2\\r\\n3\\r\\n4\\r\\n5\", \"help_text\": \"\", \"initial\": \"\", \"required\": false}",
+        "plugin_uid": "radio",
+        "position": 2
+      },
+      {
+        "plugin_data": "{\"label\": \"Based on your best guess, approximately how much money do you plan on spending at this event?\", \"help_text\": \"\", \"initial\": null, \"min_value\": null, \"max_value\": null, \"required\": false}",
+        "plugin_uid": "float",
+        "position": 3
+      },
+      {
+        "plugin_data": "{\"label\": \"What is the zip code of your home?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "location_zip_home",
+        "position": 4
+      },
+      {
+        "plugin_data": "{\"label\": \"What is the zip code of your workplace?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "location_zip_work",
+        "position": 5
+      },
+      {
+        "plugin_data": "{\"label\": \"What year did you move into your current address?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "household_tenure",
+        "position": 6
+      },
+      {
+        "plugin_data": "{\"label\": \"Which race or ethnicity best describes you?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "race",
+        "position": 7
+      },
+      {
+        "plugin_data": "{\"label\": \"How old are you?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "age_intercept",
+        "position": 8
+      },
+      {
+        "plugin_data": "{\"label\": \"What gender do you most identify with?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "gender_intercept",
+        "position": 9
+      },
+      {
+        "plugin_data": "{\"label\": \"What income group does your household fall under?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "income",
+        "position": 10
+      },
+      {
+        "plugin_data": "{\"label\": \"Any comments?\", \"help_text\": \"\", \"initial\": \"\", \"required\": false, \"max_length\": null, \"placeholder\": \"\"}",
+        "plugin_uid": "textarea",
+        "position": 11
+      }
+    ]
+  },
+  {
+    "name": "Park/Public Space Survey – Observational",
     "type": "observational",
     "questions": [
       {
+        "plugin_data": "{\"label\": \"How many people do you see in each age range?\", \"detail_level\": \"basic\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "age_observational",
+        "position": 1
+      },
+      {
         "plugin_data": "{\"label\": \"How many people do you see of each gender?\", \"help_text\": \"\", \"required\": false}",
         "plugin_uid": "gender_observational",
+        "position": 2
+      },
+      {
+        "plugin_data": "{\"label\": \"How many people do you see engaged in each activity?\", \"detail_level\": \"basic\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "activity_observational",
+        "position": 3
+      },
+      {
+        "plugin_data": "{\"label\": \"How many people do you see in each size group?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "groups_observational",
+        "position": 4
+      }
+    ]
+  },
+  {
+    "name": "Park/Public Space Survey – Intercept",
+    "type": "intercept",
+    "questions": [
+      {
+        "plugin_data": "{\"label\": \"What is the zip code of your home?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "location_zip_home",
         "position": 1
+      },
+      {
+        "plugin_data": "{\"label\": \"What is the zip code of your workplace?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "location_zip_work",
+        "position": 2
+      },
+      {
+        "plugin_data": "{\"label\": \"What year did you move into your current address?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "household_tenure",
+        "position": 3
+      },
+      {
+        "plugin_data": "{\"label\": \"Which race or ethnicity best describes you?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "race",
+        "position": 4
+      },
+      {
+        "plugin_data": "{\"label\": \"How old are you?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "age_intercept",
+        "position": 5
+      },
+      {
+        "plugin_data": "{\"label\": \"What gender do you most identify with?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "gender_intercept",
+        "position": 6
+      },
+      {
+        "plugin_data": "{\"label\": \"What income group does your household fall under?\", \"help_text\": \"\", \"required\": false}",
+        "plugin_uid": "income",
+        "position": 7
+      },
+      {
+        "plugin_data": "{\"label\": \"How often do you visit this park/public space?\", \"choices\": \"I have never visited this space\\r\\nA few times per year\\r\\nMonthly\\r\\nWeekly\\r\\nMultiple times per week\", \"help_text\": \"\", \"initial\": \"\", \"required\": false}",
+        "plugin_uid": "radio",
+        "position": 8
+      },
+      {
+        "plugin_data": "{\"label\": \"Any comments?\", \"help_text\": \"\", \"initial\": \"\", \"required\": false, \"max_length\": null, \"placeholder\": \"\"}",
+        "plugin_uid": "textarea",
+        "position": 9
       }
     ]
   }

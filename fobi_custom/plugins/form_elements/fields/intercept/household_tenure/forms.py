@@ -12,7 +12,6 @@ class HouseholdTenureForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "What year did you move into your current address?"),
         ("name", "name"),
-        ("age", ""),
         ("help_text", ""),
         ("required", False),
     ]
