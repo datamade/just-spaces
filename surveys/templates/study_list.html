@@ -24,28 +24,30 @@ time and space, and can contain multiple related surveys.
 {% endblock %}
 
 {% block card_content %}
-  <table id="studies-list" class="table table-hover table-striped table-responsive-sm card-text">
-  <thead>
-    <tr>
-      <th scope="col">Title</th>
-      <th scope="col">Agency</th>
-      <th scope="col">Manager</th>
-      <th scope="col">Manager Email</th>
-      <th class="text-center" scope="col">Delete</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for study in studies %}
+  <div class="table-responsive">
+    <table id="studies-list" class="table table-hover table-striped card-text">
+    <thead>
       <tr>
-        <td><b><a href="{% url 'studies-detail' study.id %}">{{study.title}}</a></b></td>
-        <td>{{study.agency}}</td>
-        <td>{{study.manager_name}}</td>
-        <td>{{study.manager_email}}</td>
-        <td class="text-center"><a href="{% url 'studies-deactivate' study.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
+        <th scope="col">Title</th>
+        <th scope="col">Agency</th>
+        <th scope="col">Manager</th>
+        <th scope="col">Manager Email</th>
+        <th class="text-center" scope="col">Delete</th>
       </tr>
-    {% endfor %}
-  </tbody>
-  </table>
+    </thead>
+    <tbody>
+      {% for study in studies %}
+        <tr>
+          <td><b><a href="{% url 'studies-detail' study.id %}">{{study.title}}</a></b></td>
+          <td>{{study.agency}}</td>
+          <td>{{study.manager_name}}</td>
+          <td>{{study.manager_email}}</td>
+          <td class="text-center"><a href="{% url 'studies-deactivate' study.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
 {% endblock %}
 
 {% block footer_js %}

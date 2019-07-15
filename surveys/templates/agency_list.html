@@ -22,24 +22,26 @@ record containing its key attributes and reliable contact information.
 {% endblock %}
 
 {% block card_content %}
-  <table id="agencies-list" class="table table-hover table-striped table-responsive-sm card-text">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Contact Email</th>
-      <th scope="col" class="text-center">Delete</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for agency in agencies %}
+  <div class="table-responsive">
+    <table id="agencies-list" class="table table-hover table-striped card-text">
+    <thead>
       <tr>
-        <td><b><a href="{% url 'agencies-detail' agency.id %}">{{agency.name}}</a></b></td>
-        <td>{{agency.email}}</td>
-        <td class="text-center"><a href="{% url 'agencies-deactivate' agency.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
+        <th scope="col">Name</th>
+        <th scope="col">Contact Email</th>
+        <th scope="col" class="text-center">Delete</th>
       </tr>
-    {% endfor %}
-  </tbody>
-  </table>
+    </thead>
+    <tbody>
+      {% for agency in agencies %}
+        <tr>
+          <td><b><a href="{% url 'agencies-detail' agency.id %}">{{agency.name}}</a></b></td>
+          <td>{{agency.email}}</td>
+          <td class="text-center"><a href="{% url 'agencies-deactivate' agency.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
 {% endblock %}
 
 {% block footer_js %}

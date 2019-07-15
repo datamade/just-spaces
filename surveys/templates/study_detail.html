@@ -18,22 +18,24 @@
 {% block subhead %}<b>{{study.agency}}</b> study managed by <b>{{study.manager_name}}</b>{% endblock %}
 
 {% block card_content %}
-  <table id="study-detail" class="table table-striped table-responsive-sm table-bordered">
-  <thead>
-  </thead>
-  <tbody>
+  <div class="table-responsive">
+    <table id="study-detail" class="table table-striped table-bordered">
+    <thead>
+    </thead>
+    <tbody>
 
-    {% for label, content in rows %}
-      {% if content %}
-      <tr>
-        <td style="width: 30%"><b>{{label}}</b></td>
-        <td>{{content}}</td>
-      </tr>
-      {% endif %}
-    {% endfor %}
+      {% for label, content in rows %}
+        {% if content %}
+        <tr>
+          <td style="width: 30%"><b>{{label}}</b></td>
+          <td>{{content}}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
 
-  </tbody>
-  </table>
+    </tbody>
+    </table>
+  </div>
 
   <a class="btn btn-warning float-right" href="{% url 'studies-deactivate' study.id %}">Delete study</a>
   <a class="btn btn-link float-right" href="{% url 'studies-list' %}">Back to study list</a>

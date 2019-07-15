@@ -21,32 +21,34 @@ An overview of collected survey data.
 {% endblock %}
 
 {% block card_content %}
-  <table id="submitted-survey-list" class="table table-hover table-striped table-responsive-sm card-text">
-  <thead>
-    <tr>
-      <th scope="col">Survey Title</th>
-      <th scope="col">Times Run</th>
-      <th scope="col">Last Submitted</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for survey in surveys_submitted %}
+  <div class="table-responsive">
+    <table id="submitted-survey-list" class="table table-hover table-striped card-text">
+    <thead>
       <tr>
-        <td>
-          {% if survey.form_title != '[Deleted Survey]' %}
-            <a href="{% url 'surveys-submitted-detail' survey.form_id %}">
-              {{survey.form_title}}
-            </a>
-          {% else %}
-              {{survey.form_title}}
-          {% endif %}
-        </td>
-        <td>{{survey.times_run}} submissions</td>
-        <td>{{survey.time_stop}}</td>
+        <th scope="col">Survey Title</th>
+        <th scope="col">Times Run</th>
+        <th scope="col">Last Submitted</th>
       </tr>
-    {% endfor %}
-  </tbody>
-  </table>
+    </thead>
+    <tbody>
+      {% for survey in surveys_submitted %}
+        <tr>
+          <td>
+            {% if survey.form_title != '[Deleted Survey]' %}
+              <a href="{% url 'surveys-submitted-detail' survey.form_id %}">
+                {{survey.form_title}}
+              </a>
+            {% else %}
+                {{survey.form_title}}
+            {% endif %}
+          </td>
+          <td>{{survey.times_run}} submissions</td>
+          <td>{{survey.time_stop}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
 {% endblock %}
 
 {% block footer_js %}
