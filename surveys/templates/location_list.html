@@ -22,24 +22,26 @@ It can have either a line or area geometry.
 {% endblock %}
 
 {% block card_content %}
-  <table id="locations-list" class="table table-hover table-striped table-responsive-sm card-text">
-  <thead>
-    <tr>
-      <th scope="col">Primary Name</th>
-      <th scope="col">Geometry Type</th>
-      <th class="text-center" scope="col">Delete</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for location in locations %}
+  <div class="table-responsive">
+    <table id="locations-list" class="table table-hover table-striped card-text">
+    <thead>
       <tr>
-        <td><b><a href="{% url 'locations-detail' location.id %}">{{location.name_primary}}</a></b></td>
-        <td>{{location.geometry_type}}</td>
-        <td class="text-center"><a href="{% url 'locations-deactivate' location.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
+        <th scope="col">Primary Name</th>
+        <th scope="col">Geometry Type</th>
+        <th class="text-center" scope="col">Delete</th>
       </tr>
-    {% endfor %}
-  </tbody>
-  </table>
+    </thead>
+    <tbody>
+      {% for location in locations %}
+        <tr>
+          <td><b><a href="{% url 'locations-detail' location.id %}">{{location.name_primary}}</a></b></td>
+          <td>{{location.geometry_type}}</td>
+          <td class="text-center"><a href="{% url 'locations-deactivate' location.id %}"><i class="fas fa-times-circle icon deactivate"></i></a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
 {% endblock %}
 
 {% block footer_js %}

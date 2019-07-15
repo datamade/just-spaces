@@ -48,26 +48,28 @@ Use this page to download, view, and construct analyses of your collected survey
     <h4 class="card-title">Export</h5>
     <br />
 
-    <table class="table table-hover table-striped table-bordered table-responsive display nowrap" id="survey-submitted-detail">
-    <thead>
-      <tr>
-        <th scope="col">Time Submitted</th>
-        {% for question in questions %}
-          <th scope="col">{{question}}</th>
-        {% endfor %}
-      </tr>
-    </thead>
-    <tbody>
-      {% for survey in surveys_submitted %}
+    <div class="table-responsive">
+      <table class="table table-hover table-striped table-bordered display nowrap" id="survey-submitted-detail">
+      <thead>
         <tr>
-          <td>{{survey.time_stop}}</td>
-          {% for component in survey.components %}
-            <td>{{component.saved_data}}</td>
+          <th scope="col">Time Submitted</th>
+          {% for question in questions %}
+            <th scope="col">{{question}}</th>
           {% endfor %}
         </tr>
-      {% endfor %}
-    </tbody>
-    </table>
+      </thead>
+      <tbody>
+        {% for survey in surveys_submitted %}
+          <tr>
+            <td>{{survey.time_stop}}</td>
+            {% for component in survey.components %}
+              <td>{{component.saved_data}}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+    </div>
 
     <br />
     <h4 class="card-title">Analyze</h5>

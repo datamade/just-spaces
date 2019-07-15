@@ -21,22 +21,24 @@
   {% leaflet_map "main" callback="main_map_init" %}
   <br />
 
-  <table id="location-detail" class="table table-striped table-responsive-sm table-bordered">
-  <thead>
-  </thead>
-  <tbody>
+  <div class="table-responsive">
+    <table id="location-detail" class="table table-striped table-bordered">
+    <thead>
+    </thead>
+    <tbody>
 
-    {% for label, content in rows %}
-      {% if content %}
-      <tr>
-        <td style="width: 30%"><b>{{label}}</b></td>
-        <td>{{content}}</td>
-      </tr>
-      {% endif %}
-    {% endfor %}
+      {% for label, content in rows %}
+        {% if content %}
+        <tr>
+          <td style="width: 30%"><b>{{label}}</b></td>
+          <td>{{content}}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
 
-  </tbody>
-  </table>
+    </tbody>
+    </table>
+  </div>
 
   <a class="btn btn-secondary float-right" href="{% url 'locations-deactivate' location.id %}">Delete location</a>
   <a class="btn btn-link float-right" href="{% url 'locations-list' %}">Back to location list</a>
