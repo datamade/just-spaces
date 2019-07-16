@@ -2,7 +2,7 @@ import json
 import uuid
 
 from django.views.generic import TemplateView, ListView, UpdateView, DetailView
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic.edit import CreateView
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
@@ -11,9 +11,6 @@ from django.forms import modelformset_factory
 from django.contrib import messages
 
 from pldp import models as pldp_models
-
-from users.models import JustSpacesUser
-from users.admin import JustSpacesUserCreationForm
 
 from fobi.views import add_form_handler_entry
 from fobi import models as fobi_models
@@ -343,7 +340,6 @@ class SurveyCreate(CreateView):
             form_entry_id=form_entry_id,
         )
 
-
     def get_success_url(self):
         form_entry_id = self.object.formentry_ptr_id
         success_url = reverse_lazy('fobi.edit_form_entry', kwargs={'form_entry_id': form_entry_id})
@@ -405,7 +401,10 @@ class SurveyListEdit(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].filter(active=True, is_cloneable=False, published=False).order_by('-updated')
+        context['surveys'] = context['surveys'].filter(active=True,
+                                                       is_cloneable=False,
+                                                       published=False
+                                                       ).order_by('-updated')
         context['published'] = False
 
         return context
@@ -418,7 +417,10 @@ class SurveyListRun(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].filter(active=True, is_cloneable=False, published=True).order_by('-updated')
+        context['surveys'] = context['surveys'].filter(active=True,
+                                                       is_cloneable=False,
+                                                       published=True
+                                                       ).order_by('-updated')
         context['published'] = True
 
         for survey in context['surveys']:
