@@ -55,7 +55,7 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     if (isCount) {
       chartData = this._getCountChartData(dataSourceId, chartTitle);
     } else if (isDistribution) {
-      chartData = this._getDistributionChartData(dataSourceId, chartTitle);
+      chartData = this._getDistributionChartData(dataSourceId);
     } else if (isObservational) {
       chartData = this._getObservationalChartData(dataSourceId);
     } else if (isObservationalCount) {
@@ -202,11 +202,10 @@ ChartHelper.prototype._getCountChartData = function(dataSourceId, chartTitle) {
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
-ChartHelper.prototype._getDistributionChartData = function(dataSourceId, chartTitle) {
+ChartHelper.prototype._getDistributionChartData = function(dataSourceId) {
   /**
-   * Get chart data for a chart of the "count" type.
+   * Get chart data for a chart of the "distribution" type.
    * @param {String} dataSourceId - The ID of the primary data source to display.
-   * @param {String} chartTitle - The title of the chart to display.
    */
   function initChartDataFunc() { return []; }
   var castFunc = String;
@@ -226,7 +225,7 @@ ChartHelper.prototype._getDistributionChartData = function(dataSourceId, chartTi
       chartData.push([savedData, 1]);
     }
   }
-  var aggFunc = percentiles;
+  var aggFunc = sortedPercentiles;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
@@ -531,6 +530,18 @@ function percentiles(categories) {
    */
   var total = categories.reduce(function(acc, category) { return acc + category[1] }, 0);
   return categories.map(function(category) { return [category[0], Math.round((category[1] / total) * 100)] })
+}
+
+function sortedPercentiles(categories) {
+  /**
+   * Given an array map of categories:counts, return percentiles for each category
+   * in an array where each category is sorted as an integer (e.g. a zip code).
+   * @param {Array} categories - A nested array of numbers acting as a Map, where
+   *                             the first element represents a category name and the
+   *                             second element represents its value.
+   */
+  categories.sort(function(first, second) {return Number(first[0]) - Number(second[0])})
+  return percentiles(categories)
 }
 
 function binValue(value, bins) {

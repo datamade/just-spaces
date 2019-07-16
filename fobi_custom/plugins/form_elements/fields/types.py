@@ -7,8 +7,8 @@ from fobi.utils import get_registered_form_element_plugins
 COUNT_TYPES = [
     'temperature_c', 'decimal', 'float', 'integer'
 ]
-# "Distribution" types represent a single value, and will be displayed as the
-# as percentiles (a distribution) of all recorded values. This is useful since
+# "Distribution" types represent a single value, and will be displayed as
+# percentiles (a distribution) of all recorded values. This is useful since
 # these types are expected to have a small set of potential responses.
 DISTRIBUTION_TYPES = ['location_zip_home', 'location_zip_work']
 # "Observational" types represent counts for multiple choices, and will
