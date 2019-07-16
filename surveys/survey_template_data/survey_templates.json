@@ -4,24 +4,29 @@
     "type": "observational",
     "questions": [
       {
+        "plugin_data": "{\"label\": \"How many people of each perceived category do you see?\", \"help_text\": \"Select all that apply.\", \"required\": false}",
+        "plugin_uid": "race_observational",
+        "position": 1
+      },
+      {
         "plugin_data": "{\"label\": \"How many people do you see in each age range?\", \"detail_level\": \"basic\", \"help_text\": \"\", \"required\": false}",
         "plugin_uid": "age_observational",
-        "position": 1
+        "position": 2
       },
       {
         "plugin_data": "{\"label\": \"How many people do you see of each gender?\", \"help_text\": \"\", \"required\": false}",
         "plugin_uid": "gender_observational",
-        "position": 2
+        "position": 3
       },
       {
         "plugin_data": "{\"label\": \"How many people do you see engaged in each activity?\", \"detail_level\": \"basic\", \"help_text\": \"\", \"required\": false}",
         "plugin_uid": "activity_observational",
-        "position": 3
+        "position": 4
       },
       {
         "plugin_data": "{\"label\": \"How many people do you see in each size group?\", \"help_text\": \"\", \"required\": false}",
         "plugin_uid": "groups_observational",
-        "position": 4
+        "position": 5
       }
     ]
   },
@@ -91,24 +96,29 @@
     "type": "observational",
     "questions": [
       {
+        "plugin_data": "{\"label\": \"How many people of each perceived category do you see?\", \"help_text\": \"Select all that apply.\", \"required\": false}",
+        "plugin_uid": "race_observational",
+        "position": 1
+      },
+      {
         "plugin_data": "{\"label\": \"How many people do you see in each age range?\", \"detail_level\": \"basic\", \"help_text\": \"\", \"required\": false}",
         "plugin_uid": "age_observational",
-        "position": 1
+        "position": 2
       },
       {
         "plugin_data": "{\"label\": \"How many people do you see of each gender?\", \"help_text\": \"\", \"required\": false}",
         "plugin_uid": "gender_observational",
-        "position": 2
+        "position": 3
       },
       {
         "plugin_data": "{\"label\": \"How many people do you see engaged in each activity?\", \"detail_level\": \"basic\", \"help_text\": \"\", \"required\": false}",
         "plugin_uid": "activity_observational",
-        "position": 3
+        "position": 4
       },
       {
         "plugin_data": "{\"label\": \"How many people do you see in each size group?\", \"help_text\": \"\", \"required\": false}",
         "plugin_uid": "groups_observational",
-        "position": 4
+        "position": 5
       }
     ]
   },
