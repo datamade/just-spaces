@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     # custom observational form elements
     'fobi_custom.plugins.form_elements.fields.observational.age_observational',
     'fobi_custom.plugins.form_elements.fields.observational.gender_observational',
+    'fobi_custom.plugins.form_elements.fields.observational.race_observational',
     'fobi_custom.plugins.form_elements.fields.observational.mode',
     'fobi_custom.plugins.form_elements.fields.observational.groups',
     'fobi_custom.plugins.form_elements.fields.observational.posture',
