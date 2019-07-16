@@ -12,7 +12,6 @@ class LocationZipHomeForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "What is the zip code of your home?"),
         ("name", "name"),
-        ("age", ""),
         ("help_text", ""),
         ("required", ""),
     ]

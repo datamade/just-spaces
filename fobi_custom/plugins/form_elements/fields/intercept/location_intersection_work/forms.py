@@ -12,7 +12,6 @@ class LocationIntersectionWorkForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "What is the closest intersection to your workplace?"),
         ("name", "name"),
-        ("age", ""),
         ("help_text", ""),
         ("required", ""),
     ]

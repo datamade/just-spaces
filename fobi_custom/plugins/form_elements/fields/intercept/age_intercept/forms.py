@@ -12,7 +12,6 @@ class AgeInterceptForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "How old are you?"),
         ("name", "name"),
-        ("age", ""),
         ("help_text", ""),
         ("required", ""),
     ]

@@ -12,7 +12,6 @@ class LocationIntersectionHomeForm(forms.Form, BaseFormFieldPluginForm):
     plugin_data_fields = [
         ("label", "What is the closest intersection to your home?"),
         ("name", "name"),
-        ("age", ""),
         ("help_text", ""),
         ("required", ""),
     ]

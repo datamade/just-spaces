@@ -104,17 +104,17 @@ def test_survey_form(client, user_staff, study, location):
                             )
 
     with open(filepath) as json_file:
-        first_template_json = json.load(json_file)[0]
+        first_template_json = json.load(json_file)[1]  # test with an intercept template
         template_name = first_template_json['name']
-        template = SurveyFormEntry.objects.get(name=template_name).formentry_ptr_id
+        template = SurveyFormEntry.objects.get(name=template_name)
 
         form_data = {
             'user': get_response.context['form']['user'].value(),
             'name': 'Test Survey',
             'study': study.id,
             'location': location.id,
-            'type': get_response.context['form']['type'].value(),
-            'survey_template': template
+            'type': get_response.context['form']['type'].value(),  # intercept should be the default value
+            'survey_template': template.id
         }
 
         post_response = client.post(url, form_data)
