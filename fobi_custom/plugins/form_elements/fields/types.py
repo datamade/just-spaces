@@ -14,7 +14,7 @@ DISTRIBUTION_TYPES = ['location_zip_home', 'location_zip_work']
 # "Observational" types represent counts for multiple choices, and will
 # be aggregated and displayed as percentiles (a distribution).
 OBSERVATIONAL_TYPES = [
-    'age_observational', 'gender_observational', 'posture_observational',
+    'age_observational', 'gender_observational', 'posture_observational', 'race_observational'
 ]
 # "Observational count" types represent counts where each observed person can
 # have one or more observation, meaning that we want to display the choices as
@@ -71,6 +71,9 @@ TYPES_TO_ACS_VARIABLES = {
     },
     'race': {
         'basic': 'race',
+    },
+    'race_observational': {
+        'basic': 'race'
     },
     'employment': {
         'basic': 'employment',
