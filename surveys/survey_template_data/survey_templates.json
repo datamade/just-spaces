@@ -4,7 +4,7 @@
     "type": "observational",
     "questions": [
       {
-        "plugin_data": "{\"label\": \"How many people of each perceived category do you see?\", \"help_text\": \"Select all that apply.\", \"required\": false}",
+        "plugin_data": "{\"label\": \"How many people of each perceived race do you see?\", \"help_text\": \"Select all that apply.\", \"required\": false}",
         "plugin_uid": "race_observational",
         "position": 1
       },
@@ -96,7 +96,7 @@
     "type": "observational",
     "questions": [
       {
-        "plugin_data": "{\"label\": \"How many people of each perceived category do you see?\", \"help_text\": \"Select all that apply.\", \"required\": false}",
+        "plugin_data": "{\"label\": \"How many people of each perceived race do you see?\", \"help_text\": \"Select all that apply.\", \"required\": false}",
         "plugin_uid": "race_observational",
         "position": 1
       },

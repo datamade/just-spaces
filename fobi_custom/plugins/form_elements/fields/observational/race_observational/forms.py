@@ -10,9 +10,9 @@ class RaceObservationalForm(forms.Form, BaseFormFieldPluginForm):
     """RaceObservationalForm."""
 
     plugin_data_fields = [
-        ("label", "How many people of each perceived category do you see? (select all that apply)"),
+        ("label", "How many people of each perceived race do you see?"),
         ("name", "name"),
-        ("help_text", ""),
+        ("help_text", "Select all that apply."),
         ("required", False),
     ]
 
