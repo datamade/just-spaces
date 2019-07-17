@@ -7,6 +7,10 @@ from fobi.utils import get_registered_form_element_plugins
 COUNT_TYPES = [
     'temperature_c', 'decimal', 'float', 'integer'
 ]
+# "Distribution" types represent a single value, and will be displayed as
+# percentiles (a distribution) of all recorded values. This is useful since
+# these types are expected to have a small set of potential responses.
+DISTRIBUTION_TYPES = ['location_zip_home', 'location_zip_work']
 # "Observational" types represent counts for multiple choices, and will
 # be aggregated and displayed as percentiles (a distribution).
 OBSERVATIONAL_TYPES = [
@@ -36,8 +40,10 @@ FREE_RESPONSE_INTERCEPT_TYPES = list(FREE_RESPONSE_INTERCEPT_BINS.keys())
 
 ALL_TYPES = [plugin[0] for plugin in get_registered_form_element_plugins()]
 # All valid types merged into one list, for easy validation.
-ALL_VALID_TYPES = (COUNT_TYPES + OBSERVATIONAL_TYPES + OBSERVATIONAL_COUNT_TYPES +
-                   INTERCEPT_TYPES + FREE_RESPONSE_INTERCEPT_TYPES)
+ALL_VALID_TYPES = (
+    COUNT_TYPES + DISTRIBUTION_TYPES + OBSERVATIONAL_TYPES +
+    OBSERVATIONAL_COUNT_TYPES + INTERCEPT_TYPES + FREE_RESPONSE_INTERCEPT_TYPES
+)
 # All types that cannot be displayed as charts.
 ALL_INVALID_TYPES = list(set(ALL_TYPES) - set(ALL_VALID_TYPES))
 

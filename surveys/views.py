@@ -528,6 +528,7 @@ class SurveySubmittedDetail(TemplateView):
         # Fobi types, bins, and ACS variables for use in charting
         context['types'] = json.dumps({
             'count': fobi_types.COUNT_TYPES,
+            'distribution': fobi_types.DISTRIBUTION_TYPES,
             'observational': fobi_types.OBSERVATIONAL_TYPES,
             'observationalCount': fobi_types.OBSERVATIONAL_COUNT_TYPES,
             'intercept': fobi_types.INTERCEPT_TYPES,

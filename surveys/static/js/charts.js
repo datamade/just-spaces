@@ -40,12 +40,13 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
   }
 
   var isCount = this.types.count.indexOf(resultType) > -1;
+  var isDistribution = this.types.distribution.indexOf(resultType) > -1;
   var isObservational = this.types.observational.indexOf(resultType) > -1;
   var isObservationalCount = this.types.observationalCount.indexOf(resultType) > -1;
   var isIntercept = this.types.intercept.indexOf(resultType) > -1;
   var isFreeResponseIntercept = this.types.freeResponseIntercept.indexOf(resultType) > -1;
 
-  if (!(isCount || isObservational || isObservationalCount || isIntercept || isFreeResponseIntercept)) {
+  if (!(isCount || isDistribution || isObservational || isObservationalCount || isIntercept || isFreeResponseIntercept)) {
     // The data object needs to be one of the valid types
     throw new Error('Not a valid chart type: ' + resultType);
   } else {
@@ -53,6 +54,8 @@ ChartHelper.prototype.loadChart = function(chartId, chartTitle, dataSourceId) {
     var chartData = [];
     if (isCount) {
       chartData = this._getCountChartData(dataSourceId, chartTitle);
+    } else if (isDistribution) {
+      chartData = this._getDistributionChartData(dataSourceId);
     } else if (isObservational) {
       chartData = this._getObservationalChartData(dataSourceId);
     } else if (isObservationalCount) {
@@ -196,6 +199,33 @@ ChartHelper.prototype._getCountChartData = function(dataSourceId, chartTitle) {
     }
   }
   var aggFunc = (this.surveys.length >= 5) ? quintiles : medians;
+  return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
+}
+
+ChartHelper.prototype._getDistributionChartData = function(dataSourceId) {
+  /**
+   * Get chart data for a chart of the "distribution" type.
+   * @param {String} dataSourceId - The ID of the primary data source to display.
+   */
+  function initChartDataFunc() { return []; }
+  var castFunc = String;
+  function updateChartDataFunc(chartData, savedData) {
+    var categoryFound = false;
+    // If an entry for this category exists in the chartData array, increment its counter
+    for (var i = 0; i < chartData.length; i++) {
+      var categoryName = chartData[i][0];
+      if (categoryName === savedData) {
+        chartData[i][1] += 1;
+        categoryFound = true;
+        break;
+      }
+    }
+    if (!categoryFound) {
+      // Insert an entry for this count in the chartData array
+      chartData.push([savedData, 1]);
+    }
+  }
+  var aggFunc = sortedPercentiles;
   return this._getChartData(dataSourceId, initChartDataFunc, castFunc, updateChartDataFunc, aggFunc);
 }
 
@@ -500,6 +530,18 @@ function percentiles(categories) {
    */
   var total = categories.reduce(function(acc, category) { return acc + category[1] }, 0);
   return categories.map(function(category) { return [category[0], Math.round((category[1] / total) * 100)] })
+}
+
+function sortedPercentiles(categories) {
+  /**
+   * Given an array map of categories:counts, return percentiles for each category
+   * in an array where each category is sorted as an integer (e.g. a zip code).
+   * @param {Array} categories - A nested array of numbers acting as a Map, where
+   *                             the first element represents a category name and the
+   *                             second element represents its value.
+   */
+  categories.sort(function(first, second) {return Number(first[0]) - Number(second[0])})
+  return percentiles(categories)
 }
 
 function binValue(value, bins) {
