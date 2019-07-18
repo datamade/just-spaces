@@ -49,10 +49,6 @@ sudo -H -u datamade $VENV_DIR/bin/python $PROJECT_DIR/manage.py migrate
 sudo -H -u datamade $VENV_DIR/bin/python $PROJECT_DIR/manage.py createcachetable
 sudo -H -u datamade $VENV_DIR/bin/python $PROJECT_DIR/manage.py collectstatic --no-input
 
-# install handy server-level packages, if they are not already installed
-add-apt-repository --yes ppa:certbot/certbot
-apt-get update
-
 # Echo a simple nginx configuration into the correct place, and tell
 # certbot to request a cert if one does not already exist.
 # Wondering about the DOMAIN variable? It becomes available by source-ing
