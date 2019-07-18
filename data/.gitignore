@@ -4,10 +4,4 @@ raw/shapefiles/*.zip
 intermediate/acs/*.csv
 
 # Extra shapefile data
-intermediate/shapefiles/*.shp
-*/shapefiles/*.cpg
-*/shapefiles/*.dbf
-*/shapefiles/*.prj
-*/shapefiles/*.shp.ea.iso.xml
-*/shapefiles/*.shp.iso.xml
-*/shapefiles/*.shx
+intermediate/shapefiles/*
