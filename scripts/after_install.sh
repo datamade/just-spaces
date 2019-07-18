@@ -45,9 +45,9 @@ psql -U postgres -d just-spaces -c "CREATE EXTENSION IF NOT EXISTS postgis"
 
 # OPTIONAL Run migrations and other management commands that should be run with
 # every deployment
-$VENV_DIR/bin/python $PROJECT_DIR/manage.py migrate
-$VENV_DIR/bin/python $PROJECT_DIR/manage.py createcachetable
-$VENV_DIR/bin/python $PROJECT_DIR/manage.py collectstatic --no-input
+$VENV_DIR/bin/python $PROJECT_DIR/manage.py -U datamade migrate
+$VENV_DIR/bin/python $PROJECT_DIR/manage.py -U datamade createcachetable
+$VENV_DIR/bin/python $PROJECT_DIR/manage.py -U datamade collectstatic --no-input
 
 # Echo a simple nginx configuration into the correct place, and tell
 # certbot to request a cert if one does not already exist.
