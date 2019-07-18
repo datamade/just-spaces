@@ -10,16 +10,6 @@ DEPLOYMENT_NAME="$APP_NAME-$DEPLOYMENT_ID"
 PROJECT_DIR="/home/datamade/$DEPLOYMENT_NAME"
 VENV_DIR="/home/datamade/.virtualenvs/$DEPLOYMENT_NAME"
 
-# install handy server-level packages, if they are not already installed
-add-apt-repository --yes ppa:certbot/certbot
-apt-get update
-
-packages='apt-transport-https ca-certificates curl software-properties-common nginx supervisor python3 python3-pip python3-venv certbot python-certbot-nginx'
-
-for PKG in $packages
-do conditional_install $PKG
-done
-
 # Move the contents of the folder that CodeDeploy used to "Install" the app to
 # the deployment specific folder
 mv /home/datamade/just-spaces $PROJECT_DIR
@@ -63,6 +53,7 @@ sudo -H -u datamade $VENV_DIR/bin/python $PROJECT_DIR/manage.py collectstatic --
 # certbot to request a cert if one does not already exist.
 # Wondering about the DOMAIN variable? It becomes available by source-ing
 # the config file (see above).
+sudo apt install python-certbot-nginx
 if [ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ]; then
     echo "server {
         listen 80;
