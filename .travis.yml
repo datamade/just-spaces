@@ -36,3 +36,13 @@ deploy:
   on:
     repo: datamade/just-spaces
     branch: master
+deploy:
+  provider: codedeploy
+  access_key_id: AKIAJNYGDLOJKHOUWCAA
+  secret_access_key:
+    secure: sRKWoVSKeDFABEHSKBVEZHZ7h+tW8rbKcNKbnIiwGFG6+2tg5iMI//XPZ1ttFkEkTl9eEOcs6ZJ4meFq6f7Ky9mNFNQLIFGswpCihkkly3d0ry5jgBF2JLYpRsaKS+RB0o7i2NhRVfcGATSa02katTZsHxzV6bL+WVwMIBHdgOmsANR2A36FEDOYY09ee0vKdXKIaFvQg6FM/eb1QHrtbQ72D9y6eTaHtLrowzF41sdIfA2yx3aL7ZxHytfeSkr93nY6zycT6Y5B/Q72wRT91rHcGhA03A0IJdPJMBIDDU6bITg1MfyJTmonXIrSZQrDQjYSVcy2Eaj/UecOqHFHdGbMddTIq9ILWBewXWDqD0Yv2JeeXw5QmT6npIek/brxpe9H1SPeHgINXWu0sKEdmXbjGnH5Wm82TxIzNzDd5TzuoF5OEN+DW+QbFZYZ+wHYhPcG8hQ6TZylIH97kN+5KCFKAIZ4QSFFqc9TgbrnAIr4Na46PlmyUEioeN3hy4AUp/e25iHQvI+eYqX9SahQM/grjKT3EotdyyRLHn56lF9MptTLuHroIFMRMjrmBs3TMClb2E0oNQHZ8x7e/oOjLxfthGOAPqvBpGJ+dbRiTUFZQ7SouquaX4mVw/NGNqTg3ZTVPXwObEj4/ur4alCXaVzF+eCvDjLOqOEQdxulG3s=
+  application: just-spaces
+  deployment_group: production
+  on:
+    repo: datamade/just-spaces
+    tags: true

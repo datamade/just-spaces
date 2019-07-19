@@ -15,7 +15,7 @@ EMAIL=justspaces+production@datamade.us
 # The hostname for your project. You will need to make sure that the DNS is
 # configured to point this domain at the correct server IP address before
 # running this makefile
-SERVER=justspaces-production.datamade.us
+SERVER=justspacesproject.org
 
 # The name of your project. This should match the name of the github
 # repository.
