@@ -22,6 +22,10 @@ from . import models as survey_models
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
 
+class About(TemplateView):
+    template_name = "about.html"
+
+
 class AgencyCreate(CreateView):
     form_class = survey_forms.AgencyCreateForm
     model = pldp_models.Agency

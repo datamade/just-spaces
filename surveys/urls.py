@@ -16,9 +16,8 @@ from .utils import staff_required_custom_login
 import fobi.views
 
 urlpatterns = [
-    # placeholder view for a public-facing landing page
     url(r'^$',
-        login_required(survey_views.SurveyListRun.as_view()),
+        survey_views.About.as_view(),
         name='home'),
 
     url(r'^accounts/',
