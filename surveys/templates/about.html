@@ -1,0 +1,294 @@
+{% extends 'partials/small_card.html' %}
+{% load static %}
+
+{% block head %}Welcome to <b><i>Just Spaces</b></i>{% endblock %}
+
+{% block card_content %}
+<img class="img-fluid mx-auto d-block rounded mb-4" src="{% static 'images/porch.jpg' %}" />
+
+<p>The <b><i>Just Spaces</i> data tool</b> is a project of
+<a href="https://www.universitycity.org"><b>University City District (UCD)</b></a>,
+supported by a grant from the <b>Knight Foundation</b> and UCD internal resources.
+Throughout this project, UCD embarked on a process to explore social justice
+in its own public spaces, events, and Green City Works landscaping social
+enterprise, and to develop a mobile-ready data collection and analysis tool
+with our partners at <a href="https://datamade.us/"><b>DataMade</b></a>.</p>
+
+<h4>UCD Organizational Background</h4>
+
+<p>University City District is a partnership of world renowned anchor
+institutions, small businesses and residents that creates opportunity, and
+improves economic vitality and quality of life in the
+<a href="https://www.universitycity.org/university-city">University City area</a> of
+West Philadelphia. Our primary mission is community revitalization. We work
+within a place-based, data-driven framework to invest in world-class public
+spaces, address crime and public safety, bring life to commercial corridors,
+connect low-income residents to careers, and promote job growth and innovation.</p>
+
+<p>UCD’s public space portfolio includes
+<a href="https://www.universitycity.org/the-porch-development">The Porch at 30th Street Station</a>,
+<a href="https://www.universitycity.org/portalgardens">Trolley Portal Gardens</a>,
+several <a href="https://www.universitycity.org/pedestrianplazas">pedestrian plazas</a>
+located in primarily residential neighborhoods, an annual program to install
+<a href="https://www.universitycity.org/parklets">Parklets</a> in parking
+spaces around the district, and street seating in the public right of way.
+The organization is responsible for the design, operations and programming of
+these spaces.  UCD also regularly engages with public spaces that are not
+directly under our control, including public parks and privately owned,
+publicly accessible plazas and parks.</p>
+
+<h4><i><b>Just Spaces</b></i> Project Background</h4>
+
+<p><b><i>Just Spaces</b></i> is UCD’s effort to seize the imperative as a developer and
+operator of public spaces to engage in principled, frank analysis of our work
+and develop deliberate tactics to ensure that public spaces are deeply inclusive
+and just. In Philadelphia, hundreds of millions of dollars in public, private,
+and philanthropic investments are devoted to developing and renovating public
+spaces. As these spaces proliferate, the discourse about equity in public spaces
+ranges from lip service to sincerity, but we have lacked sufficient frameworks
+to evaluate or evolve in our approaches. The project, with the support of its
+<a href="https://generocity.org/philly/2017/10/20/university-city-district-public-spaces-audit/">advisory group</a>,
+adopted a framework developed by <a href="https://www.gc.cuny.edu/Faculty/Core-Bios/Setha-Low">Setha Low</a>
+at the City University of New York Graduate Center that outlines <b>five realms
+of justice in public space</b>:</p>
+
+  <ul style="list-style-type:circle;">
+    <li><b>Distributive</b>  –  Who has physical access (by walking, bike, transit,
+    and private vehicle) to a public space or network of spaces?</li>
+
+    <li><b>Procedural</b>  –  How do people feel about their influence over the
+    design, operations, and programming of a public space?</li>
+
+    <li><b>Interactional</b>  –  What makes people feel welcome or unwanted in a
+    public space?</li>
+
+    <li><b>Representational</b>  –  Do people feel their experience and history is
+    represented in a space?</li>
+
+    <li><b>Care</b>  -  How do people demonstrate their care for the space and each other?</li>
+  </ul>
+
+<img class="img-fluid mx-auto d-block rounded mb-4" src="{% static 'images/green-city-works.jpg' %}" />
+
+<p>When considering principles of social justice, urban planners and designers
+commonly emphasize the need for initial public input in the physical design
+and general public access of the space. These approaches neglect what becomes
+the life of the space: its ongoing operations, programming and governance.
+When investments do not prioritize equity and justice, they can entrench and
+inflame existing injustices. Most owners and operators of public space networks
+tend to focus heavily on the design of individual spaces; our work aims to
+change this paradigm by prioritizing justice.</p>
+
+<h4>The <b><i>Just Spaces</b></i> Tool</h4>
+
+
+<p>The <b><i>Just Spaces</b></i> project has created a mobile web-based tool to
+gather data about public spaces and events, which can spur informed discussions.</p>
+
+<p>We believe the tool is critical for UCD and other public space owners and
+managers to better understand the current status of public spaces and lay
+the foundation to answer the critical questions: Who is using our spaces?
+Who is not using our spaces? What kinds of interventions (e.g. programming,
+operations, design, regulations, security), if any, impact who does and does
+not use our spaces?</p>
+
+<p><b>The tool has three features that make it unique from any other product.</b></p>
+
+  <ol>
+    <li>
+      <p>Collect and store data from observational and intercept surveys based
+      on <b>researcher-designed templates</b>.</p>
+    </li>
+    <li>
+      <p><b>Compare demographic results to Census data</b> for user-defined geographic
+      areas that allow the user to see “who is not using a space” or simply see
+      how respondents compare to the demographics of a user defined area.</p>
+    </li>
+    <li>
+      <p><b>Open source design</b>, so users can build improvements to the tool.
+      <b><i>Just Spaces</b></i> is open source under the
+      <a href="https://github.com/datamade/just-spaces/blob/d944088b9ff1b36fa4ead40e6036e69538046d69/LICENSE">MIT license</a>,
+      which means that the code that powers the site is freely available for all to use without
+      restriction. If you'd like to tinker with the code, or even stand up your
+      own version of <b><i>Just Spaces</b></i>, you can fork the repository
+      <a href="https://github.com/datamade/just-spaces">here</a> and
+      follow the setup instructions in the README. The code for <b><i>Just Spaces</i></b>
+      was written by <a href="https://datamade.us/">DataMade</a> using a number of other open source tools,
+      including Python, Django, and PostgreSQL.</p>
+    </li>
+  </ol>
+
+<img class="img-fluid mx-auto d-block rounded mb-4" src="{% static 'images/parklets.jpg' %}" />
+
+<h4><b><i>Just Spaces</b></i> Beyond the Tool</h4>
+
+<p>For UCD the <b><i>Just Spaces</b></i> endeavor has been about much more than technology.
+It has been an opportunity to take stock of our work, convene stakeholders,
+listen to the community and our own employees.</p>
+
+<p>We relocated a parklet in front of a laundromat to invite residents who
+may not frequent food establishments to use these spaces in both message and
+practice. We created a <a href="https://www.universitycity.org/blog/2019-baltimore-avenue-dollar-stroll-vendor-applications">community vendor program</a>
+for the Baltimore Avenue Dollar Stroll to formally engage and provide access
+to this signature event for neighborhood entrepreneurs. We reprogrammed our
+<a href="https://www.universitycity.org/events/movies">movie nights</a> to
+include more films with directors and casts that are majority people of color
+and have welcomed record audiences to the series. Finally, we partnered with
+the Powelton Village Civic Association to create a
+<a href="https://www.universitycity.org/blog/celebrating-20-years-community-support-giving-back-local-civic-associations">historic signage program</a>
+to highlight the role of notable women, people of color, and members of the
+LGBT community in the history of Powelton Village.</p>
+
+<p>We have also contributed to the public discourse in Philadelphia and beyond
+through presentations at Walk/Bike/Place, Philadelphia Urban Consulate,
+the American Society of Landscape Architects,
+<a href="https://www.trafficandtransit.com/equitable-just-and-inclusive-transportation-systems-are-within-our-reach">publication in Traffic and Transit</a>,
+and an event in collaboration with <a href="http://www.urbanconsulate.com/events/2019/4/16/just-spaces">Urban Consulate</a>.</p>
+
+<h4>Using the Tool</h4>
+
+<p>To use the Just Spaces tool, please fill out
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSf4IV4i30VBI6y8ZfdLmvm9065Wd8MY8lrZbvk2ZG6irC8dxw/viewform">this short form</a>.
+You will receive an email within 1-2 business days with unique login
+information. Each user should submit the form separately, but multiple user
+accounts may be created for a single organization/agency.</p>
+
+<p>The tool allows two different types of surveys: <b>observational</b>
+surveys and <b>intercept</b> surveys. Observational surveys allow you to
+collect data simply by observing users of public spaces or attendees at an
+event. Observational surveys follow the format of the
+<a href="https://gehlinstitute.org/tool/public-life-data-protocol/">Gehl Institute Public Life Data Protocol</a>.
+Intercept surveys involve asking people questions, which can provide insights
+on peoples’ opinions as well as providing demographic information that might
+not be possible from observational surveys. We have provided a couple sample
+templates with recommended and vetted questions, but both types of surveys are
+customizable to fit your needs.</p>
+
+<p><b>Navigating the tool</b></p>
+
+<ul style="list-style-type:circle;">
+  <li>
+    <p><b>“Create new survey” page:</b> You’ll first need to set up metadata
+    such as survey name, survey location, and type of study (intercept
+    vs. observational). You can assign a survey to a study (for example,
+    you might have a “study” for each public space or event series).
+    Additionally, you can choose from one of our pre-set templates here.
+    You can then add survey questions from pre-set questions, or you can
+    create your own.</p>
+  </li>
+    <p><b>“Edit survey” page:</b> You can add or delete questions, or change
+    the wording on any surveys you’ve already created. Then, you will need
+    to publish a survey before you can run it. Once you publish a survey,
+    it cannot be edited.</p>
+  <li>
+    <p><b>“Run survey” page:</b> This is the data collection mode. From this
+    page, you can conduct any published surveys.</p>
+  </li>
+  <li>
+    <p><b>“View collected data” page:</b> You can display the results of any
+    survey data you’ve collected here. For several demographic variables,
+    you can also compare survey results to a different geography that you
+    specify on a map. For example, if you conduct a survey at a park in
+    Philadelphia, you can compare the demographics of park users to
+    demographics of the city as a whole, or compare to a specific neighborhood.
+    To create a neighborhood, you’d just have to select on the map which
+    Census block groups to include. From the “View collected data” page, you
+    can also download survey results as a CSV.</p>
+  </li>
+</ul>
+
+<p><b>Tips and best practices for data collection</b></p>
+
+<ul style="list-style-type:circle;">
+  <li>
+    <p><b>Run surveys for data collection during times when a space
+    experiences “typical” usage.</b> For example, holidays, special events,
+    and weather events might impact people using a space. Unless you are
+    specifically trying to gauge the effect of these events, stick to typical
+    times.</p>
+  </li>
+  <li>
+    <p><b>Be aware of differences in public space usage or event attendance at
+    different times of day or day of week.</b> There may be differences
+    between day vs. night or weekday vs. weekend attendance.</p>
+  </li>
+  <li>
+    <p><b>For <i>observational surveys</i>, running surveys as a snapshot in time
+    is often the easiest way to collect data.</b> Instead of sitting at a
+    site for a full hour, running the survey at the top of the hour can
+    provide a representative snapshot of who’s using a space.</p>
+  </li>
+  <li>
+    <p><b>For <i>intercept surveys</i>, try to survey people who are demographically
+    representative of the overall group of people using a space.</b> If you only
+    approach people who look like you when running surveys, your results may be biased.</p>
+</ul>
+
+<img class="img-fluid mx-auto d-block rounded mb-4" src="{% static 'images/trolley-portal.jpg' %}" />
+
+<h4>Frequently Asked Questions</h4>
+
+<ol>
+  <li>
+    <p>
+      <b>Which Census dataset does the Just Spaces tool compare survey data to?</b>
+    </p>
+    <p>
+      Just Spaces compares survey data to US Census Bureau American Community
+      Survey (ACS) 5-year estimates. For this reason, we are bound to Census
+      geographies (Just Spaces uses Census block group-level data).
+    </p>
+  </li>
+  <li>
+    <p>
+      <b>Can I use the Just Spaces tool to examine changes in public space use
+      longitudinally (over time)?</b>
+    </p>
+    <p>
+      Absolutely. A useful feature of the tool is that you can conduct a survey
+      as many times as you’d like from the “Run survey” page. Then, you’ll be
+      able to compare results from the “View collected data” page.
+  </p>
+  </li>
+  <li>
+    <p>
+      <b>Can multiple people from my organization run the same surveys?</b>
+    </p>
+    <p>
+      Yes! Each user from your organization/agency should have a different
+      account, but you will all be able to access the same surveys. There are
+      different permissions levels we can assign to accounts, such as
+      field users (can only run surveys) or staff users (can run surveys as
+      well as create/edit/delete surveys).
+    </p>
+  </li>
+  <li>
+    <p>
+      <b>When running observational surveys, how do I know people’s
+      age/race/gender simply from looking at them?</b>
+    </p>
+    <p>
+      These responses in observational surveys will be based on your
+      perceptions. Age ranges are quite broad for this reason. Perceived
+      race and gender may be problematically biased or skewed by the
+      identities of the surveyor, and it’s important to consider these
+      nuances when analyzing and presenting data.
+    </p>
+  </li>
+  <li>
+    <p>
+      <b>What if I want to customize data analysis or visualization?</b>
+    </p>
+    <p>
+      The Just Spaces tool was designed to be widely accessible, which presents
+      tradeoffs in the amount of customization possible. However, you can
+      download survey data as a CSV from the “View collected data” page to
+      analyze or visualize your data in whichever software you are
+      most comfortable working with. Additionally, the tool was built using
+      open source code which you can download from
+      <a href="https://github.com/datamade/just-spaces">DataMade’s GitHub page</a>
+      and customize as you see fit!
+    </p>
+</ol>
+
+{% endblock %}

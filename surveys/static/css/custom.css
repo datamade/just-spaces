@@ -21,7 +21,12 @@
 
 body {
   min-height: 100%;
-  background-color: var(--off-white-color)
+  background-color: var(--off-white-color);
+  font-family: 'PT Sans', sans-serif;
+}
+
+h5, h4, h2, .sidebar {
+  font-family: 'Roboto', sans-serif !important;
 }
 
 a,
@@ -47,6 +52,10 @@ hr {
 i,
 span {
   display: inline-block;
+}
+
+h4 {
+  margin-bottom: 1rem;
 }
 
 h5 {
