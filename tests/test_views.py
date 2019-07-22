@@ -10,7 +10,7 @@ from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
 
 @pytest.mark.django_db
-def test_home_page_loads():
+def test_home(client):
     url = reverse('home')
     get_response = client.get(url)
 
