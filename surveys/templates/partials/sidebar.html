@@ -73,9 +73,9 @@
             {% if user.is_authenticated %}
             <div>Hello <b>{{ user.get_username }}</b>!</div>
             <br />
-            <div><a class="btn-sidebar" href="{% url 'logout' %}">Logout</a></div>
+            <div><a class="btn-sidebar about-link" href="{% url 'logout' %}">Logout</a></div>
             {% else %}
-            <div><a class="btn-sidebar" href="{% url 'login' %}">Login</a></div>
+            <div><a class="btn-sidebar about-link" href="{% url 'login' %}">Login</a></div>
             {% endif %}
             <br />
             <div class="about-blurb">
