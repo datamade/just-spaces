@@ -3,13 +3,14 @@
 ----------------------------------------------------- */
 
 :root {
-  --light-green-color: #cde8ce;
+  --light-green-color: #d6e8cd;
   --medium-green-color: #a1bfa2;
   --dark-green-color: #014c42;
+  --ucd-green-color: #949b50;
   --light-blue-color: #e0f8ff;
   --medium-blue-color: #d6edf4;
-  --dark-blue-color: #015c75;
-  --off-white-color: #fafafa;
+  --ucd-blue-color: #207096;
+  --off-white-color: #f6f5ec;
   --gray-color: #e9e9e9;
   --orange-color: #e94e0c;
   --pink-color: #eb549e;
@@ -25,15 +26,19 @@ body {
   font-family: 'PT Sans', sans-serif;
 }
 
-h5, h4, h2, .sidebar {
+h5, h4, h2 {
   font-family: 'Roboto', sans-serif !important;
+  color: var(--ucd-blue-color);
 }
 
-a,
+a {
+  color: var(--ucd-green-color);
+  font-weight: 800;
+}
+
 a:hover,
 a:focus {
   color: var(--orange-color);
-  font-weight: 800;
   text-decoration: none;
   transition: all 0.3s;
 }
@@ -81,11 +86,11 @@ h5 {
 }
 
 .sidebar {
+  font-family: 'Roboto', sans-serif !important;
   min-width: 250px;
   max-width: 250px;
   background: var(--light-green-color);
   transition: all 0.2s;
-  border-right: .75px solid var(--medium-green-color);
   z-index: 100;
 }
 
@@ -109,7 +114,6 @@ h5 {
 
 .sidebar .sidebar-header {
   padding: 20px;
-  background: var(--light-green-color);
 }
 
 .sidebar .sidebar-header strong {
@@ -197,14 +201,14 @@ a.article:hover {
 }
 
 .about-link {
-  color: var(--dark-green-color);
+  color: var(--orange-color);
   background: var(--off-white-color);
   border-radius: 5px;
   padding: 3px 7px;
 }
 
 .about-link:hover {
-  color: var(--orange-color);
+  color: var(--ucd-green-color);
 }
 
 .list-unstyled {
@@ -225,7 +229,7 @@ a.article:hover {
   padding: 40px;
   min-height: 100vh;
   transition: all 0.3s;
-  background: #fafafa;
+  background: var(--off-white-color);
 }
 
 .card {
@@ -324,7 +328,7 @@ a.article:hover {
 }
 
 .btn-warning, .btn-secondary {
-  color: var(--dark-blue-color);
+  color: var(--ucd-blue-color);
   background-color: var(--light-blue-color);
   border-color: var(--light-blue-color);
 }
@@ -340,12 +344,12 @@ a.article:hover {
 
 .page-item.active .page-link {
     font-weight: 500;
-    background-color: var(--dark-blue-color);
-    border-color: var(--dark-blue-color);
+    background-color: var(--ucd-blue-color);
+    border-color: var(--ucd-blue-color);
 }
 
 .btn-warning:hover, .btn-secondary:hover {
-  color: var(--dark-blue-color);
+  color: var(--ucd-blue-color);
   background-color: var(--medium-blue-color);
   border-color: var(--medium-blue-color);
 }
@@ -403,6 +407,10 @@ a.article:hover {
  .preview {
    color: var(--medium-green-color);
  }
+
+.deactivate {
+  color: var(--orange-color);
+}
 
  .leaflet-container {
    height: 450px;

@@ -1,10 +1,13 @@
 {% extends 'partials/small_card.html' %}
 {% load static %}
 
-{% block head %}Welcome to <b><i>Just Spaces</b></i>{% endblock %}
+{% block head %}
+<img class="mb-4 ml-3 col-3 float-right" src="{% static 'images/ucd-logo-color.png' %}" /><br />
+Welcome to <b><i>Just Spaces</b></i>
+{% endblock %}
 
 {% block card_content %}
-<img class="img-fluid mx-auto d-block rounded mb-4" src="{% static 'images/porch.jpg' %}" />
+<img class="img-fluid d-block rounded mb-4" src="{% static 'images/porch.jpg' %}" />
 
 <p>The <b><i>Just Spaces</i> data tool</b> is a project of
 <a href="https://www.universitycity.org"><b>University City District (UCD)</b></a>,
@@ -68,7 +71,7 @@ of justice in public space</b>:</p>
     <li><b>Care</b>  -  How do people demonstrate their care for the space and each other?</li>
   </ul>
 
-<img class="img-fluid mx-auto d-block rounded mb-4" src="{% static 'images/green-city-works.jpg' %}" />
+<img class="img-fluid d-block rounded mb-4" src="{% static 'images/green-city-works.jpg' %}" />
 
 <p>When considering principles of social justice, urban planners and designers
 commonly emphasize the need for initial public input in the physical design
@@ -118,7 +121,7 @@ not use our spaces?</p>
     </li>
   </ol>
 
-<img class="img-fluid mx-auto d-block rounded mb-4" src="{% static 'images/parklets.jpg' %}" />
+<img class="img-fluid d-block rounded mb-4" src="{% static 'images/parklets.jpg' %}" />
 
 <h4><b><i>Just Spaces</b></i> Beyond the Tool</h4>
 
@@ -224,7 +227,7 @@ customizable to fit your needs.</p>
     approach people who look like you when running surveys, your results may be biased.</p>
 </ul>
 
-<img class="img-fluid mx-auto d-block rounded mb-4" src="{% static 'images/trolley-portal.jpg' %}" />
+<img class="img-fluid d-block rounded mb-4" src="{% static 'images/trolley-portal.jpg' %}" />
 
 <h4>Frequently Asked Questions</h4>
 
