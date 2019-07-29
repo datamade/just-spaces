@@ -141,7 +141,7 @@ h5 {
 }
 
 .sidebar ul li a:hover {
-  padding: 5px 25px;
+  padding: 5px 27px;
 }
 
 .btn-sidebar {
@@ -202,7 +202,7 @@ a.article:hover {
 
 .about-link {
   color: var(--orange-color);
-  background: var(--off-white-color);
+  background: white;
   border-radius: 5px;
   padding: 3px 7px;
 }
