@@ -62,33 +62,37 @@
                 </ul>
             </li>
             {% endif %}
-            <li>
-                <a href="/">
-                    <i class="fas fa-question"></i>
-                    About
-                </a>
-            </li>
         </ul>
         <ul class="sidebar-blurb">
-            {% if user.is_authenticated %}
-            <div>Hello <b>{{ user.get_username }}</b>!</div>
-            <br />
-            <div><a class="btn-sidebar about-link" href="{% url 'logout' %}">Logout</a></div>
-            {% else %}
-            <div><a class="btn-sidebar about-link" href="{% url 'login' %}">Login</a></div>
-            <br />
-            <div>
-              <a class="btn-sidebar about-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSf4IV4i30VBI6y8ZfdLmvm9065Wd8MY8lrZbvk2ZG6irC8dxw/viewform">
-                Create account
-              </a>
-            </div>
-            {% endif %}
-            <br />
-            <div class="about-blurb">
-              <strong>Just Spaces</strong> is a tool from <a class="about-link" href="https://www.universitycity.org/" target=_blank>University City District</a> to promote better and more just public spaces
-            </div>
-            <br />
-            <div>Built by <a class="about-link" href="https://datamade.us/" target=_blank>DataMade</a></div>
+          {% if user.is_authenticated %}
+          <div>Hello <b>{{ user.get_username }}</b>!</div>
+          <br />
+          <div><a class="btn-sidebar about-link" href="{% url 'logout' %}">Logout</a></div>
+          {% else %}
+          <div><a class="btn-sidebar about-link" href="{% url 'login' %}">Login</a></div>
+          <br />
+          <div>
+            <a class="btn-sidebar about-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSf4IV4i30VBI6y8ZfdLmvm9065Wd8MY8lrZbvk2ZG6irC8dxw/viewform">
+              Create account
+            </a>
+          </div>
+          {% endif %}
+
+          <hr>
+
+          <div>
+            <a class="btn-sidebar about-link" href="/">
+                About
+            </a>
+          </div>
+
+          <hr >
+
+          <div class="about-blurb">
+            <strong>Just Spaces</strong> is a tool from <a class="about-link" href="https://www.universitycity.org/" target=_blank>University City District</a> to promote better and more just public spaces
+          </div>
+          <br />
+          <div>Built by <a class="about-link" href="https://datamade.us/" target=_blank>DataMade</a></div>
         </ul>
     </nav>
 
