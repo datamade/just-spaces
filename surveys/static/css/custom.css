@@ -89,7 +89,8 @@ h5 {
   font-family: 'Roboto', sans-serif !important;
   min-width: 250px;
   max-width: 250px;
-  background: var(--light-green-color);
+  background: var(--ucd-blue-color);
+  color: white;
   transition: all 0.2s;
   z-index: 100;
 }
@@ -134,7 +135,7 @@ h5 {
   font-size: .9em;
   display: block;
   text-align: left;
-  color: black;
+  color: white;
   background: none;
   font-weight: 600;
   border-radius: 0px;
