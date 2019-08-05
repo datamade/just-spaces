@@ -72,7 +72,7 @@ server {
 }
 server {
     listen 80;
-    server_name {{ domain }};
+    server_name {{ domain }} www.{{ domain}};
 
     location / {
         return 301 https://{{ domain }}$request_uri;
