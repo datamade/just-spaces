@@ -199,3 +199,10 @@ LEAFLET_CONFIG = {
         ),
     ]
 }
+
+SITE_META = {
+    'site_name' : 'Just Spaces',
+    'site_desc' : 'A data tool from University City District to ensure that public spaces are deeply inclusive and just.',
+    'site_author' : 'University City District',
+    'site_url' : 'https://justspacesproject.org/',
+}
