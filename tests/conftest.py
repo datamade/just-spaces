@@ -31,6 +31,19 @@ def agency(db):
 
 @pytest.fixture
 @pytest.mark.django_db
+def agency_2(db):
+    agency = Agency.objects.create(
+        name='Sample Agency 2',
+        email='test@email.com',
+        type='educational institute',
+        language_id='en',
+    )
+
+    return agency
+
+
+@pytest.fixture
+@pytest.mark.django_db
 def superuser(db, agency):
     superuser = JustSpacesUser.objects.create(
         username='samplesuperuser',
@@ -48,6 +61,19 @@ def user_staff(db, agency):
     user_staff = JustSpacesUser.objects.create(
         username='sampleuser_staff',
         agency=agency,
+        is_superuser=False,
+        is_staff=True,
+    )
+
+    return user_staff
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def user_staff_agency_2(db, agency_2):
+    user_staff = JustSpacesUser.objects.create(
+        username='sampleuser_staff_agency_2',
+        agency=agency_2,
         is_superuser=False,
         is_staff=True,
     )
@@ -94,6 +120,18 @@ def study(db, agency):
 
 @pytest.fixture
 @pytest.mark.django_db
+def study_agency_2(db, agency_2):
+    study = Study.objects.create(
+        title='Sample study (Agency 2)',
+        manager_name='Sample Study Manager',
+        agency=agency_2
+    )
+
+    return study
+
+
+@pytest.fixture
+@pytest.mark.django_db
 def study_inactive(db, agency):
     study_inactive = Study.objects.create(
         title='Sample Inactive Study',
@@ -111,6 +149,19 @@ def location(db, agency):
     location = Location.objects.create(
         name_primary='Sample Location',
         agency=agency,
+        country_id='US',
+        geometry='POLYGON((-101.744384 39.32155, -101.552124 39.330048, -101.403808 39.330048, -101.332397 39.364032, -101.744384 39.32155))',
+    )
+
+    return location
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def location_agency_2(db, agency_2):
+    location = Location.objects.create(
+        name_primary='Sample Location (Agency 2)',
+        agency=agency_2,
         country_id='US',
         geometry='POLYGON((-101.744384 39.32155, -101.552124 39.330048, -101.403808 39.330048, -101.332397 39.364032, -101.744384 39.32155))',
     )
@@ -185,6 +236,24 @@ def survey_form_entry_observational(db, user_staff, location, study):
     survey_form_entry_observational = SurveyFormEntry.objects.create(**survey_form_entry_observational_info)
 
     return survey_form_entry_observational
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def survey_form_entry_agency_2(db, user_staff_agency_2, location_agency_2, study_agency_2):
+    survey_form_entry_info = {
+        'id': 4,
+        'user': user_staff_agency_2,
+        'name': 'Sample Form Entry (Agency 2)',
+        'published': True,
+        'location': location_agency_2,
+        'study': study_agency_2,
+        'type': 'intercept',
+    }
+
+    survey_form_entry = SurveyFormEntry.objects.create(**survey_form_entry_info)
+
+    return survey_form_entry
 
 
 @pytest.fixture
@@ -278,6 +347,19 @@ def survey(db, location, study):
 
 @pytest.fixture
 @pytest.mark.django_db
+def survey_agency_2(db, location_agency_2, study_agency_2, survey_form_entry_agency_2):
+    survey = Survey.objects.create(
+        time_stop=datetime.now(tz=get_current_timezone()),
+        location=location_agency_2,
+        study=study_agency_2,
+        form_id=survey_form_entry_agency_2.id,
+    )
+
+    return survey
+
+
+@pytest.fixture
+@pytest.mark.django_db
 def survey_row(db, survey):
     survey_row = SurveyRow.objects.create(
         survey=survey,
@@ -308,4 +390,13 @@ def census_area(db):
     return CensusArea.objects.create(
         name='test area',
         fips_codes=['1']
+    )
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def census_area_agency_2(db):
+    return CensusArea.objects.create(
+        name='test area (Agency 2)',
+        fips_codes=['42']
     )

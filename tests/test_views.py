@@ -75,7 +75,7 @@ def test_study_create(client, user_staff, study_area):
 
 
 @pytest.mark.django_db
-def test_study_list(client, user_staff, study, study_inactive):
+def test_study_list(client, user_staff, study, study_inactive, study_agency_2):
     client.force_login(user_staff)
     url = reverse('studies-list')
     response = client.get(url)
@@ -113,7 +113,7 @@ def test_location_create(client, user_staff):
 
 
 @pytest.mark.django_db
-def test_location_list(client, user_staff, location, location_inactive):
+def test_location_list(client, user_staff, location, location_inactive, location_agency_2):
     client.force_login(user_staff)
     url = reverse('locations-list')
     response = client.get(url)
@@ -142,7 +142,14 @@ def test_location_detail(client, user_staff, location):
 
 
 @pytest.mark.django_db
-def test_survey_list_edit(client, user_staff, survey_form_entry, survey_form_entry_inactive, survey_form_entry_observational):
+def test_survey_list_edit(client, user_staff, survey_form_entry,
+                          survey_form_entry_inactive, survey_form_entry_observational,
+                          survey_form_entry_agency_2):
+    # Make sure that the SurveyFormEntry from Agency 2 is not published, to verify
+    # that it doesn't get loaded on the Edit list view.
+    survey_form_entry_agency_2.published = False
+    survey_form_entry_agency_2.save()
+
     client.force_login(user_staff)
     url = reverse('surveys-list-edit')
     response = client.get(url)
@@ -154,7 +161,9 @@ def test_survey_list_edit(client, user_staff, survey_form_entry, survey_form_ent
 
 
 @pytest.mark.django_db
-def test_survey_list_run(client, user_field, survey_form_entry, survey_form_entry_inactive, survey_form_entry_observational):
+def test_survey_list_run(client, user_field, survey_form_entry,
+                         survey_form_entry_inactive, survey_form_entry_observational,
+                         survey_form_entry_agency_2):
     client.force_login(user_field)
     url = reverse('surveys-list-run')
     response = client.get(url)
@@ -229,7 +238,8 @@ def test_survey_run(client, user_field, survey_form_entry):
 
 
 @pytest.mark.django_db
-def test_survey_submitted_list(client, user_staff, survey, survey_form_entry):
+def test_survey_submitted_list(client, user_staff, survey, survey_form_entry,
+                               survey_agency_2, survey_form_entry_agency_2):
     client.force_login(user_staff)
     url = reverse('surveys-submitted-list')
     response = client.get(url)
@@ -252,6 +262,19 @@ def test_survey_submitted_detail(client, user_staff, survey_form_entry, survey, 
 
     assert response.status_code == 200
     assert len(surveys_submitted) == 1
+
+
+@pytest.mark.django_db
+def test_census_area_list(client, user_staff, census_area, census_area_agency_2):
+    client.force_login(user_staff)
+    url = reverse('census-areas-list')
+    response = client.get(url)
+
+    census_areas = response.context['census_areas']
+
+    assert response.status_code == 200
+    assert len(census_areas) == 1
+    assert census_areas.first().name == census_area.name
 
 
 @pytest.mark.django_db
