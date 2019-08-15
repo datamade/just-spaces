@@ -468,6 +468,15 @@ class CensusAreaCreate(CreateView):
     template_name = "census_area_create.html"
     success_url = reverse_lazy('census-areas-list')
 
+    def get_initial(self):
+        """
+        set the initial value of the Agency for the form to be the Agency of the
+        current user.
+        """
+        initial = super().get_initial().copy()
+        initial['agency'] = self.request.user.agency
+        return initial
+
 
 class CensusAreaList(ListView):
     model = survey_models.CensusArea

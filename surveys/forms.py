@@ -220,7 +220,7 @@ class CensusAreaCreateForm(JustSpacesForm):
 
     class Meta:
         model = survey_models.CensusArea
-        fields = ['name', 'fips_codes']
+        fields = ['name', 'agency', 'fips_codes']
         widgets = {
             'fips_codes': widgets.MultiSelectGeometryWidget(),
         }

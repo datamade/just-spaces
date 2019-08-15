@@ -265,7 +265,8 @@ def test_survey_submitted_detail(client, user_staff, survey_form_entry, survey, 
 
 
 @pytest.mark.django_db
-def test_census_area_list(client, user_staff, census_area, census_area_agency_2):
+def test_census_area_list(client, user_staff, census_area, census_area_agency_1,
+                          census_area_agency_2):
     client.force_login(user_staff)
     url = reverse('census-areas-list')
     response = client.get(url)
@@ -273,8 +274,12 @@ def test_census_area_list(client, user_staff, census_area, census_area_agency_2)
     census_areas = response.context['census_areas']
 
     assert response.status_code == 200
-    assert len(census_areas) == 1
-    assert census_areas.first().name == census_area.name
+    assert len(census_areas) == 2
+
+    # Ensure that the only visible CensusAreas are A) those created by the agency
+    # belonging to the user or B) those where CensusArea.agency is null
+    for area in census_areas:
+        assert area.name in [area.name for area in (census_area, census_area_agency_2)]
 
 
 @pytest.mark.django_db

@@ -389,14 +389,26 @@ def survey_component(db, survey_row):
 def census_area(db):
     return CensusArea.objects.create(
         name='test area',
-        fips_codes=['1']
+        fips_codes=['1'],
+        agency=None
     )
 
 
 @pytest.fixture
 @pytest.mark.django_db
-def census_area_agency_2(db):
+def census_area_agency_1(db, agency):
+    return CensusArea.objects.create(
+        name='test area (Agency 1)',
+        fips_codes=['42'],
+        agency=agency
+    )
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def census_area_agency_2(db, agency_2):
     return CensusArea.objects.create(
         name='test area (Agency 2)',
-        fips_codes=['42']
+        fips_codes=['42'],
+        agency=agency_2
     )
