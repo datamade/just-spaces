@@ -99,7 +99,22 @@ class AgencyRestrictQuerysetMixin(object):
             return self.queryset
 
 
-class LocationCreate(CreateView):
+class AgencyInitialMixin(object):
+    """
+    Provide common methods allowing views to prepopulate their forms with
+    the user's Agency.
+    """
+    def get_initial(self):
+        """
+        Set the initial value of the Agency for the form to be the Agency of the
+        current user.
+        """
+        initial = super().get_initial().copy()
+        initial['agency'] = self.request.user.agency
+        return initial
+
+
+class LocationCreate(AgencyInitialMixin, CreateView):
     form_class = survey_forms.LocationCreateForm
     form_class_location_area = survey_forms.LocationAreaCreateForm
     form_class_location_line = survey_forms.LocationLineCreateForm
@@ -240,7 +255,7 @@ class StudyAreaCreate(CreateView):
     success_url = reverse_lazy('studies-list')
 
 
-class StudyCreate(CreateView):
+class StudyCreate(AgencyInitialMixin, CreateView):
     form_class = survey_forms.StudyCreateForm
     model = pldp_models.Study
     template_name = "study_create.html"
@@ -498,20 +513,11 @@ class SurveySubmittedList(AgencyRestrictQuerysetMixin, ListView):
         return context
 
 
-class CensusAreaCreate(CreateView):
+class CensusAreaCreate(AgencyInitialMixin, CreateView):
     form_class = survey_forms.CensusAreaCreateForm
     model = survey_models.CensusArea
     template_name = "census_area_create.html"
     success_url = reverse_lazy('census-areas-list')
-
-    def get_initial(self):
-        """
-        set the initial value of the Agency for the form to be the Agency of the
-        current user.
-        """
-        initial = super().get_initial().copy()
-        initial['agency'] = self.request.user.agency
-        return initial
 
 
 class CensusAreaList(AgencyRestrictQuerysetMixin, ListView):

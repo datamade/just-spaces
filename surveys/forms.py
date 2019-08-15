@@ -47,7 +47,6 @@ class LocationCreateForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
 
-        self.fields['agency'].initial = pldp_models.Agency.objects.first()
         self.fields['country'].initial = 'US'
 
     class Meta:
@@ -147,7 +146,6 @@ class StudyCreateForm(JustSpacesForm):
         self.create_default_helper()
         self.fields['areas'].widget.attrs['class'] = 'basic-multiple'
 
-        self.fields['agency'].initial = pldp_models.Agency.objects.first()
         self.fields['agency'].queryset = pldp_models.Agency.objects.filter(is_active='t')
 
         self.fields['title'].required = True

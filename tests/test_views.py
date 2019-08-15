@@ -72,6 +72,7 @@ def test_study_create(client, user_staff, study_area):
 
     assert response.status_code == 200
     assert study_area.name in response.content.decode('utf-8')
+    assert response.context['form'].initial.get('agency') == user_staff.agency
 
 
 @pytest.mark.django_db
@@ -110,6 +111,7 @@ def test_location_create(client, user_staff):
     response = client.get(url)
 
     assert response.status_code == 200
+    assert response.context['form'].initial.get('agency') == user_staff.agency
 
 
 @pytest.mark.django_db
@@ -262,6 +264,16 @@ def test_survey_submitted_detail(client, user_staff, survey_form_entry, survey, 
 
     assert response.status_code == 200
     assert len(surveys_submitted) == 1
+
+
+@pytest.mark.django_db
+def test_census_area_create(client, user_staff):
+    client.force_login(user_staff)
+    url = reverse('census-areas-create')
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert response.context['form'].initial.get('agency') == user_staff.agency
 
 
 @pytest.mark.django_db
