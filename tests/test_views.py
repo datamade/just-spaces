@@ -279,7 +279,7 @@ def test_census_area_list(client, user_staff, census_area, census_area_agency_1,
     # Ensure that the only visible CensusAreas are A) those created by the agency
     # belonging to the user or B) those where CensusArea.agency is null
     for area in census_areas:
-        assert area.name in [area.name for area in (census_area, census_area_agency_2)]
+        assert area.name in [area.name for area in (census_area, census_area_agency_1)]
 
 
 @pytest.mark.django_db

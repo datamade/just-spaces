@@ -4,6 +4,7 @@ import uuid
 from django.views.generic import TemplateView, ListView, UpdateView, DetailView
 from django.views.generic.edit import CreateView
 
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
@@ -77,6 +78,27 @@ class AgencyDeactivate(TemplateView):
         return redirect('agencies-list')
 
 
+class AgencyRestrictQuerysetMixin(object):
+    """
+    Provide common methods allowing views to restrict their querysets based on
+    the user's Agency.
+    """
+    def get_queryset_for_agency(self, agency_filter='agency'):
+        """
+        Filter the queryset based on the user's agency. The 'agency_filter' string
+        will be used as the filter kwarg for the Agency lookup; e.g. if the Agency
+        is accessible from 'instance.study.agency', the agency_filter should be
+        'study__agency'.
+        """
+        agency_kwargs = {agency_filter: self.request.user.agency}
+        agency_null_kwargs = {agency_filter + '__isnull': True}
+
+        if self.request.user.agency is not None:
+            return self.queryset.filter(Q(**agency_kwargs) | Q(**agency_null_kwargs))
+        else:
+            return self.queryset
+
+
 class LocationCreate(CreateView):
     form_class = survey_forms.LocationCreateForm
     form_class_location_area = survey_forms.LocationAreaCreateForm
@@ -140,11 +162,14 @@ class LocationCreate(CreateView):
                       )
 
 
-class LocationList(ListView):
+class LocationList(AgencyRestrictQuerysetMixin, ListView):
     model = pldp_models.Location
     template_name = "location_list.html"
     context_object_name = 'locations'
     queryset = pldp_models.Location.objects.all().exclude(is_active=False)
+
+    def get_queryset(self):
+        return self.get_queryset_for_agency()
 
 
 class LocationDetail(DetailView):
@@ -230,11 +255,14 @@ class StudyCreate(CreateView):
         return context
 
 
-class StudyList(ListView):
+class StudyList(AgencyRestrictQuerysetMixin, ListView):
     model = pldp_models.Study
     template_name = "study_list.html"
     context_object_name = 'studies'
     queryset = pldp_models.Study.objects.all().exclude(is_active=False)
+
+    def get_queryset(self):
+        return self.get_queryset_for_agency()
 
 
 class StudyDeactivate(TemplateView):
@@ -398,33 +426,35 @@ class SurveyPublish(TemplateView):
         return redirect('surveys-list-run')
 
 
-class SurveyListEdit(ListView):
+class SurveyListEdit(AgencyRestrictQuerysetMixin, ListView):
     model = survey_models.SurveyFormEntry
     template_name = "survey_list_edit.html"
     context_object_name = 'surveys'
+    queryset = survey_models.SurveyFormEntry.objects.filter(active=True, is_cloneable=False, published=True)
+
+    def get_queryset(self):
+        return self.get_queryset_for_agency('study__agency')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].filter(active=True,
-                                                       is_cloneable=False,
-                                                       published=False
-                                                       ).order_by('-updated')
+        context['surveys'] = context['surveys'].order_by('-updated')
         context['published'] = False
 
         return context
 
 
-class SurveyListRun(ListView):
+class SurveyListRun(AgencyRestrictQuerysetMixin, ListView):
     model = survey_models.SurveyFormEntry
     template_name = "survey_list_run.html"
     context_object_name = 'surveys'
+    queryset = survey_models.SurveyFormEntry.objects.filter(active=True, is_cloneable=False, published=True)
+
+    def get_queryset(self):
+        return self.get_queryset_for_agency('study__agency')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surveys'] = context['surveys'].filter(active=True,
-                                                       is_cloneable=False,
-                                                       published=True
-                                                       ).order_by('-updated')
+        context['surveys'] = context['surveys'].order_by('-updated')
         context['published'] = True
 
         for survey in context['surveys']:
@@ -440,14 +470,20 @@ class SurveyListRun(ListView):
         return context
 
 
-class SurveySubmittedList(TemplateView):
+class SurveySubmittedList(AgencyRestrictQuerysetMixin, ListView):
+    model = pldp_models.Survey
     template_name = "survey_submitted_list.html"
+    context_object_name = 'surveys_submitted'
+    queryset = pldp_models.Survey.objects.all()
+
+    def get_queryset(self):
+        return self.get_queryset_for_agency('study__agency')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        surveys = pldp_models.Survey.objects.all()
-        context['surveys_submitted'] = surveys.order_by('form_id', '-time_stop').distinct('form_id')
+        context['surveys_submitted'] = context['surveys_submitted'].order_by('form_id', '-time_stop')\
+                                                                   .distinct('form_id')
 
         for survey in context['surveys_submitted']:
             try:
@@ -456,7 +492,7 @@ class SurveySubmittedList(TemplateView):
             except survey_models.SurveyFormEntry.DoesNotExist:
                 survey.form_title = "[Deleted Survey]"
 
-            survey_submissions = surveys.filter(form_id=survey.form_id)
+            survey_submissions = self.queryset.filter(form_id=survey.form_id)
             survey.times_run = survey_submissions.count()
 
         return context
@@ -478,11 +514,14 @@ class CensusAreaCreate(CreateView):
         return initial
 
 
-class CensusAreaList(ListView):
+class CensusAreaList(AgencyRestrictQuerysetMixin, ListView):
     model = survey_models.CensusArea
     template_name = "census_area_list.html"
     context_object_name = 'census_areas'
     queryset = survey_models.CensusArea.objects.all().exclude(is_active=False)
+
+    def get_queryset(self):
+        return self.get_queryset_for_agency()
 
 
 class CensusAreaEdit(UpdateView):
