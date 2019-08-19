@@ -329,6 +329,11 @@ class SurveyCreate(CreateView):
         self.initial['user'] = self.request.user
         return self.initial.copy()
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['agency'] = self.request.user.agency
+        return kwargs
+
     def get_context_data(self, **kwargs):
         context = super(SurveyCreate, self).get_context_data(**kwargs)
 

@@ -162,9 +162,12 @@ class StudyCreateForm(JustSpacesForm):
 
 class SurveyCreateForm(JustSpacesForm):
     def __init__(self, *args, **kwargs):
+        agency = kwargs.pop('agency')
         super(SurveyCreateForm, self).__init__(*args, **kwargs)
         self.fields['study'].required = True
         self.fields['study'].queryset = pldp_models.Study.objects.filter(is_active='t')
+        if agency:
+            self.fields['study'].queryset = self.fields['study'].queryset.filter(agency=agency)
 
         self.fields['location'].required = True
         self.fields['location'].queryset = pldp_models.Location.objects.filter(is_active='t')

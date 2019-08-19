@@ -177,6 +177,18 @@ def test_survey_list_run(client, user_field, survey_form_entry,
 
 
 @pytest.mark.django_db
+def test_survey_create(client, user_staff, study, study_agency_2):
+    client.force_login(user_staff)
+    url = reverse('surveys-create')
+    response = client.get(url)
+
+    # Make sure the user only sees Studies filtered by their agency, if one exists.
+    form = response.context['form']
+    available_studies = list(form.fields['study'].queryset)
+    assert set(available_studies) == set([study])
+
+
+@pytest.mark.django_db
 def test_survey_edit_intercept(client, user_staff, survey_form_entry):
     client.force_login(user_staff)
     url = reverse('fobi.edit_form_entry', kwargs={'form_entry_id': survey_form_entry.id})
