@@ -47,7 +47,6 @@ class LocationCreateForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
 
-        self.fields['agency'].initial = pldp_models.Agency.objects.first()
         self.fields['country'].initial = 'US'
 
     class Meta:
@@ -147,7 +146,6 @@ class StudyCreateForm(JustSpacesForm):
         self.create_default_helper()
         self.fields['areas'].widget.attrs['class'] = 'basic-multiple'
 
-        self.fields['agency'].initial = pldp_models.Agency.objects.first()
         self.fields['agency'].queryset = pldp_models.Agency.objects.filter(is_active='t')
 
         self.fields['title'].required = True
@@ -164,9 +162,12 @@ class StudyCreateForm(JustSpacesForm):
 
 class SurveyCreateForm(JustSpacesForm):
     def __init__(self, *args, **kwargs):
+        agency = kwargs.pop('agency')
         super(SurveyCreateForm, self).__init__(*args, **kwargs)
         self.fields['study'].required = True
         self.fields['study'].queryset = pldp_models.Study.objects.filter(is_active='t')
+        if agency:
+            self.fields['study'].queryset = self.fields['study'].queryset.filter(agency=agency)
 
         self.fields['location'].required = True
         self.fields['location'].queryset = pldp_models.Location.objects.filter(is_active='t')
@@ -220,7 +221,7 @@ class CensusAreaCreateForm(JustSpacesForm):
 
     class Meta:
         model = survey_models.CensusArea
-        fields = ['name', 'fips_codes']
+        fields = ['name', 'agency', 'fips_codes']
         widgets = {
             'fips_codes': widgets.MultiSelectGeometryWidget(),
         }

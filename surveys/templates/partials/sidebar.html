@@ -66,6 +66,9 @@
         <ul class="sidebar-blurb">
           {% if user.is_authenticated %}
           <div>Hello <b>{{ user.get_username }}</b>!</div>
+            {% if user.agency %}
+            <div><i>{{ user.agency }}</i></div>
+            {% endif %}
           <br />
           <div><a class="btn-sidebar about-link" href="{% url 'logout' %}">Logout</a></div>
           {% else %}

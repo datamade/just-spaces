@@ -3,7 +3,7 @@ from django.contrib.gis.db import models as geo_models
 from django.contrib.postgres import fields as pg_fields
 from django.contrib.postgres.fields import JSONField
 
-from pldp.models import Study, Location, SurveyComponent
+from pldp.models import Study, Location, SurveyComponent, Agency
 from fobi.models import FormEntry
 
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
@@ -76,6 +76,18 @@ class CensusArea(models.Model):
             'Select one or more Census block groups that comprise this area. '
             'Add or remove a block group by clicking on it, or remove all block '
             'groups by clicking the "Clear all" button.'
+        )
+    )
+    agency = models.ForeignKey(
+        Agency,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        default=None,
+        help_text=(
+            'Select the agency that should be able to view and edit this area. '
+            'Leave this box blank if you would like this area to be available to '
+            'all agencies.'
         )
     )
     is_active = models.BooleanField(default=True)
