@@ -450,7 +450,7 @@ class SurveyListEdit(AgencyRestrictQuerysetMixin, ListView):
     model = survey_models.SurveyFormEntry
     template_name = "survey_list_edit.html"
     context_object_name = 'surveys'
-    queryset = survey_models.SurveyFormEntry.objects.filter(active=True, is_cloneable=False, published=True)
+    queryset = survey_models.SurveyFormEntry.objects.filter(active=True, is_cloneable=False, published=False)
 
     def get_queryset(self):
         return self.get_queryset_for_agency('study__agency')
