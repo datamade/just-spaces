@@ -147,11 +147,6 @@ def test_location_detail(client, user_staff, location):
 def test_survey_list_edit(client, user_staff, survey_form_entry,
                           survey_form_entry_inactive, survey_form_entry_observational,
                           survey_form_entry_agency_2):
-    # Make sure that the SurveyFormEntry from Agency 2 is not published, to verify
-    # that it doesn't get loaded on the Edit list view.
-    survey_form_entry_agency_2.published = False
-    survey_form_entry_agency_2.save()
-
     client.force_login(user_staff)
     url = reverse('surveys-list-edit')
     response = client.get(url)
@@ -160,6 +155,7 @@ def test_survey_list_edit(client, user_staff, survey_form_entry,
 
     assert response.status_code == 200
     assert len(surveys) == 1
+    assert surveys[0] == survey_form_entry_observational
 
 
 @pytest.mark.django_db
