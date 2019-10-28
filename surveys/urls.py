@@ -192,6 +192,10 @@ urlpatterns = [
     # API endpoint for retreiving CensusObservation data
     path('acs/', view=survey_views.census_area_to_observation, name="acs"),
 
+    url(r'census-areas/region/$',
+        staff_required_custom_login(survey_views.CensusAreaRegionSelect.as_view()),
+        name='census-areas-region-select'),
+
     url(r'census-areas/create/$',
         staff_required_custom_login(survey_views.CensusAreaCreate.as_view()),
         name='census-areas-create'),

@@ -1,7 +1,7 @@
 import json
 import uuid
 
-from django.views.generic import TemplateView, ListView, UpdateView, DetailView
+from django.views.generic import TemplateView, ListView, UpdateView, DetailView, FormView
 from django.views.generic.edit import CreateView
 
 from django.db.models import Q
@@ -518,11 +518,37 @@ class SurveySubmittedList(AgencyRestrictQuerysetMixin, ListView):
         return context
 
 
+class CensusAreaRegionSelect(AgencyInitialMixin, FormView):
+    form_class = survey_forms.CensusAreaRegionSelectForm
+    template_name = 'census_area_create.html'
+
+    def get_initial(self):
+        initial = {}
+
+        if self.request.user.agency:
+            initial['agency'] = self.request.user.agency
+
+
 class CensusAreaCreate(AgencyInitialMixin, CreateView):
     form_class = survey_forms.CensusAreaCreateForm
     model = survey_models.CensusArea
     template_name = "census_area_create.html"
     success_url = reverse_lazy('census-areas-list')
+
+    def get_initial(self):
+        initial = {}
+
+        if self.request.user.agency:
+            initial['agency'] = self.request.user.agency
+
+        for var in ['region', 'name', 'agency']:
+            if self.request.GET.get(var):
+                initial[var] = self.request.GET[var]
+
+        if 'region' not in initial.keys():
+            initial['region'] = 'philadelphia'
+
+        return initial
 
 
 class CensusAreaList(AgencyRestrictQuerysetMixin, ListView):
@@ -538,7 +564,7 @@ class CensusAreaList(AgencyRestrictQuerysetMixin, ListView):
 class CensusAreaEdit(UpdateView):
     model = survey_models.CensusArea
     template_name = "census_area_edit.html"
-    form_class = survey_forms.CensusAreaCreateForm
+    form_class = survey_forms.CensusAreaEditForm
     context_object_name = 'form_object'
     success_url = reverse_lazy('census-areas-list')
 

@@ -19,5 +19,23 @@
 {% endblock %}
 
 {% block footer_js %}
-
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('select[name="region"]').select2().change(function(e) {
+      var params = {
+        region: e.target.value,
+      };
+      var name = $('input[name="name"]').val();
+      var agency = $('select[name="agency"]').val();
+      if (name) {
+        params.name = name;
+      }
+      if (agency) {
+        params.agency = agency;
+      }
+      var queryString = $.param(params);
+      window.location.href = '{% url "census-areas-create" %}' + '?' + queryString;
+    });
+  });
+</script>
 {% endblock %}

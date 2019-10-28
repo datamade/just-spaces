@@ -1,4 +1,5 @@
 import uuid
+from urllib.parse import urlencode
 
 import pytest
 from django.urls import reverse
@@ -275,6 +276,14 @@ def test_survey_submitted_detail(client, user_staff, survey_form_entry, survey, 
 
 
 @pytest.mark.django_db
+def test_census_area_region_select(client, user_staff):
+    client.force_login(user_staff)
+    url = reverse('census-areas-region-select')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_census_area_create(client, user_staff):
     client.force_login(user_staff)
     url = reverse('census-areas-create')
@@ -282,6 +291,25 @@ def test_census_area_create(client, user_staff):
 
     assert response.status_code == 200
     assert response.context['form'].initial.get('agency') == user_staff.agency
+    # With no 'region' param, the region should default to Philadelphia.
+    assert response.context['form'].initial.get('region') == 'philadelphia'
+
+
+@pytest.mark.django_db
+def test_census_area_create_params(client, user_staff):
+    client.force_login(user_staff)
+    test_agency_id = str(uuid.uuid4())
+    params = {
+        'name': 'Foo bar',
+        'agency': test_agency_id,
+        'region': 'testregion',
+    }
+    url = reverse('census-areas-create') + '?' + urlencode(params)
+    response = client.get(url)
+
+    assert response.status_code == 200
+    for var, val in params.items():
+        assert response.context['form'].initial.get(var) == val
 
 
 @pytest.mark.django_db

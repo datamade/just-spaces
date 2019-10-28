@@ -24,7 +24,10 @@ class JustSpacesForm(forms.ModelForm):
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-9'
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Submit', css_class='float-right'))
+        self.add_inputs(self.helper)
+
+    def add_inputs(self, helper):
+        helper.add_input(Submit('submit', 'Submit', css_class='float-right'))
 
 
 class AgencyCreateForm(JustSpacesForm):
@@ -216,12 +219,22 @@ class SurveyEditForm(JustSpacesForm):
         }
 
 
+class CensusAreaRegionSelectForm(JustSpacesForm):
+    class Meta:
+        model = survey_models.CensusArea
+        fields = ['name', 'agency', 'region']
+
+    def add_inputs(self, helper):
+        # Override base method to remove Submit button from this form.
+        return None
+
+
 class CensusAreaCreateForm(JustSpacesForm):
     use_required_attribute = False
 
     class Meta:
         model = survey_models.CensusArea
-        fields = ['name', 'agency', 'fips_codes']
+        fields = ['name', 'agency', 'region', 'fips_codes']
         widgets = {
             'fips_codes': widgets.MultiSelectGeometryWidget(),
         }
@@ -232,6 +245,16 @@ class CensusAreaCreateForm(JustSpacesForm):
             (choice.fips_code, choice) for choice
             in survey_models.CensusBlockGroup.objects.all()
         ]
+
+
+class CensusAreaEditForm(CensusAreaCreateForm):
+    class Meta:
+        model = survey_models.CensusArea
+        fields = ['name', 'agency', 'region', 'fips_codes']
+        widgets = {
+            'fips_codes': widgets.MultiSelectGeometryWidget(),
+            'region': forms.Select(attrs={'disabled': True})
+        }
 
 
 class SurveyChartForm(forms.ModelForm):
