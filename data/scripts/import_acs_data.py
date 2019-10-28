@@ -5,14 +5,7 @@ import csv
 import yaml
 from census import Census
 
-# Relevant FIPS codes for geographic queries
-US_FIPS = '1'
-STATE_FIPS = {
-    'Pennsylvania': {
-        'state': '42',
-        'counties': ['101'],
-    }
-}
+from states import STATES, US
 
 
 class ACSWriter(object):
@@ -86,36 +79,36 @@ if __name__ == '__main__':
     us_res = c.acs5.us(codes)
     assert len(us_res) > 0
     for row in us_res:
-        writer.write_acs_row(US_FIPS, row)
+        writer.write_acs_row(US, row)
 
     # Import data for each state
-    for state, fips_codes in STATE_FIPS.items():
-        state_fips = fips_codes['state']
-        county_fips = fips_codes['counties']
+    for state_fips, variables in STATES.items():
+        regions = variables['regions']
 
         # State-level data
-        state_fips = c.acs5.state(codes, state_fips)
-        assert len(state_fips) > 0
-        for row in state_fips:
+        state_res = c.acs5.state(codes, state_fips)
+        assert len(state_res) > 0
+        for row in state_res:
             writer.write_acs_row(state_fips, row)
 
         # County-level data
-        for county in county_fips:
-            philly_res = c.acs5.state_county(codes, state_fips, county)
-            assert len(philly_res) > 0
-            for row in philly_res:
-                writer.write_acs_row(state_fips + county, row)
+        for region_name, county_fips_codes in regions.items():
+            for county in county_fips_codes:
+                county_res = c.acs5.state_county(codes, state_fips, county)
+                assert len(county_res) > 0
+                for row in county_res:
+                    writer.write_acs_row(state_fips + county, row)
 
-            # Tract-level data
-            tract_res = c.acs5.state_county_tract(codes, state_fips, county, '*')
-            assert len(tract_res) > 0
-            for row in tract_res:
-                fips = state_fips + county + row['tract']
-                writer.write_acs_row(fips, row)
+                # Tract-level data
+                tract_res = c.acs5.state_county_tract(codes, state_fips, county, '*')
+                assert len(tract_res) > 0
+                for row in tract_res:
+                    fips = state_fips + county + row['tract']
+                    writer.write_acs_row(fips, row)
 
-            # Blockgroup-level data
-            block_res = c.acs5.state_county_blockgroup(codes, state_fips, county, '*')
-            assert len(block_res) > 0
-            for row in block_res:
-                fips = state_fips + county + row['tract'] + row['block group']
-                writer.write_acs_row(fips, row)
+                # Blockgroup-level data
+                block_res = c.acs5.state_county_blockgroup(codes, state_fips, county, '*')
+                assert len(block_res) > 0
+                for row in block_res:
+                    fips = state_fips + county + row['tract'] + row['block group']
+                    writer.write_acs_row(fips, row)
