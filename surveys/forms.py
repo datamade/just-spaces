@@ -250,10 +250,9 @@ class CensusAreaCreateForm(JustSpacesForm):
 class CensusAreaEditForm(CensusAreaCreateForm):
     class Meta:
         model = survey_models.CensusArea
-        fields = ['name', 'agency', 'region', 'fips_codes']
+        fields = ['name', 'agency', 'fips_codes']
         widgets = {
             'fips_codes': widgets.MultiSelectGeometryWidget(),
-            'region': forms.Select(attrs={'disabled': True})
         }
 
 
