@@ -6,7 +6,7 @@ from django.urls import reverse
 from pldp.forms import AGE_COMPLEX_CHOICES
 from pldp.models import SurveyComponent
 
-from surveys.models import CensusObservation
+from surveys.models import CensusObservation, CensusArea
 from fobi_custom.plugins.form_elements.fields import types as fobi_types
 
 
@@ -284,24 +284,44 @@ def test_census_area_region_select(client, user_staff):
 
 
 @pytest.mark.django_db
-def test_census_area_create(client, user_staff):
+def test_census_area_create(client, user_staff, census_region):
     client.force_login(user_staff)
     url = reverse('census-areas-create')
     response = client.get(url)
 
     assert response.status_code == 200
-    assert response.context['form'].initial.get('agency') == user_staff.agency
     # With no 'region' param, the region should default to Philadelphia.
     assert response.context['form'].initial.get('region') == 'philadelphia'
+
+    data = {
+        'name': 'foobar',
+        'region': census_region.slug,
+        'fips_codes': ['42'],
+        'restrict_by_agency': True
+    }
+    post_res = client.post(url, data)
+    assert post_res.status_code == 302
+
+    new_census_area = CensusArea.objects.last()
+    assert new_census_area.name == 'foobar'
+    assert new_census_area.region == census_region
+    assert new_census_area.fips_codes == ['42']
+    assert new_census_area.agency == user_staff.agency
+
+    # Test creating a CensusArea without an agency restriction
+    del data['restrict_by_agency']
+    no_agency_post_res = client.post(url, data)
+    assert no_agency_post_res.status_code == 302
+
+    no_agency_census_area = CensusArea.objects.last()
+    assert no_agency_census_area.agency is None
 
 
 @pytest.mark.django_db
 def test_census_area_create_params(client, user_staff):
     client.force_login(user_staff)
-    test_agency_id = str(uuid.uuid4())
     params = {
         'name': 'Foo bar',
-        'agency': test_agency_id,
         'region': 'testregion',
     }
     url = reverse('census-areas-create') + '?' + urlencode(params)
