@@ -42,12 +42,8 @@
         region: e.target.value,
       };
       var name = $('input[name="name"]').val();
-      var agency = $('select[name="agency"]').val();
       if (name) {
         params.name = name;
-      }
-      if (agency) {
-        params.agency = agency;
       }
       var queryString = $.param(params);
       window.location.href = '{% url "census-areas-create" %}' + '?' + queryString;

@@ -538,10 +538,7 @@ class CensusAreaCreate(AgencyInitialMixin, CreateView):
     def get_initial(self):
         initial = {}
 
-        if self.request.user.agency:
-            initial['agency'] = self.request.user.agency
-
-        for var in ['region', 'name', 'agency']:
+        for var in ['region', 'name']:
             if self.request.GET.get(var):
                 initial[var] = self.request.GET[var]
 
@@ -549,6 +546,11 @@ class CensusAreaCreate(AgencyInitialMixin, CreateView):
             initial['region'] = 'philadelphia'
 
         return initial
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class CensusAreaList(AgencyRestrictQuerysetMixin, ListView):
@@ -567,6 +569,11 @@ class CensusAreaEdit(UpdateView):
     form_class = survey_forms.CensusAreaEditForm
     context_object_name = 'form_object'
     success_url = reverse_lazy('census-areas-list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class CensusAreaDeactivate(TemplateView):
