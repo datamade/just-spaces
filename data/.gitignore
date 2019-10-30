@@ -1,7 +1,8 @@
 .env
 raw/acs/*.csv
-raw/shapefiles/*.zip
 intermediate/acs/*.csv
 
-# Extra shapefile data
+# Shapefiles
+raw/shapefiles/*.zip
 intermediate/shapefiles/*
+final/shapefiles/*
