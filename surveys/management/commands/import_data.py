@@ -8,8 +8,7 @@ from django.conf import settings
 from django.utils import slugify
 
 from surveys import models
-# TODO: Need to share this location somehow.
-from states import STATES, REGIONS
+from data.scripts.states import STATES, REGIONS
 
 DB_CONN = 'postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{NAME}'
 DB_CONN_STR = DB_CONN.format(**settings.DATABASES['default'])
