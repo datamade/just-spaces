@@ -83,7 +83,7 @@ class AgencyRestrictQuerysetMixin(object):
     Provide common methods allowing views to restrict their querysets based on
     the user's Agency.
     """
-    def get_queryset_for_agency(self, agency_filter='agency'):
+    def get_queryset_for_agency(self, queryset, agency_filter='agency'):
         """
         Filter the queryset based on the user's agency. The 'agency_filter' string
         will be used as the filter kwarg for the Agency lookup; e.g. if the Agency
@@ -94,9 +94,9 @@ class AgencyRestrictQuerysetMixin(object):
         agency_null_kwargs = {agency_filter + '__isnull': True}
 
         if self.request.user.agency is not None:
-            return self.queryset.filter(Q(**agency_kwargs) | Q(**agency_null_kwargs))
+            return queryset.filter(Q(**agency_kwargs) | Q(**agency_null_kwargs))
         else:
-            return self.queryset
+            return queryset
 
 
 class AgencyInitialMixin(object):
@@ -184,7 +184,7 @@ class LocationList(AgencyRestrictQuerysetMixin, ListView):
     queryset = pldp_models.Location.objects.all().exclude(is_active=False)
 
     def get_queryset(self):
-        return self.get_queryset_for_agency()
+        return self.get_queryset_for_agency(super().get_queryset())
 
 
 class LocationDetail(DetailView):
@@ -277,7 +277,7 @@ class StudyList(AgencyRestrictQuerysetMixin, ListView):
     queryset = pldp_models.Study.objects.all().exclude(is_active=False)
 
     def get_queryset(self):
-        return self.get_queryset_for_agency()
+        return self.get_queryset_for_agency(super().get_queryset())
 
 
 class StudyDeactivate(TemplateView):
@@ -453,7 +453,7 @@ class SurveyListEdit(AgencyRestrictQuerysetMixin, ListView):
     queryset = survey_models.SurveyFormEntry.objects.filter(active=True, is_cloneable=False, published=False)
 
     def get_queryset(self):
-        return self.get_queryset_for_agency('study__agency')
+        return self.get_queryset_for_agency(super().get_queryset(), 'study__agency')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -470,7 +470,7 @@ class SurveyListRun(AgencyRestrictQuerysetMixin, ListView):
     queryset = survey_models.SurveyFormEntry.objects.filter(active=True, is_cloneable=False, published=True)
 
     def get_queryset(self):
-        return self.get_queryset_for_agency('study__agency')
+        return self.get_queryset_for_agency(super().get_queryset(), 'study__agency')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -497,7 +497,7 @@ class SurveySubmittedList(AgencyRestrictQuerysetMixin, ListView):
     queryset = pldp_models.Survey.objects.all()
 
     def get_queryset(self):
-        return self.get_queryset_for_agency('study__agency')
+        return self.get_queryset_for_agency(super().get_queryset(), 'study__agency')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -558,7 +558,7 @@ class CensusAreaList(AgencyRestrictQuerysetMixin, ListView):
     queryset = survey_models.CensusArea.objects.all().exclude(is_active=False)
 
     def get_queryset(self):
-        return self.get_queryset_for_agency()
+        return self.get_queryset_for_agency(super().get_queryset())
 
 
 class CensusAreaEdit(UpdateView):
