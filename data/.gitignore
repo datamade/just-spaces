@@ -6,3 +6,4 @@ intermediate/acs/*.csv
 raw/shapefiles/*.zip
 intermediate/shapefiles/*
 final/shapefiles/*
+final/acs/*
