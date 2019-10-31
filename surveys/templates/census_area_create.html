@@ -13,11 +13,41 @@
 {% endblock %}
 
 {% block card_content %}
-<form class="form-horizontal" name="census-area-form" method="post">
-  {% crispy form %}
-</form>
+  <form class="form-horizontal" name="census-area-form" method="post">
+    {% crispy form %}
+  </form>
+  <div class="modal" id="modal" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div id="spinner" style="height:100px; margin-left:50%; margin-top:100px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block footer_js %}
+<script src="{% static 'js/spin.min.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('select[name="region"]').select2().change(function(e) {
+      // Start the "Loading" spinner
+      var spinner = Spinner().spin();
+      $('#spinner').append(spinner.el);
+      $('#modal').modal('show');
 
+      // Redirect to an updated view with a new Region on the map
+      var params = {
+        region: e.target.value,
+      };
+      var name = $('input[name="name"]').val();
+      if (name) {
+        params.name = name;
+      }
+      var queryString = $.param(params);
+      window.location.href = '{% url "census-areas-create" %}' + '?' + queryString;
+    });
+  });
+</script>
 {% endblock %}

@@ -5,7 +5,7 @@ from django.utils.timezone import get_current_timezone
 
 from fobi.models import FormElementEntry
 from users.models import JustSpacesUser
-from surveys.models import SurveyFormEntry, CensusArea
+from surveys.models import SurveyFormEntry, CensusArea, CensusRegion
 from pldp.models import Location, Agency, Study, StudyArea, Survey, \
                         SurveyRow, SurveyComponent
 
@@ -386,29 +386,42 @@ def survey_component(db, survey_row):
 
 @pytest.fixture
 @pytest.mark.django_db
-def census_area(db):
+def census_region(db):
+    return CensusRegion.objects.create(
+        fips_codes=['1'],
+        slug='test-region',
+        name='test region'
+    )
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def census_area(db, census_region):
     return CensusArea.objects.create(
         name='test area',
         fips_codes=['1'],
+        region=census_region,
         agency=None
     )
 
 
 @pytest.fixture
 @pytest.mark.django_db
-def census_area_agency_1(db, agency):
+def census_area_agency_1(db, agency, census_region):
     return CensusArea.objects.create(
         name='test area (Agency 1)',
         fips_codes=['42'],
+        region=census_region,
         agency=agency
     )
 
 
 @pytest.fixture
 @pytest.mark.django_db
-def census_area_agency_2(db, agency_2):
+def census_area_agency_2(db, agency_2, census_region):
     return CensusArea.objects.create(
         name='test area (Agency 2)',
         fips_codes=['42'],
+        region=census_region,
         agency=agency_2
     )

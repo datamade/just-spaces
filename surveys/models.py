@@ -53,7 +53,18 @@ class SurveyFormEntry(FormEntry):
         return self.name
 
 
+class CensusRegion(models.Model):
+    # FIPS Codes that define this region, typically a set of Counties
+    fips_codes = pg_fields.ArrayField(models.CharField(max_length=12))
+    slug = models.SlugField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class CensusBlockGroup(models.Model):
+    region = models.ForeignKey('CensusRegion', on_delete=models.PROTECT)
     fips_code = models.CharField(max_length=12, primary_key=True)
     geom = geo_models.MultiPolygonField(srid=4269)
 
@@ -90,6 +101,7 @@ class CensusArea(models.Model):
             'all agencies.'
         )
     )
+    region = models.ForeignKey('CensusRegion', on_delete=models.PROTECT)
     is_active = models.BooleanField(default=True)
     is_preset = models.BooleanField(default=False)
 

@@ -24,7 +24,10 @@ class JustSpacesForm(forms.ModelForm):
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-9'
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Submit', css_class='float-right'))
+        self.add_inputs(self.helper)
+
+    def add_inputs(self, helper):
+        helper.add_input(Submit('submit', 'Submit', css_class='float-right'))
 
 
 class AgencyCreateForm(JustSpacesForm):
@@ -216,22 +219,61 @@ class SurveyEditForm(JustSpacesForm):
         }
 
 
+class CensusAreaRegionSelectForm(JustSpacesForm):
+    class Meta:
+        model = survey_models.CensusArea
+        fields = ['name', 'region']
+
+    def add_inputs(self, helper):
+        # Override base method to remove Submit button from this form.
+        return None
+
+
 class CensusAreaCreateForm(JustSpacesForm):
     use_required_attribute = False
+    restrict_by_agency = forms.BooleanField(
+        label='Restrict to my agency',
+        initial=False,
+        help_text=(
+            'This will make this CensusArea viewable only by you and members '
+            'of your agency. If this box is unchecked, all users will be able '
+            'to find and use your CensusArea for their own analyses.'
+        ),
+        required=False
+    )
 
     class Meta:
         model = survey_models.CensusArea
-        fields = ['name', 'agency', 'fips_codes']
+        fields = ['name', 'region', 'fips_codes', 'restrict_by_agency']
         widgets = {
             'fips_codes': widgets.MultiSelectGeometryWidget(),
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.user = user
         self.fields['fips_codes'].widget.choices = [
             (choice.fips_code, choice) for choice
             in survey_models.CensusBlockGroup.objects.all()
         ]
+        if self.instance.agency:
+            self.fields['restrict_by_agency'].initial = True
+
+    def save(self, commit=True):
+        if self.cleaned_data['restrict_by_agency'] is True:
+            self.instance.agency = self.user.agency
+        else:
+            self.instance.agency = None
+        return super().save(commit=commit)
+
+
+class CensusAreaEditForm(CensusAreaCreateForm):
+    class Meta:
+        model = survey_models.CensusArea
+        fields = ['name', 'fips_codes', 'restrict_by_agency']
+        widgets = {
+            'fips_codes': widgets.MultiSelectGeometryWidget(),
+        }
 
 
 class SurveyChartForm(forms.ModelForm):
