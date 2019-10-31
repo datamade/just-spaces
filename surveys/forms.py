@@ -250,15 +250,15 @@ class CensusAreaCreateForm(JustSpacesForm):
         }
 
     def __init__(self, user, *args, **kwargs):
-        if getattr(self, 'instance', False) and self.instance.region:
+        super().__init__(*args, **kwargs)
+
+        if self.instance.region:
             region = self.instance.region
         else:
             region_slug = kwargs.pop('region', None)
             if not region_slug:
                 region_slug = 'philadelphia'  # Fallback to Philly
             region = survey_models.CensusRegion.objects.get(slug=region_slug)
-
-        super().__init__(*args, **kwargs)
 
         self.user = user
         if self.instance.agency:
