@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.gis.db import models as geo_models
+from django.contrib.gis.geos import Point
 from django.contrib.postgres import fields as pg_fields
 from django.contrib.postgres.fields import JSONField
 
@@ -58,6 +59,8 @@ class CensusRegion(models.Model):
     fips_codes = pg_fields.ArrayField(models.CharField(max_length=12))
     slug = models.SlugField(max_length=255, primary_key=True)
     name = models.CharField(max_length=255, unique=True)
+    centroid = geo_models.PointField(default=Point(40, -75.16))
+    default_zoom = models.PositiveIntegerField(default=11)
 
     def __str__(self):
         return self.name

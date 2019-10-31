@@ -4,11 +4,13 @@ import json
 
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.gis.utils import LayerMapping
+from django.contrib.gis.geos import Point
 from django.conf import settings
-from django.utils import slugify
+from django.db import transaction
+from django.utils.text import slugify
 
 from surveys import models
-from data.scripts.states import STATES, REGIONS
+from data.scripts.states import STATES, REGIONS, COUNTY_TO_REGION
 
 DB_CONN = 'postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{NAME}'
 DB_CONN_STR = DB_CONN.format(**settings.DATABASES['default'])
@@ -29,12 +31,68 @@ PRESET_AREAS = {
 }
 
 
+class BlockgroupLayerMapping(LayerMapping):
+    """
+    Custom GeoDjango LayerMapping allowing us to assign Regions to Blockgroups.
+    """
+    def feature_kwargs(self, feature):
+        kwargs = super().feature_kwargs(feature)
+        county_fips = feature.get('STATEFP') + feature.get('COUNTYFP')
+        region_slug = slugify(COUNTY_TO_REGION[county_fips])
+        kwargs.update({'region': models.CensusRegion.objects.get(slug=region_slug)})
+        return kwargs
+
+
 class Command(BaseCommand):
     help = 'Load ACS data into the database'
 
-    def handle(self, *args, **kwargs):
-        self.stdout.write(self.style.SUCCESS('Importing ACS data...'))
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--observations-only',
+            action='store_true',
+            default=False,
+            help="Only import CensusObservations"
+        )
+        parser.add_argument(
+            '--regions-only',
+            action='store_true',
+            default=False,
+            help="Only import CensusRegions"
+        )
+        parser.add_argument(
+            '--areas-only',
+            action='store_true',
+            default=False,
+            help="Only import CensusAreas"
+        )
+        parser.add_argument(
+            '--blockgroups-only',
+            action='store_true',
+            default=False,
+            help="Only import CensusBlockgroups"
+        )
 
+    def handle(self, *args, **options):
+        self.stdout.write(self.style.SUCCESS('Importing data...'))
+
+        if options['observations_only']:
+            self.import_observations()
+        elif options['regions_only']:
+            self.import_regions()
+        elif options['areas_only']:
+            self.import_areas()
+        elif options['blockgroups_only']:
+            self.import_blockgroups()
+        else:
+            self.import_all()
+
+    def import_all(self):
+        self.import_observations()
+        self.import_regions()
+        self.import_areas()
+        self.import_blockgroups()
+
+    def import_observations(self):
         obs_created, obs_updated = 0, 0
         filepath = os.path.join('data', 'final', 'acs', 'census_observations.csv')
         with open(filepath) as f:
@@ -68,12 +126,18 @@ class Command(BaseCommand):
             )
         )
 
+    def import_regions(self):
         regions_created, regions_updated = 0, 0
-        for name, fips_codes in REGIONS.items():
-            _, created = models.CensusRegion.objects.get_or_create(
-                fips_codes=fips_codes,
-                name=name,
-                slug=slugify(name)
+        for name, region_vars in REGIONS.items():
+            pk_data = {'name': name, 'slug': slugify(name)}
+            defaults = {
+                'fips_codes': region_vars['counties'],
+                'centroid': Point(region_vars['centroid']),
+                'default_zoom': region_vars['default_zoom'],
+            }
+            _, created = models.CensusRegion.objects.update_or_create(
+                defaults=defaults,
+                **pk_data
             )
             if created:
                 regions_created += 1
@@ -89,6 +153,7 @@ class Command(BaseCommand):
             )
         )
 
+    def import_areas(self):
         areas_created, areas_updated = 0, 0
         for name, variables in PRESET_AREAS.items():
             _, created = models.CensusArea.objects.get_or_create(
@@ -111,30 +176,36 @@ class Command(BaseCommand):
             )
         )
 
-        shapefile_filenames = ['cb_2018_{}_bg_500k'.format(fips) for fips in STATES.keys()]
+    def import_blockgroups(self):
+        shapefile_filenames = ['cb_2018_{}_bg_500k.shp'.format(fips)
+                               for fips in STATES.keys()]
         shapefiles = [os.path.join('data', 'final', 'shapefiles', fname)
                       for fname in shapefile_filenames]
 
-        for shapefile in shapefiles:
-            try:
-                assert os.path.exists(shapefile)
-            except AssertionError:
-                msg = ('Required shapefile {} not found. '.format(shapefile) +
-                       'Run `make all` from the data directory to download it.')
-                raise CommandError(msg)
+        with transaction.atomic():
+            # Truncate table, because otherwise LayerMapping will incorrectly
+            # attempt to update the layer and mess up its geometry
+            # See: https://stackoverflow.com/q/30300876
+            models.CensusBlockGroup.objects.all().delete()
+            for shapefile in shapefiles:
+                try:
+                    assert os.path.exists(shapefile)
+                except AssertionError:
+                    msg = ('Required shapefile {} not found. '.format(shapefile) +
+                           'Run `make all` from the data directory to download it.')
+                    raise CommandError(msg)
 
-            blockgroup_mapping = {
-                'fips_code': 'GEOID',
-                'geom': 'POLYGON',
-            }
+                blockgroup_mapping = {
+                    'fips_code': 'GEOID',
+                    'geom': 'POLYGON',
+                }
+                lm = BlockgroupLayerMapping(
+                    model=models.CensusBlockGroup,
+                    data=shapefile,
+                    mapping=blockgroup_mapping,
+                    transform=False,
+                    unique='fips_code',
+                )
+                lm.save(progress=True, strict=True)
 
-            lm = LayerMapping(
-                models.CensusBlockGroup,
-                shapefile,
-                blockgroup_mapping,
-                transform=False,
-                unique='fips_code',
-            )
-            lm.save()
-
-        self.stdout.write(self.style.SUCCESS('Done!'))
+        self.stdout.write(self.style.SUCCESS('Imported CensusBlockgroups'))

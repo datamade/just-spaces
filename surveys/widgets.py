@@ -10,11 +10,13 @@ class MultiSelectGeometryWidget(SelectMultiple):
     input_type = 'select'
     template_name = 'partials/multiselect_geometry_widget.html'
 
-    def __init__(self, attrs=None, choices=()):
+    def __init__(self, attrs=None, choices=(), leaflet_overrides={}):
         """
         Override __init__ to update the config dictionary to make sure that the
         non-map input is always hidden.
         """
+        self.leaflet_overrides = leaflet_overrides
+
         if attrs is None:
             updated_attrs = {'style': 'display:none'}
         else:
@@ -39,6 +41,7 @@ class MultiSelectGeometryWidget(SelectMultiple):
                         }
                         for _, choice in self.choices]
         })
+        context['settings_overrides'] = self.leaflet_overrides
         return context
 
     def format_value(self, value):

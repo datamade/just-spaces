@@ -92,7 +92,8 @@ if __name__ == '__main__':
             writer.write_acs_row(state_fips, row)
 
         # County-level data
-        for region_name, county_fips_codes in regions.items():
+        for region_name, region_vars in regions.items():
+            county_fips_codes = region_vars['counties']
             for county in county_fips_codes:
                 county_res = c.acs5.state_county(codes, state_fips, county)
                 assert len(county_res) > 0

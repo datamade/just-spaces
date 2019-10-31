@@ -7,7 +7,8 @@ from states import STATES
 def get_counties(state):
     if state in list(STATES.keys()):
         counties = []
-        for region, county_codes in STATES[state]['regions'].items():
+        for region, region_vars in STATES[state]['regions'].items():
+            county_codes = region_vars['counties']
             for county in county_codes:
                 counties.append(county)
         return counties

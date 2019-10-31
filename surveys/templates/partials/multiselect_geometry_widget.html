@@ -118,6 +118,7 @@
           e.preventDefault();
           jsonLayer.eachLayer(function(layer) {
             layer.setStyle(layerStyle);
+            layer.feature.properties.selected = false;
           });
           SelectedLayers.clear();
         };
@@ -133,13 +134,13 @@
       if (layer.feature.properties.selected) {
         // Layer was already selected; turn it off and remove it from the list of
         // selected layers
+        resetHighlight(e);
         layer.feature.properties.selected = false;
         SelectedLayers.pop(layerId);
-        resetHighlight(e);
       } else {
+        layer.setStyle(selectedStyle);
         layer.feature.properties.selected = true;
         SelectedLayers.push(layerId);
-        layer.setStyle(selectedStyle);
       }
 
       if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -202,6 +203,6 @@
   }
 </script>
 
-{% leaflet_map "map" callback="initMap" %}
+{% leaflet_map "map" callback="initMap" settings_overrides=settings_overrides %}
 
 {% include "django/forms/widgets/select.html" %}

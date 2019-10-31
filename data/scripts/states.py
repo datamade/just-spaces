@@ -6,74 +6,118 @@ STATES = {
     '42': {
         'name': 'Pennsylvania',
         'regions': {
-            'Philadelphia': ['101'],
+            'Philadelphia': {
+                'counties': ['101'],
+                'default_zoom': 11,
+                'centroid': (40, -75.16),
+            },
         },
     },
     '39': {
         'name': 'Ohio',
         'regions': {
-            'Akron': ['133', '153'],
+            'Akron': {
+                'counties': ['133', '153'],
+                'default_zoom': 11,
+                'centroid': (41.08, -81.52),
+            },
         },
     },
     '13': {
         'name': 'Georgia',
         'regions': {
-            'Atlanta': ['013', '015', '035', '045', '057', '063', '067', '077',
-                        '085', '089', '097', '113', '117', '121', '135', '143',
-                        '149', '151', '159', '171', '199', '217', '223', '227',
-                        '231', '247', '255', '297']
-        }
+            'Atlanta': {
+                'counties': ['013', '015', '035', '045', '057', '063', '067', '077',
+                             '085', '089', '097', '113', '117', '121', '135', '143',
+                             '149', '151', '159', '171', '199', '217', '223', '227',
+                             '231', '247', '255', '297'],
+                'default_zoom': 11,
+                'centroid': (33.75, -84.39),
+            },
+        },
     },
     '25': {
         'name': 'Massachussetts',
         'regions': {
-            'Boston': ['009', '017', '021', '023', '025']
-        }
+            'Boston': {
+                'counties': ['009', '017', '021', '023', '025'],
+                'default_zoom': 11,
+                'centroid': (42.36, -71.06),
+            },
+        },
     },
     '33': {
         'name': 'New Hampshire',
         'regions': {
-            'Boston': ['015', '017']
-        }
+            'Boston': {
+                'counties': ['015', '017'],
+            },
+        },
     },
     '37': {
         'name': 'North Carolina',
         'regions': {
-            'Charlotte': ['007', '025', '071', '119', '179']
-        }
+            'Charlotte': {
+                'counties': ['007', '025', '071', '119', '179'],
+                'centroid': (35.23, -80.84),
+                'default_zoom': 11
+            },
+        },
     },
     '45': {
         'name': 'South Carolina',
         'regions': {
-            'Charlotte': ['091']
-        }
+            'Charlotte': {
+                'counties': ['091'],
+            },
+        },
     },
     '17': {
         'name': 'Illinois',
         'regions': {
-            'Chicago': ['031', '037', '043', '063', '089', '093', '097', '111', '197']
-        }
+            'Chicago': {
+                'counties': ['031', '037', '043', '063', '089',
+                             '093', '097', '111', '197'],
+                'default_zoom': 11,
+                'centroid': (41.88, -87.63),
+            },
+        },
     },
     '18': {
         'name': 'Indiana',
         'regions': {
-            'Chicago': ['073', '089', '111', '127']
-        }
+            'Chicago': {
+                'counties': ['073', '089', '111', '127'],
+            },
+        },
     },
     '55': {
         'name': 'Wisconsin',
         'regions': {
-            'Chicago': ['059']
-        }
+            'Chicago': {
+                'counties': ['059'],
+            },
+        },
     },
 }
 
 # Create a condensed map associating regions with their counties by merging
 # across states.
 REGIONS = {}
+# Create a map associating counties with their region (the reverse of REGIONS).
+COUNTY_TO_REGION = {}
 for state, variables in STATES.items():
     state_name = variables['name']
-    for region, counties in variables['regions'].items():
+    for region, region_vars in variables['regions'].items():
         if not REGIONS.get(region):
-            REGIONS[region] = []
-        REGIONS[region].extend([state + county_fips for county_fips in counties])
+            REGIONS[region] = {
+                'counties': [],
+                'default_zoom': region_vars['default_zoom'],
+                'centroid': region_vars['centroid']
+            }
+        counties = region_vars['counties']
+        REGIONS[region]['counties'].extend(
+            [state + county_fips for county_fips in counties]
+        )
+        for county in counties:
+            COUNTY_TO_REGION[state + county] = region

@@ -250,14 +250,30 @@ class CensusAreaCreateForm(JustSpacesForm):
         }
 
     def __init__(self, user, *args, **kwargs):
+        if getattr(self, 'instance', False) and self.instance.region:
+            region = self.instance.region
+        else:
+            region_slug = kwargs.pop('region', None)
+            if not region_slug:
+                region_slug = 'philadelphia'  # Fallback to Philly
+            region = survey_models.CensusRegion.objects.get(slug=region_slug)
+
         super().__init__(*args, **kwargs)
+
         self.user = user
-        self.fields['fips_codes'].widget.choices = [
-            (choice.fips_code, choice) for choice
-            in survey_models.CensusBlockGroup.objects.all()
-        ]
         if self.instance.agency:
             self.fields['restrict_by_agency'].initial = True
+
+        self.fields['fips_codes'].widget = widgets.MultiSelectGeometryWidget(
+            choices=[
+                (choice.fips_code, choice) for choice
+                in survey_models.CensusBlockGroup.objects.filter(region=region)
+            ],
+            leaflet_overrides={
+                'DEFAULT_ZOOM': region.default_zoom,
+                'DEFAULT_CENTER': tuple(region.centroid),
+            }
+        )
 
     def save(self, commit=True):
         if self.cleaned_data['restrict_by_agency'] is True:
