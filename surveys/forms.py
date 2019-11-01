@@ -250,12 +250,14 @@ class CensusAreaCreateForm(JustSpacesForm):
         }
 
     def __init__(self, user, *args, **kwargs):
+        region_slug = kwargs.pop('region', None)
         super().__init__(*args, **kwargs)
 
-        if self.instance.region:
+        # If the form represents an existing CensusArea, override the 'region'
+        # param with the existing CensusArea.region
+        if hasattr(self.instance, 'region') and self.instance.region is not None:
             region = self.instance.region
         else:
-            region_slug = kwargs.pop('region', None)
             if not region_slug:
                 region_slug = 'philadelphia'  # Fallback to Philly
             region = survey_models.CensusRegion.objects.get(slug=region_slug)

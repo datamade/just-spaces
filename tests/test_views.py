@@ -318,11 +318,11 @@ def test_census_area_create(client, user_staff, census_region):
 
 
 @pytest.mark.django_db
-def test_census_area_create_params(client, user_staff):
+def test_census_area_create_params(client, user_staff, census_region):
     client.force_login(user_staff)
     params = {
         'name': 'Foo bar',
-        'region': 'testregion',
+        'region': census_region.slug,
     }
     url = reverse('census-areas-create') + '?' + urlencode(params)
     response = client.get(url)
