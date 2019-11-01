@@ -3,6 +3,7 @@ from urllib.parse import urlencode
 
 import pytest
 from django.urls import reverse
+from django.forms.widgets import HiddenInput, CheckboxInput
 from pldp.forms import AGE_COMPLEX_CHOICES
 from pldp.models import SurveyComponent
 
@@ -315,6 +316,29 @@ def test_census_area_create(client, user_staff, census_region):
 
     no_agency_census_area = CensusArea.objects.last()
     assert no_agency_census_area.agency is None
+
+
+@pytest.mark.django_db
+def test_census_area_create_agency_restriction(client, user_staff, superuser):
+    """
+    'Restrict by Agency" should be hidden and checked for all but superusers.
+    """
+    client.force_login(user_staff)
+    url = reverse('census-areas-create')
+    staff_response = client.get(url)
+    assert staff_response.status_code == 200
+
+    field = staff_response.context['form'].fields['restrict_by_agency']
+    assert field.initial is True
+    assert isinstance(field.widget, HiddenInput)
+
+    client.force_login(superuser)
+    sup_response = client.get(url)
+    assert sup_response.status_code == 200
+
+    field = sup_response.context['form'].fields['restrict_by_agency']
+    assert field.initial is True
+    assert isinstance(field.widget, CheckboxInput)
 
 
 @pytest.mark.django_db

@@ -233,7 +233,8 @@ class CensusAreaCreateForm(JustSpacesForm):
     use_required_attribute = False
     restrict_by_agency = forms.BooleanField(
         label='Restrict to my agency',
-        initial=False,
+        initial=True,
+        widget=forms.HiddenInput,
         help_text=(
             'This will make this CensusArea viewable only by you and members '
             'of your agency. If this box is unchecked, all users will be able '
@@ -263,8 +264,11 @@ class CensusAreaCreateForm(JustSpacesForm):
             region = survey_models.CensusRegion.objects.get(slug=region_slug)
 
         self.user = user
-        if self.instance.agency:
-            self.fields['restrict_by_agency'].initial = True
+        if self.user.is_superuser:
+            self.fields['restrict_by_agency'].widget = forms.CheckboxInput()
+
+        if self.instance.id is not None and self.instance.agency is None:
+            self.fields['restrict_by_agency'].initial = False
 
         self.fields['fips_codes'].widget = widgets.MultiSelectGeometryWidget(
             choices=[
