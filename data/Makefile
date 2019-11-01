@@ -73,8 +73,9 @@ intermediate/acs/employment.csv: raw/acs/employment_status.csv
 	$(COMPILE_ACS_DATA)
 
 clean:
-	rm -Rf raw/acs/*.csv raw/shapefiles/*.zip intermediate/acs/*.csv intermediate/shapefiles/* \
-		   final/acs/*.csv final/shapefiles/*
+	rm -Rf raw/acs/*.csv raw/shapefiles/*.zip intermediate/acs/*.csv \
+		intermediate/shapefiles/* final/acs/*.csv final/shapefiles/* && \
+		touch intermediate/shapefiles/.gitkeep final/shapefiles/.gitkeep
 
 raw/acs/%.csv:
 	python3 scripts/import_acs_data.py "$*" "${YEAR}" > "$@"

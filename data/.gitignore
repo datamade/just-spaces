@@ -5,5 +5,8 @@ intermediate/acs/*.csv
 # Shapefiles
 raw/shapefiles/*.zip
 intermediate/shapefiles/*
+!intermediate/shapefiles/.gitkeep
 final/shapefiles/*
+!final/shapefiles/.gitkeep
 final/acs/*
+!final/acs/.gitkeep
