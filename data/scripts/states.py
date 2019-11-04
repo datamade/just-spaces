@@ -2,6 +2,9 @@
 US = '1'
 # County codes are determined from CBSAs using the following crosswalk:
 # https://www.uspto.gov/web/offices/ac/ido/oeip/taf/cls_cbsa/cbsa_countyassoc.htm#PartA1
+# Region centroids are found by searching "${city} coordinates" for the primary
+# city in each region. Zoom levels are configurable as a separate parameter for
+# cases where the region is too large to fit the default zoom level, 11.
 STATES = {
     '42': {
         'name': 'Pennsylvania',
