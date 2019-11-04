@@ -1,4 +1,4 @@
-django==2.1.10
+django==2.1.11
 census==0.8.13
 pyyaml==4.2b1
 
