@@ -550,6 +550,8 @@ class CensusAreaCreate(AgencyInitialMixin, CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
+        region_param = self.request.GET.get('region')
+        kwargs['region'] = region_param if region_param else 'philadelphia'
         return kwargs
 
 

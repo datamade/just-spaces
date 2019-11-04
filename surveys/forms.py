@@ -233,7 +233,8 @@ class CensusAreaCreateForm(JustSpacesForm):
     use_required_attribute = False
     restrict_by_agency = forms.BooleanField(
         label='Restrict to my agency',
-        initial=False,
+        initial=True,
+        widget=forms.HiddenInput,
         help_text=(
             'This will make this CensusArea viewable only by you and members '
             'of your agency. If this box is unchecked, all users will be able '
@@ -250,14 +251,35 @@ class CensusAreaCreateForm(JustSpacesForm):
         }
 
     def __init__(self, user, *args, **kwargs):
+        region_slug = kwargs.pop('region', None)
         super().__init__(*args, **kwargs)
+
+        # If the form represents an existing CensusArea, override the 'region'
+        # param with the existing CensusArea.region
+        if hasattr(self.instance, 'region') and self.instance.region is not None:
+            region = self.instance.region
+        else:
+            if not region_slug:
+                region_slug = 'philadelphia'  # Fallback to Philly
+            region = survey_models.CensusRegion.objects.get(slug=region_slug)
+
         self.user = user
-        self.fields['fips_codes'].widget.choices = [
-            (choice.fips_code, choice) for choice
-            in survey_models.CensusBlockGroup.objects.all()
-        ]
-        if self.instance.agency:
-            self.fields['restrict_by_agency'].initial = True
+        if self.user.is_superuser:
+            self.fields['restrict_by_agency'].widget = forms.CheckboxInput()
+
+        if self.instance.id is not None and self.instance.agency is None:
+            self.fields['restrict_by_agency'].initial = False
+
+        self.fields['fips_codes'].widget = widgets.MultiSelectGeometryWidget(
+            choices=[
+                (choice.fips_code, choice) for choice
+                in survey_models.CensusBlockGroup.objects.filter(region=region)
+            ],
+            leaflet_overrides={
+                'DEFAULT_ZOOM': region.default_zoom,
+                'DEFAULT_CENTER': tuple(region.centroid),
+            }
+        )
 
     def save(self, commit=True):
         if self.cleaned_data['restrict_by_agency'] is True:

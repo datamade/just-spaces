@@ -88,6 +88,8 @@ If you'd like to refresh ACS data, there are a few steps you'll need to take:
 
 The `import_data` management command will update data if it already exists, so you shouldn't experience data loss during import. Still, we recommend that you practice caution and make a backup.
 
+Since `import_data` can take a long time to finish, you can pass in flags that will tell it to only run certain parts of the data import pipeline. These flags follow the format `--${entity}-only` (e.g. `--blockgroups-only`). These flags can be useful if, for example, you're only actively developing one part of the import pipeline (like the Census block group import) and you don't want to have to wait for the rest of the job to finish in order to test your work. For full documentation of the available flags, run `./manage.py import_data --help`.
+
 ## Permissioning
 
 This app employs three classes of users:
