@@ -54,6 +54,8 @@ STATES = {
         'regions': {
             'Boston': {
                 'counties': ['015', '017'],
+                'default_zoom': 11,
+                'centroid': (42.36, -71.06),
             },
         },
     },
@@ -72,6 +74,8 @@ STATES = {
         'regions': {
             'Charlotte': {
                 'counties': ['091'],
+                'centroid': (35.23, -80.84),
+                'default_zoom': 11
             },
         },
     },
@@ -91,6 +95,8 @@ STATES = {
         'regions': {
             'Chicago': {
                 'counties': ['073', '089', '111', '127'],
+                'default_zoom': 11,
+                'centroid': (41.88, -87.63),
             },
         },
     },
@@ -99,6 +105,8 @@ STATES = {
         'regions': {
             'Chicago': {
                 'counties': ['059'],
+                'default_zoom': 11,
+                'centroid': (41.88, -87.63),
             },
         },
     },
