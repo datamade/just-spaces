@@ -55,3 +55,13 @@ docker-compose run --rm make clean
 Next, adjust the global variable `YEAR` in `Makefile` to correspond to the year you'd like to retrieve ACS estimates for.
 
 Finally, rerun the pipeline with `docker-compose run --rm make`. This will create new files in the `data` directory that you can use to import into the app.
+
+## Adding a new Region
+
+If you'd like to add a new CensusRegion, here are the steps you should follow:
+
+1. Update `STATES` in `scripts/states.py`
+    1. If the region is in a new state, create a new entry in `STATES` for that state; otherwise, update the existing state
+    2. Add a region to the `regions` dictionary with the counties comprising this region, its default map zoom level, and its center coordinate
+2. Add any new states to the `shapefiles` target in `shapefiles.mk`
+3. Rerun the data import with `docker-compose run --rm make clean` and `docker-compose run --rm make`
