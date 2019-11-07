@@ -62,6 +62,9 @@ class CensusRegion(models.Model):
     centroid = geo_models.PointField(default=Point(40, -75.16))
     default_zoom = models.PositiveIntegerField(default=11)
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.name
 

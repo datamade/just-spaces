@@ -17,7 +17,6 @@ shapefiles: final/shapefiles/cb_2018_42_bg_500k.shp \
             final/shapefiles/cb_2018_21_bg_500k.shp \
             final/shapefiles/cb_2018_12_bg_500k.shp \
             final/shapefiles/cb_2018_27_bg_500k.shp \
-            final/shapefiles/cb_2018_34_bg_500k.shp \
             final/shapefiles/cb_2018_36_bg_500k.shp \
             final/shapefiles/cb_2018_53_bg_500k.shp \
             final/shapefiles/cb_2018_11_bg_500k.shp \

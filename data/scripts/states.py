@@ -17,11 +17,6 @@ STATES = {
                 'default_zoom': 11,  # Default map zoom level for this region
                 'centroid': (40, -75.16),  # Coordinate center point of this region
             },
-            'New York City': {
-                'counties': ['103'],
-                'default_zoom': 11,
-                'centroid': (40.71, -74.00),
-            },
         },
     },
     '39': {
@@ -238,23 +233,11 @@ STATES = {
             },
         },
     },
-    '34': {
-        'name': 'New Jersey',
-        'regions': {
-            'New York City': {
-                'counties': ['003', '013', '017', '019', '023', '025', '027',
-                             '029', '031', '035', '037', '039'],
-                'default_zoom': 11,
-                'centroid': (40.71, -74.00),
-            },
-        },
-    },
     '36': {
         'name': 'New York',
         'regions': {
             'New York City': {
-                'counties': ['005', '047', '059', '061', '079', '081', '085',
-                             '087', '103', '119'],
+                'counties': ['005', '047', '061', '081', '085'],
                 'default_zoom': 11,
                 'centroid': (40.71, -74.00),
             },
