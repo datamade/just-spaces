@@ -179,8 +179,8 @@ def test_valid_type_display(client, user_staff, survey, survey_form_entry, surve
 
 
 def test_census_area_option_restriction(client, user_staff, superuser,
-                                        survey_submitted_setup,
-                                        survey_form_entry, census_area,
+                                        survey_submitted_setup, survey_form_entry,
+                                        census_area, census_area_inactive,
                                         census_area_agency_1, census_area_agency_2):
     """Ensure that CensusArea options are restricted by the user's Agency."""
     client.force_login(user_staff)

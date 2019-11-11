@@ -318,7 +318,7 @@ class SurveyChartForm(forms.ModelForm):
         self.fields['primary_source'].widget.choices = source_choices
 
         # Restrict CensusAreas by the user's Agency
-        census_areas = survey_models.CensusArea.objects.all()
+        census_areas = survey_models.CensusArea.objects.filter(is_active=True)
         if user.agency is not None and not user.is_superuser:
             census_areas = census_areas.filter(
                 Q(agency=user.agency) | Q(agency__isnull=True)
