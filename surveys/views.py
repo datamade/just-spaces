@@ -93,7 +93,7 @@ class AgencyRestrictQuerysetMixin(object):
         agency_kwargs = {agency_filter: self.request.user.agency}
         agency_null_kwargs = {agency_filter + '__isnull': True}
 
-        if self.request.user.agency is not None:
+        if not self.request.user.is_superuser and self.request.user.agency is not None:
             return queryset.filter(Q(**agency_kwargs) | Q(**agency_null_kwargs))
         else:
             return queryset
@@ -657,7 +657,10 @@ class SurveySubmittedDetail(TemplateView):
 
         context['chart_formset'] = self.ChartFormset(
             queryset=survey_models.SurveyChart.objects.filter(form_entry=context['form_entry']),
-            form_kwargs={'form_entry': context['form_entry_id']},
+            form_kwargs={
+                'form_entry': context['form_entry_id'],
+                'user': self.request.user
+            },
         )
 
         return context
@@ -666,7 +669,10 @@ class SurveySubmittedDetail(TemplateView):
         context = self.get_context_data(**kwargs)
         formset = self.ChartFormset(
             request.POST,
-            form_kwargs={'form_entry': kwargs['form_entry_id']}
+            form_kwargs={
+                'form_entry': kwargs['form_entry_id'],
+                'user': request.user
+            }
         )
         if formset.is_valid():
             for form in formset:

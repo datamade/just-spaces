@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django import forms
-
+from django.db.models import Q
 from leaflet.forms.widgets import LeafletWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -307,11 +307,21 @@ class SurveyChartForm(forms.ModelForm):
             'primary_source': forms.Select(),
         }
 
-    def __init__(self, *args, form_entry, **kwargs):
+    def __init__(self, *args, form_entry, user, **kwargs):
         self.form_entry = survey_models.SurveyFormEntry.objects.get(id=form_entry)
         super().__init__(*args, **kwargs)
+
         survey = pldp_models.Survey.objects.filter(form_id=form_entry)[0]
-        choices = [(component.name, component.label) for component in survey.components
-                   if component.type in fobi_types.ALL_VALID_TYPES]
-        choices = [('', '-----')] + choices  # Offer a null choice
-        self.fields['primary_source'].widget.choices = choices
+        source_choices = [(component.name, component.label) for component in survey.components
+                          if component.type in fobi_types.ALL_VALID_TYPES]
+        source_choices = [('', '-----')] + source_choices  # Offer a null choice
+        self.fields['primary_source'].widget.choices = source_choices
+
+        # Restrict CensusAreas by the user's Agency
+        census_areas = survey_models.CensusArea.objects.filter(is_active=True)
+        if user.agency is not None and not user.is_superuser:
+            census_areas = census_areas.filter(
+                Q(agency=user.agency) | Q(agency__isnull=True)
+            )
+        census_area_choices = [(area.id, area.name) for area in census_areas]
+        self.fields['census_areas'].choices = census_area_choices

@@ -176,3 +176,34 @@ def test_valid_type_display(client, user_staff, survey, survey_form_entry, surve
         assert valid_component.name in get_response.content.decode('utf-8')
     for invalid_component in invalid_components:
         assert invalid_component.name not in get_response.content.decode('utf-8')
+
+
+def test_census_area_option_restriction(client, user_staff, superuser,
+                                        survey_submitted_setup, survey_form_entry,
+                                        census_area, census_area_inactive,
+                                        census_area_agency_1, census_area_agency_2):
+    """Ensure that CensusArea options are restricted by the user's Agency."""
+    client.force_login(user_staff)
+
+    get_url = reverse('surveys-submitted-detail',
+                      kwargs={'form_entry_id': survey_form_entry.id})
+    staff_response = client.get(get_url)
+    assert staff_response.status_code == 200
+
+    staff_formset = staff_response.context['chart_formset']
+    staff_choices = staff_formset.empty_form.fields['census_areas'].choices
+    staff_areas = [choice[1] for choice in staff_choices]
+    expected_staff_areas = [str(ca) for ca in (census_area, census_area_agency_1)]
+    assert set(staff_areas) == set(expected_staff_areas)
+
+    # Make sure superusers can see all CensusAreas
+    client.force_login(superuser)
+    superuser_response = client.get(get_url)
+    assert superuser_response.status_code == 200
+
+    superuser_formset = superuser_response.context['chart_formset']
+    superuser_choices = superuser_formset.empty_form.fields['census_areas'].choices
+    superuser_areas = [choice[1] for choice in superuser_choices]
+    expected_superuser_areas = [str(area) for area in
+                                (census_area, census_area_agency_1, census_area_agency_2)]
+    assert set(superuser_areas) == set(expected_superuser_areas)

@@ -407,6 +407,18 @@ def census_area(db, census_region):
 
 @pytest.fixture
 @pytest.mark.django_db
+def census_area_inactive(db, census_region):
+    return CensusArea.objects.create(
+        name='test inactive area',
+        is_active=False,
+        fips_codes=['1'],
+        region=census_region,
+        agency=None
+    )
+
+
+@pytest.fixture
+@pytest.mark.django_db
 def census_area_agency_1(db, agency, census_region):
     return CensusArea.objects.create(
         name='test area (Agency 1)',

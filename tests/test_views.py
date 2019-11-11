@@ -358,7 +358,7 @@ def test_census_area_create_params(client, user_staff, census_region):
 
 @pytest.mark.django_db
 def test_census_area_list(client, user_staff, census_area, census_area_agency_1,
-                          census_area_agency_2):
+                          census_area_agency_2, superuser):
     client.force_login(user_staff)
     url = reverse('census-areas-list')
     response = client.get(url)
@@ -370,8 +370,15 @@ def test_census_area_list(client, user_staff, census_area, census_area_agency_1,
 
     # Ensure that the only visible CensusAreas are A) those created by the agency
     # belonging to the user or B) those where CensusArea.agency is null
-    for area in census_areas:
-        assert area.name in [area.name for area in (census_area, census_area_agency_1)]
+    staff_areas = [census_area, census_area_agency_1]
+    assert set(census_areas) == set(staff_areas)
+
+    # Test that a superuser can see all CensusAreas
+    client.force_login(superuser)
+    superuser_response = client.get(url)
+    assert superuser_response.status_code == 200
+    superuser_areas = [census_area, census_area_agency_1, census_area_agency_2]
+    assert set(superuser_response.context['census_areas']) == set(superuser_areas)
 
 
 @pytest.mark.django_db
