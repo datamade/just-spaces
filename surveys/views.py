@@ -93,7 +93,7 @@ class AgencyRestrictQuerysetMixin(object):
         agency_kwargs = {agency_filter: self.request.user.agency}
         agency_null_kwargs = {agency_filter + '__isnull': True}
 
-        if self.request.user.agency is not None:
+        if not self.request.user.is_superuser and self.request.user.agency is not None:
             return queryset.filter(Q(**agency_kwargs) | Q(**agency_null_kwargs))
         else:
             return queryset
