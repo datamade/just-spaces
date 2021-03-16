@@ -1,3 +1,4 @@
 derek@derekeder.com
+fgregg@datamade.us
 justspaces+production@datamade.us
 justspaces+staging@datamade.us
